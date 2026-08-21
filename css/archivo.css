@@ -357,6 +357,16 @@
   top: 0;
   width: var(--caja-ancho);
   height: auto;
+
+  /* max-width: none ES OBLIGATORIO, no es un detalle.
+     El reset de base.css le pone `max-width: 100%` a todos los svg, y el
+     100% se mide contra el contenedor — que acá es `.esquina`, que mide CERO
+     de ancho a propósito. Sin esta línea la caja se achica a 0 y desaparece,
+     y lo peor es que no desaparece del todo: los polígonos de adentro siguen
+     informando su posición, así que una medición automática da números que
+     parecen correctos. Costó una ronda. */
+  max-width: none;
+
   /* Corre el dibujo hasta que su punto de apoyo cae en el origen (el vértice) */
   transform: translate(calc(var(--caja-ancla-x) * -1), calc(var(--caja-ancla-y) * -1));
 }
