@@ -34,21 +34,33 @@
      ------------------------------------------------------------------ */
 
   const ESQUINA = {
-    /* Cuánto se corre el punto de fuga, en unidades del lienzo del SVG
-       (que va de 0 a 100, o sea: 1 = 1% del hero).
-       Es a propósito un recorrido cortísimo: a simple vista no se ve que
-       algo se mueva, se ve que la imagen está viva. Arriba de 3 empieza a
-       notarse el movimiento y pasa a ser un efecto. */
-    ampX: 1.6,
-    ampY: 1.1,
+    /* Cuánto sube y baja el rincón, EN PÍXELES.
+       Antes el punto de fuga hacía un recorrido en dos ejes, con dos
+       períodos distintos, y se leía como un movimiento errático: la esquina
+       se iba para cualquier lado. Ahora es un solo movimiento, de arriba
+       abajo y de vuelta, que es lo que hace una cámara que respira. */
+    recorrido: 14,
 
-    /* Cuánto tarda cada eje en hacer el viaje de ida y vuelta, en segundos.
-       SON DISTINTOS A PROPÓSITO Y NO SON MÚLTIPLOS: como no coinciden, el
-       punto nunca repite el mismo recorrido y nunca se lee el ciclo. Si los
-       dos fueran 16, el punto iría y volvería siempre por la misma diagonal
-       y se notaría el loop. */
-    cicloX: 17,
-    cicloY: 11,
+    /* CUÁNTO CAMBIA EL PUNTO DE VISTA. Es la mitad interesante.
+       No alcanza con subir y bajar: si el dibujo se mueve entero y rígido,
+       parece un sticker deslizándose. Lo que hace que se lea como una cámara
+       es que al subir se vea MÁS el piso (las diagonales se abren, la tapa
+       de la caja se ve más grande, los laterales se acortan) y al bajar,
+       menos.
+
+       Eso se consigue con un solo número: un estirón vertical de todo el
+       bloque. Como se escala TODO junto —las tres líneas y la caja—, la
+       geometría se mantiene exacta durante toda la animación: la pendiente
+       de las diagonales y la de las aristas de la caja se multiplican por lo
+       mismo y siguen coincidiendo.
+
+       0.055 = el ángulo del piso va de 25,2° a 27,9°. Arriba de 0.09 se
+       empieza a notar que la caja se deforma. */
+    perspectiva: 0.055,
+
+    /* Segundos del ciclo completo, ida y vuelta. Largo a propósito: tiene
+       que ser ambiente, no un efecto. */
+    ciclo: 14,
   };
 
   /* ------------------------------------------------------------------
@@ -70,12 +82,16 @@
        no hay ninguna coordenada que recalcular ni nada que pueda quedar
        desalineado entre sí. */
 
-    // El punto de reposo se lee del CSS, que es donde vive la perilla. Así
-    // el número está escrito en un solo lugar y el JS solo le suma el vaivén.
-    const cs = getComputedStyle(esquina);
-    const baseX = parseFloat(cs.getPropertyValue("--fuga-x"));
-    const baseY = parseFloat(cs.getPropertyValue("--fuga-y"));
-    if (Number.isNaN(baseX) || Number.isNaN(baseY)) return;
+    /* SE MUEVE CON `transform`, NO CON `left`/`top`. ACÁ ESTABA EL TIRÓN.
+       Escribir left/top en cada cuadro obliga al navegador a rehacer el
+       LAYOUT de la página entera 60 veces por segundo, y con el hero a
+       pantalla completa eso se siente como un temblor.
+       `transform` no toca el layout: el navegador rasteriza la esquina una
+       sola vez, la guarda como una capa aparte (por eso el will-change del
+       CSS) y después solo la corre de lugar. Es trabajo de la placa de video
+       en vez del procesador.
+       Otra ventaja: el punto de reposo queda intacto en el CSS
+       (--fuga-x / --fuga-y) porque el transform es un corrimiento RELATIVO. */
 
     // Con movimiento reducido no se arranca nada: la esquina se queda donde
     // la dejó el CSS y listo.
@@ -112,15 +128,20 @@
       requestAnimationFrame(pintar);
       if (!aLaVista) return;
 
-      const s = (ahora - arranque) / 1000;
+      const seg = (ahora - arranque) / 1000;
 
-      // Dos senos con períodos distintos: el punto describe una figura
-      // abierta en vez de un vaivén en línea recta.
-      const x = baseX + Math.sin((s / ESQUINA.cicloX) * TAU) * ESQUINA.ampX;
-      const y = baseY + Math.sin((s / ESQUINA.cicloY) * TAU) * ESQUINA.ampY;
+      // UN solo seno manda las dos cosas, y por eso se leen como una sola:
+      // el rincón baja y al mismo tiempo se abre, sube y se cierra.
+      const f = Math.sin((seg / ESQUINA.ciclo) * TAU);
 
-      esquina.style.setProperty("--fuga-x", x.toFixed(3));
-      esquina.style.setProperty("--fuga-y", y.toFixed(3));
+      const y = f * ESQUINA.recorrido;
+      const escala = 1 + f * ESQUINA.perspectiva;
+
+      // translate3d y no translate: el "3d", aunque la z sea 0, es lo que le
+      // pide al navegador que trate esto como una capa propia y lo mueva sin
+      // volver a dibujarlo.
+      esquina.style.transform =
+        "translate3d(0," + y.toFixed(2) + "px,0) scaleY(" + escala.toFixed(4) + ")";
     }
 
     requestAnimationFrame(pintar);

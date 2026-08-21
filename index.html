@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="css/layout.css?v=8">
   <!-- Todo lo que se ve en ESTA página: hero, CV, herramientas, contacto,
        título de transición y grid de proyectos. -->
-  <link rel="stylesheet" href="css/archivo.css?v=12">
+  <link rel="stylesheet" href="css/archivo.css?v=17">
 
   <!-- El CSS de las páginas de proyecto se carga TAMBIÉN acá, aunque esta
        página no lo use.
@@ -31,7 +31,7 @@
        también linkee. Es inofensivo: sus selectores no existen acá, porque
        todo cuelga de .pag-simbio y .pag-54. -->
   <link rel="stylesheet" href="css/simbio.css?v=116">
-  <link rel="stylesheet" href="css/mas-54.css?v=12">
+  <link rel="stylesheet" href="css/mas-54.css?v=13">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -132,71 +132,122 @@
              ============================================================== -->
         <svg class="caja" viewBox="0 0 200 160" aria-hidden="true">
 
-          <!-- LOS DEGRADÉS DE LAS CARAS.
-               Cada cara va de un verde a otro, no de un color plano. Es lo
-               que hace que el cubo se lea como un objeto con volumen y no
-               como tres rombos pegados. Los tres arrancan claro arriba y
-               terminan oscuro abajo, porque la luz de todo el sitio viene de
-               arriba. Están acá y no en el CSS porque un degradé de SVG es
-               un elemento del dibujo, no un estilo: se define una vez y las
-               caras lo llaman por su id. -->
           <defs>
-            <linearGradient id="caja-arriba" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#9BB463"/>
-              <stop offset="1" stop-color="#7C9448"/>
-            </linearGradient>
+            <!-- LOS DEGRADÉS DE LAS DOS CARAS VERTICALES.
+                 Cada una va de un verde a otro, no de un color plano: es lo
+                 que le da volumen. Arrancan claro arriba y terminan oscuro
+                 abajo, porque la luz de todo el sitio viene de arriba. Y entre
+                 las dos hay una diferencia grande de claro — si fueran
+                 parecidas, el cubo se lee como un hexágono plano. -->
             <linearGradient id="caja-izq" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#6E8542"/>
-              <stop offset="1" stop-color="#4B5E27"/>
+              <stop offset="0" stop-color="#657C3B"/>
+              <stop offset="1" stop-color="#455629"/>
             </linearGradient>
             <linearGradient id="caja-der" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#546830"/>
-              <stop offset="1" stop-color="#37441A"/>
+              <stop offset="0" stop-color="#465729"/>
+              <stop offset="1" stop-color="#2C3818"/>
             </linearGradient>
+
+            <!-- LA SOMBRA DE APOYO. Es lo que más hace que la caja deje de
+                 flotar: sin una mancha en el piso, un objeto bien dibujado
+                 igual se lee suspendido.
+                 La región del filtro hay que agrandarla a mano: por defecto un
+                 filtro solo pinta un 10% más allá de la figura, y un
+                 desenfoque de este tamaño se cortaría con un borde recto. -->
+            <filter id="caja-sombra" x="-40%" y="-80%" width="180%" height="260%">
+              <feGaussianBlur stdDeviation="4"/>
+            </filter>
           </defs>
+
+          <!-- La sombra: la huella de la caja en el piso, apenas más grande
+               que ella y corrida hacia adelante, del lado contrario a la luz. -->
+          <polygon class="caja__sombra" points="101,63 65,80 101,98 138,80"
+                   filter="url(#caja-sombra)"/>
 
           <!-- Las hojitas y las polaroids, tiradas en el piso. Van ANTES que
                el cubo para que las que caen por detrás queden tapadas por él.
                Cada una es un paralelogramo con los lados en 2:1, igual que el
-               piso: por eso se leen acostadas y no paradas. -->
+               piso: por eso se leen acostadas y no paradas. Y son chicas a
+               propósito: si crecen, dejan de ser cosas tiradas y empiezan a
+               parecer baldosas. -->
           <g class="caja__papel">
-            <polygon points="60,109 76,101 56,91 40,99"/>
-            <polygon points="148,107 160,101 144,93 132,99"/>
-            <polygon points="102,121 114,115 98,107 86,113"/>
-            <polygon points="78,129 90,123 74,115 62,121"/>
-            <polygon points="130,131 146,123 126,113 110,121"/>
+            <polygon points="67,108 78,103 65,96 54,101"/>
+            <polygon points="141,105 151,101 139,95 129,99"/>
+            <polygon points="101,118 110,114 99,108 90,112"/>
+            <polygon points="79,125 87,121 77,115 69,119"/>
+            <polygon points="125,124 136,119 123,112 112,117"/>
           </g>
 
           <!-- Las dos que son polaroid y no hoja: el recuadro de la foto,
                corrido hacia el fondo, que es lo que les deja el borde ancho
                abajo. -->
           <g class="caja__foto">
-            <polygon points="59,104 70,99 57,92 46,97"/>
-            <polygon points="129,126 140,121 127,114 116,119"/>
+            <polygon points="67,105 74,101 65,97 58,100"/>
+            <polygon points="125,120 132,117 123,113 116,116"/>
           </g>
 
-          <!-- El cubo. Tres caras y tres claros distintos: si fueran iguales,
-               se leería como un hexágono plano. -->
-          <polygon class="caja__cara caja__cara--arriba" points="100,62 66,45 100,28 134,45"/>
-          <polygon class="caja__cara caja__cara--izq"    points="66,45 100,62 100,96 66,79"/>
-          <polygon class="caja__cara caja__cara--der"    points="134,45 100,62 100,96 134,79"/>
+          <!-- Las dos caras verticales -->
+          <polygon class="caja__cara caja__cara--izq" points="66,45 100,62 100,96 66,79"/>
+          <polygon class="caja__cara caja__cara--der" points="134,45 100,62 100,96 134,79"/>
 
-          <!-- Las cuatro solapas de la tapa: cuatro líneas del centro del
-               rombo a cada punta, apenas más oscuras que la cara. Insinúan el
-               pliegue; si fueran negras dibujarían un contorno. -->
-          <g class="caja__solapa">
-            <path d="M100 45 L100 28 M100 45 L134 45 M100 45 L100 62 M100 45 L66 45"/>
-          </g>
+          <!-- ============================================================
+               LA TAPA: DOS SOLAPAS QUE SE JUNTAN AL MEDIO
+               ------------------------------------------------------------
+               Una caja de cartón se cierra plegando DOS solapas grandes que
+               se encuentran en el centro. Lo que se ve desde arriba es esa
+               única costura, y va de punta a punta en un solo sentido.
 
-          <!-- LOS AGARRES: los dos huecos troquelados de la tapa, uno por
-               solapa. Van en dos trazos por agarre — el claro es el hueco, y
-               la línea más oscura de abajo es el canto del cartón, que es lo
-               que los hace leerse como agujeros y no como dos rayas
-               pintadas. -->
+               Antes había cuatro solapas y por lo tanto una cruz: la línea
+               que cruzaba de la punta izquierda a la derecha no existe en
+               una caja. Sacarla no es borrar una raya — es cambiar la tapa
+               de cuatro triángulos a dos.
+
+               Cada solapa lleva un verde apenas distinto: al quedar
+               plegadas nunca terminan exactamente en el mismo plano y cada
+               una toma la luz de otra manera. La diferencia tiene que ser
+               CHICA; exagerada, deja de ser cartón y pasa a ser un dibujo
+               de dos triángulos de colores.
+               ============================================================ -->
+          <polygon class="caja__solapa caja__solapa--izq" points="100,28 66,45 100,62"/>
+          <polygon class="caja__solapa caja__solapa--der" points="100,28 134,45 100,62"/>
+
+          <!-- La costura, el único pliegue de la tapa -->
+          <path class="caja__pliegue" d="M100 28 L100 62"/>
+
+          <!-- EL CANTO DEL CARTÓN. Una banda finita por dentro del borde de
+               adelante de la tapa: es el espesor de la lámina, visto de
+               canto. Va más claro que la tapa porque el corte del cartón no
+               está impreso — es la fibra cruda. Sin esto, la tapa y los
+               laterales se juntan en una arista matemática y el cubo se lee
+               como una figura, no como un objeto hecho de un material. -->
+          <polygon class="caja__canto" points="66,45 100,62 134,45 134,43.6 100,60.6 66,43.6"/>
+
+          <!-- ============================================================
+               LOS AGARRES: DOS AGUJEROS, UNO POR SOLAPA
+               ------------------------------------------------------------
+               Van en DOS capas y el orden importa:
+                 1. una cápsula CLARA, corrida un pelo hacia abajo — es el
+                    canto del cartón troquelado, la fibra cruda que queda a
+                    la vista en el borde cercano del agujero;
+                 2. encima, la cápsula OSCURA: el interior de la caja, que
+                    está en sombra.
+
+               Antes eran claras y por eso se veían raras: un agujero que
+               muestra el interior de una caja no puede ser más claro que la
+               tapa. Con el hueco oscuro y el filito claro adelante se leen
+               como troquelados de verdad.
+               ============================================================ -->
           <g class="caja__agarre">
-            <path class="caja__agarre-canto" d="M84 44.6 L94 39.6 M106 44.6 L116 39.6"/>
-            <path class="caja__agarre-hueco" d="M84 43 L94 38 M106 43 L116 38"/>
+            <path class="caja__agarre-canto"
+                  d="M83.3 48.6 L94.1 43.2 M105.9 48.6 L116.7 43.2"/>
+            <path class="caja__agarre-hueco"
+                  d="M83.3 47.7 L94.1 42.3 M105.9 47.7 L116.7 42.3"/>
           </g>
+
+          <!-- El contorno, apenas marcado: sobre un fondo claro, un objeto sin
+               ningún borde se desarma contra el fondo. Tiene que estar y no
+               tiene que verse. -->
+          <polygon class="caja__contorno" points="100,28 134,45 134,79 100,96 66,79 66,45"/>
         </svg>
       </div>
 
@@ -250,23 +301,39 @@
           ahí es cuando un proyecto más crece.
         </p>
 
-        <!-- LA INVITACIÓN. Este párrafo lo escribí yo (Claude) sobre la idea
-             de "seguir completando el rincón": revisalo y ponelo con tus
-             palabras si no suena a vos. Va en verde y con la rayita al
-             costado para que se lea como una nota al lector y no como una
-             tercera parte del CV. -->
-        <p class="cv__invitacion">
-          El rincón todavía se está llenando. Voy sumando cosas a medida que
-          las termino de entender, así que si algo no está todavía es porque
-          le sigo buscando la forma. Volvé cuando quieras, o escribime y lo
-          charlamos antes.
-        </p>
+        <p class="cv__cierre">Estoy abierto a seguir ampliando mi rincón.</p>
       </div>
     </div>
   </section>
 
   <!-- ======================================================================
-       3. HERRAMIENTAS — zona crema
+       3. APTITUDES — zona crema
+       ----------------------------------------------------------------------
+       Qué sé hacer, no con qué lo hago: eso último es la sección siguiente.
+       Una lista y nada más — sin líneas, sin viñetas y sin columnas. Son
+       siete renglones y se leen de un tirón; repartidos en columnas habría
+       que decidir cuál va primero y ninguno es más importante que otro.
+       ====================================================================== -->
+  <section class="zona zona--crema" id="aptitudes">
+    <div class="tramo grilla">
+      <p class="etiqueta tramo__rotulo">Aptitudes</p>
+
+      <div class="tramo__cuerpo">
+        <ul class="aptitudes" role="list">
+          <li>Desarrollo de sistemas e identidad visual</li>
+          <li>Ilustración y dibujo</li>
+          <li>Motion graphics</li>
+          <li>Generación y edición de contenido audiovisual</li>
+          <li>Diseño de interfaces web</li>
+          <li>Diseño de objeto, producto y maquetización</li>
+          <li>Modelado 3D</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       4. HERRAMIENTAS — zona crema
        Tres categorías arriba, y abajo Audio al lado de la nota de IA.
        Cada columna se apoya en una columna real de la grilla del sitio.
        ====================================================================== -->
@@ -330,7 +397,7 @@
   </section>
 
   <!-- ======================================================================
-       4. CONTACTO — zona crema
+       5. CONTACTO — zona crema
        ====================================================================== -->
   <section class="zona zona--crema" id="contacto">
     <div class="tramo grilla">
@@ -355,7 +422,7 @@
   </section>
 
   <!-- ======================================================================
-       5. TRABAJOS — zona crema
+       6. TRABAJOS — zona crema
        ----------------------------------------------------------------------
        Mismo esqueleto que los tres tramos de arriba: rótulo chico en la
        columna 1 y el contenido a la derecha. Por eso el título no es una
@@ -577,12 +644,12 @@
 <script src="js/smooth-scroll.js?v=2" defer></script>
 <script src="js/transiciones.js?v=3" defer></script>
 <script src="js/main.js?v=22" defer></script>
-<script src="js/archivo.js?v=3" defer></script>
+<script src="js/archivo.js?v=5" defer></script>
 <script src="js/simbio-scroll.js?v=20" defer></script>
 <script src="js/muestras.js?v=10" defer></script>
 <!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
      ejecutar al cambiar de página, así que el de +54 tiene que estar cargado
      desde acá. Sale sin hacer nada si no encuentra su HTML. -->
-<script src="js/mas-54.js?v=4" defer></script>
+<script src="js/mas-54.js?v=5" defer></script>
 </body>
 </html>

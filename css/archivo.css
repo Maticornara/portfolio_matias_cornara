@@ -62,13 +62,25 @@
   --texto-abajo: clamp(3rem, 9vh, 7rem);
 
   /* Tamaño del nombre. El clamp es (mínimo, ideal, máximo): nunca baja de
-     1.5rem ni pasa de 2.6rem, y en el medio crece con el ancho de ventana.
+     1.35rem ni pasa de 2.2rem, y en el medio crece con el ancho de ventana.
      Es CHICO a propósito: el protagonista del hero es la caja en la esquina,
      y el nombre acompaña desde abajo. */
-  --nombre-tam: clamp(1.5rem, 1rem + 1.9vw, 2.6rem);
+  --nombre-tam: clamp(1.35rem, 0.95rem + 1.6vw, 2.2rem);
 
-  /* Tamaño de la frase de abajo del nombre */
-  --frase-tam: clamp(0.9rem, 0.82rem + 0.35vw, 1.1rem);
+  /* EL LARGO DE LA FRASE TIENE QUE COINCIDIR CON EL DEL NOMBRE.
+     No se logra eligiendo un tamaño a ojo: los dos textos crecen con la
+     ventana y a cada ancho la relación sería otra. Por eso la frase no tiene
+     tamaño propio — se calcula como una FRACCIÓN del nombre, y así los dos
+     escalan juntos y la relación entre sus anchos queda igual en cualquier
+     pantalla.
+
+     De dónde sale el número: el nombre son 14 caracteres en peso 800 y la
+     frase 32 en peso 400. Medido en pantalla, el nombre ocupa 9,09 px de
+     ancho por cada px de tamaño de letra, y la frase 18,64. La fracción es
+     el cociente de esos dos, y es lo único que hay que recalcular si alguna
+     vez cambia alguno de los dos textos.
+     NO se toca el kerning: el tracking de los dos queda en su valor normal. */
+  --frase-tam: calc(var(--nombre-tam) * 0.4875);
 
   /* --- LÍNEAS DE LA ESQUINA ----------------------------------------- */
 
@@ -136,11 +148,30 @@
    una sección pasa de una pantalla.
    -------------------------------------------------------------------------- */
 
-.pag-archivo main > .zona {
+.pag-archivo main > .zona,
+.pag-archivo > footer.zona {
   display: grid;
   align-content: center;
   min-height: 100svh;
 }
+.pag-archivo > footer.zona { min-height: 0; }
+
+
+/* --------------------------------------------------------------------------
+   0-quinquies. UN SOLO CREMA EN TODA LA PÁGINA
+   ----------------------------------------------------------------------------
+   El sistema trae `.zona--crema` con un DEGRADÉ de fondo (--grad-crema, que
+   va de #F7F2E8 a #ECE4D3 en diagonal). Con una sección por pantalla eso se
+   nota mucho: cada bloque tiene su propio degradé y al scrollear se ven
+   bandas y cambios de tono que no responden a nada.
+
+   Acá el fondo es UN color plano, el crema de siempre, de punta a punta:
+   nav, secciones y pie. Los papeles del piso del hero también, así que en
+   toda la portada hay un solo valor de crema y no cinco parecidos.
+   -------------------------------------------------------------------------- */
+
+.pag-archivo .zona--crema,
+.pag-archivo .zona--crema-2 { --zona-fondo: var(--crema); }
 
 
 /* --------------------------------------------------------------------------
@@ -293,6 +324,18 @@
   z-index: 0;
   /* Es ambiente: no debe recibir clicks ni tapar nada */
   pointer-events: none;
+
+  /* El estirón de la animación crece DESDE el vértice. En un elemento de
+     0x0 el origen ya cae ahí, pero se deja escrito: si algún día la esquina
+     deja de medir cero, el punto de fuga tiene que seguir siendo el eje. */
+  transform-origin: 0 0;
+
+  /* EL VAIVÉN SE HACE CON transform, Y ESTO ES LO QUE LO HACE FLUIDO.
+     will-change le avisa al navegador que este bloque se va a mover: lo
+     dibuja UNA vez, lo guarda como una capa aparte y después solo la corre.
+     Sin esto vuelve a rasterizar el cubo, los degradés y la sombra en cada
+     cuadro, y ahí es donde se sentía el tirón. */
+  will-change: transform;
 }
 
 .esquina__linea {
@@ -378,40 +421,75 @@
    con relleno plano se ve como tres papeles pegados, no como un objeto.
    Los degradés están definidos en el <defs> del SVG, en index.html: acá solo
    se los llama por su id. */
-.caja__cara--arriba { fill: url(#caja-arriba); }
-.caja__cara--izq    { fill: url(#caja-izq); }
-.caja__cara--der    { fill: url(#caja-der); }
+.caja__cara--izq { fill: url(#caja-izq); }
+.caja__cara--der { fill: url(#caja-der); }
 
-/* Las cuatro solapas de la tapa: líneas apenas más oscuras que la cara, no
-   negras. Tienen que insinuar el pliegue, no dibujar un contorno. */
-.caja__solapa path {
-  stroke: rgba(0, 0, 0, .20);
-  stroke-width: 1;
+/* LAS DOS SOLAPAS DE LA TAPA, CADA UNA CON SU VERDE.
+   Al quedar plegadas nunca terminan exactamente en el mismo plano y cada una
+   toma la luz de otra manera. La diferencia es CHICA a propósito: exagerada,
+   la tapa deja de ser cartón y pasa a ser un dibujo de dos triángulos de
+   colores. La izquierda es la más clara porque la luz viene de ese lado. */
+.caja__solapa--izq { fill: #8FA95D; }
+.caja__solapa--der { fill: #839C53; }
+
+/* Los pliegues donde se cruzan las solapas */
+.caja__pliegue {
   fill: none;
+  stroke: rgba(30, 40, 14, .20);
+  stroke-width: 1;
 }
 
+/* LA SOMBRA DE APOYO. Es lo que más hace que la caja deje de flotar: sin una
+   mancha en el piso, un objeto bien dibujado igual se lee suspendido.
+   Verde muy oscuro y no negro: una sombra negra sobre un fondo cálido se ve
+   sucia. Y bastante transparente, porque es luz de ambiente, no un foco. */
+.caja__sombra { fill: rgba(46, 58, 22, .30); }
+
+/* EL CANTO DEL CARTÓN: el espesor de la lámina, visto de canto en el borde de
+   adelante de la tapa. Va más claro que la cara de arriba porque el corte del
+   cartón no está impreso — es la fibra cruda, y la luz le pega de lleno. */
+.caja__canto { fill: #A9BA7E; }
+
 /* LOS AGARRES — los huecos troquelados de la tapa.
-   Son DOS trazos por agarre y hacen falta los dos: el claro es el hueco, y la
-   línea más oscura corrida medio punto hacia abajo es el canto del cartón.
-   Sin el canto se leen como dos rayas pintadas encima de la tapa; con él, como
-   agujeros con espesor. */
+   Son DOS trazos exactamente en el mismo lugar: el ancho y oscuro de abajo
+   asoma alrededor del claro de arriba y arma un anillo. Ese anillo es todo:
+   sin él, los agarres se leen como dos rayas pintadas encima de la tapa;
+   con él, como agujeros con espesor. */
 .caja__agarre path {
   fill: none;
   stroke-linecap: round;
 }
 .caja__agarre-canto {
-  stroke: rgba(0, 0, 0, .30);
-  stroke-width: 5;
+  /* La fibra cruda del troquel, el mismo tono que el canto de la tapa */
+  stroke: #BDCB95;
+  stroke-width: 6.2;
 }
 .caja__agarre-hueco {
-  stroke: var(--crema);
-  stroke-width: 4.4;
+  /* El interior de la caja, en sombra */
+  stroke: #29331A;
+  stroke-width: 5;
+}
+
+/* El contorno, apenas marcado: sobre un fondo claro, un objeto sin ningún
+   borde se desarma contra el fondo. Tiene que estar y no tiene que verse. */
+.caja__contorno {
+  fill: none;
+  stroke: rgba(30, 40, 14, .30);
+  stroke-width: .8;
+  stroke-linejoin: round;
 }
 
 /* Los papeles del piso: hojas sueltas y polaroids. Van del crema del papel
-   con una línea fina, no blancos: el blanco puro sobre este fondo salta. */
+   con una línea fina, no blancos: el blanco puro sobre este fondo salta.
+   La sombrita los despega del piso, igual que a la caja. */
+.caja__papel {
+  filter: drop-shadow(0 1.6px 1px rgba(46, 58, 22, .30));
+}
+/* Del MISMO crema que el fondo de la página, no de uno más claro: lo que
+   los despega del piso es la sombrita y la línea del borde, no un tono
+   distinto. Así en toda la portada hay un solo valor de crema. */
 .caja__papel polygon {
-  fill: #FAF6EC;
+  fill: var(--crema);
   stroke: var(--linea-carpeta);
   stroke-width: 1;
 }
@@ -453,14 +531,11 @@
   row-gap: var(--s-5);
 }
 
-/* La línea que abre el bloque va de borde a borde de la GRILLA, no del
-   viewport: así respeta los márgenes como todo lo demás. */
-.tramo::before {
-  content: "";
-  grid-column: 1 / -1;
-  height: var(--borde);
-  background: var(--zona-linea);
-}
+/* SIN LÍNEA ARRIBA DEL TRAMO.
+   Había una raya fina de borde a borde al principio de cada sección. Con
+   cada sección ocupando una pantalla, esa raya no separaba nada: quedaba
+   flotando en el medio del aire, a media altura, sin nada arriba ni abajo.
+   Lo que separa una sección de otra es el aire, y con eso alcanza. */
 
 .tramo__rotulo {
   grid-column: 1;
@@ -509,17 +584,26 @@
   color: var(--zona-texto);
 }
 
-/* LA INVITACIÓN. No es una tercera parte del CV: es una nota al lector, y
-   tiene que leerse como tal. Por eso cambia de color (el verde del sitio) y
-   entra por una rayita al costado en vez de por un título — el mismo recurso
-   de .etiqueta--marca, que es como el acento entra en todo el sitio: dos
-   píxeles de color, nunca una superficie. */
-.cv__invitacion {
-  margin-top: var(--s-6);
-  padding-left: var(--s-5);
-  border-left: var(--borde-marcado) solid var(--verde);
-  max-width: 46ch;
-  color: var(--verde-oscuro);
+/* El cierre del CV. Una sola línea, sin rayita al costado ni recuadro: es
+   una frase más del texto, apenas separada y en el verde del sitio. */
+.cv__cierre {
+  margin-top: var(--s-5);
+  color: var(--verde);
+  font-weight: var(--peso-medio);
+}
+
+
+/* --- 2-a-bis. APTITUDES --------------------------------------------------
+   Qué sabe hacer, no con qué lo hace. Una lista sin viñetas ni líneas: cada
+   renglón se sostiene solo y ninguno es más importante que otro, así que no
+   hay jerarquía que dibujar. Lo único que los separa es el interlineado. */
+
+.aptitudes {
+  list-style: none;
+  font-size: clamp(1.05rem, 0.92rem + 0.6vw, 1.5rem);
+  font-weight: var(--peso-cuerpo);
+  line-height: 1.75;
+  max-width: 34ch;
 }
 
 
@@ -537,10 +621,9 @@
   gap: var(--s-6) var(--grid-gap);
 }
 
-.herramienta {
-  padding-top: var(--s-3);
-  border-top: var(--borde) solid var(--zona-linea);
-}
+/* Sin la línea de arriba, por lo mismo que en el tramo: las categorías se
+   separan por el aire entre columnas, no por una raya sobre cada título. */
+.herramienta { padding-top: var(--s-3); }
 
 .herramienta__cat {
   font-size: var(--t-1);

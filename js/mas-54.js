@@ -391,22 +391,44 @@
 
     if (!boton) return;
 
+    // Deja el botón y las tres historias en el mismo estado. aria-pressed es
+    // el ÚNICO estado: lo lee el lector de pantalla y lo lee el CSS para
+    // dibujar el icono. Guardar además una variable en JS sería una segunda
+    // verdad que se puede desincronizar de la primera.
+    function aplicar(conSonido) {
+      boton.setAttribute("aria-pressed", String(conSonido));
+      videos.forEach((v) => { v.muted = !conSonido; });
+      if (texto) texto.textContent = conSonido ? "Silenciar" : "Activar sonido";
+    }
+
     boton.addEventListener("click", () => {
-      // aria-pressed es el ÚNICO estado: lo lee el lector de pantalla y lo lee
-      // el CSS para dibujar el icono. Guardar además una variable en JS sería
-      // una segunda verdad que se puede desincronizar de la primera.
-      const sonando = boton.getAttribute("aria-pressed") === "true";
-      const nuevo = !sonando;
+      const conSonido = boton.getAttribute("aria-pressed") !== "true";
+      aplicar(conSonido);
 
-      boton.setAttribute("aria-pressed", String(nuevo));
-      videos.forEach((v) => {
-        v.muted = !nuevo;
-        // Al desmutear hay que volver a pedir play: si el navegador las había
-        // dejado corriendo mudas, cambiar muted no las reinicia.
-        if (nuevo) reproducir(v);
+      if (!conSonido) return;
+
+      /* AL DESMUTEAR HAY QUE VOLVER A PEDIR PLAY, y hay que mirar si sale bien.
+         Sacarle el muted a un video que está corriendo hace que el navegador
+         vuelva a evaluar su política de reproducción, y si decide que no
+         corresponde LO PAUSA. Si eso pasa y no se hace nada, quedan las tres
+         historias congeladas con el botón diciendo "Silenciar": el botón estaría
+         mintiendo sobre lo que está pasando.
+
+         Así que si alguna se niega, se vuelve atrás: mudas otra vez, corriendo
+         otra vez, y el botón vuelve a decir "Activar sonido". Preferimos que no
+         haya sonido antes que tres videos frenados.
+
+         Con un click de verdad esto no se dispara —el click ES el permiso que el
+         navegador espera—, pero sí puede pasar con ahorro de batería o con el
+         sonido bloqueado a nivel del sistema. */
+      Promise.all(videos.map((v) => {
+        const intento = v.play();
+        return intento ? intento.catch(() => { throw new Error("bloqueado"); })
+                       : Promise.resolve();
+      })).catch(() => {
+        aplicar(false);
+        videos.forEach(reproducir);
       });
-
-      if (texto) texto.textContent = nuevo ? "Silenciar" : "Activar sonido";
     });
   }
 

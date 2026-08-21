@@ -1,13 +1,18 @@
 # Graph Report - CODIGO_CLAUDE  (2026-08-20)
 
 ## Corpus Check
-- 27 files · ~31,683,984 words
+- 27 files · ~31,967,252 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 191 nodes · 216 edges · 30 communities (26 shown, 4 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.57)
+- 216 nodes · 248 edges · 33 communities (29 shown, 4 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.56)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `f5720ccf`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - main.js
@@ -28,22 +33,25 @@
 - extraction-spec.md
 - mas-54.js
 - optimizar-54.ps1
-- 3. Tipografía
-- 6. Las imágenes — el pipeline
+- 19. +54: la primera página de proyecto después de Simbio (20/08/2026)
+- 20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)
 - 19. La portada, segunda pasada: sacar y dar aire (20/08/2026)
 - 20. La portada, tercera pasada: una pantalla por sección (20/08/2026)
+- 3. Tipografía
+- Archivo — portfolio de Matías Cornara
+- 5. Estado actual — qué está hecho
 
 ## God Nodes (most connected - your core abstractions)
-1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 23 edges
+1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 26 edges
 2. `init()` - 13 edges
 3. `What You Must Do When Invoked` - 12 edges
 4. `/graphify` - 11 edges
-5. `Portfolio "Archivo" — mapa del proyecto` - 9 edges
-6. `graphify reference: extra exports and benchmark` - 8 edges
-7. `alScrollear()` - 7 edges
-8. `activarScrubbing()` - 7 edges
-9. `iniciar()` - 7 edges
-10. `init54()` - 6 edges
+5. `init54()` - 9 edges
+6. `Portfolio "Archivo" — mapa del proyecto` - 9 edges
+7. `graphify reference: extra exports and benchmark` - 8 edges
+8. `alScrollear()` - 7 edges
+9. `activarScrubbing()` - 7 edges
+10. `iniciar()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `initTira()` --indirect_call--> `alScrollear()`  [INFERRED]
@@ -52,7 +60,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (30 total, 4 thin omitted)
+## Communities (33 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.23
@@ -60,7 +68,7 @@ Nodes (14): avisarSiEsArchivo(), init(), initBlurPortada(), initCarpetas(), init
 
 ### Community 1 - "ARCHIVO / MI CAJÓN — bitácora del proyecto"
 Cohesion: 0.06
-Nodes (30): 0. Cómo levantar el sitio, 10. Herramientas de diagnóstico, 11. Mapa de archivos, 12. Pendientes, 13. Perillas para editar a mano (11/08/2026), 14. Rebranding tipográfico de Simbio + arreglos (12/08/2026), 15. La grilla manda: 4 columnas para todo (12/08/2026), 16. Ajustes de composición y las carpetas (12/08/2026) (+22 more)
+Nodes (34): 0. Cómo levantar el sitio, 10. Herramientas de diagnóstico, 11. Mapa de archivos, 12. Pendientes, 13. Perillas para editar a mano (11/08/2026), 14. Rebranding tipográfico de Simbio + arreglos (12/08/2026), 15. La grilla manda: 4 columnas para todo (12/08/2026), 16. Ajustes de composición y las carpetas (12/08/2026) (+26 more)
 
 ### Community 2 - "sandbox.js"
 Cohesion: 0.52
@@ -103,20 +111,20 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 23 - "mas-54.js"
-Cohesion: 0.52
-Nodes (6): init54(), initAlterna(), initPostales(), initTeaser(), initTira(), initVideos54()
+Cohesion: 0.38
+Nodes (10): init54(), initAlterna(), initCarrusel(), initFotosCasa(), initHistorias(), initPostales(), initTeaser(), initTira() (+2 more)
 
 ### Community 24 - "optimizar-54.ps1"
-Cohesion: 0.73
-Nodes (5): ConvertirImagen(), ConvertirVideo(), HayQueHacerlo(), Peso(), PosterDeVideo()
+Cohesion: 0.67
+Nodes (6): ConvertirImagen(), ConvertirPNG(), ConvertirVideo(), HayQueHacerlo(), Peso(), PosterDeVideo()
 
-### Community 25 - "3. Tipografía"
-Cohesion: 0.40
-Nodes (5): 3. Tipografía, Historial, para no volver a dar la vuelta completa, La portada: Archivo también (20/08/2026) — decisión cerrada, Las 7 páginas de proyecto viejas: siguen en Nunito + IBM Plex Mono, Simbio: Archivo, cuatro tamaños y nada más (desde 12/08/2026)
+### Community 25 - "19. +54: la primera página de proyecto después de Simbio (20/08/2026)"
+Cohesion: 0.33
+Nodes (6): 19. +54: la primera página de proyecto después de Simbio (20/08/2026), BUGS QUE COSTARON TIEMPO ACÁ — no repetirlos, EL PIPELINE DE ASSETS — `tools/optimizar-54.ps1`, LO QUE FALTA, LO QUE SE DECIDIÓ Y POR QUÉ, PERILLAS DE ESTA PÁGINA
 
-### Community 26 - "6. Las imágenes — el pipeline"
+### Community 26 - "20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)"
 Cohesion: 0.40
-Nodes (5): 6. Las imágenes — el pipeline, El video de proceso, La foto de portada, Las tres muestras de pieza, Los líquenes
+Nodes (5): 20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026), BUGS DE ESTA RONDA, CADA PARTE, LO ESTRUCTURAL, LO QUE FALTA
 
 ### Community 28 - "19. La portada, segunda pasada: sacar y dar aire (20/08/2026)"
 Cohesion: 0.33
@@ -126,21 +134,35 @@ Nodes (6): 19. La portada, segunda pasada: sacar y dar aire (20/08/2026), EL AIR
 Cohesion: 0.33
 Nodes (6): 20. La portada, tercera pasada: una pantalla por sección (20/08/2026), CADA SECCIÓN OCUPA UNA PANTALLA, EL HERO SE DIO VUELTA, LA CAJA, CON DEGRADÉ, LA INVITACIÓN DEL CV, LAS PASTILLAS EN LAS TARJETAS
 
+### Community 30 - "3. Tipografía"
+Cohesion: 0.40
+Nodes (5): 3. Tipografía, Historial, para no volver a dar la vuelta completa, La portada: Archivo también (20/08/2026) — decisión cerrada, Las 7 páginas de proyecto viejas: siguen en Nunito + IBM Plex Mono, Simbio: Archivo, cuatro tamaños y nada más (desde 12/08/2026)
+
+### Community 31 - "Archivo — portfolio de Matías Cornara"
+Cohesion: 0.33
+Nodes (5): Archivo — portfolio de Matías Cornara, Cómo correrlo, Estructura, Parámetros de diagnóstico, Sobre los assets
+
+### Community 32 - "5. Estado actual — qué está hecho"
+Cohesion: 0.50
+Nodes (4): 5. Estado actual — qué está hecho, `index.html` (la portada "Archivo") — rehecha el 20/08/2026, Las otras 7 páginas de proyecto, `proyectos/simbio.html` — la única página de proyecto hecha
+
 ## Knowledge Gaps
-- **96 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+91 more)
+- **111 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+106 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `3. Tipografía`, `6. Las imágenes — el pipeline`, `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`?**
-  _High betweenness centrality (0.070) - this node is a cross-community bridge._
-- **Why does `What You Must Do When Invoked` connect `What You Must Do When Invoked` to `/graphify`?**
+- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `5. Estado actual — qué está hecho`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `3. Tipografía`?**
+  _High betweenness centrality (0.089) - this node is a cross-community bridge._
+- **Why does `19. +54: la primera página de proyecto después de Simbio (20/08/2026)` connect `19. +54: la primera página de proyecto después de Simbio (20/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)` connect `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **What connects `PROYECTOS`, `graphify`, `Usage` to the rest of the system?**
-  _96 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _111 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `ARCHIVO / MI CAJÓN — bitácora del proyecto` be split into smaller, more focused modules?**
-  _Cohesion score 0.06451612903225806 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
 - **Should `What You Must Do When Invoked` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._

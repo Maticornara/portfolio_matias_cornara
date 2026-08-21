@@ -4,11 +4,6 @@
     "ast_hash": "ad0ef25d29161e7a51a6b44c86105c7f",
     "semantic_hash": "ad0ef25d29161e7a51a6b44c86105c7f"
   },
-  ".claude/settings.local.json": {
-    "mtime": 1785980915.7616403,
-    "ast_hash": "ac2d5a240cd211ff8efb5c75c85d8de4",
-    "semantic_hash": "ac2d5a240cd211ff8efb5c75c85d8de4"
-  },
   "js/main.js": {
     "mtime": 1787207486.4993587,
     "ast_hash": "213ee308dcb67fcf77dd2a82611903c8",
@@ -175,13 +170,13 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787260428.7805767,
-    "ast_hash": "9d854b0c433f2212b91afaf676374668",
+    "mtime": 1787275252.3956091,
+    "ast_hash": "6a0f0aca01eace8a5f43265f33b3a220",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787260663.2691884,
-    "ast_hash": "08611fb362f9fdc574a7b6100459b8f5",
+    "mtime": 1787275498.3253915,
+    "ast_hash": "aeca227144774664aa779fac4bbda36e",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
@@ -205,8 +200,8 @@
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787260267.0453377,
-    "ast_hash": "55d27f60e22f0884d4e648250c54c5ca",
+    "mtime": 1787275172.066261,
+    "ast_hash": "4100035fb806bfb1353cb6e758c18ed2",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
@@ -7305,18 +7300,18 @@
     "semantic_hash": ""
   },
   "js/archivo.js": {
-    "mtime": 1787253679.2413259,
-    "ast_hash": "40a186ed8b4c7953888e2a1d16f867fe",
+    "mtime": 1787274702.9779255,
+    "ast_hash": "448f02d50d504e8d436d2d5460379fa3",
     "semantic_hash": ""
   },
   "js/mas-54.js": {
-    "mtime": 1787253475.4667382,
-    "ast_hash": "421ea03f0a1925a50499386a62de48f1",
+    "mtime": 1787274964.0902658,
+    "ast_hash": "e300b1923b9fb3dc3e826c0a565b013f",
     "semantic_hash": ""
   },
   "tools/optimizar-54.ps1": {
-    "mtime": 1787260011.5043783,
-    "ast_hash": "611a1d6a803ec70d81029b33f4b9198d",
+    "mtime": 1787273204.9726787,
+    "ast_hash": "1a6e15facdd519eb5cbbdc79ccd72aea",
     "semantic_hash": ""
   },
   "assets/+54/MOCKUPS/MANUAL DE MARCA 2.jpeg": {
@@ -7629,24 +7624,49 @@
     "ast_hash": "b2c1b1006a729ab086f775072a02a62e",
     "semantic_hash": ""
   },
-  "assets/+54/web/instalacion-1.jpg": {
-    "mtime": 1787260036.7136998,
-    "ast_hash": "4670fab4aab62b8ca05c1966f4fb42b9",
+  "README.md": {
+    "mtime": 1787272344.7222555,
+    "ast_hash": "6a3054819de7139bfa28181d4a6207b6",
     "semantic_hash": ""
   },
-  "assets/+54/web/instalacion-2.jpg": {
-    "mtime": 1787260036.8253376,
-    "ast_hash": "36bdf425c1b957b8ea414a49cdf25646",
+  "assets/+54/PARA WEB/fotos instalacion/1-recorte.png": {
+    "mtime": 1787272550.057472,
+    "ast_hash": "0489a561492bcc459cd84d959f6c2454",
     "semantic_hash": ""
   },
-  "assets/+54/web/instalacion-3.jpg": {
-    "mtime": 1787260036.944025,
-    "ast_hash": "d6ed1c70f786a82c6d41af7e0cee660c",
+  "assets/+54/PARA WEB/fotos instalacion/2-recorte.png": {
+    "mtime": 1787272555.6773756,
+    "ast_hash": "a738cb40147904ab9e7ddabc3280cf2a",
     "semantic_hash": ""
   },
-  "assets/+54/web/instalacion-4.jpg": {
-    "mtime": 1787260037.059092,
-    "ast_hash": "1de4b7a58c1afb824885425d45de37ef",
+  "assets/+54/PARA WEB/fotos instalacion/3-recorte.png": {
+    "mtime": 1787272562.18432,
+    "ast_hash": "a8f0c4dad27f61e0089602a24c2927cf",
+    "semantic_hash": ""
+  },
+  "assets/+54/PARA WEB/fotos instalacion/4-recorte.png": {
+    "mtime": 1787272567.1889117,
+    "ast_hash": "dacaf69555e9f909d9a0b58161e54354",
+    "semantic_hash": ""
+  },
+  "assets/+54/web/instalacion-1.png": {
+    "mtime": 1787273205.9675052,
+    "ast_hash": "4ee25754c3c231f4fd597bab0f172714",
+    "semantic_hash": ""
+  },
+  "assets/+54/web/instalacion-2.png": {
+    "mtime": 1787273206.4918208,
+    "ast_hash": "0cff414db21521ee55fd1a7d24c866dd",
+    "semantic_hash": ""
+  },
+  "assets/+54/web/instalacion-3.png": {
+    "mtime": 1787273206.984905,
+    "ast_hash": "45f60287d33c79ba4434cd07b3ff055a",
+    "semantic_hash": ""
+  },
+  "assets/+54/web/instalacion-4.png": {
+    "mtime": 1787273207.5503285,
+    "ast_hash": "edbc13c1b35079028da65b0d4a3df780",
     "semantic_hash": ""
   }
 }

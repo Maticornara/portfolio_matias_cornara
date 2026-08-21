@@ -344,6 +344,22 @@
   object-fit: contain;
 }
 
+/* EN PANTALLA ANGOSTA el carrusel baja debajo del texto y pasa a mandar por
+   ANCHO en vez de por alto.
+   Es obligatorio y no cosmético: arriba la ventana del carrusel se mide a
+   partir de --poster-alto, y la columna se fija con `grid-column: 3 / span 2`.
+   Con una sola columna, esa colocación deja el poster empezando fuera de la
+   pantalla y cortado a la derecha. */
+@media (max-width: 960px) {
+  .hero54__posters {
+    grid-column: 1 / -1;
+    justify-self: start;
+    width: min(70%, 320px);
+    height: auto;
+    aspect-ratio: 3356 / 4760;
+  }
+}
+
 
 /* ==========================================================================
    4. LA BANDA DE PICTOGRAMAS

@@ -995,14 +995,15 @@ Todas en `css/mas-54.css`, buscá `PERILLAS`:
 |---|---|
 | `--tira-scroll-modulo` | velocidad del recorrido horizontal. Más alto = más lento |
 | `--tira-alto` | cuánto se ve la tira de cerca |
-| `--poster-alto` | tamaño de los posters del hero |
-| `--historia-ancho` | tamaño de las historias |
+| `--poster-alto` | tamaño del carrusel del hero |
+| `--pieza-recorte` | cuántos px se le comen a los bordes de logo y paleta |
+| `--teaser-ancho` | cuánto de la grilla ocupa el video del teaser |
+| `--foto-paso` | cuánto espera cada foto de la casa respecto de la anterior |
 | `--postal-perspectiva` | qué tan exagerado es el giro 3D de las postales |
 | `--banda-alto` | alto de la banda de pictogramas |
 
-Los ritmos de las piezas que se turnan NO están en el CSS ni en el JS: van en el
-HTML, en `data-alterna="<milisegundos>"`. Un solo módulo (`initAlterna`) mueve
-los posters del hero, el logo/paleta de la parte 2 y las tres historias.
+Los ritmos NO están en el CSS ni en el JS: van en el HTML, en
+`data-alterna` y `data-carrusel`, los dos en milisegundos.
 
 ### LO QUE FALTA
 
@@ -1205,3 +1206,296 @@ sitio: dos píxeles de color, nunca una superficie.
 
 **El texto lo escribió Claude**: está marcado con un comentario en el HTML para
 que Mati lo reescriba con sus palabras.
+
+---
+
+## 21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)
+
+Mati: *"FIJATE QUE ESTÁ FLOTANDO, la perspectiva está mal"*. Tenía razón, y eran
+**dos errores distintos** al mismo tiempo.
+
+### ERROR 1 — LAS DIAGONALES CAMBIABAN DE ÁNGULO CON LA VENTANA
+
+La caja está dibujada en **isometría 2:1** (por cada 2 de ancho, 1 de alto), o
+sea **26,565°** — el arcotangente de 0,5. El piso del cuarto tiene que estar
+exactamente en ese ángulo o la caja no se apoya en nada.
+
+Pero las diagonales eran un SVG con `preserveAspectRatio="none"` que iba del
+vértice a las esquinas de la pantalla, así que su ángulo dependía de la
+proporción de la ventana. Medido:
+
+| ventana | ángulo de la diagonal | ángulo de la caja |
+|---|---|---|
+| 1920 x 900 | 22,9° | 26,57° |
+| 1440 x 900 | 29,4° | 26,57° |
+| 1280 x 720 | 26,85° | 26,57° |
+| 430 x 900 (teléfono) | 62,0° | 26,57° |
+
+Coincidían **en una sola medida de ventana** y en todas las demás la caja
+quedaba colgada en el aire. Por eso "a veces se ve bien y a veces no".
+
+**La solución es no dibujar las líneas.** Ahora son tres barras de CSS rotadas
+`26.565deg` — una rotación en CSS es un ángulo de verdad y no se deforma con
+nada. El piso está siempre en el ángulo de la isometría, en cualquier pantalla.
+El SVG estirado se fue.
+
+### ERROR 2 — LA CAJA ESTABA ANCLADA EN EL VÉRTICE EQUIVOCADO
+
+En una caja apoyada en un rincón, el vértice del cuarto **NO es el vértice de
+abajo de la caja: es el de ABAJO Y ATRÁS**, el que no se ve. La arista de las
+paredes pasa por detrás del cubo y asoma arriba; las dos del piso salen de atrás
+y aparecen justo en los vértices de abajo a izquierda y a derecha, que quedan
+**apoyados** sobre ellas.
+
+En una isometría 2:1 el contorno del cubo es un hexágono perfecto y **su centro
+es a la vez el vértice de arriba-adelante y el de abajo-atrás**. En el lienzo de
+la caja ese punto es el `100,62` — el 50% del ancho y el **38,75%** del alto.
+Estaba anclada en el `100,96` (abajo y adelante), y por eso colgaba del vértice
+en vez de apoyarse en él.
+
+### LA ESTRUCTURA QUE LO HACE IMPOSIBLE DE ROMPER
+
+Antes había **dos cosas moviéndose en paralelo**: el JS escribía las
+coordenadas de las líneas por un lado y el left/top de la caja por otro. Dos
+cuentas separadas que tenían que dar lo mismo.
+
+Ahora hay **una sola**: un `<div class="esquina">` de **0x0** parado en el
+vértice, con las tres líneas y la caja colgando de él. El JS mueve ese div y se
+mueve el conjunto entero de una pieza. No hay nada que pueda desalinearse porque
+no hay dos cosas que alinear.
+
+El punto de reposo vive en el CSS (`--fuga-x` / `--fuga-y`, en `.esquina`) y el
+JS solo le suma el vaivén. Un número, un lugar.
+
+Verificado a 1920x900, 1440x900, 1280x720 y 430x900: **ángulo de la diagonal =
+ángulo de la arista de la caja = 26,565°** en las cuatro, y **0 px de desvío** en
+los tres puntos de contacto (los dos vértices de abajo sobre las diagonales, y
+el punto de apoyo sobre el vértice).
+
+### EL BUG QUE ESCONDIÓ EL ARREGLO: `max-width: 100%` SOBRE UN PADRE DE ANCHO 0
+
+Al mudar la caja adentro de `.esquina`, desapareció de la pantalla. El reset de
+`base.css` le pone `max-width: 100%` a **todos** los `svg`, y ese 100% se mide
+contra el contenedor — que ahora mide **cero** de ancho a propósito. La caja se
+achicaba a 0.
+
+**Lo peor no fue eso: fue que no desapareció del todo.** Los `<polygon>` de
+adentro siguen informando su posición en el espacio del usuario aunque el
+viewport del SVG mida 0, así que la primera medición automática dio
+`0 px de desvío` en todo y **parecía perfecta**. Los números estaban bien
+porque todos los puntos habían colapsado en el mismo lugar.
+
+Se arregla con `max-width: none` en `.caja`. La lección más general:
+**una medición que da 0 puede ser "está perfecto" o "no hay nada que medir"** —
+conviene chequear también que el elemento tenga tamaño.
+
+### SOBRE HACERLO EN 3D
+
+Se evaluó y se descartó, por ahora:
+
+- **Three.js** — ~600 KB y un canvas WebGL para dibujar tres polígonos. El sitio
+  no tiene build step y la referencia que quiere Mati es justamente un dibujo
+  **plano** e isométrico, no un render. Además no arreglaba nada: el problema
+  no era 2D contra 3D, era que el piso y la caja estaban a ángulos distintos.
+- **Transformaciones 3D de CSS** (seis divs y un `rotateX`/`rotateZ`) — es "3D
+  simple" sin librerías y es una opción real si algún día la caja tiene que
+  girar. Los contras hoy: los cubos de CSS 3D dejan costuras finitas entre
+  caras por el antialias, y los degradés y los agarres se vuelven más
+  incómodos que en SVG.
+
+**Queda en SVG**, que es lo que da el trazo más limpio y lo que se parece a la
+referencia. Si algún día la caja tiene que rotar de verdad, la opción es CSS 3D,
+no una librería.
+
+---
+
+## 20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)
+
+Mati revisó la página entera y bajó una lista larga. Lo que quedó:
+
+### LO ESTRUCTURAL
+
+**LA APERTURA ES LA MISMA QUE LA DE SIMBIO.** El hero tenía un titular gigante
+(hasta 15rem) sobre fondo negro. Ahora es la misma columna de apertura que
+Simbio, pieza por pieza: flecha de volver, título al tamaño de `.proyecto__titulo`,
+las tres pastillas de clasificación y la bajada. Y va sobre CREMA, no sobre negro.
+
+Las clases son las mismas (`.proyecto__col`, `.proyecto__titulo`,
+`.proyecto__meta`, `.proyecto__bajada`) y los estilos están **copiados** en
+`mas-54.css`. Traer `simbio.css` entero arrastraría también su sistema
+tipográfico y sus overrides de fondo. **Si se toca uno, hay que tocar el otro.**
+El día que exista una tercera página de proyecto, esto se muda a `layout.css`.
+
+**TIPOGRAFÍA ARCHIVO**, con el rango `300..900` (el titular va en 900 y los copys
+en 300). Y `--font-mono` también apunta a Archivo, igual que en la portada.
+
+**SIN NUMERAR LAS SECCIONES.** Los "01", "02"… convertían la página en un índice
+de once puntos. Es un recorrido, no un índice: queda solo el nombre.
+
+**NADA INCLINADO Y NADA REDONDEADO.** Se sacaron todas las micro-rotaciones y
+todos los `border-radius` de imágenes y videos. Es una excepción deliberada al
+principio de composición del sitio: acá TODAS las piezas son diseño gráfico
+terminado, con su propia caja y sus propios márgenes. Inclinarlas o redondearles
+una esquina es dibujar encima del trabajo.
+
+### CADA PARTE
+
+| Parte | Qué cambió |
+|---|---|
+| Hero | crema, apertura tipo Simbio, carrusel de posters crudos |
+| Banda | separador bajo entre hero y "Qué es", el pictograma entero |
+| Qué es | la frase clave en verde; se fueron los pies y el crédito |
+| La tira | de arriba abajo de la pantalla, y frena de a una publicación |
+| Historias | las tres a la vez, enteras, con botón de sonido |
+| Teaser | video más chico, franja negra igual, controles usables |
+| Instalación | 4 fotos apareciendo en diagonal, en lugar del video |
+| La casa | el recorrido pasó a una sección a pantalla completa |
+| El sitio | el mockup de borde a borde, sin el link de abajo |
+| Postales | sin cartelito; 4 arrancan dadas vuelta |
+| Manual | tres polaroids iguales que se abren con la lupa |
+
+**EL CARRUSEL, POR QUÉ RIEL Y NO FUNDIDO.** Las cuatro imágenes estaban apiladas
+fundiéndose una sobre otra. Eso no se lee como carrusel: se lee como parpadeo, o
+como una imagen que falla. Ahora van en una fila que se corre de a un poster y se
+ve que la siguiente ENTRA desde el costado.
+
+**LA TIRA FRENA DE A UNA PUBLICACIÓN.** Mientras el dedo o la rueda se mueven, la
+tira sigue al scroll sin resistencia — frenarla en el momento se siente como que
+la página se traba. El acomodo pasa DESPUÉS, cuando el scroll se queda quieto
+140 ms: ahí busca el borde de poster más cercano y lleva la página ahí con Lenis.
+Medido: cae a menos de 0,5 px del borde en todo el recorrido. `scroll-snap` no
+sirve para esto porque el que scrollea es la página y lo que se mueve es un
+`transform`.
+
+**LAS 4 FOTOS DE LA CASA APARECEN EN DIAGONAL:** arriba-izquierda,
+abajo-derecha, abajo-izquierda, arriba-derecha. Así la grilla se arma como un
+objeto que se despliega, en vez de una lista que se completa de a un renglón. El
+turno de cada una es su `--orden` en el HTML; el CSS lo convierte en un
+`transition-delay`. **Los archivos están numerados en ese orden**, así que en el
+HTML los números van salteados (1, 4, 3, 2 leídos de izquierda a derecha).
+
+**LAS POSTALES: CUATRO ARRANCAN DADAS VUELTA** (la 2, 4, 5 y 7). Reemplaza al
+cartelito de "pasá el cursor": ocho frentes iguales no invitan a nada, cuatro
+frentes y cuatro dorsos mezclados hacen la pregunta solos. Los números están
+elegidos a mano — al azar, dos de cada tres veces quedan tres juntas de un lado y
+se lee como un error.
+
+### BUGS DE ESTA RONDA
+
+**EL FILO NEGRO DE LOGO Y PALETA.** Los dos videos vienen con una línea negra
+pegada al borde de abajo y al de la derecha (basura del render). Se sacan
+agrandando el video 3px y corriéndolo en diagonal, para que esos bordes queden
+fuera del marco. **No alcanzaba con el `calc()`**: `base.css` le pone
+`max-width: 100%` a todo `<video>` en el reset, y ese tope le ganaba — el video
+se quedaba con el ancho del marco y seguía viéndose una franja de 3px. Hay que
+poner `max-width: none`. Medido: 636px de video contra 642 esperados.
+
+**LAS 4 FOTOS DE LA INSTALACIÓN SALÍAN CON FONDO NEGRO.** Los originales tienen
+FONDO TRANSPARENTE, y el JPEG no guarda canal alfa: al convertirlas, ffmpeg
+rellenaba la transparencia con negro y las cuatro quedaban como un rectángulo
+negro con la pieza adentro. Salen como **PNG**. Y antes de escalarlas se les saca
+el aire transparente con `tools\recortar-transparencia.ps1` —el mismo script que
+ya existía para los renders de Simbio— porque si no, el ancho del CSS se lo come
+el vacío y las habitaciones se ven diminutas.
+
+**LAS HISTORIAS CON FRANJAS NEGRAS AL COSTADO.** Tenían alto fijo en svh y
+`object-fit: contain`; como la caja quedaba más ancha que 9:16, aparecían dos
+barras negras en cada una. La caja tiene que tener LA PROPORCIÓN DEL VIDEO
+(`aspect-ratio: 9/16`): así no sobra nada que rellenar ni falta nada que recortar.
+
+**NO SE PODÍA NAVEGAR EL TEASER.** Dos cosas: los `controls` los agregaba el JS
+recién al hacer play (o sea que hasta entonces no había barra de tiempo), y la
+tapa tenía `inset: 0`, así que cubría y oscurecía los controles. Ahora los
+`controls` van desde el HTML y la tapa lleva `inset: 0 0 56px 0`, que es el alto
+de la barra de controles de Chrome.
+
+**EL CARRUSEL SE SALÍA DE LA PANTALLA EN EL TELÉFONO.** Al reescribir el CSS se
+perdió la media query del hero. La ventana del carrusel se mide a partir de
+`--poster-alto` y la columna se fija con `grid-column: 3 / span 2`: con una sola
+columna, eso deja el poster empezando fuera de la pantalla. **Ojo con esto cada
+vez que se reescriba una sección: el `overflow-x: clip` del `<html>` esconde el
+desborde, así que medir `scrollWidth` da cero y parece que está todo bien.**
+
+### LO QUE FALTA
+
+- **El año.** El hero dice 2025 y la tarjeta del índice dice 2021. Definir cuál.
+
+---
+
+## 22. La caja de cartón, y por qué se trababa (20/08/2026)
+
+Dos pedidos distintos de Mati: *"no parece una caja"* y *"se traba un poco la
+animación"*. Eran dos problemas sin relación.
+
+### QUÉ HACE QUE PAREZCA UNA CAJA Y NO UN CUBO VERDE
+
+Con la geometría ya arreglada (sección 21) seguía leyéndose como un cubo. Lo que
+faltaba, en orden de cuánto aporta cada cosa:
+
+1. **LA TAPA SON CUATRO SOLAPAS, NO UNA CARA.** Es lo que más cambia. Una caja
+   se cierra plegando cuatro solapas que se cruzan al medio, así que la tapa no
+   es una superficie sola: son cuatro triángulos que se juntan en el centro.
+   **Y cada uno lleva un verde apenas distinto** — al quedar plegadas, las
+   solapas nunca terminan exactamente en el mismo plano y cada una toma la luz
+   de otra manera. Con las cuatro iguales se ve una tapa impresa con un dibujo;
+   con la diferencia puesta, se ve cartón plegado. Las diferencias tienen que
+   ser CHICAS: exageradas, pasa a ser un dibujo de triángulos de colores.
+
+2. **LA SOMBRA DE APOYO.** Sin una mancha en el piso, un objeto bien dibujado
+   igual se lee suspendido. Es la huella de la caja, desenfocada y corrida hacia
+   adelante. Verde muy oscuro y no negro: una sombra negra sobre un fondo cálido
+   se ve sucia.
+   Ojo con los filtros de SVG: **por defecto solo pintan un 10% más allá de la
+   figura**, así que un desenfoque grande se corta con un borde recto. Hay que
+   agrandar la región a mano (`x="-40%" width="180%"`).
+
+3. **EL CANTO DEL CARTÓN.** Una banda finita por dentro del borde de adelante de
+   la tapa: el espesor de la lámina visto de canto. Va más claro que la tapa
+   porque el corte del cartón no está impreso, es fibra cruda. Sin esto la tapa
+   y los laterales se juntan en una arista matemática y el cubo se lee como una
+   figura, no como un objeto hecho de un material.
+
+4. **LOS AGARRES SON DOS TRAZOS, NO UNO.** El ancho y oscuro de abajo asoma
+   alrededor del claro de arriba y arma un anillo. Ese anillo es todo: sin él se
+   leen como dos rayas pintadas encima de la tapa; con él, como agujeros con
+   espesor. Van espejados, cada uno acompañando el borde de SU solapa.
+
+5. **Los papeles del piso, más chicos.** Estaban tan grandes que competían con
+   la caja y parecían baldosas.
+
+**Un intento intermedio que NO funcionó:** cambiar las cuatro solapas por UNA
+sola costura al medio (que es como se cierra una caja de mudanza real, con las
+dos solapas grandes encontrándose en el centro). Es más correcto pero se ve
+peor y no es lo que muestra la referencia: quedó la cruz de cuatro.
+
+### POR QUÉ SE TRABABA: `left`/`top` CONTRA `transform`
+
+El vaivén se hacía escribiendo `left` y `top` en cada cuadro. **Eso obliga al
+navegador a rehacer el LAYOUT de la página entera 60 veces por segundo**, y con
+el hero a pantalla completa se siente como un temblor.
+
+Ahora se mueve con `transform: translate3d(...)` y el elemento lleva
+`will-change: transform`. El navegador dibuja la esquina una sola vez, la guarda
+como una capa aparte y después solo la corre de lugar: trabajo de la placa de
+video en vez del procesador. El `3d`, aunque la z sea 0, es lo que pide esa capa
+propia.
+
+De paso, el punto de reposo queda intacto en el CSS (`--fuga-x` / `--fuga-y`)
+porque el transform es un corrimiento RELATIVO — antes el JS pisaba esos valores.
+
+**Medido con Performance.getMetrics, 4 segundos de animación a 1920x900:**
+
+| | |
+|---|---|
+| cuadros | 241 en 4 s (o sea 60 fps clavados) |
+| tiempo por cuadro | mediana 16,7 ms · p95 16,8 ms · peor 16,8 ms |
+| cuadros de más de 20 ms | 0 |
+| **LAYOUTS durante la animación** | **0** |
+
+Ese último número es el que importa y es el que hay que volver a mirar si algo
+se traba: **si una animación toca el layout, se va a sentir**. La regla es animar
+`transform` y `opacity`, nunca `left`, `top`, `width` ni `height`.
+
+Las amplitudes del vaivén pasaron a estar **en píxeles** (`ampX: 16`,
+`ampY: 10`), que antes eran porcentajes del hero y por eso el recorrido cambiaba
+de tamaño con la ventana.
