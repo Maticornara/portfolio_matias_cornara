@@ -1,0 +1,67 @@
+{
+  ".claude/settings.json": {
+    "mtime": 1786122445.4657495,
+    "ast_hash": "ad0ef25d29161e7a51a6b44c86105c7f",
+    "semantic_hash": "ad0ef25d29161e7a51a6b44c86105c7f"
+  },
+  ".claude/settings.local.json": {
+    "mtime": 1785980915.7616403,
+    "ast_hash": "ac2d5a240cd211ff8efb5c75c85d8de4",
+    "semantic_hash": "ac2d5a240cd211ff8efb5c75c85d8de4"
+  },
+  "js/main.js": {
+    "mtime": 1786047767.788269,
+    "ast_hash": "38cadbbcf6c5e1489ef74a7f63733095",
+    "semantic_hash": "38cadbbcf6c5e1489ef74a7f63733095"
+  },
+  "js/muestras.js": {
+    "mtime": 1786047697.6097083,
+    "ast_hash": "9b7d0998e0c01c3825a927bea142e46d",
+    "semantic_hash": "9b7d0998e0c01c3825a927bea142e46d"
+  },
+  "js/simbio-scroll.js": {
+    "mtime": 1786047697.6097083,
+    "ast_hash": "e9d2e1f76a9d8bb95a90647fd739c50b",
+    "semantic_hash": "e9d2e1f76a9d8bb95a90647fd739c50b"
+  },
+  "js/smooth-scroll.js": {
+    "mtime": 1785967289.7593832,
+    "ast_hash": "2de25ed5850445e3b16adae773a2fd4b",
+    "semantic_hash": "2de25ed5850445e3b16adae773a2fd4b"
+  },
+  "js/transiciones.js": {
+    "mtime": 1786047615.92826,
+    "ast_hash": "23b2640a144d41051933779d7f72387a",
+    "semantic_hash": "23b2640a144d41051933779d7f72387a"
+  },
+  "sandbox/sandbox.js": {
+    "mtime": 1785296469.2647192,
+    "ast_hash": "0b0239914f1f17b7ccd0ce02c712a06c",
+    "semantic_hash": "0b0239914f1f17b7ccd0ce02c712a06c"
+  },
+  "tools/optimizar-frames.ps1": {
+    "mtime": 1785912988.565073,
+    "ast_hash": "7f9ea450077a5f56aea3bd3b4245cf7e",
+    "semantic_hash": "7f9ea450077a5f56aea3bd3b4245cf7e"
+  },
+  "tools/video-a-frames.ps1": {
+    "mtime": 1785899479.334723,
+    "ast_hash": "4b803d4e018eed7e78e31cc0dc43037c",
+    "semantic_hash": "4b803d4e018eed7e78e31cc0dc43037c"
+  },
+  "assets/simbio/proceso/GIF/GIF.mp4": {
+    "mtime": 1785893982.7050788,
+    "ast_hash": "11d1adda921d354015ce0736e6fb060f",
+    "semantic_hash": "11d1adda921d354015ce0736e6fb060f"
+  },
+  "assets/simbio/proceso/video/proceso.mp4": {
+    "mtime": 1785904862.6030767,
+    "ast_hash": "8dcdd35b431a52c9984cc3e1c19c6653",
+    "semantic_hash": "8dcdd35b431a52c9984cc3e1c19c6653"
+  },
+  "assets/simbio/proceso/video/proceso.webm": {
+    "mtime": 1785902033.1601217,
+    "ast_hash": "10badbc297a48c558c5d8c39b8ddf4a2",
+    "semantic_hash": "10badbc297a48c558c5d8c39b8ddf4a2"
+  }
+}

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>+54 — Archivo</title>
+  <meta name="description" content="+54: curaduría e identidad visual para una exhibición de diseño argentino con el Museo Moderno. Una casa modular que recorre Buenos Aires.">
+
+  <!-- UNA SOLA FAMILIA: ARCHIVO. La misma del índice y de Simbio.
+       El rango 300..900 porque el titular va en 900 y los copys en 300; sin
+       pedir esos pesos el navegador los inventa a partir del 700 y se ve sucio.
+
+       Y LA PALETA ES LA DEL SITIO: crema, negro y verde. El magenta, el lima
+       y el rosa de +54 no pintan la página — entran solamente adentro de las
+       imágenes, que ya son de esos colores. Esta página es la pared de la
+       galería; el material es lo que tiene color. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&display=swap" rel="stylesheet">
+
+  <!-- Ojo con las rutas: estamos dentro de /proyectos/, por eso el ../ -->
+  <link rel="stylesheet" href="../css/variables.css?v=6">
+  <link rel="stylesheet" href="../css/base.css?v=11">
+  <link rel="stylesheet" href="../css/layout.css?v=8">
+  <link rel="stylesheet" href="../css/mas-54.css?v=11">
+
+  <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
+       Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
+       necesita que ya existan para registrar el plugin. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+
+  <!-- Swup: transición entre páginas. -->
+  <script src="https://unpkg.com/swup@4/dist/swup.umd.js"></script>
+</head>
+
+<!-- pag-54: el alcance de css/mas-54.css. Todo lo de esta página cuelga de
+     esta clase, así que nada de acá puede filtrarse al índice ni a Simbio.
+     No define colores nuevos: los toma de variables.css como el resto.
+     data-cursor: el mismo cursor de anillo que usa Simbio, sin cambios (ver
+     initCursor en main.js). -->
+<body class="pag-54" data-cursor="anillo">
+
+<!-- Los mismos cuatro botones que la portada, en el mismo orden. Las anclas
+     apuntan a las secciones de index.html: #sobre, #archivo, #contacto. -->
+<nav class="site-nav grilla">
+  <a class="pastilla" href="../index.html">Home</a>
+  <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
+  <a class="pastilla is-activa" href="../index.html#archivo">Archivo</a>
+  <div class="site-nav__fin">
+    <a class="pastilla" href="../index.html#contacto">Contacto</a>
+    <div class="nav-idioma">
+      <a class="pastilla is-activa" href="#" aria-current="true">ES</a>
+      <a class="pastilla" href="#">EN</a>
+    </div>
+  </div>
+</nav>
+
+<!-- data-body / data-cursor-pag: la clase y el cursor que le tocan al
+     <body> en esta pagina. Los copia transiciones.js despues de cada
+     navegacion de Swup, que reemplaza solo lo de adentro de #swup y deja el
+     <body> de la pagina anterior tal cual estaba. -->
+<main id="swup" class="transicion-fade"
+      data-body="pag-54" data-cursor-pag="anillo">
+
+  <!-- ======================================================================
+       HERO
+       ----------------------------------------------------------------------
+       MISMA APERTURA QUE SIMBIO, pieza por pieza: la flecha de volver, el
+       título, las pastillas de clasificación y la bajada, en las columnas 1-2.
+       Las clases son las mismas (.proyecto__col, .proyecto__titulo,
+       .proyecto__meta, .proyecto__bajada) y los estilos están copiados en
+       mas-54.css — no se importa simbio.css entero por cuatro bloques.
+
+       A la derecha, el carrusel de posters. Van SIN rotación, SIN esquinas
+       redondeadas y SIN sombra: son las imágenes tal cual. Cualquier adorno
+       acá compite con el afiche, que ya es el diseño.
+       ====================================================================== -->
+  <header class="s54 hero54 zona zona--crema">
+    <div class="hero54__grilla grilla">
+
+      <aside class="proyecto__col">
+        <a class="volver volver--pastilla" href="../index.html#archivo"
+           aria-label="Volver al archivo">
+          <svg viewBox="0 0 28 10" fill="none" aria-hidden="true"
+               stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M27 5H1M1 5l4.5-4M1 5l4.5 4"/>
+          </svg>
+        </a>
+
+        <h1 class="proyecto__titulo">+54</h1>
+
+        <div class="proyecto__meta">
+          <p class="etiqueta">Curaduría</p>
+          <p class="etiqueta">Identidad visual</p>
+          <p class="etiqueta">2025</p>
+        </div>
+
+        <p class="proyecto__bajada">
+          Curaduría e identidad visual para una exhibición de diseño
+          argentino. Objetos cotidianos, resignificados, viajando por
+          Buenos Aires en forma de casa.
+        </p>
+      </aside>
+
+      <!-- EL CARRUSEL DE POSTERS.
+           Las cuatro imágenes van en una fila que se corre de a una
+           (initCarrusel en mas-54.js): es un carrusel de verdad, se ve que la
+           imagen entra desde un costado. Antes se fundían una sobre otra en el
+           mismo lugar y no se leía como carrusel, se leía como parpadeo.
+           data-carrusel = cada cuánto pasa a la siguiente, en milisegundos. -->
+      <div class="hero54__posters" data-carrusel="4200"
+           aria-label="Los cuatro posters de la campaña de +54">
+        <div class="hero54__riel" data-carrusel-riel>
+          <img class="hero54__poster" src="../assets/+54/web/poster-1.jpg" alt="Poster de +54: el banco">
+          <img class="hero54__poster" src="../assets/+54/web/poster-2.jpg" alt="Poster de +54: la parada de taxi" loading="lazy">
+          <img class="hero54__poster" src="../assets/+54/web/poster-3.jpg" alt="Poster de +54: el empedrado" loading="lazy">
+          <img class="hero54__poster" src="../assets/+54/web/poster-4.jpg" alt="Poster de +54: la torre blanca" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- LA BANDA DE PICTOGRAMAS.
+       Es un separador, no una sección: una tira baja que corta entre el hero y
+       lo que sigue. Antes ocupaba 18svh y los pictogramas quedaban cortados
+       arriba y abajo; ahora entra el alto COMPLETO del video (object-fit:
+       contain) y lo que sobra es aire a los costados. -->
+  <div class="banda54">
+    <video src="../assets/+54/web/ilustraciones.mp4"
+           poster="../assets/+54/web/ilustraciones.jpg"
+           autoplay loop muted playsinline preload="metadata"
+           data-video-visible aria-hidden="true"></video>
+  </div>
+
+
+  <!-- ======================================================================
+       QUÉ ES
+       Texto de un lado, identidad del otro. Las dos piezas (el logo y la
+       paleta) se turnan EN EL MISMO LUGAR: una reemplaza a la anterior.
+       ====================================================================== -->
+  <section class="s54 zona zona--crema">
+    <div class="grilla">
+
+      <p class="s54__rotulo etiqueta">Qué es</p>
+
+      <div class="contexto54__texto">
+        <p class="s54__copy">
+          +54 reúne objetos que atravesaron la vida cotidiana argentina y
+          volvieron con otra lectura, entre el humor, la memoria y la
+          crítica. El nombre toma el código de teléfono del país: un dato
+          mínimo que alcanza para reconocerse. Cada pieza funciona igual,
+          <b>un gesto compartido que se activa apenas se lo reconoce.</b>
+        </p>
+      </div>
+
+      <!-- Los dos videos de identidad, turnándose en el mismo marco.
+           Vienen con una línea negra pegada al borde de abajo y al de la
+           derecha, que es basura del render. Se saca agrandando el video un
+           pelo y corriéndolo — la perilla es --pieza-recorte en mas-54.css. -->
+      <div class="contexto54__marco" data-alterna="6000">
+        <video class="contexto54__pieza" data-alterna-item
+               src="../assets/+54/web/logo.mp4"
+               poster="../assets/+54/web/logo.jpg"
+               loop muted playsinline preload="metadata"
+               aria-label="El logo de +54 animado sobre los tres colores del sistema"></video>
+        <video class="contexto54__pieza" data-alterna-item
+               src="../assets/+54/web/paleta.mp4"
+               poster="../assets/+54/web/paleta.jpg"
+               loop muted playsinline preload="none"
+               aria-label="La paleta de color del proyecto"></video>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       LA TIRA
+       ----------------------------------------------------------------------
+       El scroll vertical se traduce en recorrido horizontal. La imagen
+       (8566x1080) está compuesta sobre un módulo de 1093,48 px: el ancho de
+       un poster adentro de la tira. Son 7,83 módulos.
+
+       CADA SCROLLEADA = UNA PUBLICACIÓN. La tira acompaña el scroll mientras
+       se mueve y, al soltar, se acomoda sola al borde del poster más cercano
+       (ver initTira en mas-54.js). Nunca queda a mitad de camino entre dos.
+
+       La imagen va de arriba abajo de la pantalla. La velocidad y el alto se
+       tocan en css/mas-54.css → PERILLAS de .tira54.
+       ====================================================================== -->
+  <section class="s54 tira54 zona zona--crema-2" data-tira
+           aria-label="Recorrido horizontal por la tira de posters">
+    <div class="tira54__escena">
+
+      <div class="tira54__pista">
+        <img src="../assets/+54/web/tira.jpg"
+             width="8566" height="1080"
+             alt="La tira completa de posters de +54, uno al lado del otro">
+      </div>
+
+      <p class="etiqueta tira54__contador" data-tira-contador>01 / 08</p>
+
+      <div class="tira54__barra" data-tira-barra aria-hidden="true"><i></i></div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       LAS TRES HISTORIAS
+       Las tres a la vez, en fila y ENTERAS: object-fit: contain, sin recorte.
+       Arrancan solas cuando la sección entra en pantalla y van en silencio;
+       el botón les prende el sonido a las tres juntas.
+       ====================================================================== -->
+  <section class="s54 historias54 zona zona--crema-2" data-historias>
+    <div class="grilla">
+
+      <p class="s54__rotulo etiqueta">Historias</p>
+
+      <!-- Un solo botón para las tres: son una pieza, no tres. -->
+      <button class="historias54__sonido" data-historias-sonido aria-pressed="false">
+        <span class="historias54__icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+            <path class="historias54__mute" d="M17 9.5l4.5 5M21.5 9.5l-4.5 5"/>
+            <path class="historias54__on" d="M17 8.5a5 5 0 0 1 0 7"/>
+          </svg>
+        </span>
+        <span class="etiqueta" data-historias-texto>Activar sonido</span>
+      </button>
+
+      <div class="historias54__fila">
+        <video class="historias54__video" data-historia
+               src="../assets/+54/web/historia-1.mp4"
+               poster="../assets/+54/web/historia-1.jpg"
+               loop muted playsinline preload="none"
+               aria-label="Historia 1 de la campaña de +54"></video>
+        <video class="historias54__video" data-historia
+               src="../assets/+54/web/historia-2.mp4"
+               poster="../assets/+54/web/historia-2.jpg"
+               loop muted playsinline preload="none"
+               aria-label="Historia 2 de la campaña de +54"></video>
+        <video class="historias54__video" data-historia
+               src="../assets/+54/web/historia-3.mp4"
+               poster="../assets/+54/web/historia-3.jpg"
+               loop muted playsinline preload="none"
+               aria-label="Historia 3 de la campaña de +54"></video>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       TEASER
+       Hasta acá todo habló del CONCEPTO. El teaser cierra ese tramo; recién
+       después aparece la instalación física.
+
+       Archivo propio y no YouTube: no depende de la conexión ni de que el
+       video siga publicado. preload="metadata" — se baja la duración para que
+       la barra de tiempo exista, no el video.
+
+       El video NO ocupa el ancho entero: la zona negra sí, y él va centrado
+       adentro. La franja negra alrededor es lo que lo hace leerse como una
+       proyección y no como un banner.
+       ====================================================================== -->
+  <section class="s54 teaser54 zona zona--negro">
+    <div class="grilla">
+
+      <p class="s54__rotulo etiqueta">Teaser</p>
+
+      <div class="teaser54__marco">
+        <!-- controls DESDE EL HTML y no puestos por JS al hacer play: así la
+             barra de tiempo existe desde el primer cuadro y se puede adelantar
+             sin tener que reproducir primero. Antes los agregaba el JS y hasta
+             que no tocabas play no había con qué navegar el video. -->
+        <video data-teaser-video controls
+               src="../assets/+54/web/teaser.mp4"
+               poster="../assets/+54/web/teaser.jpg"
+               playsinline preload="metadata"></video>
+
+        <button class="teaser54__play" data-teaser-play aria-label="Reproducir el teaser de +54">
+          <span class="teaser54__triangulo" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9z"/></svg>
+          </span>
+          <span class="etiqueta">Ver el teaser · 1:45 · con sonido</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       LA INSTALACIÓN
+       Acá cambia el tema: de la identidad a la casa física.
+
+       LAS CUATRO FOTOS APARECEN DE A UNA, en fade, y en un orden que NO es el
+       de lectura: arriba-izquierda, abajo-derecha, abajo-izquierda,
+       arriba-derecha. En diagonal, o sea. Hace que la grilla se arme como un
+       objeto que se despliega en vez de una lista que se completa.
+       Los archivos están numerados EN ESE ORDEN: 1.png es la primera en
+       aparecer. Lo maneja initFotosCasa en mas-54.js.
+       ====================================================================== -->
+  <section class="s54 zona zona--crema">
+    <div class="grilla">
+
+      <p class="s54__rotulo etiqueta">La instalación</p>
+
+      <div class="casa54__texto">
+        <p class="s54__copy">
+          La casa es donde este doble sentido se vive en primera persona. Una
+          estructura modular y transportable de <b>cuatro cubos</b>, cada uno
+          una habitación con su propio color, que recorre distintos puntos
+          icónicos de Buenos Aires al aire libre.
+        </p>
+      </div>
+
+      <!-- El --orden de cada foto es su turno de aparición, y es lo único que
+           decide cuándo entra. La POSICIÓN en la grilla la da el orden del
+           HTML, que es el de lectura. Por eso los números van salteados: leído
+           de izquierda a derecha y de arriba a abajo, es 1, 4, 3, 2. -->
+      <div class="casa54__fotos" data-fotos-casa>
+        <img class="casa54__foto" style="--orden:1" src="../assets/+54/web/instalacion-1.png" alt="Una de las habitaciones de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:4" src="../assets/+54/web/instalacion-4.png" alt="Otra habitación de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:3" src="../assets/+54/web/instalacion-3.png" alt="Otra habitación de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:2" src="../assets/+54/web/instalacion-2.png" alt="Otra habitación de la casa modular" loading="lazy">
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       LA CASA EN MOVIMIENTO — a pantalla completa
+       El gif acelerado de la instalación, de borde a borde y sin nada
+       alrededor. Es la única pieza de la página que ocupa todo: es la casa
+       entera recorriéndose, y a media pantalla no se leía como un recorrido.
+       ====================================================================== -->
+  <section class="casa54__pantalla zona zona--negro"
+           aria-label="Recorrido completo por la casa modular">
+    <video src="../assets/+54/web/exposicion.mp4"
+           poster="../assets/+54/web/exposicion.jpg"
+           loop muted playsinline preload="none"
+           data-video-visible
+           aria-label="Las vistas de la casa modular, habitación por habitación"></video>
+  </section>
+
+
+  <!-- ======================================================================
+       EL SITIO
+       El mockup a pantalla completa. Es un enlace de verdad: el sitio existe.
+       rel="noopener": sin esto la página que se abre puede tocar la nuestra
+       por window.opener.
+       ====================================================================== -->
+  <section class="s54 web54 zona zona--crema-2">
+    <div class="grilla">
+      <p class="s54__rotulo etiqueta">El sitio</p>
+    </div>
+
+    <a class="web54__marco" href="https://maticornara.github.io/pop/"
+       target="_blank" rel="noopener noreferrer">
+      <img src="../assets/+54/web/mckp-web.jpg"
+           alt="El sitio de +54 visto en pantalla" loading="lazy">
+    </a>
+  </section>
+
+
+  <!-- ======================================================================
+       POSTALES
+       Ocho postales que se dan vuelta al pasar el mouse. CSS puro
+       (perspective + rotateY), sin librería.
+
+       CUATRO ARRANCAN DADAS VUELTA (la 2, la 4, la 5 y la 7) y no es un
+       adorno: es lo que reemplaza al cartelito de "pasá el cursor". Ocho
+       frentes iguales no invitan a nada; cuatro frentes y cuatro dorsos
+       mezclados hacen la pregunta solos, y la respuesta es pasar el mouse.
+       La clase la pone initPostales en mas-54.js.
+
+       Cada <button> y no <div>: girar la postal es una acción, y así anda con
+       teclado y con lector de pantalla sin agregar una línea de JS.
+       ====================================================================== -->
+  <section class="s54 zona zona--crema">
+    <div class="grilla">
+
+      <p class="s54__rotulo etiqueta">Postales</p>
+
+      <div class="postales54">
+
+        <button class="postal54 reveal" aria-label="Postal 1, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL1%20FRENTE.jpg" alt="Frente de la postal 1" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL1%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 2, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL2%20FRENTE.jpg" alt="Frente de la postal 2" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL2%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 3, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL3%20FRENTE.jpg" alt="Frente de la postal 3" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL3%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 4, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL4%20FRENTE.jpg" alt="Frente de la postal 4" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL4%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 5, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL5%20FRENTE.jpg" alt="Frente de la postal 5" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL5%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 6, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL6%20FRENTE.jpg" alt="Frente de la postal 6" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL6%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 7, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL7%20FRENTE.jpg" alt="Frente de la postal 7" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL7%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+        <button class="postal54 reveal" aria-label="Postal 8, dar vuelta">
+          <span class="postal54__caras">
+            <img class="postal54__cara" src="../assets/+54/POSTALES/POSTAL8%20FRENTE.jpg" alt="Frente de la postal 8" loading="lazy">
+            <img class="postal54__cara postal54__cara--dorso" src="../assets/+54/POSTALES/POSTAL8%20DORSO.jpg" alt="" loading="lazy">
+          </span>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       MANUAL DE MARCA — el cierre
+       Las tres láminas como polaroids apoyadas, todas del mismo tamaño, que se
+       abren en grande al tocarlas. Es la misma lupa que usan los líquenes de
+       Simbio: el atributo data-lupa lo maneja initLupa, en main.js, así que no
+       hay JS nuevo acá — solo los estilos, que sí hay que copiar porque viven
+       en simbio.css.
+       Sin rótulo de sección a propósito: es el cierre, no un capítulo.
+       ====================================================================== -->
+  <section class="s54 zona zona--crema-2">
+    <div class="grilla">
+      <div class="mockups54">
+
+        <figure class="mockup54 reveal">
+          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-1.jpg"
+                  aria-label="Ver la lámina del manual de marca en grande">
+            <img src="../assets/+54/web/mockup-1.jpg" alt="Lámina del manual de marca de +54" loading="lazy">
+          </button>
+        </figure>
+
+        <figure class="mockup54 reveal">
+          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-2.jpg"
+                  aria-label="Ver el afiche en la calle en grande">
+            <img src="../assets/+54/web/mockup-2.jpg" alt="El afiche de +54 pegado en la calle" loading="lazy">
+          </button>
+        </figure>
+
+        <figure class="mockup54 reveal">
+          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-3.jpg"
+                  aria-label="Ver el folleto en grande">
+            <img src="../assets/+54/web/mockup-3.jpg" alt="El folleto desplegado de +54" loading="lazy">
+          </button>
+        </figure>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="zona zona--crema-2">
+  <div class="site-footer grilla">
+    <p class="etiqueta"><a href="../index.html">Archivo — Matías Cornara</a></p>
+    <p class="etiqueta">
+      +54 · con el Museo de Arte Moderno de Buenos Aires<br>
+      Matías Cornara · 2026
+    </p>
+  </div>
+</footer>
+
+<div class="transition-veil" aria-hidden="true"></div>
+
+<!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
+     Lenis. Tiene que estar en TODAS las páginas. -->
+<script src="../js/smooth-scroll.js?v=2" defer></script>
+<script src="../js/transiciones.js?v=3" defer></script>
+<script src="../js/main.js?v=22" defer></script>
+<script src="../js/mas-54.js?v=4" defer></script>
+</body>
+</html>

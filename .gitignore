@@ -1,0 +1,18 @@
+# Basura de Windows / OneDrive — no es contenido del proyecto
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS, por si alguna vez se abre desde una Mac
+.DS_Store
+._*
+
+# Configuración local de Claude Code: rutas de ESTA máquina, no sirve en otra
+.claude/settings.local.json
+
+# Archivos temporales de edición
+*.tmp
+*.bak
+~$*

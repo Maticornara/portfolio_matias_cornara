@@ -1,0 +1,190 @@
+{
+  "communities": {
+    "0": [
+      "js_main",
+      "js_main_inithoverreveal",
+      "js_main_initnavesquiva",
+      "js_main_initparallaxliquenes",
+      "js_main_initreveal",
+      "js_main_inittypewriter",
+      "js_main_proyectos",
+      "js_main_renderfichas"
+    ],
+    "1": [
+      "js_main_init",
+      "js_main_initblurportada",
+      "js_main_initcarpetas",
+      "js_main_initcolumnasincro",
+      "js_main_initcursor",
+      "js_main_initlupa",
+      "js_main_initreglagrilla",
+      "js_main_inittilt"
+    ],
+    "2": [
+      "sandbox_sandbox",
+      "sandbox_sandbox_init",
+      "sandbox_sandbox_initbooklet",
+      "sandbox_sandbox_initcursor",
+      "sandbox_sandbox_initfolder",
+      "sandbox_sandbox_inithoverreveal",
+      "sandbox_sandbox_initreveal"
+    ],
+    "3": [
+      "js_simbio_scroll",
+      "js_simbio_scroll_actualizarfase",
+      "js_simbio_scroll_escribirfase",
+      "js_simbio_scroll_fasedeframe",
+      "js_simbio_scroll_pasotexto",
+      "js_simbio_scroll_prefijocomun"
+    ],
+    "4": [
+      "js_simbio_scroll_activarscrubbing",
+      "js_simbio_scroll_alscrollear",
+      "js_simbio_scroll_dibujar",
+      "js_simbio_scroll_medircanvas",
+      "js_simbio_scroll_pintardebug",
+      "js_simbio_scroll_progresodescroll"
+    ],
+    "5": [
+      "js_simbio_scroll_actualizarprogreso",
+      "js_simbio_scroll_cargaruna",
+      "js_simbio_scroll_hayframes",
+      "js_simbio_scroll_iniciar",
+      "js_simbio_scroll_mostrarmensaje",
+      "js_simbio_scroll_precargar"
+    ],
+    "6": [
+      "js_muestras",
+      "js_muestras_armarmuestra"
+    ],
+    "7": [
+      "js_smooth_scroll"
+    ],
+    "8": [
+      "js_transiciones"
+    ],
+    "9": [
+      "tools_optimizar_frames"
+    ],
+    "10": [
+      "tools_video_a_frames"
+    ]
+  },
+  "cohesion": {
+    "0": 0.25,
+    "1": 0.25,
+    "2": 0.5238095238095238,
+    "3": 0.6,
+    "4": 0.4666666666666667,
+    "5": 0.3333333333333333,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0
+  },
+  "gods": [
+    {
+      "id": "js_main_init",
+      "label": "init()",
+      "degree": 13
+    },
+    {
+      "id": "js_simbio_scroll_iniciar",
+      "label": "iniciar()",
+      "degree": 7
+    },
+    {
+      "id": "js_simbio_scroll_activarscrubbing",
+      "label": "activarScrubbing()",
+      "degree": 6
+    },
+    {
+      "id": "sandbox_sandbox_init",
+      "label": "init()",
+      "degree": 6
+    },
+    {
+      "id": "js_simbio_scroll_actualizarfase",
+      "label": "actualizarFase()",
+      "degree": 5
+    },
+    {
+      "id": "js_simbio_scroll_alscrollear",
+      "label": "alScrollear()",
+      "degree": 5
+    },
+    {
+      "id": "js_simbio_scroll_pintardebug",
+      "label": "pintarDebug()",
+      "degree": 4
+    },
+    {
+      "id": "js_simbio_scroll_pasotexto",
+      "label": "pasoTexto()",
+      "degree": 3
+    },
+    {
+      "id": "js_simbio_scroll_escribirfase",
+      "label": "escribirFase()",
+      "degree": 3
+    },
+    {
+      "id": "js_simbio_scroll_hayframes",
+      "label": "hayFrames()",
+      "degree": 3
+    }
+  ],
+  "surprises": [
+    {
+      "source": "init()",
+      "target": "initTypewriter()",
+      "source_files": [
+        "js/main.js",
+        "js/main.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 0 → community 1"
+    },
+    {
+      "source": "activarScrubbing()",
+      "target": "actualizarFase()",
+      "source_files": [
+        "js/simbio-scroll.js",
+        "js/simbio-scroll.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 3 → community 4"
+    },
+    {
+      "source": "iniciar()",
+      "target": "medirCanvas()",
+      "source_files": [
+        "js/simbio-scroll.js",
+        "js/simbio-scroll.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 4 → community 5"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `init()` connect `init` to `main.js`?",
+      "why": "High betweenness centrality (0.032) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `iniciar()` connect `iniciar` to `simbio-scroll.js`, `activarScrubbing`?",
+      "why": "High betweenness centrality (0.007) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `PROYECTOS` to the rest of the system?",
+      "why": "1 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}

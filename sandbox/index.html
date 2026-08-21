@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandbox de componentes — Mati</title>
+
+<!--
+  ============================================================================
+  SANDBOX DE COMPONENTES
+  Página de prueba AISLADA. No comparte CSS ni JS con el sitio real:
+  usa sandbox.css y sandbox.js propios. Nada de acá está aplicado a
+  index.html ni a /proyectos/ todavía.
+
+  Las fuentes de Google que se cargan abajo son SOLO para la sección 01
+  (comparación de tipografías). Todo el resto del sandbox usa la
+  tipografía de sistema, a propósito, hasta que elijas una.
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;700;800&family=Source+Sans+3:wght@400;600&family=Fraunces:opsz,wght@9..144,500..700&family=IBM+Plex+Sans:wght@400;500&family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="sandbox.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     CABECERA DEL SANDBOX
+     ========================================================================== -->
+<header class="sb-head">
+  <div class="sb-head__inner">
+    <p class="label">Sandbox / componentes</p>
+    <p class="sb-head__note">Piezas sueltas con contenido de relleno. Nada aplicado al sitio.</p>
+  </div>
+</header>
+
+<main class="sb-main">
+
+  <!-- ======================================================================
+       01 — TIPOGRAFÍA: 3 PAIRINGS PARA COMPARAR
+       Cada opción está encerrada en una clase (.type-a / .type-b / .type-c)
+       que define --f-titulo y --f-cuerpo SOLO dentro de ese bloque.
+       Así ninguna se filtra al resto del sandbox.
+       ====================================================================== -->
+  <section class="sb-section reveal" id="tipografia">
+    <div class="sb-section__head">
+      <p class="label">01 — Tipografía</p>
+      <h2 class="sb-section__title">Tres pairings para comparar</h2>
+      <p class="sb-section__desc">
+        Mismo texto en las tres, para que la comparación sea visual. Ninguna
+        está aplicada al resto de los componentes.
+      </p>
+    </div>
+
+    <!-- ---------- OPCIÓN A ---------- -->
+    <article class="type-specimen type-a reveal">
+      <header class="type-specimen__meta">
+        <span class="type-specimen__letter">A</span>
+        <div>
+          <p class="label">Sans humanista</p>
+          <p class="type-specimen__names">Alegreya Sans 800 &nbsp;/&nbsp; Source Sans 3 400</p>
+        </div>
+      </header>
+      <div class="type-specimen__body">
+        <h3 class="type-specimen__display">Carpeta de<br>procesos</h3>
+        <p class="type-specimen__sub">Bitácora de trabajo, 2019 — 2026</p>
+        <p class="type-specimen__para">
+          Un archivo de procesos antes que un currículum. Cada proyecto se
+          documenta desde el material crudo: bocetos, pruebas fallidas,
+          matrices, renders intermedios. La forma final es una consecuencia,
+          no el punto de partida. Ocho proyectos, cuatro disciplinas, una
+          misma manera de trabajar.
+        </p>
+      </div>
+      <p class="type-specimen__why">
+        Humanista de verdad: el trazo tiene raíz caligráfica, así que da calidez
+        sin caer en el redondeo blando. La bold aguanta títulos grandes con
+        presencia.
+      </p>
+    </article>
+
+    <!-- ---------- OPCIÓN B ---------- -->
+    <article class="type-specimen type-b reveal">
+      <header class="type-specimen__meta">
+        <span class="type-specimen__letter">B</span>
+        <div>
+          <p class="label">Serif de trazo firme</p>
+          <p class="type-specimen__names">Fraunces 700 &nbsp;/&nbsp; IBM Plex Sans 400</p>
+        </div>
+      </header>
+      <div class="type-specimen__body">
+        <h3 class="type-specimen__display">Carpeta de<br>procesos</h3>
+        <p class="type-specimen__sub">Bitácora de trabajo, 2019 — 2026</p>
+        <p class="type-specimen__para">
+          Un archivo de procesos antes que un currículum. Cada proyecto se
+          documenta desde el material crudo: bocetos, pruebas fallidas,
+          matrices, renders intermedios. La forma final es una consecuencia,
+          no el punto de partida. Ocho proyectos, cuatro disciplinas, una
+          misma manera de trabajar.
+        </p>
+      </div>
+      <p class="type-specimen__why">
+        Serif con peso y remates macizos, no la itálica fina que descartaste.
+        Está con los ejes SOFT y WONK en 0, o sea en su versión más seca y
+        firme: se puede ablandar después si querés más juego.
+      </p>
+    </article>
+
+    <!-- ---------- OPCIÓN C — mi apuesta ---------- -->
+    <article class="type-specimen type-c reveal">
+      <header class="type-specimen__meta">
+        <span class="type-specimen__letter">C</span>
+        <div>
+          <p class="label">Mi apuesta</p>
+          <p class="type-specimen__names">Bricolage Grotesque 800 &nbsp;/&nbsp; IBM Plex Mono 400</p>
+        </div>
+      </header>
+      <div class="type-specimen__body">
+        <h3 class="type-specimen__display">Carpeta de<br>procesos</h3>
+        <p class="type-specimen__sub">Bitácora de trabajo, 2019 — 2026</p>
+        <p class="type-specimen__para">
+          Un archivo de procesos antes que un currículum. Cada proyecto se
+          documenta desde el material crudo: bocetos, pruebas fallidas,
+          matrices, renders intermedios. La forma final es una consecuencia,
+          no el punto de partida. Ocho proyectos, cuatro disciplinas, una
+          misma manera de trabajar.
+        </p>
+      </div>
+      <p class="type-specimen__why">
+        La que no me pediste. Bricolage es una grotesca deliberadamente
+        despareja — anchos irregulares, terminaciones que no cierran prolijo:
+        es exactamente la tensión geometría/organicidad, pero en la letra. Y el
+        cuerpo en monoespaciada hace que el texto se lea como documento de
+        archivo, no como landing. Es la más arriesgada de las tres y la que
+        más se parece al concepto de carpeta. Si te resulta demasiado, el
+        cuerpo mono se cambia por IBM Plex Sans y baja tres cambios.
+      </p>
+    </article>
+  </section>
+
+
+  <!-- ======================================================================
+       02 — TARJETA CON HOVER-REVEAL
+       ====================================================================== -->
+  <section class="sb-section reveal" id="hover-reveal">
+    <div class="sb-section__head">
+      <p class="label">02 — Tarjeta con hover-reveal</p>
+      <h2 class="sb-section__title">Un solo gesto: revelar es entrar</h2>
+      <p class="sb-section__desc">
+        El hover desvanece el boceto en tinta y revela la imagen real. El mismo
+        gesto, sostenido, completa la barra de abajo y dispara la entrada al
+        proyecto — no hay un click aparte. En touch, es mantener el dedo
+        apretado. Soltar antes de que la barra se complete cancela.
+      </p>
+    </div>
+
+    <div class="reveal-grid">
+
+      <!-- ---- Tarjeta 1: marco simple ---- -->
+      <a class="rcard" href="#hover-reveal" data-dwell data-titulo="Lámparas">
+        <div class="rcard__frame">
+          <!-- CAPA 1 — BOCETO EN TINTA.
+               SVG inline dibujado a mano: en el sitio real esto va a ser el
+               archivo /assets/<slug>/sketch.svg -->
+          <svg class="rcard__layer rcard__layer--sketch" viewBox="0 0 320 240" aria-hidden="true">
+            <g fill="none" stroke="var(--tinta)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <!-- cable -->
+              <path d="M160 8 V64"/>
+              <!-- pantalla: cono con un lado más blando que el otro -->
+              <path d="M160 64 L104 150 Q160 168 216 150 Z"/>
+              <!-- boca de la pantalla, elipse en perspectiva -->
+              <path d="M104 150 Q160 132 216 150"  stroke-dasharray="3 4"/>
+              <!-- bombilla -->
+              <circle cx="160" cy="168" r="13"/>
+              <path d="M154 179 h12"/>
+              <!-- líneas de luz, geométricas -->
+              <path d="M96 196 L60 226 M160 196 V232 M224 196 L260 226"/>
+              <!-- contorno orgánico de contraste -->
+              <path d="M40 92 q22 -34 52 -12 q26 20 4 42 q-24 22 -48 4 q-20 -16 -8 -34 Z"/>
+            </g>
+          </svg>
+
+          <!-- CAPA 2 — IMAGEN REAL.
+               Placeholder vectorial plano. En el sitio real: la foto/render. -->
+          <svg class="rcard__layer rcard__layer--real" viewBox="0 0 320 240" aria-hidden="true">
+            <rect width="320" height="240" fill="var(--cobalto)"/>
+            <circle cx="160" cy="168" r="58" fill="var(--lima)" opacity="0.9"/>
+            <path d="M160 64 L104 150 Q160 168 216 150 Z" fill="var(--papel)"/>
+            <path d="M160 8 V64" stroke="var(--papel)" stroke-width="2"/>
+            <circle cx="160" cy="166" r="11" fill="var(--papel)"/>
+          </svg>
+
+          <!-- Barra de permanencia: es el feedback de "esto va a entrar" -->
+          <div class="rcard__dwell" aria-hidden="true"><i></i></div>
+        </div>
+
+        <div class="rcard__meta">
+          <span class="rcard__title">Lámparas</span>
+          <span class="rcard__cat">Diseño industrial / Matricería</span>
+        </div>
+      </a>
+
+      <!-- ---- Tarjeta 2: el mismo mecanismo dentro de una polaroid ---- -->
+      <a class="rcard rcard--polaroid" href="#hover-reveal" data-dwell data-titulo="Simbio">
+        <div class="polaroid polaroid--tilt-b">
+          <div class="polaroid__window rcard__frame">
+            <svg class="rcard__layer rcard__layer--sketch" viewBox="0 0 320 300" aria-hidden="true">
+              <g fill="none" stroke="var(--tinta)" stroke-width="1.4" stroke-linecap="round">
+                <path d="M160 292 V96"/>
+                <path d="M160 210 q-52 -12 -66 -62 M160 168 q48 -14 62 -60 M160 132 q-40 -10 -50 -46"/>
+                <path d="M78 148 q-14 -30 10 -44 q26 -14 38 12 q10 24 -14 36 q-22 10 -34 -4 Z"/>
+                <path d="M222 108 q16 -26 38 -12 q22 16 4 38 q-18 20 -36 6 q-14 -12 -6 -32 Z"/>
+                <path d="M124 86 q30 -46 66 -22"/>
+                <circle cx="160" cy="62" r="9"/>
+              </g>
+            </svg>
+            <svg class="rcard__layer rcard__layer--real" viewBox="0 0 320 300" aria-hidden="true">
+              <rect width="320" height="300" fill="var(--papel-2)"/>
+              <path d="M0 300 V190 q80 -40 160 -10 q80 30 160 -6 V300 Z" fill="var(--lima)"/>
+              <circle cx="160" cy="104" r="66" fill="var(--cobalto)"/>
+              <path d="M160 292 V96" stroke="var(--papel)" stroke-width="3"/>
+            </svg>
+            <div class="rcard__dwell" aria-hidden="true"><i></i></div>
+          </div>
+          <p class="polaroid__caption">Simbio — prueba de crecimiento 04</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Cortina de "entrada al proyecto". En el sitio real esto sería la
+         transición de navegación; acá solo demuestra el disparo. -->
+    <div class="enter-veil" aria-hidden="true"><span></span></div>
+  </section>
+
+
+  <!-- ======================================================================
+       03 — POLAROID
+       ====================================================================== -->
+  <section class="sb-section reveal" id="polaroid">
+    <div class="sb-section__head">
+      <p class="label">03 — Polaroid</p>
+      <h2 class="sb-section__title">Foto enmarcada</h2>
+      <p class="sb-section__desc">
+        Proporciones reales: marco parejo arriba y a los costados, pestaña
+        ancha abajo. La sombra son dos capas (una corta y densa donde el papel
+        toca la mesa, una larga y difusa). La inclinación es de un grado y
+        medio y siempre la misma — no al azar.
+      </p>
+    </div>
+
+    <div class="polaroid-row">
+      <div class="reveal">
+        <figure class="polaroid polaroid--tilt-a">
+          <div class="polaroid__window">
+            <svg viewBox="0 0 320 300" aria-hidden="true" class="polaroid__art">
+              <rect width="320" height="300" fill="var(--cobalto)"/>
+              <path d="M0 300 V214 q86 -34 160 -6 q74 28 160 -10 V300Z" fill="var(--papel-2)" opacity=".16"/>
+              <rect x="96" y="72" width="128" height="128" fill="var(--lima)"/>
+              <circle cx="160" cy="136" r="42" fill="var(--cobalto)"/>
+            </svg>
+          </div>
+          <figcaption class="polaroid__caption">Matriz de aluminio, primer tiraje</figcaption>
+        </figure>
+      </div>
+
+      <div class="reveal">
+        <figure class="polaroid polaroid--tilt-b">
+          <div class="polaroid__window">
+            <svg viewBox="0 0 320 300" aria-hidden="true" class="polaroid__art">
+              <rect width="320" height="300" fill="var(--papel-2)"/>
+              <path d="M40 240 q40 -120 120 -120 q80 0 120 120 Z" fill="var(--cobalto)"/>
+              <circle cx="212" cy="86" r="26" fill="var(--bermellon)"/>
+            </svg>
+          </div>
+          <figcaption class="polaroid__caption">Ensayo de superficie — descartado</figcaption>
+        </figure>
+      </div>
+
+      <div class="reveal">
+        <!-- Variante chica, para grillas densas -->
+        <figure class="polaroid polaroid--sm polaroid--tilt-c">
+          <div class="polaroid__window">
+            <svg viewBox="0 0 320 300" aria-hidden="true" class="polaroid__art">
+              <rect width="320" height="300" fill="var(--lima)"/>
+              <path d="M0 300 V150 q80 40 160 0 q80 -40 160 0 V300Z" fill="var(--cobalto)"/>
+            </svg>
+          </div>
+          <figcaption class="polaroid__caption">Detalle de junta</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <p class="sb-note">
+      La etiqueta de abajo no usa una fuente “handwriting”: es la misma
+      tipografía del sitio, en cuerpo chico, gris tinta y con un cuarto de
+      grado de rotación. Sugiere anotación sin disfrazarse de letra manuscrita.
+    </p>
+  </section>
+
+
+  <!-- ======================================================================
+       04 — CARPETA CON PESTAÑA
+       ====================================================================== -->
+  <section class="sb-section reveal" id="carpeta">
+    <div class="sb-section__head">
+      <p class="label">04 — Carpeta con pestaña</p>
+      <h2 class="sb-section__title">Navegación / agrupación</h2>
+      <p class="sb-section__desc">
+        Las pestañas son trapecios de corte limpio (vector plano, sin
+        degradados). La activa baja un pixel y se come el borde de la carpeta,
+        así el papel se lee continuo. Funciona con teclado: flechas izquierda
+        y derecha.
+      </p>
+    </div>
+
+    <div class="folder reveal">
+      <!-- role=tablist + flechas: accesible de verdad, no solo clickeable -->
+      <div class="folder__tabs" role="tablist" aria-label="Secciones de la carpeta">
+        <button class="folder__tab is-active" role="tab" aria-selected="true"  aria-controls="pan-1" id="tab-1">Proceso</button>
+        <button class="folder__tab"           role="tab" aria-selected="false" aria-controls="pan-2" id="tab-2" tabindex="-1">Matricería</button>
+        <button class="folder__tab"           role="tab" aria-selected="false" aria-controls="pan-3" id="tab-3" tabindex="-1">Archivo</button>
+      </div>
+
+      <div class="folder__body">
+        <!-- Perforaciones: tres, alineadas, con sombra interior arriba para
+             que se lean como agujero y no como círculo gris -->
+        <div class="folder__punches" aria-hidden="true"><i></i><i></i><i></i></div>
+
+        <div class="folder__panels">
+          <div class="folder__panel is-active" role="tabpanel" id="pan-1" aria-labelledby="tab-1">
+            <h3 class="folder__panel-title">Proceso</h3>
+            <p>
+              Contenido de relleno. Acá irían las etapas del proyecto en orden
+              cronológico, con las pruebas que no funcionaron incluidas.
+            </p>
+            <p>
+              Segundo párrafo de relleno para ver cómo respira el bloque cuando
+              tiene más de una línea y el panel crece.
+            </p>
+          </div>
+          <div class="folder__panel" role="tabpanel" id="pan-2" aria-labelledby="tab-2" hidden>
+            <h3 class="folder__panel-title">Matricería</h3>
+            <p>
+              Contenido de relleno. Fichas técnicas, tolerancias, ensayos de
+              molde y notas de taller.
+            </p>
+          </div>
+          <div class="folder__panel" role="tabpanel" id="pan-3" aria-labelledby="tab-3" hidden>
+            <h3 class="folder__panel-title">Archivo</h3>
+            <p>
+              Contenido de relleno. Material que no entró en la selección final
+              pero que explica cómo se llegó ahí.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       05 — BLOQUE DE PAPEL RAYADO
+       ====================================================================== -->
+  <section class="sb-section reveal" id="papel">
+    <div class="sb-section__head">
+      <p class="label">05 — Papel rayado</p>
+      <h2 class="sb-section__title">Bloque de nota / bitácora</h2>
+      <p class="sb-section__desc">
+        El detalle que hace que funcione: el interlineado del texto es
+        exactamente igual a la separación de los renglones, y el bloque está
+        corrido para que las líneas de base se apoyen sobre el renglón. Si no
+        coincide, se ve como un fondo decorativo pegado abajo.
+      </p>
+    </div>
+
+    <!-- Tres niveles, cada uno con una razón:
+         .ruled       → la sombra (va afuera: una máscara recorta la sombra)
+         .ruled__sheet → el papel: renglones, margen y borde rasgado
+         .ruled__inner → el texto, corrido para caer sobre el renglón -->
+    <div class="ruled reveal">
+      <article class="ruled__sheet">
+      <div class="ruled__inner">
+        <p class="ruled__label">Nota de taller — 12/03</p>
+        <p>
+          Contenido de relleno para probar el renglón. La segunda pasada de
+          lija dejó la superficie demasiado abierta y la mano de fondo se
+          absorbió despareja, así que hay que volver a sellar antes de pintar.
+        </p>
+        <p>
+          El molde aguantó doce piezas antes de marcar. Para la próxima serie
+          conviene rebajar el ángulo de salida y sumar un respiradero en la
+          zona alta, donde se acumula el aire.
+        </p>
+      </div>
+      </article>
+    </div>
+
+    <p class="sb-note">
+      El borde de abajo está rasgado con una máscara SVG dibujada a mano
+      (irregular, no un zigzag repetido de cuatro puntos). La línea de margen
+      vertical es bermellón a baja opacidad — el único lugar donde aparece en
+      esta sección.
+    </p>
+  </section>
+
+
+  <!-- ======================================================================
+       06 — LIBRITO HOJEABLE
+       ====================================================================== -->
+  <section class="sb-section reveal" id="librito">
+    <div class="sb-section__head">
+      <p class="label">06 — Librito hojeable</p>
+      <h2 class="sb-section__title">Cuadernillo de secuencia</h2>
+      <p class="sb-section__desc">
+        Cuatro páginas para mostrar un proceso paso a paso. La hoja gira sobre
+        su lomo con perspectiva real y se le va oscureciendo la cara interna
+        durante el giro. Se pasa con las flechas, con click sobre la hoja o
+        con el teclado.
+      </p>
+    </div>
+
+    <div class="booklet reveal" data-booklet>
+      <div class="booklet__stage">
+        <!-- Lomo con dos puntos de costura: detalle, no protagonista -->
+        <div class="booklet__spine" aria-hidden="true"><i></i><i></i></div>
+
+        <div class="booklet__pages">
+          <!-- Las páginas se apilan; el JS maneja z-index y el giro -->
+          <article class="bpage" data-page="1">
+            <div class="bpage__inner">
+              <p class="label">Fase 01</p>
+              <h3 class="bpage__title">Crecimiento vertical</h3>
+              <p>Contenido de relleno. Primera etapa de la secuencia, con la nota corta que la explica.</p>
+              <div class="bpage__fig" aria-hidden="true">
+                <svg viewBox="0 0 200 140"><g fill="none" stroke="var(--cobalto)" stroke-width="2"><path d="M100 130 V40"/><path d="M100 60 q-30 -8 -38 -34 M100 84 q28 -8 36 -30"/></g></svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="bpage" data-page="2">
+            <div class="bpage__inner">
+              <p class="label">Fase 02</p>
+              <h3 class="bpage__title">Crecimiento horizontal</h3>
+              <p>Contenido de relleno. Segunda etapa, donde la estructura se abre hacia los costados.</p>
+              <div class="bpage__fig" aria-hidden="true">
+                <svg viewBox="0 0 200 140"><g fill="none" stroke="var(--cobalto)" stroke-width="2"><path d="M100 130 V40"/><path d="M100 70 H30 M100 92 H166"/><circle cx="30" cy="70" r="6"/><circle cx="166" cy="92" r="6"/></g></svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="bpage" data-page="3">
+            <div class="bpage__inner">
+              <p class="label">Fase 03</p>
+              <h3 class="bpage__title">Crecimiento capilar</h3>
+              <p>Contenido de relleno. Tercera etapa: la ramificación fina que cubre la superficie.</p>
+              <div class="bpage__fig" aria-hidden="true">
+                <svg viewBox="0 0 200 140"><g fill="none" stroke="var(--cobalto)" stroke-width="1.4"><path d="M100 130 V40"/><path d="M100 66 q-24 -6 -34 -22 q-6 -10 -18 -12 M100 88 q22 -6 32 -20 q8 -10 20 -10 M100 108 q-18 -4 -26 -16"/></g></svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="bpage" data-page="4">
+            <div class="bpage__inner">
+              <p class="label">Fase 04</p>
+              <h3 class="bpage__title">Crecimiento colgante</h3>
+              <p>Contenido de relleno. Última etapa de la secuencia, con la forma ya suspendida.</p>
+              <div class="bpage__fig" aria-hidden="true">
+                <svg viewBox="0 0 200 140"><g fill="none" stroke="var(--cobalto)" stroke-width="2"><path d="M20 30 H180"/><path d="M60 30 q-6 40 10 62 M120 30 q10 44 -8 66 M160 30 q4 30 -10 46"/></g></svg>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Controles: chevrons dibujados, contador en cuerpo chico -->
+      <div class="booklet__controls">
+        <button class="booklet__nav" data-booklet-prev aria-label="Página anterior">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="booklet__counter"><span data-booklet-current>01</span> <i>/</i> <span data-booklet-total>04</span></p>
+        <button class="booklet__nav" data-booklet-next aria-label="Página siguiente">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       07 — ESTAMPILLAS (paleta)
+       ====================================================================== -->
+  <section class="sb-section reveal" id="estampillas">
+    <div class="sb-section__head">
+      <p class="label">07 — Estampilla de detalle</p>
+      <h2 class="sb-section__title">Paleta en estampillas</h2>
+      <p class="sb-section__desc">
+        El dentado está recortado del papel con una máscara CSS, no dibujado
+        con un borde punteado: los agujeros dejan ver el fondo, como una
+        perforación real. Tamaño chico a propósito — es un elemento de detalle.
+      </p>
+    </div>
+
+    <ul class="stamps reveal" role="list">
+      <!-- El color de cada estampilla se pasa por --c, así el componente es
+           uno solo y no hay una clase por color -->
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--papel)">
+        <span class="stamp__ink" data-border></span>
+        <span class="stamp__name">papel</span><span class="stamp__hex">#FFFFFF</span>
+      </div></li>
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--papel-2)">
+        <span class="stamp__ink" data-border></span>
+        <span class="stamp__name">papel 2</span><span class="stamp__hex">#FAFAF8</span>
+      </div></li>
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--tinta)">
+        <span class="stamp__ink"></span>
+        <span class="stamp__name">tinta</span><span class="stamp__hex">#1A1A18</span>
+      </div></li>
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--tinta-suave)">
+        <span class="stamp__ink"></span>
+        <span class="stamp__name">tinta suave</span><span class="stamp__hex">#6B6B66</span>
+      </div></li>
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--cobalto)">
+        <span class="stamp__ink"></span>
+        <span class="stamp__name">cobalto</span><span class="stamp__hex">#153B66</span>
+      </div></li>
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--lima)">
+        <span class="stamp__ink"></span>
+        <span class="stamp__name">lima</span><span class="stamp__hex">#A6C13A</span>
+      </div></li>
+      <li class="stamp-wrap"><div class="stamp" style="--c: var(--bermellon)">
+        <span class="stamp__ink"></span>
+        <span class="stamp__name">bermellón</span><span class="stamp__hex">#E2513A</span>
+      </div></li>
+    </ul>
+
+    <p class="sb-note">
+      Mismo componente, otro uso: como miniatura de proyecto o como sello de
+      un logo. La proporción y el dentado no cambian.
+    </p>
+  </section>
+
+
+  <!-- ======================================================================
+       08 + 09 — CURSOR, PULSO Y SCROLL REVEAL
+       No son componentes visibles: son comportamientos. Esta sección explica
+       dónde mirarlos.
+       ====================================================================== -->
+  <section class="sb-section reveal" id="comportamientos">
+    <div class="sb-section__head">
+      <p class="label">08 / 09 — Comportamientos</p>
+      <h2 class="sb-section__title">Cursor, pulso y aparición</h2>
+    </div>
+
+    <div class="behaviours">
+      <div class="behaviour reveal">
+        <p class="label">08 — Cursor + pulso</p>
+        <p>
+          El cursor es un punto chico que sigue al mouse con un retraso mínimo.
+          Sobre cualquier cosa interactiva se abre en un anillo. Al hacer click
+          hay un pulso de medio segundo y se va. Solo se activa si hay mouse
+          real: en touch queda el comportamiento nativo, y si alguien tiene
+          activado “reducir movimiento”, el punto no interpola.
+        </p>
+        <button class="btn" type="button">Botón de prueba</button>
+      </div>
+
+      <div class="behaviour reveal">
+        <p class="label">09 — Scroll reveal</p>
+        <p>
+          Cada bloque entra con un fade y catorce pixeles de subida. Se dispara
+          una sola vez, cuando entra al viewport, y los hijos van escalonados.
+          Toda la sección que estás leyendo apareció así.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="sb-foot">
+  <p class="label">Fin del sandbox</p>
+  <p>Nada de esto está aplicado al sitio real todavía.</p>
+</footer>
+
+<!-- El punto del cursor lo inyecta el JS solo si detecta mouse -->
+<script src="sandbox.js" defer></script>
+</body>
+</html>

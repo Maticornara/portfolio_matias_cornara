@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archivo — Matías Cornara</title>
+  <meta name="description" content="Archivo de Matías Cornara, diseñador. Diseño industrial, gráfico, audiovisual y transmedia. Buenos Aires.">
+
+  <!-- UNA SOLA FAMILIA: ARCHIVO. La misma que usa la página de Simbio, y la
+       que le da el nombre al sitio. Reemplazó a Nunito + IBM Plex Mono.
+       El rango 300..900 es más ancho que el de Simbio (400..700) porque acá
+       hay pesos por arriba y por abajo de ese tramo; sin pedirlos, el
+       navegador los inventa engordando o afinando el 700 y se ve sucio. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css?v=6">
+  <link rel="stylesheet" href="css/base.css?v=11">
+  <link rel="stylesheet" href="css/layout.css?v=8">
+  <!-- Todo lo que se ve en ESTA página: hero, CV, herramientas, contacto,
+       título de transición y grid de proyectos. -->
+  <link rel="stylesheet" href="css/archivo.css?v=11">
+
+  <!-- El CSS de las páginas de proyecto se carga TAMBIÉN acá, aunque esta
+       página no lo use.
+       Motivo: Swup navega sin recargar y solo reemplaza el contenido de
+       #swup — el <head> queda como estaba. La tarjeta de +54 ya linkea a
+       proyectos/mas-54.html, y sin esto esa página aparecería sin estilos
+       hasta hacer un refresh. Simbio va por lo mismo, para cuando su tarjeta
+       también linkee. Es inofensivo: sus selectores no existen acá, porque
+       todo cuelga de .pag-simbio y .pag-54. -->
+  <link rel="stylesheet" href="css/simbio.css?v=116">
+  <link rel="stylesheet" href="css/mas-54.css?v=11">
+
+  <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
+       Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
+       necesita que ya existan para registrar el plugin. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+
+  <!-- Swup: transición entre páginas. VanillaTilt: inclinación 3D de las
+       tarjetas del grid. -->
+  <script src="https://unpkg.com/swup@4/dist/swup.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
+</head>
+<body class="pag-archivo">
+
+<!-- ==========================================================================
+     NAV — un botón por columna de la grilla.
+     La estructura de 4 columnas se lee acá antes que en ningún otro lado.
+     Para verla dibujada, agregá ?grid a la URL.
+     Los botones siguen el orden de la página: quién soy, qué hice, cómo me
+     escribís.
+     ========================================================================== -->
+<nav class="site-nav grilla">
+  <a class="pastilla is-activa" href="index.html">Home</a>
+  <a class="pastilla" href="#sobre">Sobre mí</a>
+  <a class="pastilla" href="#trabajos">Trabajos</a>
+  <div class="site-nav__fin">
+    <a class="pastilla" href="#contacto">Contacto</a>
+    <!-- El cambio de idioma está puesto como forma, todavía sin función -->
+    <div class="nav-idioma">
+      <a class="pastilla is-activa" href="#" aria-current="true">ES</a>
+      <a class="pastilla" href="#">EN</a>
+    </div>
+  </div>
+</nav>
+
+<!-- data-body: la clase que le toca al <body> en esta página. La copia
+     transiciones.js despues de cada navegacion de Swup, que reemplaza solo
+     lo de adentro de #swup y deja el <body> de la pagina anterior. -->
+<main id="swup" class="transicion-fade" data-body="pag-archivo">
+
+  <!-- ======================================================================
+       1. HERO — zona crema
+       ====================================================================== -->
+  <header class="zona zona--crema">
+    <div class="portada-hero grilla">
+
+      <!-- ================================================================
+           LA ESQUINA: LAS TRES LÍNEAS Y LA CAJA, EN UN SOLO BLOQUE
+           ----------------------------------------------------------------
+           Todo esto cuelga de UN punto: el vértice del cuarto. Este <div>
+           mide 0x0 y está parado justo ahí; las líneas y la caja se dibujan
+           alrededor suyo. Por eso no pueden desalinearse entre sí: cuando el
+           JS mueve el vértice, se mueve el bloque entero de una pieza.
+
+           EL VÉRTICE DEL CUARTO ES EL VÉRTICE DE ATRÁS DE LA CAJA, NO EL DE
+           ABAJO. Es lo que antes estaba mal y hacía que la caja se viera
+           flotando. En una caja apoyada en un rincón, la arista donde se
+           juntan las dos paredes y el piso pasa POR DETRÁS de la caja: la
+           línea vertical asoma arriba del cubo, y las dos diagonales del
+           piso salen de atrás y aparecen en las esquinas de abajo a izquierda
+           y a derecha. Los dos vértices de abajo de la caja quedan APOYADOS
+           sobre las diagonales, no colgados de ellas.
+
+           LAS DIAGONALES TIENEN UN ÁNGULO FIJO, Y NO ES CASUAL.
+           La caja está dibujada en isometría 2:1 (por cada 2 de ancho, 1 de
+           alto), o sea 26,565°. El piso del cuarto tiene que estar en ese
+           mismo ángulo o la caja no se apoya en nada. Antes las diagonales
+           iban del vértice a las esquinas de la pantalla, así que su ángulo
+           cambiaba con el tamaño de la ventana: medido, iban de 22,9° en una
+           ventana de 1920x900 a 62° en un teléfono, contra los 26,57° fijos
+           de la caja. Ahora son barras rotadas un ángulo exacto, así que
+           coinciden siempre, en cualquier pantalla.
+           ================================================================ -->
+      <div class="esquina" data-esquina aria-hidden="true">
+
+        <!-- Las tres líneas. Son barras largas rotadas, no un dibujo: una
+             rotación en CSS es un ángulo de verdad y no se deforma con la
+             ventana. Salen del vértice hacia afuera y las corta el borde del
+             hero. -->
+        <i class="esquina__linea esquina__linea--vertical"></i>
+        <i class="esquina__linea esquina__linea--izq"></i>
+        <i class="esquina__linea esquina__linea--der"></i>
+
+        <!-- ==============================================================
+             LA CAJA, LAS HOJITAS Y LAS POLAROIDS
+             --------------------------------------------------------------
+             Isometría 2:1: las caras de arriba son rombos de 2 de ancho por
+             1 de alto, y las verticales son verdaderas verticales. Con esa
+             proporción el contorno del cubo es un hexágono perfecto y su
+             centro —el 100,62 de este lienzo— es a la vez el vértice de
+             arriba-adelante y el de abajo-atrás. ESE es el punto que se
+             apoya en el vértice del cuarto (la perilla --caja-ancla).
+
+             Va en su propio SVG, aparte de las líneas, porque guarda su
+             proporción: si se estirara con la ventana, el cubo se
+             aplastaría y dejaría de ser isométrico.
+             ============================================================== -->
+        <svg class="caja" viewBox="0 0 200 160" aria-hidden="true">
+
+          <!-- LOS DEGRADÉS DE LAS CARAS.
+               Cada cara va de un verde a otro, no de un color plano. Es lo
+               que hace que el cubo se lea como un objeto con volumen y no
+               como tres rombos pegados. Los tres arrancan claro arriba y
+               terminan oscuro abajo, porque la luz de todo el sitio viene de
+               arriba. Están acá y no en el CSS porque un degradé de SVG es
+               un elemento del dibujo, no un estilo: se define una vez y las
+               caras lo llaman por su id. -->
+          <defs>
+            <linearGradient id="caja-arriba" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#9BB463"/>
+              <stop offset="1" stop-color="#7C9448"/>
+            </linearGradient>
+            <linearGradient id="caja-izq" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#6E8542"/>
+              <stop offset="1" stop-color="#4B5E27"/>
+            </linearGradient>
+            <linearGradient id="caja-der" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#546830"/>
+              <stop offset="1" stop-color="#37441A"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Las hojitas y las polaroids, tiradas en el piso. Van ANTES que
+               el cubo para que las que caen por detrás queden tapadas por él.
+               Cada una es un paralelogramo con los lados en 2:1, igual que el
+               piso: por eso se leen acostadas y no paradas. -->
+          <g class="caja__papel">
+            <polygon points="60,109 76,101 56,91 40,99"/>
+            <polygon points="148,107 160,101 144,93 132,99"/>
+            <polygon points="102,121 114,115 98,107 86,113"/>
+            <polygon points="78,129 90,123 74,115 62,121"/>
+            <polygon points="130,131 146,123 126,113 110,121"/>
+          </g>
+
+          <!-- Las dos que son polaroid y no hoja: el recuadro de la foto,
+               corrido hacia el fondo, que es lo que les deja el borde ancho
+               abajo. -->
+          <g class="caja__foto">
+            <polygon points="59,104 70,99 57,92 46,97"/>
+            <polygon points="129,126 140,121 127,114 116,119"/>
+          </g>
+
+          <!-- El cubo. Tres caras y tres claros distintos: si fueran iguales,
+               se leería como un hexágono plano. -->
+          <polygon class="caja__cara caja__cara--arriba" points="100,62 66,45 100,28 134,45"/>
+          <polygon class="caja__cara caja__cara--izq"    points="66,45 100,62 100,96 66,79"/>
+          <polygon class="caja__cara caja__cara--der"    points="134,45 100,62 100,96 134,79"/>
+
+          <!-- Las cuatro solapas de la tapa: cuatro líneas del centro del
+               rombo a cada punta, apenas más oscuras que la cara. Insinúan el
+               pliegue; si fueran negras dibujarían un contorno. -->
+          <g class="caja__solapa">
+            <path d="M100 45 L100 28 M100 45 L134 45 M100 45 L100 62 M100 45 L66 45"/>
+          </g>
+
+          <!-- LOS AGARRES: los dos huecos troquelados de la tapa, uno por
+               solapa. Van en dos trazos por agarre — el claro es el hueco, y
+               la línea más oscura de abajo es el canto del cartón, que es lo
+               que los hace leerse como agujeros y no como dos rayas
+               pintadas. -->
+          <g class="caja__agarre">
+            <path class="caja__agarre-canto" d="M84 44.6 L94 39.6 M106 44.6 L116 39.6"/>
+            <path class="caja__agarre-hueco" d="M84 43 L94 38 M106 43 L116 38"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- ================================================================
+           EL TEXTO, DEBAJO DE LA CAJA Y CENTRADO
+           ----------------------------------------------------------------
+           NO va adentro del SVG de la caja ni pegado a ella. La caja se
+           mueve todo el tiempo con el punto de fuga, y un texto que se
+           mueve solo es incómodo de leer. Así que la caja respira y el
+           texto se queda quieto, apoyado en la grilla como todo lo demás.
+           ================================================================ -->
+      <div class="portada-hero__texto">
+        <h1 class="portada-hero__nombre">Matías Cornara</h1>
+        <p class="portada-hero__frase">El rincón donde guardo mis cosas</p>
+
+        <!-- La flecha es un link de verdad, no un adorno: baja a la primera
+             sección. Dibujada y no escrita con un carácter "↓", porque el
+             glifo cambia de forma y de grosor según la tipografía. -->
+        <a class="portada-hero__flecha" href="#sobre" aria-label="Bajar a Sobre mí">
+          <svg viewBox="0 0 24 34" fill="none" stroke="currentColor"
+               stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M12 2 L12 31 M4 23 L12 31 L20 23"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       2. CV — zona crema
+       ====================================================================== -->
+  <section class="zona zona--crema" id="sobre">
+    <div class="tramo grilla">
+      <p class="etiqueta tramo__rotulo">Sobre mí</p>
+
+      <div class="tramo__cuerpo">
+        <p class="cv__lead">
+          Licenciado en Diseño (<b>Universidad Torcuato Di Tella</b>), con
+          especializaciones en Innovación Estratégica y Desarrollos
+          Digitales. Criado en Villa La Angostura, hoy vivo en Buenos Aires.
+        </p>
+
+        <p class="cv__texto">
+          Me interesa el diseño como herramienta para resolver problemas
+          concretos y para construir sentido; tomar una idea y encontrarle la
+          forma, el relato, y el camino hasta que existe de verdad. No lo
+          encasillo en un área: trabajo cómodo tanto con otros diseñadores
+          como con gente de especialidades completamente distintas, porque
+          ahí es cuando un proyecto más crece.
+        </p>
+
+        <!-- LA INVITACIÓN. Este párrafo lo escribí yo (Claude) sobre la idea
+             de "seguir completando el rincón": revisalo y ponelo con tus
+             palabras si no suena a vos. Va en verde y con la rayita al
+             costado para que se lea como una nota al lector y no como una
+             tercera parte del CV. -->
+        <p class="cv__invitacion">
+          El rincón todavía se está llenando. Voy sumando cosas a medida que
+          las termino de entender, así que si algo no está todavía es porque
+          le sigo buscando la forma. Volvé cuando quieras, o escribime y lo
+          charlamos antes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       3. HERRAMIENTAS — zona crema
+       Tres categorías arriba, y abajo Audio al lado de la nota de IA.
+       Cada columna se apoya en una columna real de la grilla del sitio.
+       ====================================================================== -->
+  <section class="zona zona--crema" id="herramientas">
+    <div class="tramo grilla">
+      <p class="etiqueta tramo__rotulo">Herramientas</p>
+
+      <div class="tramo__cuerpo">
+        <div class="herramientas">
+
+          <div class="herramienta">
+            <h3 class="herramienta__cat">Diseño industrial / 3D</h3>
+            <ul class="herramienta__lista" role="list">
+              <li>Rhinoceros</li>
+              <li>KeyShot</li>
+              <li>Blender</li>
+            </ul>
+          </div>
+
+          <div class="herramienta">
+            <h3 class="herramienta__cat">Diseño gráfico y motion</h3>
+            <ul class="herramienta__lista" role="list">
+              <li>Illustrator</li>
+              <li>Photoshop</li>
+              <li>After Effects</li>
+              <li>Premiere</li>
+              <li>Figma</li>
+            </ul>
+          </div>
+
+          <div class="herramienta">
+            <h3 class="herramienta__cat">Desarrollo web</h3>
+            <ul class="herramienta__lista" role="list">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JS</li>
+            </ul>
+          </div>
+
+          <div class="herramienta">
+            <h3 class="herramienta__cat">Audio</h3>
+            <ul class="herramienta__lista" role="list">
+              <li>Reaper</li>
+              <li>Pro Tools</li>
+            </ul>
+          </div>
+
+          <!-- La IA no es una lista de programas: es una frase, y por eso se
+               lleva dos columnas en vez de una. -->
+          <div class="herramienta herramienta--nota">
+            <h3 class="herramienta__cat">IA generativa</h3>
+            <p>
+              Integrada como una herramienta más, cruzada con los procesos
+              tradicionales de diseño.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       4. CONTACTO — zona crema
+       ====================================================================== -->
+  <section class="zona zona--crema" id="contacto">
+    <div class="tramo grilla">
+      <p class="etiqueta tramo__rotulo">Contacto</p>
+
+      <div class="tramo__cuerpo">
+        <a class="contacto__mail" href="mailto:maticornaradsgn@gmail.com">maticornaradsgn@gmail.com</a>
+
+        <!-- ESPACIO PREPARADO PARA LAS REDES.
+             El CSS ya está escrito en archivo.css (buscá ".redes"). Para
+             activarlas: descomentá este bloque y poné los links de verdad.
+             No hace falta tocar el CSS. -->
+        <!--
+        <ul class="redes" role="list">
+          <li><a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="#" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        </ul>
+        -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       5. TRABAJOS — zona crema
+       ----------------------------------------------------------------------
+       Mismo esqueleto que los tres tramos de arriba: rótulo chico en la
+       columna 1 y el contenido a la derecha. Por eso el título no es una
+       palabra grande: es un letrero más de la serie SOBRE MÍ / HERRAMIENTAS /
+       CONTACTO / TRABAJOS, y la página se lee como una sola tirada.
+
+       LAS CINCO FICHAS, ORDENADAS Y RECTAS, sobre las columnas 2 y 3:
+
+           col 1        col 2            col 3         col 4
+         TRABAJOS   [ ---------- SIMBIO ---------- ]
+                    [   MUSEO    ] [     +54       ]
+                    [  TIPINES   ] [    TESIS      ]
+
+       Simbio se lleva las dos columnas porque son cinco y de a dos quedaba
+       una suelta. Las otras cuatro miden todas lo mismo y ninguna está
+       inclinada: acá el orden es el punto.
+
+       LINKEAN LAS DOS QUE TIENEN PÁGINA TERMINADA: Simbio y +54. Las otras
+       tres tienen el `.ficha__cuerpo` como <div> y no como <a>, a propósito:
+       mandar a una página a medio hacer es peor que no mandar a ningún lado.
+       Cuando cada una tenga la suya, se cambia el <div> por
+       <a class="ficha__cuerpo" href="proyectos/loquesea.html"> y listo — el
+       CSS no hay que tocarlo.
+       ====================================================================== -->
+  <section class="zona zona--crema" id="trabajos">
+    <div class="tramo tramo--trabajos grilla">
+      <p class="etiqueta tramo__rotulo">Trabajos</p>
+
+      <!-- ---------------- 01 · SIMBIO ---------------- -->
+      <article class="ficha ficha--simbio reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana">Ficha 01</span>
+        <a class="ficha__cuerpo" href="proyectos/simbio.html">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <polygon points="50,15 70,25 70,45 50,55 30,45 30,25"/>
+                <path d="M50 15 L50 35 L70 45 M50 35 L30 45"/>
+                <circle cx="50" cy="35" r="3.5" fill="var(--tinta)" stroke="none"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real">
+              <img src="assets/simbio/foto/portada.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">Simbio</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Diseño industrial</li>
+              <li class="etiqueta">Biomímesis</li>
+              <li class="etiqueta">2023</li>
+            </ul>
+          </div>
+        </a>
+      </article>
+
+      <!-- ---------------- 02 · MOBILIARIO DE MUSEO ----------------
+           FALTA LA FOTO. Cuando la tengas: poné el <img> como en Simbio y
+           borrale a este <article> la clase ficha--sin-foto. -->
+      <article class="ficha ficha--museo ficha--sin-foto reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana">Ficha 02</span>
+        <div class="ficha__cuerpo">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Un pedestal de exhibición en axonométrica, con una pieza
+                   chica apoyada arriba -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <polygon points="50,32 82,44 50,56 18,44"/>
+                <path d="M18 44 L18 56 L50 68 L50 56"/>
+                <path d="M82 44 L82 56 L50 68"/>
+                <polygon points="50,12 64,17 50,22 36,17"/>
+                <path d="M36 17 L36 27 L50 32 L50 22"/>
+                <path d="M64 17 L64 27 L50 32"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real"></div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">Mobiliario de Museo</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Diseño industrial</li>
+              <li class="etiqueta">Mobiliario</li>
+              <li class="etiqueta">2021</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- 03 · +54 ---------------- -->
+      <article class="ficha ficha--54 reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana">Ficha 03</span>
+        <a class="ficha__cuerpo" href="proyectos/mas-54.html">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Tres afiches apilados -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <rect x="12" y="8"  width="34" height="54" rx="1" transform="rotate(-5 29 35)"/>
+                <rect x="33" y="8"  width="34" height="54" rx="1"/>
+                <rect x="54" y="8"  width="34" height="54" rx="1" transform="rotate(5 71 35)"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real">
+              <!-- El mockup y no un afiche suelto: el afiche vertical
+                   recortado al cuadro de la ficha pierde la mitad. -->
+              <img src="assets/+54/web/mockup-1.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">+54</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Curaduría</li>
+              <li class="etiqueta">Identidad visual</li>
+              <li class="etiqueta">2025</li>
+            </ul>
+          </div>
+        </a>
+      </article>
+
+      <!-- ---------------- 04 · AMIGOS TIPINES ----------------
+           FALTA LA FOTO. Mismo procedimiento que en la 02. -->
+      <article class="ficha ficha--tipines ficha--sin-foto reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana">Ficha 04</span>
+        <div class="ficha__cuerpo">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Dos letras-personaje apoyadas en su línea de base -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <rect x="28" y="20" width="18" height="30" rx="9"/>
+                <path d="M56 50 L56 26 A8 8 0 0 1 72 26 L72 50"/>
+                <circle cx="34" cy="31" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <circle cx="40" cy="31" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <circle cx="61" cy="34" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <circle cx="67" cy="34" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <path d="M20 50 L80 50"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real"></div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">Amigos Tipines</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Transmedia</li>
+              <li class="etiqueta">IA aplicada</li>
+              <li class="etiqueta">2024</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------------- 05 · TESIS ----------------
+           FALTA LA FOTO, y falta el AÑO: el <p class="dato"> del pie quedó
+           vacío a propósito para no inventar una fecha. -->
+      <article class="ficha ficha--tesis ficha--sin-foto reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana">Ficha 05</span>
+        <div class="ficha__cuerpo">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Un cuerpo de páginas encuadernado -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 8 L64 8 L64 50 L14 50 Z"/>
+                <path d="M22 16 L22 62 L72 62 L72 16"/>
+                <path d="M30 26 L64 26 M30 35 L64 35 M30 44 L52 44"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real"></div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">Tesis</h3>
+            <!-- FALTA: la pastilla del año de la tesis -->
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Proyecto final de carrera</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<!-- El pie va en el MISMO crema que el resto. Antes había un divisor de papel
+     rasgado y una zona más tostada abajo; los dos salieron. Lo que separa una
+     sección de otra ahora es el aire, no un cambio de fondo ni una guarda. -->
+<footer class="zona zona--crema">
+  <div class="site-footer grilla">
+    <p class="etiqueta">Archivo — Matías Cornara</p>
+    <p class="etiqueta">2026</p>
+  </div>
+</footer>
+
+<div class="transition-veil" aria-hidden="true"></div>
+
+<!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
+     Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
+<script src="js/smooth-scroll.js?v=2" defer></script>
+<script src="js/transiciones.js?v=3" defer></script>
+<script src="js/main.js?v=22" defer></script>
+<script src="js/archivo.js?v=3" defer></script>
+<script src="js/simbio-scroll.js?v=20" defer></script>
+<script src="js/muestras.js?v=10" defer></script>
+<!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
+     ejecutar al cambiar de página, así que el de +54 tiene que estar cargado
+     desde acá. Sale sin hacer nada si no encuentra su HTML. -->
+<script src="js/mas-54.js?v=4" defer></script>
+</body>
+</html>

@@ -1,0 +1,962 @@
+/* ============================================================================
+   SANDBOX.CSS
+   CSS propio del sandbox. No comparte nada con el sitio real.
+   Cuando aprobemos las piezas, las que sobrevivan se mudan a
+   /css/variables.css + un /css/components.css.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   0. TOKENS
+   ---------------------------------------------------------------------------- */
+
+:root {
+  /* Paleta */
+  --papel: #FFFFFF;
+  --papel-2: #FAFAF8;
+  --tinta: #1A1A18;
+  --tinta-suave: #6B6B66;
+  --cobalto: #153B66;
+  --lima: #A6C13A;
+  --bermellon: #E2513A;
+
+  /* Tipografía NEUTRA de sistema para todo el sandbox.
+     A propósito: así la sección 01 se compara sin contaminación.
+     Cuando elijas un pairing, esto se reemplaza. */
+  --f-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+  --f-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  /* Spacing */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
+
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --measure: 62ch;
+
+  /* Hairline: el gris de todos los bordes finos. Un solo valor para todos,
+     así ninguna línea del sistema desafina respecto de otra. */
+  --hairline: color-mix(in srgb, var(--tinta) 14%, transparent);
+
+  /* Sombras de papel. Dos capas siempre:
+     (1) contacto corto y denso donde el papel toca la superficie,
+     (2) difusión larga y muy suave.
+     Nunca una sola sombra grande y gris — eso es lo que se ve de recorte. */
+  --sombra-papel:
+    0 1px 1px rgba(26, 26, 24, 0.08),
+    0 6px 14px -4px rgba(26, 26, 24, 0.10);
+  --sombra-papel-alta:
+    0 1px 1px rgba(26, 26, 24, 0.09),
+    0 14px 30px -10px rgba(26, 26, 24, 0.16);
+
+  /* Movimiento */
+  --dur-1: 140ms;
+  --dur-2: 260ms;
+  --dur-3: 420ms;
+  --dur-flip: 620ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.25, 1);
+  --ease-flip: cubic-bezier(0.62, 0.02, 0.24, 1);
+
+  /* Renglón del papel rayado. Es UN valor: lo usan el fondo y el
+     interlineado del texto, por eso coinciden. */
+  --renglon: 30px;
+}
+
+
+/* ----------------------------------------------------------------------------
+   1. RESET Y BASE
+   ---------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--f-ui);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+ul[role="list"] { list-style: none; }
+p { text-wrap: pretty; }
+
+:focus-visible {
+  outline: 2px solid var(--cobalto);
+  outline-offset: 3px;
+}
+
+/* Etiqueta chica: el "letrero de archivo" del sistema.
+   Monoespaciada, versalitas anchas, gris tinta. Se repite en todo el sandbox. */
+.label {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+
+/* ----------------------------------------------------------------------------
+   2. ESTRUCTURA DEL SANDBOX
+   ---------------------------------------------------------------------------- */
+
+.sb-head {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--papel) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.sb-head__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  align-items: baseline;
+  padding: var(--s-3) var(--gutter);
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.sb-head__note { font-size: 0.8125rem; color: var(--tinta-suave); }
+
+.sb-main {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sb-section { padding-block: var(--s-9) 0; }
+.sb-section:last-of-type { padding-bottom: var(--s-8); }
+
+/* Cabecera de sección: la línea fina arriba ordena la lectura y da el
+   aire de documento. */
+.sb-section__head {
+  border-top: 1px solid var(--tinta);
+  padding-top: var(--s-3);
+  margin-bottom: var(--s-6);
+  display: grid;
+  gap: var(--s-2);
+}
+
+.sb-section__title {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+.sb-section__desc,
+.sb-note {
+  max-width: var(--measure);
+  font-size: 0.9375rem;
+  color: var(--tinta-suave);
+}
+
+.sb-note {
+  margin-top: var(--s-5);
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--lima);
+}
+
+.sb-foot {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: var(--s-6) var(--gutter) var(--s-9);
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  gap: var(--s-1);
+  font-size: 0.875rem;
+  color: var(--tinta-suave);
+}
+
+.btn {
+  align-self: start;
+  justify-self: start;
+  padding: 0.55rem 1.1rem;
+  background: var(--cobalto);
+  color: var(--papel);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background var(--dur-1) var(--ease);
+}
+.btn:hover { background: color-mix(in srgb, var(--cobalto) 84%, var(--tinta)); }
+
+
+/* ----------------------------------------------------------------------------
+   3. SECCIÓN 01 — MUESTRAS TIPOGRÁFICAS
+   Cada especimen define --f-titulo y --f-cuerpo SOLO para sí mismo.
+   Nada se filtra al resto del sandbox.
+   ---------------------------------------------------------------------------- */
+
+.type-specimen {
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-6) 0;
+  border-top: 1px solid var(--hairline);
+}
+.type-specimen:first-of-type { border-top: none; padding-top: 0; }
+
+.type-specimen__meta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-4);
+}
+
+/* La letra A/B/C: cifra grande y liviana, en el font neutro, como número
+   de folio. No compite con la muestra. */
+.type-specimen__letter {
+  font-family: var(--f-mono);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--cobalto);
+  min-width: 1.5rem;
+}
+
+.type-specimen__names {
+  font-size: 0.8125rem;
+  color: var(--tinta-suave);
+}
+
+.type-specimen__body { display: grid; gap: var(--s-3); }
+
+/* --- Título, subtítulo y párrafo: heredan las variables del pairing --- */
+.type-specimen__display {
+  font-family: var(--f-titulo);
+  font-weight: var(--w-titulo, 700);
+  font-size: clamp(2.6rem, 1.6rem + 5.4vw, 5.25rem);
+  line-height: 0.94;
+  letter-spacing: var(--ls-titulo, -0.02em);
+  text-wrap: balance;
+}
+
+.type-specimen__sub {
+  font-family: var(--f-cuerpo);
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.1875rem);
+  font-weight: var(--w-sub, 400);
+  color: var(--cobalto);
+  letter-spacing: var(--ls-cuerpo, 0);
+}
+
+.type-specimen__para {
+  font-family: var(--f-cuerpo);
+  font-size: var(--fs-cuerpo, 1.0625rem);
+  line-height: var(--lh-cuerpo, 1.6);
+  letter-spacing: var(--ls-cuerpo, 0);
+  max-width: var(--measure);
+}
+
+/* La nota de por qué: siempre en el font neutro, para que no se confunda
+   con la muestra que está evaluando. */
+.type-specimen__why {
+  font-family: var(--f-ui);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--tinta-suave);
+  max-width: 58ch;
+  padding-left: var(--s-4);
+  border-left: 1px solid var(--hairline);
+}
+
+/* OPCIÓN A — sans humanista */
+.type-a {
+  --f-titulo: "Alegreya Sans", var(--f-ui);
+  --f-cuerpo: "Source Sans 3", var(--f-ui);
+  --w-titulo: 800;
+  --ls-titulo: -0.015em;
+}
+
+/* OPCIÓN B — serif de trazo firme.
+   Fraunces con SOFT y WONK en sus valores por defecto (0): la versión seca
+   y sin florituras. Se pueden subir después si querés más carácter. */
+.type-b {
+  --f-titulo: "Fraunces", Georgia, serif;
+  --f-cuerpo: "IBM Plex Sans", var(--f-ui);
+  --w-titulo: 700;
+  --ls-titulo: -0.022em;
+}
+/* opsz bajo a propósito: en Fraunces, cuanto más alto el eje óptico más
+   finos y contrastados se ponen los remates — justo lo que descartaste.
+   En 32 el trazo queda macizo incluso en cuerpo grande. Subilo a 144 si
+   querés ver la versión delicada y comparar. */
+.type-b .type-specimen__display { font-variation-settings: "opsz" 32; }
+
+/* OPCIÓN C — grotesca irregular + cuerpo monoespaciado.
+   La mono pide cuerpo más chico, más interlineado y tracking negativo:
+   sin eso se lee como bloque de código, no como texto de archivo. */
+.type-c {
+  --f-titulo: "Bricolage Grotesque", var(--f-ui);
+  --f-cuerpo: "IBM Plex Mono", var(--f-mono);
+  --w-titulo: 800;
+  --ls-titulo: -0.03em;
+  --fs-cuerpo: 0.9375rem;
+  --lh-cuerpo: 1.72;
+  --ls-cuerpo: -0.01em;
+}
+.type-c .type-specimen__display { font-variation-settings: "opsz" 96; }
+
+
+/* ----------------------------------------------------------------------------
+   4. POLAROID
+   Proporciones de una Polaroid real: marco parejo arriba y a los lados,
+   pestaña ancha abajo (donde va la anotación).
+   ---------------------------------------------------------------------------- */
+
+.polaroid {
+  --pol-w: 268px;
+  --pol-marco: 13px;   /* marco superior y lateral */
+  --pol-chin: 52px;    /* la pestaña de abajo, la firma del formato */
+
+  width: var(--pol-w);
+  background: var(--papel);
+  padding: var(--pol-marco) var(--pol-marco) 0;
+  box-shadow: var(--sombra-papel);
+  transition: transform var(--dur-3) var(--ease),
+              box-shadow var(--dur-3) var(--ease);
+}
+
+.polaroid--sm { --pol-w: 208px; --pol-marco: 10px; --pol-chin: 42px; }
+
+/* Inclinaciones FIJAS y mínimas. Tres valores definidos a mano, no
+   aleatorios: así una grilla se ve compuesta y no volcada. */
+.polaroid--tilt-a { transform: rotate(-1.5deg); }
+.polaroid--tilt-b { transform: rotate(1.1deg); }
+.polaroid--tilt-c { transform: rotate(-0.6deg); }
+
+/* La ventana de la imagen: cuadrada, con una línea interior apenas visible
+   que simula el reborde de la emulsión. */
+.polaroid__window {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--papel-2);
+  box-shadow: inset 0 0 0 1px rgba(26, 26, 24, 0.07);
+}
+
+.polaroid__art { width: 100%; height: 100%; object-fit: cover; }
+
+/* La anotación. NO usa fuente handwriting: es la tipografía del sitio en
+   cuerpo chico, gris tinta, con un cuarto de grado de rotación y el
+   tracking apenas abierto. Sugiere escrito a mano sin disfrazarse. */
+.polaroid__caption {
+  height: var(--pol-chin);
+  display: flex;
+  align-items: center;
+  padding-inline: 2px;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--tinta-suave);
+  transform: rotate(-0.25deg);
+  transform-origin: left center;
+}
+
+.polaroid-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--s-7) var(--s-6);
+}
+
+
+/* ----------------------------------------------------------------------------
+   5. TARJETA CON HOVER-REVEAL
+   Dos capas superpuestas. El estado vive en --reveal (0 = boceto, 1 = real),
+   así el día que lo maneje JS escribe un número y el CSS reacciona solo.
+   ---------------------------------------------------------------------------- */
+
+.reveal-grid {
+  display: grid;
+  gap: var(--s-7) var(--s-6);
+  /* Tope de 360px por columna: si dejo 1fr, la tarjeta de marco se estira a
+     todo el ancho y al lado la polaroid (que tiene ancho fijo) queda
+     empequeñecida. Con el tope, las dos piezas se comparan a la par. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 360px));
+  align-items: start;
+}
+
+.rcard {
+  --reveal: 0;
+  display: grid;
+  gap: var(--s-3);
+  color: inherit;
+  text-decoration: none;
+}
+
+.rcard__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--papel-2);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+/* Dentro de una polaroid la ventana ya define la proporción */
+.rcard--polaroid .rcard__frame { aspect-ratio: 1 / 1; box-shadow: inset 0 0 0 1px rgba(26,26,24,.07); }
+
+.rcard__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity var(--dur-3) var(--ease),
+              transform 700ms var(--ease);
+}
+
+.rcard__layer--sketch {
+  opacity: calc(1 - var(--reveal));
+  /* El boceto se va un pelo hacia adentro mientras se disuelve: da la
+     sensación de que la tinta se hunde, en vez de un corte seco. */
+  transform: scale(calc(1 + 0.02 * var(--reveal)));
+}
+
+.rcard__layer--real {
+  opacity: var(--reveal);
+  transform: scale(calc(1.04 - 0.04 * var(--reveal)));
+}
+
+/* Barra de permanencia. Es lo que convierte el gesto en navegación:
+   mientras el dedo o el mouse se queda, la barra se llena; al completarse,
+   entra al proyecto. Dos pixeles, sin animación de rebote. */
+.rcard__dwell {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: rgba(26, 26, 24, 0.12);
+  opacity: 0;
+  transition: opacity var(--dur-1) var(--ease);
+}
+
+.rcard__dwell i {
+  display: block;
+  height: 100%;
+  background: var(--bermellon);   /* uso puntual del acento: 2px */
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* .is-dwelling la pone el JS al empezar el gesto.
+   La duración del llenado la inyecta el JS como --dwell-ms, para que el
+   número viva en un solo lugar (sandbox.js). */
+.rcard.is-dwelling .rcard__dwell { opacity: 1; }
+.rcard.is-dwelling .rcard__dwell i {
+  transform: scaleX(1);
+  transition: transform var(--dwell-ms, 850ms) linear;
+}
+
+/* Solo con mouse real: el hover fantasma del touch no debe disparar nada */
+@media (hover: hover) and (pointer: fine) {
+  .rcard:hover, .rcard:focus-visible { --reveal: 1; }
+  .rcard:hover .polaroid { box-shadow: var(--sombra-papel-alta); }
+}
+
+/* En touch, el JS pone .is-revealed al mantener apretado */
+.rcard.is-revealed { --reveal: 1; }
+
+.rcard__meta { display: grid; gap: 2px; }
+.rcard__title { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.01em; }
+.rcard__cat { font-size: 0.8125rem; color: var(--tinta-suave); }
+
+/* Cortina de entrada. Demuestra el disparo sin salir de la página. */
+.enter-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: var(--cobalto);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease);
+}
+.enter-veil.is-on { opacity: 1; }
+.enter-veil span {
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--papel);
+}
+
+
+/* ----------------------------------------------------------------------------
+   6. CARPETA CON PESTAÑA
+   Pestañas trapezoidales de corte limpio (clip-path), sin degradados.
+   ---------------------------------------------------------------------------- */
+
+.folder { max-width: 860px; }
+
+.folder__tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding-left: var(--s-5);
+}
+
+.folder__tab {
+  position: relative;
+  /* El trapecio: el lado derecho se inclina 14px. Recto, preciso, vector. */
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
+  padding: 0.5rem 1.75rem 0.5rem 1rem;
+  background: var(--papel-2);
+  color: var(--tinta-suave);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  transition: background var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease),
+              padding-block var(--dur-1) var(--ease);
+}
+
+.folder__tab:hover { color: var(--tinta); }
+
+/* La activa: cobalto, un poco más alta, y bajada 1px para que su borde
+   inferior quede tapado por el cuerpo de la carpeta. Ese pixel es lo que
+   hace que se lea como un mismo papel plegado. */
+.folder__tab.is-active {
+  background: var(--cobalto);
+  color: var(--papel);
+  padding-top: 0.7rem;
+  margin-bottom: -1px;
+  box-shadow: none;
+  z-index: 2;
+}
+
+.folder__body {
+  position: relative;
+  display: flex;
+  gap: var(--s-5);
+  background: var(--papel);
+  padding: var(--s-6) var(--s-6) var(--s-6) var(--s-4);
+  border-top: 3px solid var(--cobalto);
+  box-shadow: var(--sombra-papel);
+}
+
+/* Perforaciones: el agujero es del color del fondo de la página, con una
+   sombra interior arriba. Sin la sombra se ve como un círculo pintado. */
+.folder__punches {
+  display: grid;
+  align-content: center;
+  gap: var(--s-6);
+  padding-right: var(--s-2);
+  flex: 0 0 auto;
+}
+.folder__punches i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--papel-2);
+  box-shadow:
+    inset 0 1.5px 1.5px rgba(26, 26, 24, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.folder__panels { flex: 1 1 auto; }
+.folder__panel { display: grid; gap: var(--s-3); max-width: var(--measure); }
+.folder__panel[hidden] { display: none; }
+.folder__panel-title { font-size: 1.125rem; font-weight: 600; }
+.folder__panel p { font-size: 0.9375rem; color: var(--tinta-suave); }
+
+
+/* ----------------------------------------------------------------------------
+   7. PAPEL RAYADO
+   El detalle que lo hace funcionar: --renglon manda el fondo Y el
+   interlineado, así el texto se apoya sobre la línea.
+   ---------------------------------------------------------------------------- */
+
+/* El wrapper existe por un motivo técnico: una máscara recorta TODO el
+   render del elemento, incluida su box-shadow. Así que la sombra va afuera,
+   como filter, y encima queda mejor: la sombra sigue el contorno rasgado
+   en vez de dibujar un rectángulo prolijo debajo del papel roto. */
+.ruled {
+  max-width: 700px;
+  filter:
+    drop-shadow(0 1px 0.5px rgba(26, 26, 24, 0.10))
+    drop-shadow(0 8px 12px rgba(26, 26, 24, 0.10));
+}
+
+.ruled__sheet {
+  position: relative;
+  background-color: var(--papel-2);
+  /* Dos capas de fondo:
+     1. la línea de margen vertical (bermellón bajísimo, como cuaderno real)
+     2. los renglones horizontales */
+  background-image:
+    linear-gradient(to right,
+      transparent 0, transparent 63px,
+      color-mix(in srgb, var(--bermellon) 34%, transparent) 63px,
+      color-mix(in srgb, var(--bermellon) 34%, transparent) 64px,
+      transparent 64px),
+    repeating-linear-gradient(to bottom,
+      transparent 0,
+      transparent calc(var(--renglon) - 1px),
+      var(--hairline) calc(var(--renglon) - 1px),
+      var(--hairline) var(--renglon));
+
+  /* BORDE RASGADO de abajo.
+     Máscara de dos capas: un rectángulo sólido para todo el bloque menos la
+     franja inferior, y sobre esa franja un SVG con un perfil de rotura
+     dibujado a mano (40 vértices irregulares, no un zigzag de 4 puntos que
+     se note repetido). El tile mide 340px de ancho. */
+  --tear-h: 10px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) 0 0 / 100% calc(100% - var(--tear-h)) no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='10'%3E%3Cpath fill='%23000' d='M0 0 H340 V3.6 L316 5.2 L306 3.1 L292 2.8 L268 6.4 L244 4.1 L226 7.9 L196 5 L186 6.6 L168 8.6 L150 4.4 L128 6.2 L100 3.2 L82 7.4 L58 5.6 L46 7 L34 9 L16 4.8 L0 6 Z'/%3E%3C/svg%3E")
+      0 100% / 340px var(--tear-h) repeat-x;
+  mask:
+    linear-gradient(#000 0 0) 0 0 / 100% calc(100% - var(--tear-h)) no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='10'%3E%3Cpath fill='%23000' d='M0 0 H340 V3.6 L316 5.2 L306 3.1 L292 2.8 L268 6.4 L244 4.1 L226 7.9 L196 5 L186 6.6 L168 8.6 L150 4.4 L128 6.2 L100 3.2 L82 7.4 L58 5.6 L46 7 L34 9 L16 4.8 L0 6 Z'/%3E%3C/svg%3E")
+      0 100% / 340px var(--tear-h) repeat-x;
+}
+
+/* El padding-top corre el texto para que su primera línea de base caiga
+   sobre un renglón. Es el ajuste fino de todo el componente. */
+.ruled__inner {
+  padding: calc(var(--renglon) * 2 - 8px) var(--s-6) calc(var(--renglon) + var(--tear-h)) 84px;
+  display: grid;
+  /* El espacio entre párrafos es UN renglón exacto, no un valor libre:
+     si no, el texto se despega de las líneas después del primer párrafo. */
+  gap: var(--renglon);
+}
+
+.ruled p {
+  /* Interlineado = renglón. Esta es la línea clave del componente. */
+  line-height: var(--renglon);
+  font-size: 0.9375rem;
+  max-width: 54ch;
+  color: var(--tinta);
+}
+
+/* Selector doble para ganarle a `.ruled p` sin usar !important */
+.ruled .ruled__label {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cobalto);
+}
+
+
+/* ----------------------------------------------------------------------------
+   8. LIBRITO HOJEABLE
+   Giro 3D real: perspectiva en el contenedor, origen en el lomo.
+   ---------------------------------------------------------------------------- */
+
+.booklet { max-width: 560px; }
+
+.booklet__stage {
+  position: relative;
+  display: flex;
+  /* La perspectiva vive acá: sin esto el giro se ve plano y falso. */
+  perspective: 1600px;
+  perspective-origin: left center;
+}
+
+/* Lomo: bloque angosto con dos puntos de costura. Detalle mínimo. */
+.booklet__spine {
+  flex: 0 0 14px;
+  background: var(--cobalto);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--s-6);
+}
+.booklet__spine i {
+  width: 3px;
+  height: 12px;
+  background: color-mix(in srgb, var(--papel) 55%, transparent);
+}
+
+.booklet__pages {
+  position: relative;
+  flex: 1 1 auto;
+  /* 3/2 y no 4/3: con la hoja más alta quedaba un hueco muerto en el medio.
+     Apaisada y baja se lee más como cuadernillo apoyado. */
+  aspect-ratio: 3 / 2;
+  transform-style: preserve-3d;
+}
+
+.bpage {
+  position: absolute;
+  inset: 0;
+  background: var(--papel);
+  box-shadow: var(--sombra-papel);
+  /* El giro es sobre el lomo, no sobre el centro */
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  transition: transform var(--dur-flip) var(--ease-flip);
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+
+/* Sombra que barre la hoja durante el giro: nace en el lomo y se disuelve.
+   Es lo que le da volumen al movimiento. */
+.bpage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to right,
+    rgba(26, 26, 24, 0.16), rgba(26, 26, 24, 0) 42%);
+  opacity: 0;
+  transition: opacity var(--dur-flip) var(--ease-flip);
+}
+
+/* .is-flipped la pone el JS en las páginas ya pasadas */
+.bpage.is-flipped { transform: rotateY(-168deg); }
+.bpage.is-flipped::after { opacity: 1; }
+
+/* La página se arma en dos columnas: texto a la izquierda, figura a la
+   derecha. Con una sola columna la hoja quedaba medio vacía y el dibujo
+   perdido abajo. La última fila (1fr) empuja la figura hacia abajo. */
+.bpage__inner {
+  height: 100%;
+  padding: var(--s-5) var(--s-5) var(--s-5) var(--s-6);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 38%;
+  grid-template-rows: auto auto auto 1fr;
+  gap: var(--s-2) var(--s-4);
+  align-content: start;
+  /* Hairline vertical: el pliegue junto al lomo */
+  border-left: 1px solid var(--hairline);
+}
+
+/* Texto en la columna 1; la figura ocupa la 2 de arriba a abajo */
+.bpage__inner > .label,
+.bpage__title,
+.bpage__inner > p { grid-column: 1; }
+
+.bpage__title { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.015em; }
+.bpage__inner p { font-size: 0.875rem; color: var(--tinta-suave); }
+
+.bpage__fig {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: end;
+  width: 100%;
+}
+
+.booklet__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-4);
+  padding-left: 14px; /* alineado con el papel, no con el lomo */
+}
+
+.booklet__nav {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: var(--tinta);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  transition: background var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease),
+              box-shadow var(--dur-1) var(--ease);
+}
+.booklet__nav svg { width: 18px; height: 18px; }
+.booklet__nav:hover:not(:disabled) { background: var(--cobalto); color: var(--papel); box-shadow: none; }
+.booklet__nav:disabled { color: var(--hairline); cursor: default; }
+
+.booklet__counter {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--tinta-suave);
+}
+.booklet__counter i { color: var(--hairline); font-style: normal; }
+.booklet__counter span:first-child { color: var(--tinta); }
+
+
+/* ----------------------------------------------------------------------------
+   9. ESTAMPILLAS
+   El dentado se RECORTA del papel con una máscara: los agujeros dejan pasar
+   el fondo. No es un border dashed.
+   ---------------------------------------------------------------------------- */
+
+.stamps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+}
+
+/* El wrapper existe solo para la sombra: si la sombra fuera de .stamp,
+   la máscara también la recortaría y desaparecería. */
+.stamp-wrap {
+  filter: drop-shadow(0 1px 1px rgba(26, 26, 24, 0.10));
+  transition: transform var(--dur-2) var(--ease);
+}
+.stamp-wrap:hover { transform: translateY(-2px); }
+
+.stamp {
+  --perf: 3.2px;   /* radio del agujero */
+  --paso: 11px;    /* separación entre agujeros */
+
+  /* Ancho y alto son múltiplos EXACTOS de --paso (9 y 10 pasos).
+     Si no, el último agujero queda cortado a mitad en la esquina y se ve
+     como un error de imprenta. Es el detalle que separa una estampilla
+     bien hecha de un rectángulo con puntitos. */
+  width: calc(var(--paso) * 9);    /* 99px */
+  height: calc(var(--paso) * 10);  /* 110px */
+
+  padding: 7px;
+  background: var(--papel);
+  display: grid;
+  /* El campo de color se estira para llenar lo que sobra */
+  grid-template-rows: 1fr auto auto;
+  gap: 4px;
+  text-align: center;
+
+  /* Cuatro gradientes radiales, uno por lado, intersectados: el resultado
+     es el papel completo menos los semicírculos del borde. */
+  -webkit-mask:
+    radial-gradient(var(--perf) at 50% 0,    #0000 98%, #000) 50% 0   / var(--paso) 100%,
+    radial-gradient(var(--perf) at 50% 100%, #0000 98%, #000) 50% 100%/ var(--paso) 100%,
+    radial-gradient(var(--perf) at 0 50%,    #0000 98%, #000) 0   50% / 100% var(--paso),
+    radial-gradient(var(--perf) at 100% 50%, #0000 98%, #000) 100% 50%/ 100% var(--paso);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(var(--perf) at 50% 0,    #0000 98%, #000) 50% 0   / var(--paso) 100%,
+    radial-gradient(var(--perf) at 50% 100%, #0000 98%, #000) 50% 100%/ var(--paso) 100%,
+    radial-gradient(var(--perf) at 0 50%,    #0000 98%, #000) 0   50% / 100% var(--paso),
+    radial-gradient(var(--perf) at 100% 50%, #0000 98%, #000) 100% 50%/ 100% var(--paso);
+  mask-composite: intersect;
+}
+
+/* El campo de color: ocupa la fila 1fr, así queda vertical como una
+   estampilla de verdad y no cuadrado. */
+.stamp__ink {
+  display: block;
+  background: var(--c);
+}
+/* Los dos blancos necesitan una línea para no desaparecer sobre el papel */
+.stamp__ink[data-border] { box-shadow: inset 0 0 0 1px var(--hairline); }
+
+.stamp__name {
+  font-size: 0.625rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.stamp__hex {
+  font-family: var(--f-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.04em;
+  color: var(--tinta-suave);
+}
+
+
+/* ----------------------------------------------------------------------------
+   10. COMPORTAMIENTOS: cursor, pulso, scroll reveal
+   ---------------------------------------------------------------------------- */
+
+.behaviours {
+  display: grid;
+  gap: var(--s-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+}
+.behaviour { display: grid; gap: var(--s-3); align-content: start; }
+.behaviour p:not(.label) { font-size: 0.9375rem; color: var(--tinta-suave); }
+
+/* --- CURSOR ---
+   .has-cursor la pone el JS solo si detecta mouse real. Si el JS no corre,
+   el cursor nativo nunca se oculta. */
+.has-cursor, .has-cursor * { cursor: none !important; }
+
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 9999;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--papel);
+  /* difference: el punto se ve tanto sobre blanco como sobre cobalto,
+     sin tener que cambiarle el color por sección. */
+  mix-blend-mode: difference;
+  pointer-events: none;
+  will-change: transform;
+  transition: width var(--dur-2) var(--ease),
+              height var(--dur-2) var(--ease),
+              background var(--dur-2) var(--ease),
+              border-width var(--dur-2) var(--ease);
+  border: 0 solid var(--papel);
+}
+
+/* Sobre algo interactivo: se abre en anillo */
+.cursor-dot.is-active {
+  width: 26px; height: 26px;
+  background: transparent;
+  border-width: 1px;
+}
+
+/* Pulso de click: un anillo que se expande y se va */
+.click-pulse {
+  position: fixed;
+  z-index: 9998;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 1px solid var(--tinta);
+  pointer-events: none;
+  animation: pulse 480ms var(--ease) forwards;
+}
+@keyframes pulse {
+  from { transform: scale(0.5); opacity: 0.5; }
+  to   { transform: scale(3.4); opacity: 0; }
+}
+
+/* --- SCROLL REVEAL ---
+   Estado inicial solo si el JS está vivo (.js en <html>): si no corre,
+   el contenido se ve normal en vez de quedar invisible para siempre. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+
+/* ----------------------------------------------------------------------------
+   11. ACCESIBILIDAD DE MOVIMIENTO
+   ---------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js .reveal { opacity: 1; transform: none; }
+  /* El giro del librito se vuelve un corte seco, pero sigue funcionando */
+  .bpage { transition: none; }
+}
+
+
+/* ----------------------------------------------------------------------------
+   12. MOBILE
+   ---------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .folder__body { padding: var(--s-5) var(--s-4); gap: var(--s-3); }
+  .folder__punches { gap: var(--s-5); }
+  .ruled__inner { padding-left: 76px; padding-right: var(--s-4); }
+  .booklet__pages { aspect-ratio: 3 / 4; }
+  .polaroid { --pol-w: min(268px, 78vw); }
+}

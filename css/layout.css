@@ -1,0 +1,407 @@
+/* ==========================================================================
+   LAYOUT.CSS — PIEZAS COMPARTIDAS DEL SITIO
+   Lo que se repite en todas las páginas: la nav, el divisor de papel
+   rasgado, la FICHA de proyecto, la nota al margen y el pie.
+
+   Lo que se ve SOLO en la portada (hero, CV, herramientas, contacto, título
+   de transición, grid de proyectos) vive en css/archivo.css.
+
+   Al final del archivo quedan las reglas viejas de /proyectos/, mapeadas a
+   los tokens nuevos para que esas páginas no se rompan mientras no las
+   tocamos. Están marcadas.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CONTENEDOR
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* --------------------------------------------------------------------------
+   2. NAV
+   -------------------------------------------------------------------------- */
+
+/* La nav ES la grilla: un botón por columna, arrancando en el borde
+   izquierdo de cada una. Es lo que hace que la estructura se lea desde el
+   primer vistazo, antes de leer nada. */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: var(--z-nav);
+  align-items: center;
+  padding-block: var(--s-4);
+
+  /* FONDO. Sin esto el contenido le pasa por detrás y se lee como un error:
+     en la pantalla del liquen, una polaroid quedaba cruzada por los botones.
+     Es el crema de la página al 88% con desenfoque: tapa lo que pasa por
+     abajo sin cortar la página en dos con una franja opaca. */
+  background: color-mix(in srgb, var(--crema) 88%, transparent);
+  backdrop-filter: blur(10px);
+
+  /* Se esconde hacia arriba al bajar y vuelve al subir o al acercar el
+     mouse al borde. La clase la maneja initNavEsquiva en main.js. */
+  transition: transform 450ms var(--ease);
+}
+.site-nav.is-oculta { transform: translateY(calc(-100% - 6px)); }
+
+/* Cada hijo directo cae en una columna. justify-self: start evita que el
+   botón se estire a lo ancho de la columna: arranca donde arranca ella. */
+.site-nav > * { justify-self: start; }
+
+/* La última columna lleva dos cosas: el botón y el par de idiomas,
+   empujado al borde derecho de la grilla. */
+.site-nav__fin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  width: 100%;
+}
+
+/* Botón-píldora: la forma de navegación del sistema */
+.pastilla {
+  display: inline-block;
+  padding: 5px 22px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  font-size: var(--t--1);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zona-texto);
+  white-space: nowrap;
+  transition: background var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease);
+}
+.pastilla:hover,
+.pastilla.is-activa {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+
+/* EN PANTALLA CHICA LA NAV DEJA DE SER GRILLA.
+   Debajo de 620px la grilla del sitio baja a UNA columna, y como cada botón
+   de la nav es un hijo directo, se apilaban en cuatro filas: la barra fija
+   se comía casi un cuarto de la pantalla en todas las páginas. Acá pasa a
+   ser una fila que envuelve, que es lo que una nav de teléfono tiene que
+   ser. Los botones siguen siendo los mismos, solo cambia cómo se reparten. */
+@media (max-width: 620px) {
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    padding-block: var(--s-3);
+  }
+  .site-nav__fin { width: auto; margin-left: auto; gap: var(--s-2); }
+  .pastilla { padding-inline: 14px; }
+}
+
+/* El par ES/EN va pegado, como un solo control partido al medio */
+.nav-idioma { display: flex; }
+.nav-idioma .pastilla { padding-inline: 12px; }
+.nav-idioma .pastilla:first-child { border-radius: 999px 0 0 999px; }
+.nav-idioma .pastilla:last-child { border-radius: 0 999px 999px 0; margin-left: -1px; }
+
+/* --------------------------------------------------------------------------
+   3. (ACÁ ESTABA EL HERO VIEJO)
+   El hero de "Mi Cajón" —titular centrado con typewriter, dos datos a los
+   costados— se fue con el remake de la portada. El hero de Archivo está en
+   css/archivo.css, con su propia composición y las líneas de la esquina.
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   4. DIVISOR DE PAPEL RASGADO
+   Va entre dos zonas. El relleno del path lo pone quien lo usa, con
+   --rasgado-fill, así el divisor siempre es del color de la zona que
+   viene ABAJO (es el borde superior de esa sección, no una raya suelta).
+   -------------------------------------------------------------------------- */
+
+.rasgado {
+  display: block;
+  width: 100%;
+  height: 60px;
+  /* Sube el divisor sobre la sección anterior para que no quede una
+     franja del color equivocado entre las dos */
+  margin-bottom: -1px;
+}
+.rasgado path { fill: var(--rasgado-fill, var(--crema-2)); }
+
+/* --------------------------------------------------------------------------
+   5. (ACÁ ESTABA LA SECCIÓN DE ÍNDICE)
+   El índice viejo —encabezado a tres columnas, fichas de a dos por fila y
+   un post-it al costado— se fue con el remake. El grid de proyectos de la
+   portada está en css/archivo.css: ahora cada ficha dice su columna y su
+   proporción una por una, para que no midan todas lo mismo.
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   6. FICHA DE PROYECTO — la pieza de este paso
+   ----------------------------------------------------------------------------
+   Anatomía:
+     .ficha              → da la perspectiva 3D y aguanta la pestaña
+       .ficha__pestana   → la lengüeta de arriba
+       .ficha__cuerpo    → el papel: degradé, borde, radio asimétrico, sombra
+         .ficha__marco   → ventana con las dos capas superpuestas
+           --boceto      → dibujo de línea (arriba, visible en reposo)
+           --real        → imagen/color del proyecto (abajo)
+           .ficha__dwell → barra de permanencia
+         .ficha__pie     → título + categoría + año
+
+   El estado vive en --revelado (0 = boceto, 1 = real). El día que el morph
+   lo maneje JS fino, escribe ese número y el CSS reacciona solo.
+   -------------------------------------------------------------------------- */
+
+.ficha {
+  --revelado: 0;
+  position: relative;
+  width: min(560px, 100%);
+  padding-top: 18px;          /* aire para que entre la pestaña */
+  perspective: 900px;         /* el 3D es de CSS puro, sin librerías */
+}
+
+/* La pestaña. Radio redondo arriba, recto abajo, y la sombra tirada hacia
+   ARRIBA (0 -3px) porque la luz viene de arriba y la lengüeta sobresale. */
+.ficha__pestana {
+  position: absolute;
+  top: 0;
+  left: 26px;
+  z-index: 2;
+  padding: 5px 13px 12px;
+  background: var(--grad-ficha);
+  border: var(--borde) solid var(--linea-clara);
+  border-bottom: none;
+  border-radius: var(--radio-pestana);
+  box-shadow: 0 -3px 6px rgba(0, 0, 0, .05);
+  font-size: var(--t--1);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+/* Es un <a>: el gesto de revelar y el de entrar son el mismo, así que el
+   link envuelve toda la ficha en vez de haber un botón aparte. */
+.ficha__cuerpo {
+  display: block;
+  position: relative;
+  background: var(--grad-ficha);
+  border: var(--borde) solid var(--linea-clara);
+  border-radius: var(--radio-ficha);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  /* Micro-rotación: es un objeto apoyado, no un div.
+     Va por variable y no escrita a mano porque el hover de más abajo tiene
+     que repetirla: si el estado de hover escribiera rotate(--giro-a) fijo,
+     una ficha inclinada con otro giro se enderezaría de golpe al pasarle el
+     mouse. Para cambiarle el giro a una ficha, se le pone --giro-ficha
+     (así lo hace el grid de la portada, en archivo.css). */
+  transform: rotate(var(--giro-ficha, var(--giro-a)));
+  transform-style: preserve-3d;
+  transition: transform var(--dur-3) var(--ease),
+              box-shadow var(--dur-3) var(--ease);
+}
+
+.ficha__marco {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--crema);
+}
+
+.ficha__capa {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity var(--dur-3) var(--ease),
+              transform var(--dur-reveal) var(--ease);
+}
+
+/* Capa boceto: arriba, se disuelve hundiéndose un pelo */
+.ficha__capa--boceto {
+  z-index: var(--z-boceto);
+  display: grid;
+  place-items: center;
+  padding: 12%;
+  opacity: calc(1 - var(--revelado));
+  transform: scale(calc(1 + .02 * var(--revelado)));
+}
+.ficha__capa--boceto svg { width: 62%; opacity: .85; }
+
+/* Capa real: abajo, entra desde un zoom mínimo */
+.ficha__capa--real {
+  z-index: var(--z-real);
+  background: var(--grad-verde-hondo);
+  opacity: var(--revelado);
+  transform: scale(calc(1.04 - .04 * var(--revelado)));
+}
+
+/* Barra de permanencia: el gesto que revela es el que entra al proyecto.
+   Mientras se sostiene el hover, se llena; al completarse, navega. */
+.ficha__dwell {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  height: 3px;
+  background: rgba(26, 26, 24, .12);
+  opacity: 0;
+  transition: opacity var(--dur-1) var(--ease);
+}
+.ficha__dwell i {
+  display: block;
+  height: 100%;
+  background: var(--verde-claro);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.ficha.is-dwelling .ficha__dwell { opacity: 1; }
+.ficha.is-dwelling .ficha__dwell i {
+  transform: scaleX(1);
+  transition: transform var(--dwell) linear;
+}
+
+.ficha__pie {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-4) var(--s-5) var(--s-5);
+}
+
+.ficha__titulo {
+  font-size: var(--t-2);
+  font-weight: var(--peso-fuerte);
+  line-height: 1.1;
+}
+.ficha__cat {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--t--1);
+  font-weight: var(--peso-medio);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+/* --- Estados. Solo con mouse real: el hover fantasma del touch no cuenta --- */
+@media (hover: hover) and (pointer: fine) {
+  .ficha:hover { --revelado: 1; }
+  .ficha:hover .ficha__cuerpo,
+  .ficha:focus-within .ficha__cuerpo {
+    /* El levantón 3D: gira apenas sobre dos ejes y sube. Mantiene la
+       rotación base para que no "se enderece" al pasar el mouse. */
+    transform: rotate(var(--giro-ficha, var(--giro-a))) translateY(-8px) rotateX(2deg) rotateY(-3deg);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Touch: el JS pone .is-revealed al mantener el dedo apretado */
+.ficha.is-revealed { --revelado: 1; }
+.ficha:focus-within { --revelado: 1; }
+
+/* --------------------------------------------------------------------------
+   7. NOTA AL MARGEN
+   Post-it. Uso reservado: uno o dos momentos puntuales en todo el sitio.
+   -------------------------------------------------------------------------- */
+
+.nota {
+  align-self: center;
+  max-width: 220px;
+  padding: 14px 18px;
+  background: linear-gradient(165deg, #fff9dd, #fff2b8);
+  border-radius: 2px;
+  box-shadow: var(--shadow-md);
+  transform: rotate(var(--giro-b));
+  font-size: var(--t-0);
+  font-weight: var(--peso-medio);
+  line-height: 1.5;
+  color: var(--tinta);
+}
+.nota b {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: var(--peso-fuerte);
+}
+
+/* --------------------------------------------------------------------------
+   8. PIE
+   -------------------------------------------------------------------------- */
+
+/* El pie también en la grilla: primer dato en la columna 1, último en la
+   última. Nada suelto. */
+.site-footer {
+  padding-block: var(--s-6);
+  align-items: center;
+}
+.site-footer > :first-child { grid-column: 1; }
+.site-footer > :last-child { grid-column: -2; justify-self: end; }
+
+/* La línea del pie va de borde a borde de la grilla, no del viewport */
+.site-footer::before {
+  content: "";
+  grid-column: 1 / -1;
+  height: var(--borde);
+  background: var(--zona-linea);
+  margin-bottom: var(--s-5);
+}
+
+/* --------------------------------------------------------------------------
+   9. (ACÁ ESTABAN LOS AJUSTES MÓVILES DEL HERO VIEJO)
+   Eran cuatro reglas de .hero__* y .indice__* que ya no existen. El mobile
+   de la portada nueva está al pie de cada sección de archivo.css.
+   -------------------------------------------------------------------------- */
+
+/* ==========================================================================
+   10. HEREDADO — /proyectos/
+   Reglas del sistema anterior, mapeadas a los tokens nuevos para que las 8
+   páginas de proyecto no se rompan mientras no las tocamos.
+   SE BORRAN cuando rehagamos esas páginas con el sistema nuevo.
+   ========================================================================== */
+
+/* Las páginas de proyecto usan el nombre viejo de la marca del nav */
+.site-nav__logo {
+  font-size: 1.1875rem;
+  font-weight: var(--peso-maximo);
+  letter-spacing: var(--tracking-titulo);
+}
+
+.project-header { padding-block: var(--s-9) var(--s-6); }
+
+.project-block {
+  display: grid;
+  gap: var(--s-3);
+  padding-block: var(--s-6);
+  border-top: var(--borde) solid var(--zona-linea);
+}
+
+@media (min-width: 860px) {
+  .project-block { grid-template-columns: 1fr 2fr; gap: var(--s-6); }
+}
+
+.eyebrow {
+  font-size: var(--t--1);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+/* La cortina del morph vieja: queda inerte hasta que definamos la
+   transición de entrada real */
+.transition-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--negro);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease);
+}
+.transition-veil.is-visible { opacity: 1; }

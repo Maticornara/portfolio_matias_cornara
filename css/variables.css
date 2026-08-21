@@ -1,0 +1,204 @@
+/* ==========================================================================
+   VARIABLES.CSS — SISTEMA "MI CAJÓN"
+   El archivo que más vamos a tocar. Todo lo que sea una decisión de diseño
+   (color, tipografía, sombra, degradé, spacing) vive acá y NUNCA se escribe
+   suelto en otro archivo.
+
+   Los valores de color, sombra y degradé están tomados TAL CUAL del CSS de
+   variantes-composicion-v2.html y prototipo.html. Donde puse un valor que no
+   estaba en la referencia, lo aclaro con un comentario.
+   ========================================================================== */
+
+:root {
+
+  /* ------------------------------------------------------------------
+     1. PALETA — SISTEMA DE ZONAS + UN SOLO ACENTO
+     No hay más colores que estos. Un acento (verde) + neutros.
+     ------------------------------------------------------------------ */
+
+  /* Zona clara: navegación, índice, momentos de archivo / lectura */
+  --crema: #F3EDE1;
+  --crema-2: #EAE1CF;
+
+  /* Zona oscura: detalle de proyecto, momentos de exhibición */
+  --negro: #0B0B0B;
+  --negro-2: #161614;
+  --linea-oscura: #2a2a27;
+
+  /* EL ACENTO. Mismo valor exacto en las dos zonas: es el hilo que
+     conecta el mundo claro con el oscuro sin necesitar variantes. */
+  --verde: #5A6E32;
+  --verde-claro: #7C9448;
+  --verde-oscuro: #41501f;
+
+  /* Neutros de texto */
+  --tinta: #1A1A18;
+  --gris: #8a8578;
+  --gris-claro: #c8c3b5;
+
+  /* Líneas finas. La clara no estaba en la referencia como variable
+     (aparecía suelta como #ddd6c4 / #d8cdb0): la nombro acá. */
+  --linea-clara: #ddd6c4;
+  --linea-carpeta: #d8cdb0;
+
+  /* ------------------------------------------------------------------
+     2. ZONAS
+     Dos variables que se reasignan por sección. Todo el resto del CSS
+     usa --zona-fondo y --zona-texto, así una sección cambia de mundo
+     con dos líneas y nada más se entera.
+     ------------------------------------------------------------------ */
+  --zona-fondo: var(--crema);
+  --zona-texto: var(--tinta);
+  --zona-texto-2: var(--gris);
+  --zona-linea: rgba(26, 26, 24, 0.12);
+
+  /* ------------------------------------------------------------------
+     3. TIPOGRAFÍA — NUNITO + IBM PLEX MONO
+     Nunito para títulos y textos; la mono, solo para los rótulos chicos.
+
+     Historial, para no volver a dar la vuelta completa:
+       · Nunito sola  → funcionaba, pero los letreros no tenían carácter
+                        de archivo
+       · + Plex Mono en rótulos → esto es lo que quedó
+       · Plex Sans en todo   → probado y descartado
+       · Plex Mono en todo   → probado y descartado: los párrafos en
+                               monoespaciada cansan a la lectura
+     ------------------------------------------------------------------ */
+  --font: 'Nunito', system-ui, sans-serif;
+
+  /* La MONO de los rótulos: etiquetas, datos, contadores, "volver".
+     No es una voz para leer, es una textura — hace que los letreros se lean
+     como ficha técnica de archivo en vez de interfaz. */
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Nunito llega hasta 900, así que la escala vuelve a los pesos altos */
+  --peso-liviano: 300;
+  --peso-cuerpo: 400;
+  --peso-medio: 600;
+  --peso-fuerte: 800;
+  --peso-maximo: 900;
+
+  /* Escala fluida con clamp(mínimo, ideal, máximo) */
+  --t--1: clamp(0.6875rem, 0.66rem + 0.12vw, 0.75rem);  /* etiquetas, datos */
+  --t-0: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);  /* cuerpo chico */
+  --t-1: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);       /* cuerpo */
+  --t-2: clamp(1.15rem, 1.05rem + 0.5vw, 1.375rem);     /* títulos de ficha */
+  --t-3: clamp(1.6rem, 1.3rem + 1.6vw, 2.5rem);         /* títulos de sección */
+  --t-4: clamp(2.75rem, 1.4rem + 6.6vw, 7.5rem);        /* titular del hero */
+
+  --tracking-titulo: -0.02em;
+  --tracking-etiqueta: 0.1em;
+
+  /* ------------------------------------------------------------------
+     4. PROFUNDIDAD — SOMBRAS
+     Los tres valores exactos de variantes-composicion-v2.html.
+     sm = tarjeta apoyada · md = objeto levantado · lg = objeto flotando
+     ------------------------------------------------------------------ */
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, .18);
+  --shadow-md: 0 10px 26px rgba(0, 0, 0, .28);
+  --shadow-lg: 0 20px 46px rgba(0, 0, 0, .38);
+
+  /* Sombra propia del verde: no es negra, es del color del elemento.
+     Sin esto, un botón verde con sombra negra se ve sucio. */
+  --shadow-verde: 0 8px 20px rgba(90, 110, 50, .4);
+
+  /* Brillo superior interno: la línea de luz que le pega al papel desde
+     arriba. Es lo que hace que una superficie no se vea impresa. */
+  --luz-arriba: inset 0 1px 0 rgba(255, 255, 255, .7);
+
+  /* ------------------------------------------------------------------
+     5. PROFUNDIDAD — DEGRADÉS
+     Ninguna superficie es 100% plana. Todos copiados de la referencia.
+     ------------------------------------------------------------------ */
+  --grad-crema: linear-gradient(155deg, #F7F2E8 0%, var(--crema) 55%, #ECE4D3 100%);
+  --grad-negro: linear-gradient(160deg, #161614 0%, var(--negro) 60%, #020202 100%);
+  --grad-carpeta: linear-gradient(165deg, #FAF6EC 0%, var(--crema) 60%, #E3D9C2 100%);
+  --grad-ficha: linear-gradient(180deg, #fff, #fbf8f0);
+  --grad-polaroid: linear-gradient(165deg, #fff, #f0eee6);
+  --grad-verde: linear-gradient(155deg, var(--verde-claro) 0%, var(--verde) 100%);
+  --grad-verde-hondo: linear-gradient(155deg, var(--verde-claro), var(--verde-oscuro));
+  --grad-oscuro: linear-gradient(155deg, #232320, var(--negro-2));
+
+  /* ------------------------------------------------------------------
+     6. FORMA
+     Radio ASIMÉTRICO: una esquina redonda, tres rectas. Es la firma
+     formal del sistema — evita el rectángulo de UI genérica.
+     ------------------------------------------------------------------ */
+  --radio-ficha: 2px 14px 2px 2px;
+  --radio-carpeta: 4px 26px 4px 4px;
+  --radio-pestana: 8px 8px 0 0;
+  --radio-chico: 8px;
+  --radio-boton: 24px;
+
+  --borde: 1px;
+  --borde-marcado: 1.5px;
+
+  /* Micro-rotaciones. Valores FIJOS, definidos a mano, nunca al azar:
+     tres inclinaciones que se repiten en todo el sitio para que la
+     composición se lea intencional y no volcada. */
+  --giro-a: -1.3deg;
+  --giro-b: 2.5deg;
+  --giro-c: -2.5deg;
+
+  /* ------------------------------------------------------------------
+     7. SPACING
+     ------------------------------------------------------------------ */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
+
+  --gutter: clamp(1.5rem, 4vw, 3rem);
+  --medida: 60ch;      /* ancho cómodo de lectura */
+  --ancho-max: 1400px;
+
+  /* ------------------------------------------------------------------
+     7-bis. LA GRILLA
+     Cuatro columnas. Es la estructura de TODO el sitio: la nav, el hero,
+     el índice y las páginas de proyecto se apoyan en las mismas cuatro
+     columnas, así nada queda colocado "a ojo".
+
+     --cols es una variable y no un número fijo porque en pantallas chicas
+     baja a 2 y a 1 (ver base.css). Todo lo que use la grilla se reacomoda
+     solo, sin escribir una media query por componente.
+     ------------------------------------------------------------------ */
+  --cols: 4;
+  --grid-gap: clamp(1rem, 2.2vw, 2rem);
+
+  /* ------------------------------------------------------------------
+     8. MOVIMIENTO
+     ------------------------------------------------------------------ */
+  --dur-1: 150ms;
+  --dur-2: 250ms;
+  --dur-3: 500ms;
+  --dur-reveal: 700ms;
+  --dwell: 850ms;   /* cuánto hay que sostener el hover para entrar */
+  --ease: cubic-bezier(0.2, 0.7, 0.25, 1);
+  --ease-suave: ease;
+
+  /* ------------------------------------------------------------------
+     9. CAPAS
+     ------------------------------------------------------------------ */
+  --z-boceto: 2;
+  --z-real: 1;
+  --z-nav: 50;
+  --z-pulso: 998;
+  --z-cursor: 999;
+
+  /* ------------------------------------------------------------------
+     10. COMPATIBILIDAD — BORRAR CUANDO TOQUEMOS /proyectos/
+     Las 8 páginas de proyecto todavía usan los nombres del sistema
+     anterior. Estos alias las mantienen vivas mientras no las tocamos.
+     No uses estos nombres en código nuevo.
+     ------------------------------------------------------------------ */
+  --bg: var(--crema);
+  --fg: var(--tinta);
+  --font-display: var(--font);
+  --font-body: var(--font);
+  --border-width: var(--borde);
+}

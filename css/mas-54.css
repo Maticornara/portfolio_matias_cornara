@@ -1,0 +1,1062 @@
+/* ==========================================================================
+   MAS-54.CSS
+   Página de proyecto de +54 (Archivo — versión express).
+
+   LA PALETA ES LA DEL PORTFOLIO. NO LA DE +54.
+   Esta es LA regla de esta página y conviene leerla antes de tocar nada.
+   El proyecto +54 tiene su propia identidad de color (magenta #E5235A, lima
+   #D9F411, rosa #FDBCF2), y esa identidad NO se usa para pintar la página:
+   vive adentro de las imágenes, que ya son de esos colores. La página que
+   las sostiene es crema, negra y verde, igual que el resto de Mi Cajón.
+
+   El motivo es el que se ve apenas se compara: si la página también es
+   magenta, los posters dejan de resaltar porque están apoyados sobre su
+   propio color. Sobre crema y sobre negro, en cambio, el material grita.
+   La página hace de pared de galería, y una pared no compite con lo que
+   cuelga.
+
+   CÓMO ESTÁ RESUELTO — y por qué así
+   No hay ni un color escrito suelto en un componente. Todo sale de las
+   variables --zona-* de base.css, y cada parte de la página se declara de
+   una zona (.zona--crema, .zona--crema-2, .zona--negro) igual que el resto
+   del sitio. Consecuencia: la .etiqueta, el .dato y cualquier pieza del
+   sistema se leen bien en las tres zonas sin escribir una regla nueva, y el
+   día que cambie un hex, cambia en variables.css y acá no se toca nada.
+
+   NADA INCLINADO Y NADA RECORTADO. Las imágenes y los videos van derechos,
+   sin micro-rotación, sin esquinas redondeadas y sin recortes raros. Es una
+   excepción deliberada al principio de composición del sitio (que sí usa
+   micro-rotaciones fijas): acá TODAS las piezas son diseño gráfico
+   terminado, con su propia caja y sus propios márgenes. Inclinarlas o
+   redondearles una esquina es dibujar encima del trabajo.
+
+   ORDEN DE LA PÁGINA
+     HERO             apertura igual a Simbio + carrusel de posters
+     banda            los pictogramas, como separador
+     QUÉ ES           texto de un lado, logo y paleta turnándose del otro
+     LA TIRA          scroll vertical → recorrido horizontal, de a un poster
+     HISTORIAS        las tres a la vez, enteras, con sonido opcional
+     TEASER           el video, sobre negro
+     LA INSTALACIÓN   copy + las 4 habitaciones apareciendo en diagonal
+     LA CASA          el recorrido, a pantalla completa
+     EL SITIO         la captura, de borde a borde
+     POSTALES         8 fichas que se dan vuelta en 3D
+     MANUAL DE MARCA  tres polaroids que se abren en grande
+
+   Las secciones NO van numeradas en pantalla: el número las convertía en un
+   índice de once puntos, y esto es un recorrido, no un índice.
+   ========================================================================== */
+
+/* ==========================================================================
+   MANUAL RÁPIDO PARA EDITAR A MANO  ·  buscá "PERILLAS" para los bloques
+   --------------------------------------------------------------------------
+   Es el mismo manual que está arriba de simbio.css. Va repetido a propósito:
+   el que abre este archivo para mover un número no tiene por qué saber que la
+   explicación está en otro lado.
+
+   LAS UNIDADES (todas miden lo mismo: distancia)
+     px    pixeles pelados. 100px es siempre 100px.
+     rem   16px. Entonces 1rem=16px · 2rem=32px · 10rem=160px.
+     vw    1% del ANCHO de la ventana. 50vw = media pantalla de ancho.
+     svh   1% del ALTO de la ventana. 66svh = dos tercios de la altura.
+     ch    el ancho de un caracter. 30ch = un renglón de ~30 letras.
+     fr    "partes" al repartir un ancho. "1fr 2fr" = la segunda se lleva el
+           doble que la primera. No son medidas, son proporciones.
+     Si no querés pensar: poné px y probá. Después se pasa a la unidad linda.
+
+   LAS 4 COSAS QUE MÁS VAS A QUERER
+     1. AGRANDAR / ACHICAR    width / height, o la perilla propia del objeto.
+     2. MOVER EN X / Y        translate: 40px -20px;   (+x derecha, +y abajo)
+                              Mueve el dibujo sin empujar a los vecinos.
+                              NO uses margin para acomodar a ojo: eso sí empuja.
+     3. ALINEAR TEXTO         text-align / max-width: 34ch
+                              y para el bloque: justify-self / align-self.
+     4. ACOMODAR A LA GRILLA  grid-column: 2 / 4;  (de la línea 2 a la 4)
+                              grid-column: 1 / -1; (de punta a punta)
+                              Para VER las columnas dibujadas:
+                              localhost:8123/proyectos/mas-54.html?grid
+
+   REGLA DE ORO
+     Cambiá UN número, guardá, refrescá. Si algo se rompe, ya sabés cuál fue.
+     Si el navegador ignora el cambio: subile el ?v=N al <link> del HTML, o
+     Ctrl+F5.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. COLOR — NO HAY PALETA NUEVA
+   --------------------------------------------------------------------------
+   Este bloque es corto justamente porque no hay nada que declarar: la página
+   usa el crema, el negro y el verde de variables.css, y las zonas de
+   base.css, tal cual las usa el resto del sitio.
+
+   El magenta, el lima y el rosa de +54 (#E5235A, #D9F411, #FDBCF2) NO se
+   escriben en ningún lado de este archivo. Entran en la página únicamente
+   dentro de las imágenes y los videos, que ya vienen de esos colores. La
+   página es la pared, no el cuadro.
+
+   SI ALGÚN DÍA SE QUIERE VOLVER A LA IDEA DE PINTAR LA PÁGINA
+   No alcanza con tocar acá: hay que agregar zonas nuevas (.zona--rosa, etc.)
+   que reasignen las variables --zona-*, igual que hace base.css con crema y
+   negro, y cambiar las clases de las 8 secciones en el HTML. Nunca escribir
+   un color suelto adentro de un componente — eso es lo que después no se
+   puede volver atrás.
+   ========================================================================== */
+
+/* El cursor de anillo se enciende con data-cursor="anillo" en el <body>, y
+   sus colores ya salen del verde del sistema (base.css). No se toca. */
+
+
+/* ==========================================================================
+   1-bis. TIPOGRAFÍA — UNA SOLA FAMILIA: ARCHIVO
+   --------------------------------------------------------------------------
+   La misma que el índice y que Simbio. No se reescribe regla por regla: se
+   reasignan las dos variables de familia y todo el CSS del sistema las
+   sigue solo. Es el mismo movimiento que hacen .pag-archivo (archivo.css) y
+   .pag-simbio (simbio.css).
+
+   --font-mono TAMBIÉN apunta a Archivo. En el sistema viejo los rótulos
+   chicos eran IBM Plex Mono para que se leyeran como ficha técnica; con una
+   sola familia ese papel lo hacen la MAYÚSCULA, las letras separadas y el
+   peso medio — las tres juntas, no una. Ver "RÓTULOS" acá abajo.
+
+   El <link> del <head> pide el rango 300..900 y no el 400..700 de Simbio:
+   esta página usa el 900 en el titular y el 300 en los copys. Si no se piden
+   esos pesos, el navegador los inventa engordando o afinando el 700, y en
+   Archivo eso se ve sucio.
+   ========================================================================== */
+
+.pag-54 {
+  --font: "Archivo", system-ui, sans-serif;
+  --font-mono: "Archivo", system-ui, sans-serif;
+
+  /* Cuánto se separan las letras de un rótulo. Es LO que lo hace leerse como
+     rótulo ahora que no hay monoespaciada. Mismo valor que Simbio y que el
+     índice: los tres tienen que coincidir o se nota al cambiar de página. */
+  --track-rotulo: 0.14em;
+}
+
+/* --- RÓTULOS ---
+   .etiqueta y .dato: los letreros chicos del sistema. Tamaño FIJO en 11px,
+   no crece con la ventana — es un rótulo, no un texto para leer. Mismos
+   valores que archivo.css y simbio.css. */
+.pag-54 .etiqueta,
+.pag-54 .dato {
+  font-family: var(--font);
+  font-size: 0.6875rem;              /* 11px */
+  font-weight: 500;
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+}
+
+
+/* --------------------------------------------------------------------------
+   1-ter. LA NAV
+   Vive fuera de <main>, así que no hereda la zona de ninguna sección: se
+   queda con el crema del sistema, que es el que corresponde porque el hero
+   también es crema. Lo único que se le agrega es la línea de abajo, que la
+   despega del hero sin cortar la página en dos.
+   -------------------------------------------------------------------------- */
+
+.pag-54 .site-nav { border-bottom: var(--borde) solid rgba(26, 26, 24, .1); }
+
+
+
+
+/* ==========================================================================
+   2. PIEZAS COMPARTIDAS DE LA PÁGINA
+   ========================================================================== */
+
+/* Cada parte de la página. El aire vertical es el que separa una idea de la
+   siguiente: es la única puntuación que tiene una página con tan poco texto. */
+.s54 {
+  padding-block: var(--s-9);
+  position: relative;
+}
+
+/* EL RÓTULO DE SECCIÓN. Va sin numerar: los números convertían la página en
+   un índice de ocho puntos, y no es un índice — es un recorrido. El nombre
+   solo alcanza para ubicarse. */
+.s54__rotulo {
+  grid-column: 1;
+  align-self: start;
+}
+
+/* El bloque de copy. Son los únicos tres textos de toda la página, así que
+   se los trata como piezas y no como párrafos sueltos. */
+.s54__copy {
+  font-size: var(--t-2);
+  font-weight: var(--peso-liviano);
+  line-height: 1.45;
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+/* La frase destacada, en verde: el acento del sistema entra por el texto, que
+   es donde menos se gasta. Es el mismo recurso que usa el enunciado de la
+   traducción en Simbio. */
+.s54__copy b {
+  font-weight: var(--peso-fuerte);
+  color: var(--verde);
+}
+
+/* --------------------------------------------------------------------------
+   2-bis. LA APERTURA, IGUAL QUE EN SIMBIO
+   ----------------------------------------------------------------------------
+   Estos cuatro bloques —.proyecto__col, .volver--pastilla, .proyecto__titulo,
+   .proyecto__meta y .proyecto__bajada— son una COPIA de los de simbio.css, a
+   propósito y con los mismos valores. La alternativa era cargar simbio.css
+   entero en esta página, y eso arrastraría también su sistema tipográfico y
+   sus overrides de fondo. Son cuarenta líneas: se copian.
+
+   SI SE CAMBIA UNO ACÁ, HAY QUE CAMBIARLO EN SIMBIO. Las dos aperturas tienen
+   que verse idénticas: es lo que hace que se lean como el mismo sitio.
+   El día que exista una tercera página de proyecto, esto se muda a layout.css
+   y las tres lo comparten.
+   -------------------------------------------------------------------------- */
+
+.pag-54 .proyecto__col {
+  grid-column: 1 / span 2;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--s-4);
+  align-content: center;
+}
+
+.pag-54 .volver--pastilla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  justify-self: start;
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.pag-54 .volver--pastilla:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+.pag-54 .volver--pastilla svg { width: 15px; height: auto; flex: 0 0 auto; }
+
+/* EL TÍTULO. Mismo tamaño que el de Simbio y no el titular gigante que tenía
+   antes: la columna de apertura IDENTIFICA el proyecto, no lo protagoniza.
+   El protagonismo es del material. */
+.pag-54 .proyecto__titulo {
+  font-size: clamp(1.7rem, 1.2rem + 1.1vw, 2.2rem);
+  font-weight: var(--peso-maximo);
+  line-height: .95;
+  letter-spacing: -0.03em;
+}
+
+/* LAS PASTILLAS DE CLASIFICACIÓN. Misma forma que los botones de la nav
+   (mismo borde, mismo radio de 999px). Son etiquetas de clasificación, no un
+   texto que se lee de corrido, y la forma lo dice.
+   Sin hover: no son botones, no llevan a ninguna parte. Un hover en algo que
+   no se puede tocar promete una acción que no existe. */
+.pag-54 .proyecto__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.pag-54 .proyecto__meta .etiqueta {
+  padding: 5px 14px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+.pag-54 .proyecto__bajada {
+  max-width: 34ch;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--tinta);
+}
+
+@media (max-width: 960px) {
+  .s54 { padding-block: var(--s-8); }
+  .s54__rotulo { grid-column: 1 / -1; }
+  .pag-54 .proyecto__col { grid-column: 1 / -1; }
+}
+
+
+/* ==========================================================================
+   3. HERO
+   --------------------------------------------------------------------------
+   Apertura en las columnas 1-2, carrusel de posters en las 3-4.
+   ========================================================================== */
+
+.hero54 { padding-block: 0; }
+
+.hero54__grilla {
+  min-height: 100svh;
+  align-content: center;
+  padding-block: var(--s-9) var(--s-8);
+  row-gap: var(--s-7);
+}
+
+/* EL CARRUSEL.
+   --------------------------------------------------------------------------
+   Una ventana con una fila adentro que se corre de a un poster. El movimiento
+   está en el riel, no en las imágenes: por eso se ve que la de al lado ENTRA
+   desde el costado, que es lo que hace que se lea como carrusel y no como un
+   parpadeo en el lugar.
+
+   LOS POSTERS VAN CRUDOS: sin rotación, sin esquinas redondeadas y sin
+   sombra. Un afiche ya es una pieza de diseño terminada; envolverlo en
+   adornos de interfaz lo convierte en una miniatura de galería de stock.
+
+   PERILLAS — EL CARRUSEL DEL HERO */
+.hero54__posters {
+  --poster-alto: 66svh;   /* LA perilla del tamaño: subilo y crece */
+
+  grid-column: 3 / span 2;
+  align-self: center;
+  height: clamp(300px, var(--poster-alto), 680px);
+  /* La ventana mide UN poster: el resto de la fila queda afuera, cortado. */
+  width: calc(clamp(300px, var(--poster-alto), 680px) * 3356 / 4760);
+  justify-self: center;
+  overflow: hidden;
+}
+
+.hero54__riel {
+  display: flex;
+  height: 100%;
+  /* El desplazamiento lo escribe initCarrusel en --carrusel-x. */
+  transform: translate3d(var(--carrusel-x, 0px), 0, 0);
+  transition: transform 700ms var(--ease);
+  will-change: transform;
+}
+
+.hero54__poster {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  /* contain y no cover: el poster se ve ENTERO. Con cover se le comían la
+     fecha de arriba y el logo del pie. */
+  object-fit: contain;
+}
+
+
+/* ==========================================================================
+   4. LA BANDA DE PICTOGRAMAS
+   --------------------------------------------------------------------------
+   Un separador, no una sección. Antes tenía 18svh de alto con object-fit:
+   cover y los pictogramas quedaban cortados arriba y abajo; ahora el alto lo
+   da el video y lo que sobra es aire a los costados.
+
+   PERILLAS — LA BANDA
+   ========================================================================== */
+.banda54 {
+  --banda-alto: clamp(84px, 12svh, 130px);
+
+  width: 100%;
+  height: var(--banda-alto);
+  overflow: hidden;
+  background: var(--crema);
+  border-block: var(--borde) solid var(--zona-linea);
+}
+.banda54 video {
+  width: 100%;
+  height: 100%;
+  /* contain: el pictograma entra entero. Lo que sobra a los costados se
+     rellena con el fondo del propio video, que es magenta pleno. */
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* ==========================================================================
+   5. QUÉ ES
+   --------------------------------------------------------------------------
+   Texto de un lado, identidad del otro. NO es un carrusel: las dos piezas se
+   turnan EN EL MISMO LUGAR. Por eso están en position:absolute dentro de un
+   marco con proporción fija — si estuvieran en flujo, el bloque cambiaría de
+   alto en cada cambio y el texto de al lado saltaría.
+   ========================================================================== */
+
+.contexto54__texto {
+  grid-column: 1 / span 2;
+  align-self: center;
+}
+
+/* PERILLAS — EL MARCO DE LAS DOS ANIMACIONES
+   --pieza-recorte  cuántos píxeles se le comen a los bordes de abajo y de la
+                    derecha. Los dos videos vienen con una línea negra pegada
+                    ahí, que es basura del render. En vez de reexportarlos, se
+                    agranda el video ese poquito y se lo corre en diagonal: la
+                    línea queda afuera del marco. Con 3px alcanza; si volvés a
+                    ver el borde, subilo a 4. */
+.contexto54__marco {
+  --pieza-recorte: 3px;
+
+  grid-column: 3 / span 2;
+  align-self: center;
+  position: relative;
+  /* La proporción real de los dos videos (1460x822). */
+  aspect-ratio: 1460 / 822;
+  overflow: hidden;
+  /* Fondo del color de la página y NO oscuro: si por redondeo de subpíxeles
+     queda una fracción sin cubrir, no se ve. Con un fondo oscuro, esa
+     fracción se lee como un filo negro — que es justo el defecto que este
+     bloque está tratando de sacar. */
+  background: var(--crema-2);
+}
+
+.contexto54__pieza {
+  position: absolute;
+  /* El truco del recorte: el video arranca --pieza-recorte más arriba y más a
+     la izquierda, y mide ese doble de más. Así los cuatro bordes quedan por
+     fuera del marco y la línea negra de abajo y de la derecha no se ve. */
+  top: calc(var(--pieza-recorte) * -1);
+  left: calc(var(--pieza-recorte) * -1);
+  width: calc(100% + var(--pieza-recorte) * 2);
+  height: calc(100% + var(--pieza-recorte) * 2);
+
+  /* IMPRESCINDIBLE, y no es obvio: base.css le pone `max-width: 100%` a todo
+     <video> en el reset. Sin esta línea, ese tope le gana al calc() de arriba,
+     el video se queda con el ancho del marco en vez de sobresalir, y quedaba
+     una franja de 3px del fondo del marco a la derecha — o sea exactamente el
+     filo negro que veníamos a eliminar. Medido: 636px de video contra 642
+     esperados. */
+  max-width: none;
+
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 700ms var(--ease);
+}
+.contexto54__pieza.is-visible { opacity: 1; }
+
+@media (max-width: 960px) {
+  .contexto54__texto, .contexto54__marco { grid-column: 1 / -1; }
+  .contexto54__marco { margin-top: var(--s-6); }
+}
+
+
+/* ==========================================================================
+   6. LA TIRA HORIZONTAL
+   --------------------------------------------------------------------------
+   EL MECANISMO, en dos piezas — el mismo patrón del ensamble de Simbio:
+
+     .tira54          la sección ALTA. Su altura ES la distancia de scroll
+                      disponible para recorrer la imagen de punta a punta.
+     .tira54__escena  el bloque STICKY que se queda pegado a la pantalla
+                      mientras se recorre esa sección.
+
+   Sticky y no el `pin` de ScrollTrigger, por lo mismo que en Simbio: el pin
+   envuelve todo en un spacer con position:fixed, se pelea con el
+   `overflow-x: clip` del <html>, y si Swup remonta la página queda un spacer
+   viejo dado vuelta. Sticky lo resuelve el navegador y se despega solo.
+
+   EL MÓDULO DE 1093,48 px
+   La imagen (assets/+54/web/tira.jpg, 8566x1080) está compuesta sobre un
+   módulo de 1093,48 px: el ancho de UN poster. Está MEDIDO sobre el archivo,
+   no estimado — las costuras entre paneles caen en 1089, 2183, 3276, 4369 y
+   5463, o sea cada 1093,5 px. 8566 / 1093,48 = 7,83 módulos.
+
+   CADA SCROLLEADA, UNA PUBLICACIÓN. La tira acompaña el scroll mientras se
+   mueve, y al soltar se acomoda sola al borde del poster más cercano. Eso lo
+   hace initTira en mas-54.js, no el CSS: `scroll-snap` no sirve acá porque el
+   que scrollea es la página y lo que se mueve es un transform.
+   ========================================================================== */
+
+.tira54 {
+  /* PERILLAS — VELOCIDAD DEL RECORRIDO
+     --tira-modulos        cuántos posters tiene la tira. 8566 / 1093,48 = 7,83.
+                           Si cambia la imagen, actualizá este número.
+     --tira-scroll-modulo  cuánta pantalla se scrollea por poster.
+                           MÁS ALTO = MÁS DESPACIO. Es LA perilla de esta parte. */
+  --tira-modulos: 7.83;
+  --tira-scroll-modulo: 85svh;
+
+  height: calc(100svh + var(--tira-modulos) * var(--tira-scroll-modulo));
+  padding-block: 0;
+  position: relative;
+
+  /* Sin overflow: adentro hay un position:sticky, y cualquier overflow en un
+     ancestro es la primera sospecha cuando un sticky no se pega — es el bug
+     que en Simbio dejó el ensamble en top:-2412px (anotado en base.css). */
+  overflow: visible;
+}
+
+.tira54__escena {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+}
+
+/* LA PISTA. Más ancha que la pantalla: el JS la corre en X.
+   El translate va en una variable y no escrito en el style del elemento para
+   que se pueda ver y tocar desde el inspector sin pelearse con el JS. */
+.tira54__pista {
+  /* PERILLAS — ALTO DE LA IMAGEN EN PANTALLA
+     100svh = de arriba abajo, sin márgenes. Es el máximo posible: la tira es
+     el número central de esta página y a media pantalla no se leía. */
+  --tira-alto: 100svh;
+
+  height: var(--tira-alto);
+  will-change: transform;
+  transform: translate3d(var(--tira-x, 0px), 0, 0);
+}
+.tira54__pista img {
+  height: 100%;
+  width: auto;
+  max-width: none;   /* si no, el reset de base.css la aplasta a 100% */
+  display: block;
+  /* Sin bordes ni radio: es la pieza gráfica, no una tarjeta. */
+}
+
+/* EL CONTADOR DE MÓDULO. Arriba a la derecha: es el que hace legible que la
+   tira está hecha de posters y no es una imagen larga cualquiera.
+   Va sobre la imagen, así que necesita su propia superficie para leerse. */
+.tira54__contador {
+  position: absolute;
+  top: var(--s-7);
+  right: var(--gutter);
+  padding: 8px 14px;
+  border: var(--borde) solid rgba(26, 26, 24, .18);
+  border-radius: var(--radio-boton);
+  background: color-mix(in srgb, var(--crema) 82%, transparent);
+  backdrop-filter: blur(6px);
+  color: var(--tinta);
+}
+
+/* LA BARRA DE AVANCE. Abajo, de punta a punta: la única pista de que todavía
+   queda tira por recorrer. */
+.tira54__barra {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: rgba(26, 26, 24, .14);
+}
+.tira54__barra i {
+  display: block;
+  height: 100%;
+  width: var(--tira-avance, 0%);
+  background: var(--verde);
+}
+
+
+/* ==========================================================================
+   7. LAS TRES HISTORIAS
+   --------------------------------------------------------------------------
+   Las tres a la vez, en fila y ENTERAS: ni recortadas ni con franjas al
+   costado.
+
+   LA CLAVE ES QUE LA CAJA TENGA LA PROPORCIÓN DEL VIDEO. Los tres son 9:16.
+   Al principio la caja tenía un alto fijo en svh y el video iba con
+   object-fit: contain, y como la caja quedaba más ancha que 9:16 aparecían
+   dos barras negras a los costados de cada historia — un passe-partout que
+   nadie pidió. Con aspect-ratio: 9/16 la caja mide exactamente lo que mide el
+   video: no sobra nada que rellenar y no falta nada que recortar.
+
+   El alto sale del ancho, así que las tres crecen juntas con la ventana y
+   siempre quedan iguales entre sí.
+   ========================================================================== */
+
+.historias54 .grilla { row-gap: var(--s-5); }
+
+.historias54__fila {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+}
+
+.historias54__video {
+  display: block;
+  width: 100%;
+  /* La proporción REAL de los archivos (1080x1920). Si algún día entra una
+     historia con otra medida, este es el número a cambiar. */
+  aspect-ratio: 9 / 16;
+  height: auto;
+  /* Con la caja en la misma proporción, cover no recorta nada: es solo el
+     seguro contra una diferencia de un píxel por redondeo. */
+  object-fit: cover;
+}
+
+/* EL BOTÓN DE SONIDO. Uno solo para las tres: son una pieza, no tres. Cae en
+   la última columna, alineado a la derecha, a la altura del rótulo. */
+.historias54__sonido {
+  grid-column: -2;
+  justify-self: end;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 6px 16px 6px 10px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--zona-texto-2);
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.historias54__sonido:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+.historias54__sonido .etiqueta { color: inherit; }
+.historias54__icono svg { width: 20px; height: 20px; display: block; }
+
+/* Las dos mitades del icono: la crucecita de mudo y el arco de sonido. Se ve
+   una o la otra según aria-pressed, que es el mismo dato que usa el lector de
+   pantalla — un solo estado, no dos que se pueden desincronizar. */
+.historias54__on { opacity: 0; }
+.historias54__sonido[aria-pressed="true"] .historias54__mute { opacity: 0; }
+.historias54__sonido[aria-pressed="true"] .historias54__on { opacity: 1; }
+
+@media (max-width: 960px) {
+  /* Dos por fila y no una: en una sola columna cada historia mide el ancho
+     entero de la pantalla y, siendo 9:16, se come casi dos pantallas de alto
+     ella sola. */
+  .historias54__fila { grid-template-columns: repeat(2, 1fr); }
+  .historias54__sonido { grid-column: 1 / -1; justify-self: start; }
+}
+
+
+/* ==========================================================================
+   8. TEASER
+   --------------------------------------------------------------------------
+   El único video de la página con audio. NO arranca solo: un video con sonido
+   que empieza sin permiso es lo más molesto que puede hacer una página.
+
+   EL VIDEO NO OCUPA EL ANCHO ENTERO Y LA ZONA NEGRA SÍ. Esa franja negra
+   alrededor es lo que lo hace leerse como una proyección en una sala y no
+   como un banner pegado al borde de la página.
+   ========================================================================== */
+
+/* PERILLAS — EL TEASER */
+.teaser54__marco {
+  --teaser-ancho: 64%;   /* cuánto de la grilla ocupa el video */
+
+  grid-column: 1 / -1;
+  position: relative;
+  width: min(var(--teaser-ancho), 100%);
+  justify-self: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  box-shadow: var(--shadow-lg);
+}
+.teaser54__marco video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* LA TAPA. Cubre casi todo el video: el área de click es la imagen, no un
+   botoncito al que hay que apuntar.
+
+   OJO CON EL `bottom`: NO es cero. Deja libre la franja de abajo, que es
+   donde el navegador dibuja sus controles. Con inset:0 la tapa quedaba encima
+   de la barra de tiempo —tapada y teñida de oscuro— y no se podía adelantar
+   el video hasta después de haberlo arrancado. Los 56px son el alto de la
+   barra de controles de Chrome; si algún navegador la hace más alta, lo peor
+   que pasa es que la tapa llegue un poco abajo, no que se rompa nada.
+
+   La tapa se va al primer click y no vuelve: volver a taparlo cada vez que se
+   pausa es pelearse con el que está mirando. */
+.teaser54__play {
+  position: absolute;
+  inset: 0 0 56px 0;
+  display: grid;
+  place-content: center;
+  gap: var(--s-4);
+  justify-items: center;
+  background: rgba(0, 0, 0, .38);
+  transition: opacity var(--dur-3) var(--ease), background var(--dur-2) var(--ease);
+}
+.teaser54__play:hover { background: rgba(0, 0, 0, .22); }
+.teaser54__play.is-fuera { opacity: 0; pointer-events: none; }
+
+.teaser54__triangulo {
+  width: 78px; height: 78px;
+  border-radius: 50%;
+  background: var(--grad-verde);
+  display: grid;
+  place-content: center;
+  box-shadow: var(--shadow-verde);
+  transition: transform var(--dur-2) var(--ease);
+}
+.teaser54__play:hover .teaser54__triangulo { transform: scale(1.08); }
+.teaser54__triangulo svg { width: 28px; margin-left: 5px; fill: #fff; }
+.teaser54__play .etiqueta { color: var(--gris-claro); }
+
+@media (max-width: 960px) {
+  .teaser54__marco { --teaser-ancho: 100%; }
+}
+
+
+/* ==========================================================================
+   9. LA INSTALACIÓN
+   --------------------------------------------------------------------------
+   Las cuatro habitaciones en una grilla de 2x2. Aparecen DE A UNA, en fade, y
+   en diagonal: arriba-izquierda, abajo-derecha, abajo-izquierda,
+   arriba-derecha. Ese orden hace que la grilla se arme como un objeto que se
+   despliega, en vez de una lista que se completa de a un renglón.
+
+   El turno de cada foto es su --orden (va escrito en el HTML) y el retraso
+   sale de multiplicarlo por --foto-paso. La clase .is-in la pone
+   initFotosCasa cuando la grilla entra en pantalla.
+   ========================================================================== */
+
+.casa54__texto {
+  grid-column: 1 / span 2;
+  align-self: center;
+}
+
+/* PERILLAS — LAS 4 FOTOS DE LA CASA */
+.casa54__fotos {
+  --foto-paso: 260ms;    /* cuánto espera cada foto respecto de la anterior */
+
+  grid-column: 3 / span 2;
+  align-self: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+}
+
+/* SON PNG CON CANAL ALFA: la habitación flota y el crema de la página se ve a
+   través. Por eso este bloque NO lleva fondo propio ni sombra — cualquiera de
+   las dos dibujaría el rectángulo de la imagen, que es justo lo que la
+   transparencia viene a evitar. Es el mismo criterio que la portada de Simbio.
+   Si algún día se exportan como JPEG hay que volver a poner un fondo acá, o se
+   van a ver con un recuadro negro (el JPEG no guarda transparencia). */
+.casa54__foto {
+  width: 100%;
+  /* Las cuatro a la misma proporción para que la grilla quede pareja: los
+     originales miden parecido pero no igual (1481x833, 1416x797, 1572x885,
+     1304x734) y sin esto la 2x2 queda escalonada.
+     contain y no cover: con alfa no hay nada que rellenar, y cover le
+     recortaría un borde a la habitación. */
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 620ms var(--ease);
+  transition-delay: calc((var(--orden) - 1) * var(--foto-paso));
+}
+.casa54__fotos.is-in .casa54__foto { opacity: 1; }
+
+@media (max-width: 960px) {
+  .casa54__texto, .casa54__fotos { grid-column: 1 / -1; }
+  .casa54__fotos { margin-top: var(--s-6); }
+}
+
+
+/* ==========================================================================
+   10. LA CASA EN MOVIMIENTO — a pantalla completa
+   --------------------------------------------------------------------------
+   La única pieza de la página que ocupa todo. Es la casa entera
+   recorriéndose: a media pantalla no se leía como un recorrido, se leía como
+   una miniatura de un render.
+   ========================================================================== */
+
+.casa54__pantalla {
+  width: 100%;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--negro);
+}
+.casa54__pantalla video {
+  width: 100%;
+  height: 100%;
+  /* contain: el recorrido se ve ENTERO. Con cover, en una pantalla ancha se
+     le comía el piso y el techo de cada habitación. */
+  object-fit: contain;
+}
+
+
+/* ==========================================================================
+   11. EL SITIO
+   --------------------------------------------------------------------------
+   El mockup de borde a borde de la ventana, fuera de la grilla. Es una
+   captura de pantalla: mostrarla chica es mostrarla dos veces achicada.
+   ========================================================================== */
+
+.web54 { padding-bottom: 0; }
+
+.web54__marco {
+  display: block;
+  width: 100%;
+  margin-top: var(--s-7);
+  transition: opacity var(--dur-2) var(--ease);
+}
+.web54__marco:hover { opacity: .92; }
+.web54__marco img { width: 100%; display: block; }
+
+
+/* ==========================================================================
+   12. POSTALES
+   --------------------------------------------------------------------------
+   Ocho postales que se dan vuelta en 3D al pasar el mouse. CSS puro: no hay
+   librería, son tres propiedades.
+
+   CÓMO FUNCIONA UN FLIP, en orden:
+     1. El contenedor de afuera lleva `perspective`. Sin eso el giro es plano
+        y se ve como una persiana, no como una tarjeta dándose vuelta.
+        El valor ES la distancia del ojo a la tarjeta: más chico = más
+        exagerado. 1200px es una cámara normal.
+     2. El de adentro lleva `transform-style: preserve-3d` y es el que gira.
+        Sin preserve-3d los hijos se aplastan al plano del padre y el dorso
+        nunca aparece.
+     3. Las dos caras van APILADAS en el mismo lugar (position:absolute), el
+        dorso pre-girado 180°, y las dos con `backface-visibility: hidden`
+        para que no se vea la cara de atrás en espejo.
+
+   El giro es sobre Y: una postal se da vuelta como una carta, no como una
+   página de calendario.
+   ========================================================================== */
+
+/* CUATRO POR FILA, dos filas de cuatro. Las columnas van escritas y no con
+   auto-fit: la regla del sitio es que todo se apoya en las MISMAS cuatro
+   columnas, y auto-fit las repartía en cinco según el ancho de la pantalla. */
+.postales54 {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gap);
+  margin-top: var(--s-7);
+}
+@media (max-width: 960px) { .postales54 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .postales54 { grid-template-columns: 1fr; } }
+
+/* PERILLAS — LAS POSTALES */
+.postal54 {
+  --postal-perspectiva: 1200px;   /* más chico = giro más exagerado */
+  --postal-giro: 0.6s;            /* cuánto tarda en darse vuelta */
+
+  /* display:block y no el inline-block que traen los <button>: hace falta
+     para que el aspect-ratio y el 100% de altura de adentro tengan contra
+     qué medirse. */
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  background: none;
+
+  perspective: var(--postal-perspectiva);
+  /* Las postales originales son 420x297 (apaisadas). */
+  aspect-ratio: 420 / 297;
+}
+
+.postal54__caras {
+  /* DISPLAY BLOCK, Y NO ES DECORATIVO.
+     Es un <span>, o sea inline por defecto, y una caja inline ignora width y
+     height: quedaba de alto cero, y como las dos caras están adentro en
+     position:absolute con inset:0, las dos medían cero también. Resultado:
+     las ocho postales invisibles y solo se veían los numeritos. */
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--postal-giro) var(--ease);
+}
+
+/* EL GIRO.
+   .is-al-dorso son las cuatro que ARRANCAN dadas vuelta (initPostales). El
+   hover las invierte: si está de frente muestra el dorso, y si arrancó de
+   dorso muestra el frente. Por eso las dos reglas y no una sola: girar
+   siempre 180° dejaría a esas cuatro sin reaccionar al mouse. */
+.postal54:hover .postal54__caras,
+.postal54:focus-visible .postal54__caras,
+.postal54.is-dada-vuelta .postal54__caras { transform: rotateY(180deg); }
+
+.postal54.is-al-dorso .postal54__caras { transform: rotateY(180deg); }
+.postal54.is-al-dorso:hover .postal54__caras,
+.postal54.is-al-dorso:focus-visible .postal54__caras,
+.postal54.is-al-dorso.is-dada-vuelta .postal54__caras { transform: rotateY(0deg); }
+
+.postal54__cara {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Sin esto se ve la otra cara en espejo mientras gira. */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--shadow-md);
+}
+.postal54__cara--dorso { transform: rotateY(180deg); }
+
+
+/* ==========================================================================
+   13. MANUAL DE MARCA — las polaroids del cierre
+   --------------------------------------------------------------------------
+   Las tres láminas apoyadas como fotos impresas, TODAS DEL MISMO TAMAÑO, y se
+   abren en grande al tocarlas.
+
+   El marco blanco con más aire abajo es lo que las hace leerse como una foto
+   impresa y no como una imagen con borde. Sin rotación: en esta página nada
+   está inclinado.
+   ========================================================================== */
+
+.mockups54 {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+}
+@media (max-width: 960px) { .mockups54 { grid-template-columns: 1fr; } }
+
+.mockup54 {
+  background: var(--grad-polaroid);
+  padding: 12px 12px 34px;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--dur-2) var(--ease),
+              box-shadow var(--dur-2) var(--ease);
+}
+.mockup54:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.mockup54__ver {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+}
+.mockup54__ver img {
+  width: 100%;
+  /* Las tres a la misma proporción: es lo que las hace verse como un juego de
+     tres y no como tres imágenes sueltas que casualmente están juntas. */
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+
+/* ==========================================================================
+   14. LA LUPA
+   --------------------------------------------------------------------------
+   La capa que abre una lámina en grande. El markup lo crea initLupa (main.js)
+   y lo cuelga del <body> — que es quien lleva .pag-54, por eso alcanza con
+   estos selectores y no hay que tocar el JS.
+
+   Los estilos están COPIADOS de simbio.css con un solo cambio: allá la imagen
+   se recorta a un cuadrado (`aspect-ratio: 1/1`), porque los líquenes son
+   cuadrados. Acá las láminas son apaisadas y se muestran ENTERAS.
+   ========================================================================== */
+
+.pag-54 .lupa {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  padding: var(--s-8);
+  background: rgba(26, 26, 24, .82);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease);
+}
+.pag-54 .lupa.is-abierta { opacity: 1; pointer-events: auto; }
+
+.pag-54 .lupa__polaroid {
+  background: var(--grad-polaroid);
+  padding: 16px 16px 46px;
+  box-shadow: var(--shadow-lg);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  /* La entrada: llega desde atrás y se acerca. Sin rotación, como todo acá. */
+  transform: scale(.9);
+  transition: transform 520ms var(--ease);
+}
+.pag-54 .lupa.is-abierta .lupa__polaroid { transform: scale(1); }
+.pag-54 .lupa__polaroid.is-manipulando { transition: none; }
+.pag-54 .lupa__polaroid.is-agarrando { cursor: grabbing; }
+
+/* SIN aspect-ratio y SIN object-fit: la lámina se ve entera, con su
+   proporción real. El tope de alto es lo que evita que una imagen muy alta se
+   salga de la ventana. */
+.pag-54 .lupa__polaroid img {
+  display: block;
+  width: auto;
+  max-width: min(78vw, 1100px);
+  max-height: 74svh;
+  pointer-events: none;   /* el arrastre lo maneja el marco */
+}
+
+.pag-54 .lupa__flecha {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--crema);
+  opacity: .45;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
+}
+.pag-54 .lupa__flecha:hover { opacity: 1; }
+.pag-54 .lupa__flecha svg { width: 24px; height: 24px; }
+.pag-54 .lupa__flecha--prev { left: var(--s-6); }
+.pag-54 .lupa__flecha--next { right: var(--s-6); }
+.pag-54 .lupa__flecha--prev:hover { transform: translateX(-4px); }
+.pag-54 .lupa__flecha--next:hover { transform: translateX(4px); }
+
+/* Las láminas no tienen fuente que citar (son del proyecto), así que el link
+   de fuente que crea initLupa queda vacío. Se esconde para que no deje un
+   subrayado invisible abajo. */
+.pag-54 .lupa__fuente:empty { display: none; }
+.pag-54 .lupa__fuente {
+  position: absolute;
+  bottom: var(--s-5);
+  left: 50%;
+  translate: -50% 0;
+  font-size: 0.5625rem;
+  letter-spacing: 0.04em;
+  color: var(--crema);
+  opacity: .4;
+}
+
+.pag-54 .lupa__cerrar {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-6);
+  font-size: var(--t--1);
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+  color: var(--crema);
+  opacity: .55;
+}
+.pag-54 .lupa__cerrar:hover { opacity: 1; }
+
+
+/* ==========================================================================
+   15. MOVIMIENTO REDUCIDO
+   Si el sistema pide menos movimiento, esta página se apaga entera: la tira
+   se queda quieta y se scrollea a mano, las postales no giran, y los videos
+   no arrancan solos (eso último lo maneja mas-54.js).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .tira54 { height: auto; }
+  .tira54__escena { position: static; height: auto; overflow-x: auto; }
+  .tira54__pista { transform: none !important; --tira-alto: 60svh; }
+  .postal54__caras { transition: none !important; }
+  .hero54__riel, .contexto54__pieza { transition: none !important; }
+  .casa54__pantalla { height: auto; }
+  /* Las fotos de la casa aparecen y punto, sin escalonarse. */
+  .casa54__foto { opacity: 1 !important; transition: none !important; transition-delay: 0s !important; }
+}

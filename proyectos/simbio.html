@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simbio — Mi Cajón</title>
+  <meta name="description" content="Simbio: juego de construcción inspirado en el liquen. Diseño industrial y biomímesis, 2023.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- UNA SOLA FAMILIA: ARCHIVO.
+       Esta página usa 3 usos tipográficos y nada más (título / cuerpo /
+       rótulo), todos en Archivo. La jerarquía la hacen el peso, la caja
+       (mayúscula o no) y el espaciado entre letras, no seis tamaños
+       distintos. Nunito e IBM Plex Mono ya no se cargan acá.
+       El rango 400..700 es una fuente variable: un archivo para todos los
+       pesos, en vez de uno por peso. -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css?v=6">
+  <link rel="stylesheet" href="../css/base.css?v=11">
+  <link rel="stylesheet" href="../css/layout.css?v=8">
+  <link rel="stylesheet" href="../css/simbio.css?v=116">
+
+  <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
+       Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
+       necesita que ya existan para registrar el plugin. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+
+  <!-- Swup: transición entre páginas. VanillaTilt: inclinación 3D de la ficha. -->
+  <script src="https://unpkg.com/swup@4/dist/swup.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
+</head>
+
+<!-- pag-simbio: marca la página para el sistema tipográfico de 3 usos.
+     Todo lo tipográfico cuelga de esta clase (buscá "SISTEMA TIPOGRÁFICO" en
+     css/simbio.css). Así el rebranding no toca el índice ni las otras
+     páginas: se aplica solo donde está esta clase.
+     data-cursor: el cursor de esta página (ver initCursor en main.js). -->
+<body class="zona zona--crema pag-simbio" data-cursor="anillo">
+
+<nav class="site-nav grilla">
+  <a class="pastilla" href="../index.html">Home</a>
+  <a class="pastilla is-activa" href="../index.html#trabajos">Trabajos</a>
+  <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
+  <div class="site-nav__fin">
+    <a class="pastilla" href="../index.html#contacto">Contacto</a>
+    <div class="nav-idioma">
+      <a class="pastilla is-activa" href="#" aria-current="true">ES</a>
+      <a class="pastilla" href="#">EN</a>
+    </div>
+  </div>
+</nav>
+
+<!-- data-body / data-cursor-pag: la clase y el cursor que le tocan al
+     <body> en esta pagina. Los copia transiciones.js despues de cada
+     navegacion de Swup (ver el hook page:view). -->
+<main id="swup" class="transicion-fade"
+      data-body="zona zona--crema pag-simbio" data-cursor-pag="anillo">
+
+  <!-- ======================================================================
+       LAS DOS COLUMNAS
+       Izquierda fija (sticky) mientras se scrollea: el título, la bajada y los
+       textos que se van sumando a medida que aparece cada sección.
+       Derecha: el material.
+
+       Los textos de la izquierda NO están todos visibles de entrada. Cada uno
+       aparece cuando su sección de la derecha entra en pantalla — el vínculo
+       lo hace data-sincro / data-bloque (ver initColumnaSincro en main.js).
+       ====================================================================== -->
+  <div class="proyecto grilla">
+
+    <!-- COLUMNA FIJA: solo la identidad del proyecto.
+         Los textos de cada sección NO van acá: van con sus imágenes. Tener
+         todo apilado en esta columna era demasiada información junta y
+         obligaba a leer de un lado y mirar del otro. -->
+    <aside class="proyecto__col">
+      <!-- Solo la flecha, sin el texto "Volver a los trabajos".
+           El aria-label queda igual: un lector de pantalla necesita saber a
+           dónde lleva el link, y una flecha sola no dice nada. Es texto que
+           existe para el que no ve la flecha, no en la pantalla. -->
+      <a class="volver volver--pastilla" href="../index.html#trabajos"
+         aria-label="Volver a los trabajos">
+        <svg viewBox="0 0 28 10" fill="none" aria-hidden="true"
+             stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+             stroke-linejoin="round">
+          <path d="M27 5H1M1 5l4.5-4M1 5l4.5 4"/>
+        </svg>
+      </a>
+
+      <h1 class="proyecto__titulo">Simbio</h1>
+
+      <div class="proyecto__meta">
+        <p class="etiqueta">Diseño industrial</p>
+        <p class="etiqueta">Biomímesis</p>
+        <p class="etiqueta">2023</p>
+      </div>
+
+      <p class="proyecto__bajada">
+        El reto era diseñar un juego de construcción basado en un proceso o
+        estructura de la naturaleza. Elegí al liquen como referencia: un sistema
+        de simbiosis entre un hongo y un alga que solo existe si dependen entre
+        sí. Crecí en el sur viendo esas estructuras cubrir árboles y rocas, y
+        esa fascinación fue el punto de partida.
+      </p>
+
+    </aside>
+
+    <div class="proyecto__flujo">
+
+      <!-- ============ PANTALLA 1 — LA IMAGEN DE ENTRADA ============ -->
+      <section class="pantalla pantalla--portada reveal">
+        <figure class="portada__foto">
+          <!-- PNG con canal alfa (Shadow Catcher): el fondo de la página se
+               ve a través de la imagen. Por eso el contenedor no lleva
+               background propio — ver .portada__foto en simbio.css. -->
+          <img src="../assets/simbio/foto/portada.png?v=3"
+               alt="Simbio armado en su versión final">
+        </figure>
+      </section>
+
+      <!-- ============ PANTALLA 2 — EL LIQUEN ============
+           Todavía sin nombrar el juego: primero se entiende el organismo.
+           El texto vive acá, al lado de sus fotos, no en la columna fija. -->
+      <section class="pantalla pantalla--liquen reveal">
+        <div class="pantalla__texto">
+          <p class="etiqueta">Caso de estudio</p>
+          <p>
+            Un liquen es la fusión de un <b>hongo</b> y un <b>alga</b> (o
+            cianobacteria) funcionando como un solo organismo.
+          </p>
+          <p>
+            El hongo aporta la estructura: protege, retiene agua y ancla el
+            conjunto a la superficie donde crece. El alga, adentro, hace
+            fotosíntesis y produce el alimento que el hongo no puede generar
+            por sí solo.
+          </p>
+          <p>
+            Ese reparto de funciones es lo que le permite sobrevivir donde
+            ningún organismo solo podría.
+          </p>
+        </div>
+
+        <!-- Las tres fotos. Cada una se mueve a su propia velocidad al
+             scrollear (ver initParallaxLiquenes) y se puede abrir en grande.
+             El crédito de la fuente aparece al pasar el mouse: está, pero no
+             compite. -->
+        <div class="liquenes">
+          <figure class="liquenes__suelto liquenes__suelto--a">
+            <button class="liquenes__ver" data-lupa="../assets/simbio/liquenes-web/liquen1.jpg"
+                    data-fuente="https://muyinteresante.okdiario.com/naturaleza/30774.html" data-dominio="muyinteresante.okdiario.com"
+                    aria-label="Ver liquen creciendo sobre una superficie en grande">
+              <img src="../assets/simbio/liquenes-web/liquen1.jpg" alt="Liquen creciendo sobre una superficie" loading="lazy">
+            </button>
+          </figure>
+          <figure class="liquenes__suelto liquenes__suelto--b">
+            <button class="liquenes__ver" data-lupa="../assets/simbio/liquenes-web/liquen4.jpg"
+                    data-fuente="https://treparriscosfieldnotebook.blogspot.com/1992/05/xanthoria-parietina.html" data-dominio="treparriscosfieldnotebook.blogspot.com"
+                    aria-label="Ver xanthoria parietina sobre una rama en grande">
+              <img src="../assets/simbio/liquenes-web/liquen4.jpg" alt="Xanthoria parietina sobre una rama" loading="lazy">
+            </button>
+          </figure>
+          <figure class="liquenes__suelto liquenes__suelto--c">
+            <button class="liquenes__ver" data-lupa="../assets/simbio/liquenes-web/liquen2.jpg"
+                    data-fuente="https://orionmagazine.org/wp-content/uploads/2023/08/lichen-720x930.png" data-dominio="orionmagazine.org"
+                    aria-label="Ver detalle de la trama de un liquen en grande">
+              <img src="../assets/simbio/liquenes-web/liquen2.jpg" alt="Detalle de la trama de un liquen" loading="lazy">
+            </button>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ PANTALLAS 3, 4 y 5 — LA TRADUCCIÓN ============
+           Una pieza por pantalla, no las tres juntas: así cada una se mira
+           sola, con su animación corriendo y su material al lado. Las tres
+           ocupan las columnas 3 y 4 de la grilla — la 2 queda libre, igual
+           que en el resto de las pantallas.
+           ================================================================ -->
+      <!-- ---- INTRO DE LA TRADUCCIÓN ----
+           Pantalla completa y sin columnas: es un enunciado, no una ficha.
+           Las tres que siguen sí van partidas en texto + objeto. -->
+      <section class="pantalla pantalla--intro reveal">
+        <!-- REAL3: las tres piezas sueltas, a la izquierda del enunciado.
+             PNG con canal alfa, igual que la portada: no lleva fondo propio,
+             se apoya sobre el crema de la página.
+             Está posicionada en absoluto para que el TEXTO no se mueva de
+             donde estaba. Si querés cambiarle el tamaño o la posición, todas
+             las perillas están en css/simbio.css, buscá "PANTALLA INTRO". -->
+        <figure class="intro__foto">
+          <!-- Se usa el "-recorte" y no el REAL3.png original: el render venía
+               con 242 px de aire transparente a la izquierda y 161 abajo, así
+               que con el mismo ancho en pantalla las piezas se ven más
+               grandes. El original queda intacto al lado.
+               Si volvés a exportar la imagen, pasala por:
+               powershell -ExecutionPolicy Bypass -File tools\recortar-transparencia.ps1 -Archivo assets\simbio\foto\REAL3.png -->
+          <img src="../assets/simbio/foto/REAL3-recorte.png"
+               alt="Las tres piezas de Simbio sueltas, antes de armarse"
+               loading="lazy">
+        </figure>
+
+        <div class="pantalla__enunciado">
+          <p class="etiqueta">La traducción</p>
+          <p>
+            A partir del entendimiento de cómo funciona el sistema de este
+            conjunto de seres en simbiosis, se desarrolla la traducción de todo
+            el sistema de construcción del juego; <b>tres piezas que solo
+            cobran sentido juntas.</b>
+          </p>
+        </div>
+      </section>
+
+      <!-- ---- PIEZA 1 DE 3: Pieza árbol ---- -->
+      <section class="pantalla pantalla--pieza reveal">
+        <figure class="muestra" data-muestra="muestra-pieza-arbol">
+          <figcaption class="muestra__pie">
+            <b>Pieza árbol</b>
+            Tubos y uniones de PVC. Los más largos, rellenos de arena para dar
+            peso, sellados con tapones de silicona en las puntas.
+            <!-- Ficha técnica: va en el tamaño de RÓTULO, la categoría más
+                 chica del sistema. Es un dato, no parte del párrafo. -->
+            <span class="muestra__ficha">Tres piezas — 24, 12 y 7 cm — que arman el crecimiento vertical.</span>
+          </figcaption>
+          <div class="muestra__marco">
+            <canvas class="muestra__canvas"></canvas>
+            <p class="muestra__falta">frames pendientes</p>
+          </div>
+        </figure>
+      </section>
+
+      <!-- ---- PIEZA 2 DE 3: Pieza hongo ---- -->
+      <section class="pantalla pantalla--pieza reveal">
+        <figure class="muestra" data-muestra="muestra-piezas-hongos">
+          <figcaption class="muestra__pie">
+            <b>Pieza hongo</b>
+            Hace crecer la estructura en horizontal. Láminas de guatambú
+            cortadas a láser, con goma eva azul encima, cada una con distinta
+            cantidad de entradas para multiplicar las conexiones.
+          </figcaption>
+          <div class="muestra__marco">
+            <canvas class="muestra__canvas"></canvas>
+            <p class="muestra__falta">frames pendientes</p>
+          </div>
+        </figure>
+      </section>
+
+      <!-- ---- PIEZA 3 DE 3: Pieza alga ---- -->
+      <section class="pantalla pantalla--pieza reveal">
+        <figure class="muestra" data-muestra="muestra-alga">
+          <figcaption class="muestra__pie">
+            <b>Pieza alga</b>
+            Mostacillas verdes con tanza elástica por dentro. Flexible, pero no
+            débil: al penetrar el hongo, queda firme y es la unión que conecta
+            todo el sistema.
+          </figcaption>
+          <div class="muestra__marco">
+            <canvas class="muestra__canvas"></canvas>
+            <p class="muestra__falta">frames pendientes</p>
+          </div>
+        </figure>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============ 3. EL ENSAMBLE — ancho completo ============ -->
+  <section class="simbio-scroll" data-simbio-scroll aria-label="Animación del ensamble de Simbio">
+    <div class="simbio-stage grilla">
+
+      <!-- El render, sin marco ni contorno: la imagen trae el mismo crema
+           de la página adentro, así que no se ve ningún rectángulo. -->
+      <div class="simbio-panel-wrap">
+        <canvas class="simbio-canvas" data-simbio-canvas
+                role="img"
+                aria-label="Secuencia del ensamble de Simbio: crecimiento vertical, horizontal, enredado y colgante"></canvas>
+
+        <!-- Indicador de precarga -->
+        <div class="simbio-loader" data-simbio-loader>
+          <p class="simbio-loader__pct" data-simbio-porcentaje>0%</p>
+          <div class="simbio-loader__pista">
+            <div class="simbio-loader__barra" data-simbio-barra></div>
+          </div>
+        </div>
+
+        <!-- Estado de error: carpeta vacía o página abierta como archivo -->
+        <p class="simbio-mensaje" data-simbio-mensaje hidden></p>
+      </div>
+
+      <!-- Pista de scroll: la única indicación de la página, y se va sola
+           en cuanto empezás a scrollear (lo hace simbio-scroll.js). -->
+      <p class="simbio-pista" data-simbio-pista aria-hidden="true">
+        <span>Scrolleá para armarlo</span>
+      </p>
+
+      <!-- RÓTULO DE FASE.
+           El nombre se escribe y se borra letra por letra en sincro con el
+           scroll (ver simbio-scroll.js). Va anclado a la columna 1, no
+           centrado bajo el render: la grilla manda. -->
+      <div class="simbio-fase">
+        <p class="etiqueta simbio-fase__num" data-simbio-fase-num>01 / 04</p>
+        <p class="simbio-fase__nombre">
+          <span data-simbio-fase></span><i class="simbio-fase__caret" aria-hidden="true"></i>
+        </p>
+        <p class="simbio-fase__detalle" data-simbio-fase-detalle></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 4. LAS CARPETAS ============ -->
+  <section class="collage-seccion grilla">
+    <!-- ==================================================================
+         LAS DOS CARPETAS, LADO A LADO
+         Tapa y cuerpo son hermanos en la grilla, no anidados: es lo que
+         permite que las dos tapas queden en fila (dos columnas cada una) y
+         que el contenido, al abrirse, use las cuatro columnas completas.
+         El vínculo entre una tapa y su cuerpo lo hace data-abre / id.
+
+         Clic para abrir, hover para activar cada grupo adentro: abrir una
+         carpeta es una decisión, no un roce.
+         ================================================================== -->
+    <button class="carpeta__frente reveal" data-abre="carpeta-proceso" aria-expanded="false"
+            aria-controls="carpeta-proceso" style="grid-column: 1 / span 2">
+      <span class="carpeta__lenguetas" aria-hidden="true">
+        <span class="carpeta__lengueta"></span><span class="carpeta__lengueta"></span>
+      </span>
+      <span class="carpeta__marca" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/></svg></span>
+      <span class="carpeta__titulo">Proceso</span>
+    </button>
+
+    <button class="carpeta__frente reveal" data-abre="carpeta-prototipo" aria-expanded="false"
+            aria-controls="carpeta-prototipo" style="grid-column: 3 / span 2">
+      <span class="carpeta__lenguetas" aria-hidden="true">
+        <span class="carpeta__lengueta"></span><span class="carpeta__lengueta"></span>
+      </span>
+      <span class="carpeta__marca" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/></svg></span>
+      <span class="carpeta__titulo">Prototipo</span>
+    </button>
+
+    <!-- CUERPO DE PROCESO — las piezas salen disparadas desde la tapa -->
+    <div class="carpeta__cuerpo" id="carpeta-proceso">
+      <div class="carpeta__interior">
+
+        <div class="carpeta__grupos">
+            <div class="grupo grupo--nota-izq">
+              <div class="grupo__lienzo">
+              <figure class="pieza pieza--hoja" style="--x:1%; --y:2%; --w:31%; --giro:-1.3deg; --dx:-5%; --dy:-12px; --vx:154px; --vy:-310px; --orden:1"><img src="../assets/simbio/proceso/imagenes-web/proceso8.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--hoja" style="--x:33%; --y:15%; --w:31%; --giro:1.1deg; --dx:0; --dy:-16px; --vx:-51px; --vy:-372px; --orden:2"><img src="../assets/simbio/proceso/imagenes-web/proceso9.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--hoja" style="--x:65%; --y:1%; --w:31%; --giro:-0.6deg; --dx:5%; --dy:-12px; --vx:-256px; --vy:-305px; --orden:3"><img src="../assets/simbio/proceso/imagenes-web/proceso10.jpg" alt="" loading="lazy"></figure>
+                <figcaption class="grupo__nota">Las primeras traducciones: <b>el árbol</b> dispone la estructura vertical, <b>el hongo</b> genera la superficie horizontal, <b>el alga</b> la ocupa aéreamente. Ninguno funciona solo.</figcaption>
+              </div>
+            </div>
+            <div class="grupo">
+              <div class="grupo__lienzo">
+              <figure class="pieza pieza--polaroid" style="--x:1%; --y:4%; --w:30%; --giro:-1.3deg; --dx:-5%; --dy:-12px; --vx:154px; --vy:-319px; --orden:4"><img src="../assets/simbio/proceso/imagenes-web/proceso1.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:33%; --y:18%; --w:30%; --giro:2.5deg; --dx:0; --dy:-18px; --vx:-51px; --vy:-386px; --orden:5"><img src="../assets/simbio/proceso/imagenes-web/proceso2.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:65%; --y:2%; --w:30%; --giro:-0.6deg; --dx:5%; --dy:-12px; --vx:-256px; --vy:-310px; --orden:6"><img src="../assets/simbio/proceso/imagenes-web/proceso3.jpg" alt="" loading="lazy"></figure>
+                <figcaption class="grupo__nota">El tubo de PVC para el árbol, sin darle protagonismo. Y la goma eva no llegaba a cubrir la madera: <b>ese desfasaje terminó siendo la forma de la pieza hongo.</b></figcaption>
+              </div>
+            </div>
+            <div class="grupo grupo--nota-izq">
+              <div class="grupo__lienzo">
+              <figure class="pieza pieza--polaroid" style="--x:14%; --y:14%; --w:26%; --giro:1.1deg; --dx:-5%; --dy:-12px; --vx:70px; --vy:-367px; --orden:7"><img src="../assets/simbio/proceso/imagenes-web/proceso5.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:48%; --y:22%; --w:26%; --giro:-2.5deg; --dx:5%; --dy:-12px; --vx:-147px; --vy:-406px; --orden:8"><img src="../assets/simbio/proceso/imagenes-web/proceso6.jpg" alt="" loading="lazy"></figure>
+                <figcaption class="grupo__nota">Uniones exploradas y descartadas: expandirse hacia los lados es tarea del hongo, no del árbol. Y no era innovador.</figcaption>
+              </div>
+            </div>
+            <div class="grupo">
+              <div class="grupo__lienzo">
+              <figure class="pieza pieza--polaroid" style="--x:2%; --y:6%; --w:44%; --giro:-0.6deg; --dx:-3%; --dy:-12px; --vx:147px; --vy:-329px; --orden:9"><img src="../assets/simbio/proceso/imagenes-web/proceso4.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:52%; --y:2%; --w:22%; --giro:2.5deg; --dx:2%; --dy:-14px; --vx:-173px; --vy:-310px; --orden:10"><img src="../assets/simbio/proceso/imagenes-web/proceso7.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--ref pieza--oculta" style="--x:8%; --y:58%; --w:15%; --giro:-1.3deg; --dx:-3%; --dy:10px; --vx:109px; --vy:-578px; --orden:11"><img src="../assets/simbio/proceso/imagenes-web/proceso11.jpg" alt="" loading="lazy"></figure>
+              <figure class="pieza pieza--ref pieza--oculta" style="--x:26%; --y:66%; --w:15%; --giro:2.5deg; --dx:3%; --dy:12px; --vx:-6px; --vy:-617px; --orden:12"><img src="../assets/simbio/proceso/imagenes-web/proceso12.jpg" alt="" loading="lazy"></figure>
+                <figcaption class="grupo__nota">Cómo se comporta una constitución lineal al enredarse. Salió de los <b>muñecos articulados con base</b>, esos que se aflojan al apretar.</figcaption>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUERPO DE PROTOTIPO — el timelapse y las cuatro fotos.
+         Los dos grupos llevan .grupo--ancho: ocupan las 4 columnas en vez de
+         2, así el material se ve al doble de tamaño. Es la carpeta de la pieza
+         terminada: acá el tamaño ES el contenido. -->
+    <div class="carpeta__cuerpo" id="carpeta-prototipo">
+      <div class="carpeta__interior">
+        <div class="carpeta__grupos">
+
+          <!-- IZQUIERDA: EL TIMELAPSE. Sin nota al pie: se explica solo.
+               NO usa el sistema de piezas absolutas del collage. Motivo: el video
+               es VERTICAL (480x848), y en ese sistema el ancho se da en % del
+               lienzo y el alto sale de la proporción — con 56% medía 1286px de
+               alto, se salía de la carpeta y tapaba las fotos.
+               Acá manda el ALTO (--timelapse-alto en simbio.css) y el ancho sale
+               solo: es la única forma de que un video vertical crezca sin
+               desbordar. Para agrandarlo, tocá esa variable. -->
+          <div class="grupo">
+            <figure class="timelapse">
+              <video src="../assets/simbio/proceso/video/proceso.mp4" autoplay loop muted playsinline></video>
+            </figure>
+          </div>
+
+          <!-- DERECHA: LA GRÁFICA Y LOS INSTRUCTIVOS.
+               Son los vectores de assets/simbio/proceso/vectores/. Estuvieron un
+               rato esparcidos por detrás de la carpeta de Proceso, y un rato en
+               cuadrícula numerada acá. Ninguna de las dos: ahora es un grupo
+               chico, desacomodado, sin números y sin orden — son la gráfica del
+               proyecto, no una secuencia de pasos.
+               Cada uno lleva su --w (tamaño), --giro y --dy (cuánto sube o baja).
+               LOS TRES SON VALORES FIJOS, elegidos uno por uno: en este proyecto
+               nada se rota al azar, porque al azar se ve descuidado y no
+               desacomodado. Cambiá los números para recomponer el grupo.
+               No tienen interacción: son material gráfico, no botones. -->
+          <div class="grupo">
+            <p class="etiqueta graficas__rotulo">Gráfica e instructivos</p>
+            <!-- SOLO CUATRO: los tres instructivos de la mano y la estructura
+                 armada. Las otras siete (piezas sueltas, Recurso 5, 6, 8 a 12) se
+                 sacaron: repetían en dibujo lo que las fotos de abajo ya muestran
+                 en material, y le quitaban peso justamente a estas cuatro, que son
+                 las que explican algo. Los archivos siguen en
+                 assets/simbio/proceso/vectores/ por si algún día vuelven. -->
+            <div class="graficas">
+                <img class="grafica" style="--w:8.4rem; --giro:-5deg; --dy:8px; --dx:-4px" src="../assets/simbio/proceso/vectores/Recurso 2@300x.png" alt="" loading="lazy">
+                <img class="grafica" style="--w:8.8rem; --giro:3deg; --dy:-10px; --dx:5px" src="../assets/simbio/proceso/vectores/Recurso 3@300x.png" alt="" loading="lazy">
+                <img class="grafica" style="--w:8.0rem; --giro:-4deg; --dy:9px; --dx:-6px" src="../assets/simbio/proceso/vectores/Recurso 4@300x.png" alt="" loading="lazy">
+                <img class="grafica" style="--w:9.2rem; --giro:2deg; --dy:-8px; --dx:4px" src="../assets/simbio/proceso/vectores/Recurso 7@300x.png" alt="" loading="lazy">
+            </div>
+          </div>
+
+          <!-- LAS 4 FOTOS (FRAN1 a FRAN4), como un solo grupo de cuatro.
+               Van desde prototipo-web/ y NO desde prototipo/: las originales
+               son de camara, 2736x3648 y 13 MB cada una. Las convierte
+               tools/optimizar-fotos.ps1. Si agregas fotos nuevas, copialas en
+               prototipo/ y corre ese script.
+               Los numeros son la composicion: --x/--y donde cae en el lienzo,
+               --w el ancho, --giro la inclinacion, --dx/--dy cuanto se separa
+               al pasar el mouse, --vx/--vy desde donde sale al abrir.
+               FRAN2 es la horizontal: por eso lleva mas --w. -->
+          <div class="grupo grupo--ancho grupo--nota-izq">
+            <div class="grupo__lienzo">
+              <figure class="pieza pieza--polaroid" style="--x:1%;  --y:8%;  --w:23%; --giro:-0.8deg; --dx:-3%; --dy:-12px; --vx:150px; --vy:-330px; --orden:14"><img src="../assets/simbio/prototipo-web/FRAN2.jpg" alt="El prototipo terminado, armado y de pie" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:26%; --y:2%;  --w:21%; --giro:1.2deg;  --dx:0;   --dy:-16px; --vx:-60px;  --vy:-352px; --orden:15"><img src="../assets/simbio/prototipo-web/FRAN1.jpg" alt="Detalle del prototipo: las tres piezas trabadas entre sí" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:50%; --y:11%; --w:21%; --giro:-1.1deg; --dx:3%;  --dy:-12px; --vx:-180px; --vy:-360px; --orden:16"><img src="../assets/simbio/prototipo-web/FRAN3.jpg" alt="El prototipo en uso, visto de cerca" loading="lazy"></figure>
+              <figure class="pieza pieza--polaroid" style="--x:74%; --y:3%;  --w:21%; --giro:0.9deg;  --dx:-2%; --dy:14px;  --vx:60px;   --vy:-470px; --orden:17"><img src="../assets/simbio/prototipo-web/FRAN4.jpg" alt="Otra vista del prototipo armado" loading="lazy"></figure>
+              <figcaption class="grupo__nota">
+                Amplia jugabilidad y posibilidad de estructuras.
+              </figcaption>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="zona zona--crema">
+  <div class="site-footer grilla">
+    <p class="etiqueta"><a href="../index.html">Mi Cajón — Matías Cornara</a></p>
+    <p class="etiqueta creditos-pie">
+      LAB 3 · TP 3 — Prof. Camila Offenhenden, Iván Rosler,
+      Natalia Hojman y Andrés Jalif<br>
+      Matías Cornara · 2026
+    </p>
+  </div>
+</footer>
+
+<!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
+     Lenis. Faltaba en esta página, y por eso el scroll no era suave. -->
+<script src="../js/smooth-scroll.js?v=2" defer></script>
+<script src="../js/transiciones.js?v=1" defer></script>
+<script src="../js/main.js?v=21" defer></script>
+<script src="../js/simbio-scroll.js?v=20" defer></script>
+<script src="../js/muestras.js?v=10" defer></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# Texto: normalizar finales de línea al guardar, respetar los del sistema al sacar
+*.html   text
+*.css    text
+*.js     text
+*.md     text
+*.txt    text
+*.json   text
+*.ps1    text eol=crlf
+*.bat    text eol=crlf
+
+# Binarios: que git NO los toque ni intente hacer diff de líneas.
+# Sin esto, un JPG puede corromperse al convertir finales de línea.
+*.jpg    binary
+*.jpeg   binary
+*.png    binary
+*.webp   binary
+*.gif    binary
+*.mp4    binary
+*.webm   binary
+*.mov    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary

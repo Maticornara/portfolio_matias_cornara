@@ -1,0 +1,804 @@
+/* ==========================================================================
+   ARCHIVO.CSS — LA PORTADA
+   --------------------------------------------------------------------------
+   Todo lo que se ve en index.html vive acá: hero + esquina animada, CV,
+   herramientas, contacto, título de transición y grid de proyectos.
+
+   Este archivo NO redefine colores, tipografías ni sombras: los toma de
+   variables.css. Lo único propio son medidas y colocaciones de esta página,
+   y están todas arriba, en PERILLAS.
+
+   La ficha de proyecto (.ficha y sus partes) sigue viviendo en layout.css:
+   es un componente del sistema, no de esta página. Acá solo se colocan sobre
+   la grilla y se les cambia el tamaño.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   0. PERILLAS
+   --------------------------------------------------------------------------
+   Los números que se tocan a mano. Cada uno dice qué mueve y en qué unidad.
+
+   Recordatorio de unidades (el manual largo está en simbio.css):
+     rem  = múltiplo del tamaño de letra base (1rem = 16px). Para tamaños.
+     svh  = 1% del alto de la ventana SIN las barras del navegador móvil.
+     vw   = 1% del ancho de la ventana.
+     ch   = ancho de un "0". Sirve para medir cuánto texto entra por línea.
+     %    = relativo al padre.
+   ========================================================================== */
+
+.pag-archivo {
+
+  /* --- TIPOGRAFÍA: UNA SOLA FAMILIA, ARCHIVO ------------------------
+     El sitio se llama Archivo y la tipografía es Archivo. Es el mismo
+     movimiento que ya hizo la página de Simbio (buscá "SISTEMA TIPOGRÁFICO"
+     en simbio.css): en vez de cambiar cada regla, se reasignan las dos
+     variables de familia y todo el CSS del sistema las sigue.
+
+     --font-mono también apunta acá. En el sistema viejo los rótulos chicos
+     eran monoespaciados (IBM Plex Mono) para que se leyeran como ficha
+     técnica; con una sola familia, ese papel lo hacen la MAYÚSCULA, el peso
+     y las letras separadas, no un segundo tipo. La regla está más abajo,
+     en "RÓTULOS".
+
+     Para volver al sistema anterior: borrar estas dos líneas y volver a
+     poner el <link> de Nunito + IBM Plex Mono en index.html. */
+  --font: "Archivo", system-ui, sans-serif;
+  --font-mono: "Archivo", system-ui, sans-serif;
+
+  /* Cuánto se separan las letras de un rótulo. Es LO que lo hace leerse como
+     rótulo ahora que no hay monoespaciada: sin esto, una etiqueta en
+     mayúscula es solo texto chico en mayúscula. Mismo valor que Simbio. */
+  --track-rotulo: 0.14em;
+
+  /* --- HERO --------------------------------------------------------- */
+
+  /* Alto de la primera pantalla. Una pantalla entera, igual que el resto
+     de las secciones. */
+  --hero-alto: 100svh;
+
+  /* Cuánto aire queda entre el texto del hero y el borde de abajo. Es lo
+     que decide qué tan lejos de la caja cae el nombre. */
+  --texto-abajo: clamp(3rem, 9vh, 7rem);
+
+  /* Tamaño del nombre. El clamp es (mínimo, ideal, máximo): nunca baja de
+     1.5rem ni pasa de 2.6rem, y en el medio crece con el ancho de ventana.
+     Es CHICO a propósito: el protagonista del hero es la caja en la esquina,
+     y el nombre acompaña desde abajo. */
+  --nombre-tam: clamp(1.5rem, 1rem + 1.9vw, 2.6rem);
+
+  /* Tamaño de la frase de abajo del nombre */
+  --frase-tam: clamp(0.9rem, 0.82rem + 0.35vw, 1.1rem);
+
+  /* --- LÍNEAS DE LA ESQUINA ----------------------------------------- */
+
+  /* Grosor de las tres líneas de la esquina, en píxeles reales */
+  --esquina-grosor: 1px;
+
+  /* Cuánto se ven. El pedido era 10-20%: por debajo de .10 desaparecen en
+     pantallas claras, por arriba de .22 empiezan a competir con el texto. */
+  --esquina-opacidad: 0.18;
+
+  /* El color de las líneas. Las dos opciones de la paleta base:
+       var(--verde)        → tono oliva, se lee más cálido  ← puesto
+       var(--gris-claro)   → gris neutro, más discreto      */
+  --esquina-color: var(--verde);
+
+  /* --- LA CAJA DEL HERO --------------------------------------------- */
+
+  /* Cuánto mide la caja de ancho. Es el objeto de la portada: si la achicás
+     mucho se pierde entre las líneas, si la agrandás se le va encima al
+     nombre. Entre 200 y 340 anda bien. */
+  --caja-ancho: clamp(190px, 19vw, 330px);
+
+  /* --- SEPARACIÓN ENTRE SECCIONES ------------------------------------
+     ES LA PERILLA MÁS IMPORTANTE DE LA PÁGINA. Lo único que separa una
+     sección de otra es este aire: no hay ni divisor ni cambio de fondo.
+     Si las secciones se sienten apretadas, se sube acá y nada más.
+     El clamp lo ata al alto de la ventana (vh), así que en una pantalla
+     grande respira más y en un teléfono no se vuelve un desierto. */
+  --tramo-aire: clamp(5.5rem, 11vh, 10rem);
+
+  /* --- GRID DE TRABAJOS --------------------------------------------- */
+
+  /* Aire entre las filas de fichas. Más chico que el de las secciones: las
+     fichas son un grupo, tienen que leerse juntas. */
+  --grid-fila: var(--s-7);
+}
+
+
+/* --------------------------------------------------------------------------
+   0-bis. DÓNDE FRENA EL SALTO DE LAS ANCLAS
+   Los botones de la nav bajan a estas secciones. Sin esto, el salto las deja
+   pegadas al borde de arriba y la nav fija les tapa la primera línea.
+   scroll-margin-top es justamente eso: el aire que se deja por encima del
+   destino al saltar. (Las filas del índice del pie tienen el suyo, más
+   abajo.)
+   -------------------------------------------------------------------------- */
+
+#sobre, #herramientas, #contacto, #trabajos { scroll-margin-top: var(--s-7); }
+
+
+/* --------------------------------------------------------------------------
+   0-quater. CADA SECCIÓN, UNA PANTALLA
+   ----------------------------------------------------------------------------
+   Cada bloque de la portada ocupa como MÍNIMO el alto de la ventana, con su
+   contenido centrado verticalmente. Es lo que hace que la página se lea de a
+   una idea por vez en vez de como una lista larga.
+
+   min-height y no height: la sección de trabajos es más alta que una pantalla
+   y tiene que poder crecer. Y svh y no vh: en el teléfono, vh cuenta el alto
+   CON la barra del navegador desplegada, así que una sección de 100vh siempre
+   queda un poco cortada por abajo. svh usa el alto chico, el que de verdad se
+   ve.
+
+   El --tramo-aire de adentro sigue haciendo falta: es el que separa cuando
+   una sección pasa de una pantalla.
+   -------------------------------------------------------------------------- */
+
+.pag-archivo main > .zona {
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
+}
+
+
+/* --------------------------------------------------------------------------
+   0-ter. RÓTULOS
+   ----------------------------------------------------------------------------
+   Los letreros chicos del sistema: .etiqueta (Sobre mí, Herramientas, Archivo)
+   y .dato (años, categorías, el contador). En el sistema viejo eran IBM Plex
+   Mono, y esa monoespaciada era lo que los hacía leerse como ficha técnica.
+
+   Con una sola familia, ese papel lo tienen que hacer tres cosas juntas:
+   MAYÚSCULA + letras separadas + peso medio. Las tres, no una: en Archivo,
+   una etiqueta en mayúscula sin tracking es solo texto chico gritado.
+
+   El tamaño es FIJO en 11px y no crece con la ventana: es un rótulo, no un
+   texto para leer. (Mismo criterio y mismos valores que Simbio.)
+   -------------------------------------------------------------------------- */
+
+.pag-archivo .etiqueta,
+.pag-archivo .dato {
+  font-family: var(--font);
+  font-size: 0.6875rem;              /* 11px */
+  font-weight: 500;
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+}
+
+/* Las listas de herramientas NO son rótulos: son nombres para leer. Van al
+   tamaño de cuerpo y en caja normal — en mayúscula y con tracking, cinco
+   programas seguidos se vuelven un cartel. */
+.pag-archivo .herramienta__lista {
+  font-family: var(--font);
+  font-size: var(--t-0);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* La pestaña de la ficha es un rótulo también: se le iguala el tracking para
+   que no quede más apretada que el resto. */
+.pag-archivo .ficha__pestana { letter-spacing: 0.12em; }
+
+
+/* ==========================================================================
+   1. HERO
+   ==========================================================================
+   Dos cosas y nada más: el nombre apoyado contra el margen izquierdo y la
+   frase debajo. El nombre NO va centrado: contra el margen se lee como una
+   portada de archivo y no como una landing.
+
+   Los tres rótulos que había arriba ("Archivo", "Buenos Aires · 2026",
+   "Seguí bajando") se sacaron: el hero es el nombre, la frase y la caja.
+   -------------------------------------------------------------------------- */
+
+/* El texto se apoya CONTRA EL BORDE DE ABAJO (align-content: end) y no en el
+   medio: el medio es de la caja. Lo que queda arriba de la caja es aire, y
+   ese aire es parte del dibujo — es el alto del "cuarto". */
+.portada-hero {
+  position: relative;
+  min-height: var(--hero-alto);
+  align-content: end;
+  padding-block: calc(var(--s-9) + var(--s-5)) var(--texto-abajo);
+
+  /* Las líneas de la esquina son barras larguísimas que salen del vértice:
+     acá se cortan. `clip` y no `hidden` — hidden convierte al elemento en un
+     contenedor de scroll y eso ya nos rompió los sticky del sitio una vez
+     (está anotado en base.css). clip recorta igual y no crea contenedor. */
+  overflow: clip;
+}
+
+/* El bloque entero va centrado y ocupa el ancho de la grilla: el nombre cae
+   sobre el eje de la página, que es el mismo eje del que cuelga la caja. */
+.portada-hero__texto {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-2);
+  text-align: center;
+}
+
+/* EL NOMBRE VA EN VERDE Y CHICO.
+   Antes era negro, enorme y contra el margen izquierdo. Acá acompaña a la
+   caja desde abajo en vez de competirle: el verde lo mete en el mismo mundo
+   que el objeto y el tamaño chico deja que la esquina sea lo que se mira. */
+.portada-hero__nombre {
+  font-size: var(--nombre-tam);
+  font-weight: var(--peso-fuerte);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--verde);
+}
+
+.portada-hero__frase {
+  font-size: var(--frase-tam);
+  font-weight: var(--peso-cuerpo);
+  line-height: 1.4;
+  color: var(--verde);
+}
+
+/* La flecha: baja a la primera sección. El alto es la perilla de su tamaño;
+   el ancho sale de la proporción del dibujo. */
+.portada-hero__flecha {
+  display: block;
+  margin-top: var(--s-5);
+  color: var(--verde);
+  opacity: .8;
+  transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
+}
+.portada-hero__flecha svg { height: 30px; width: auto; }
+.portada-hero__flecha:hover { transform: translateY(4px); opacity: 1; }
+
+
+/* --------------------------------------------------------------------------
+   1-bis. LA ESQUINA: EL VÉRTICE, LAS TRES LÍNEAS Y LA CAJA
+   ----------------------------------------------------------------------------
+   TODO CUELGA DE UN SOLO PUNTO. `.esquina` mide 0x0 y está parada justo en el
+   vértice del cuarto; las líneas y la caja se dibujan alrededor de ese origen.
+   Por eso no se pueden desalinear entre sí: el JS mueve UN elemento y se mueve
+   el conjunto entero de una pieza.
+
+   EL ÁNGULO DEL PISO NO SE NEGOCIA
+   La caja está dibujada en isometría 2:1 —por cada 2 de ancho, 1 de alto—, o
+   sea 26,565° (que es el arcotangente de 0,5). El piso del cuarto tiene que
+   estar exactamente en ese ángulo o la caja no se apoya en nada.
+
+   ACÁ ESTABA EL BUG DE "LA CAJA FLOTA". Antes las diagonales eran un SVG
+   estirado del vértice a las esquinas de la pantalla, así que su ángulo
+   dependía de la proporción de la ventana. Medido: 22,9° en una ventana de
+   1920x900, 29,4° en una de 1440x900, 62° en un teléfono — contra los 26,57°
+   fijos de la caja. Coincidían en una sola medida de ventana y en todas las
+   demás la caja quedaba colgada en el aire.
+
+   La solución es no dibujar las líneas: son BARRAS ROTADAS. Una rotación en
+   CSS es un ángulo de verdad y no se deforma con nada, así que el piso está
+   siempre en 26,565°, en cualquier pantalla.
+   -------------------------------------------------------------------------- */
+
+.esquina {
+  /* El vértice. Estos dos números son las perillas: --fuga-x es cuánto a la
+     derecha y --fuga-y cuánto abajo, los dos en % del hero. El JS les suma el
+     vaivén encima; si el JS no corre, la esquina se queda acá y se ve igual. */
+  --fuga-x: 50;
+  --fuga-y: 55;
+
+  position: absolute;
+  left: calc(var(--fuga-x) * 1%);
+  top: calc(var(--fuga-y) * 1%);
+  /* 0x0 a propósito: no es una caja, es un punto. Todo lo de adentro se
+     posiciona respecto de este origen. */
+  width: 0;
+  height: 0;
+  z-index: 0;
+  /* Es ambiente: no debe recibir clicks ni tapar nada */
+  pointer-events: none;
+}
+
+.esquina__linea {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--esquina-color);
+  opacity: var(--esquina-opacidad);
+  /* Largo: más que cualquier pantalla. Lo que sobra lo corta el borde del
+     hero (`overflow: clip` en .portada-hero). */
+  width: 320vmax;
+  height: var(--esquina-grosor);
+  /* Rotan desde su punta izquierda, que es el vértice */
+  transform-origin: 0 50%;
+}
+
+/* La arista donde se juntan las dos paredes: sube del vértice al borde de
+   arriba. Es la única que no está rotada. */
+.esquina__linea--vertical {
+  width: var(--esquina-grosor);
+  height: 320vmax;
+  /* bottom en vez de top: la barra crece hacia ARRIBA desde el vértice */
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+/* Las dos aristas del piso. 26.565deg = el ángulo de la isometría 2:1.
+   La izquierda es la misma rotación reflejada: 180 - 26.565. */
+.esquina__linea--der { transform: rotate(26.565deg); }
+.esquina__linea--izq { transform: rotate(153.435deg); }
+
+
+/* --------------------------------------------------------------------------
+   1-ter. LA CAJA, LAS HOJITAS Y LAS POLAROIDS
+   ----------------------------------------------------------------------------
+   DÓNDE SE APOYA LA CAJA — la otra mitad del bug de "la caja flota".
+   En una caja apoyada en un rincón, el vértice del cuarto NO es el vértice de
+   abajo de la caja: es el de ABAJO Y ATRÁS, el que no se ve. La arista de las
+   paredes pasa por detrás del cubo y asoma arriba; las dos del piso salen de
+   atrás y aparecen justo en los vértices de abajo a izquierda y a derecha, que
+   quedan APOYADOS sobre ellas.
+
+   En una isometría 2:1 el contorno del cubo es un hexágono perfecto y su
+   CENTRO es a la vez el vértice de arriba-adelante y el de abajo-atrás. En el
+   lienzo de la caja ese punto es el 100,62 — o sea el 50% del ancho y el
+   38,75% del alto (62 de 160). Corriendo la caja justo eso, el punto que se
+   apoya cae exactamente sobre el vértice.
+
+   Antes estaba anclada en el 100,96 (el vértice de abajo y adelante) y por eso
+   colgaba del vértice en vez de apoyarse en él.
+   -------------------------------------------------------------------------- */
+
+.caja {
+  /* Dónde está, dentro del dibujo, el punto que se apoya en el vértice.
+     50% del ancho / 62 de 160 del alto. */
+  --caja-ancla-x: 50%;
+  --caja-ancla-y: 38.75%;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--caja-ancho);
+  height: auto;
+  /* Corre el dibujo hasta que su punto de apoyo cae en el origen (el vértice) */
+  transform: translate(calc(var(--caja-ancla-x) * -1), calc(var(--caja-ancla-y) * -1));
+}
+
+/* LAS CARAS: CADA UNA CON SU DEGRADÉ, NO CON UN VERDE PLANO.
+   Dos cosas al mismo tiempo. Entre caras, tres claros distintos: si fueran
+   iguales, el cubo se lee como un hexágono plano. Y DENTRO de cada cara, un
+   degradé de claro arriba a oscuro abajo, que es lo que le da el volumen —
+   con relleno plano se ve como tres papeles pegados, no como un objeto.
+   Los degradés están definidos en el <defs> del SVG, en index.html: acá solo
+   se los llama por su id. */
+.caja__cara--arriba { fill: url(#caja-arriba); }
+.caja__cara--izq    { fill: url(#caja-izq); }
+.caja__cara--der    { fill: url(#caja-der); }
+
+/* Las cuatro solapas de la tapa: líneas apenas más oscuras que la cara, no
+   negras. Tienen que insinuar el pliegue, no dibujar un contorno. */
+.caja__solapa path {
+  stroke: rgba(0, 0, 0, .20);
+  stroke-width: 1;
+  fill: none;
+}
+
+/* LOS AGARRES — los huecos troquelados de la tapa.
+   Son DOS trazos por agarre y hacen falta los dos: el claro es el hueco, y la
+   línea más oscura corrida medio punto hacia abajo es el canto del cartón.
+   Sin el canto se leen como dos rayas pintadas encima de la tapa; con él, como
+   agujeros con espesor. */
+.caja__agarre path {
+  fill: none;
+  stroke-linecap: round;
+}
+.caja__agarre-canto {
+  stroke: rgba(0, 0, 0, .30);
+  stroke-width: 5;
+}
+.caja__agarre-hueco {
+  stroke: var(--crema);
+  stroke-width: 4.4;
+}
+
+/* Los papeles del piso: hojas sueltas y polaroids. Van del crema del papel
+   con una línea fina, no blancos: el blanco puro sobre este fondo salta. */
+.caja__papel polygon {
+  fill: #FAF6EC;
+  stroke: var(--linea-carpeta);
+  stroke-width: 1;
+}
+
+/* El recuadro de la foto de las dos que son polaroid. Está corrido hacia el
+   fondo a propósito: ese desbalance es lo que les deja el borde ancho abajo
+   y las hace leerse como polaroid y no como una hoja más. */
+.caja__foto polygon { fill: var(--verde-claro); opacity: .55; }
+
+/* En pantalla chica la caja se achica, y nada más: el texto no se le cruza
+   porque vive contra el borde de abajo. */
+@media (max-width: 960px) {
+  .esquina { --caja-ancho: clamp(130px, 32vw, 200px); }
+}
+
+/* El contenido del hero va POR ENCIMA de la esquina */
+.portada-hero > *:not(.esquina) { position: relative; z-index: 1; }
+
+
+/* ==========================================================================
+   2. TRAMOS DE TEXTO — CV, HERRAMIENTAS, CONTACTO
+   ==========================================================================
+   Los tres comparten el mismo esqueleto: rótulo en la columna 1, contenido
+   de la 2 en adelante, y una línea fina arriba que los separa. Es el ritmo
+   de una ficha técnica: siempre se sabe dónde empieza a leer.
+
+   SE LLAMA "TRAMO" Y NO "BLOQUE" POR UNA RAZÓN CONCRETA.
+   Primero se llamaba .bloque, y simbio.css ya tenía un .bloque suyo, SIN
+   apellidar con .pag-simbio. Como simbio.css se carga después que este
+   archivo, su regla `.bloque p` (0,1,1 de especificidad) le ganaba a
+   .cv__lead (0,1,0) y le pisaba color, tamaño, peso e interlínea: el CV se
+   veía gris y chico, y los rótulos salían del tamaño equivocado.
+   Cuidado con esto al agregar clases nuevas: simbio.css se carga en TODAS
+   las páginas y no todo lo suyo está apellidado.
+   -------------------------------------------------------------------------- */
+
+.tramo {
+  padding-block: var(--tramo-aire);
+  row-gap: var(--s-5);
+}
+
+/* La línea que abre el bloque va de borde a borde de la GRILLA, no del
+   viewport: así respeta los márgenes como todo lo demás. */
+.tramo::before {
+  content: "";
+  grid-column: 1 / -1;
+  height: var(--borde);
+  background: var(--zona-linea);
+}
+
+.tramo__rotulo {
+  grid-column: 1;
+  align-self: start;
+  /* Se queda a la vista mientras se lee el bloque, como la pestaña de una
+     carpeta. Si el bloque es corto, no se nota: no molesta. */
+  position: sticky;
+  top: calc(var(--s-9) - var(--s-4));
+}
+
+.tramo__cuerpo { grid-column: 2 / span 3; }
+
+@media (max-width: 960px) {
+  .tramo__rotulo { grid-column: 1 / -1; position: static; }
+  .tramo__cuerpo { grid-column: 1 / -1; }
+}
+
+
+/* --- 2-a. CV ------------------------------------------------------------ */
+
+/* El primer párrafo es la entrada: un escalón más grande que el resto. Un
+   solo escalón, no tres.
+   El peso queda en el de cuerpo y no en el liviano: probado con 300, a este
+   tamaño y en crema el texto se afinaba tanto que se leía apagado, como si
+   fuera un dato secundario. Lo que lo destaca es el tamaño. */
+.cv__lead {
+  /* Bajado al pasar a Archivo: la familia tiene la x más alta que Nunito, así
+     que al mismo número de rem se ve bastante más grande. */
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  font-weight: var(--peso-cuerpo);
+  line-height: 1.4;
+  max-width: 34ch;
+}
+
+.cv__texto {
+  margin-top: var(--s-5);
+  max-width: var(--medida);
+  color: var(--zona-texto-2);
+}
+
+/* Universidad, ciudad: lo que en un CV va en negrita. Acá va en el color
+   del texto principal, sin peso extra — alcanza para destacar. */
+.cv__lead b,
+.cv__texto b {
+  font-weight: var(--peso-medio);
+  color: var(--zona-texto);
+}
+
+/* LA INVITACIÓN. No es una tercera parte del CV: es una nota al lector, y
+   tiene que leerse como tal. Por eso cambia de color (el verde del sitio) y
+   entra por una rayita al costado en vez de por un título — el mismo recurso
+   de .etiqueta--marca, que es como el acento entra en todo el sitio: dos
+   píxeles de color, nunca una superficie. */
+.cv__invitacion {
+  margin-top: var(--s-6);
+  padding-left: var(--s-5);
+  border-left: var(--borde-marcado) solid var(--verde);
+  max-width: 46ch;
+  color: var(--verde-oscuro);
+}
+
+
+/* --- 2-b. HERRAMIENTAS -------------------------------------------------- */
+
+/* TRES SUB-COLUMNAS, NO CUATRO. El cuerpo del bloque ocupa las columnas 2,
+   3 y 4 de la página; si acá adentro pusiera cuatro, las categorías dejarían
+   de coincidir con la grilla del sitio y todo lo demás. Con tres, cada
+   categoría cae justo sobre una columna de verdad.
+   Las cuatro categorías con lista se reparten así: tres arriba, y abajo
+   Audio al lado de la nota de IA, que se lleva las otras dos. */
+.herramientas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-6) var(--grid-gap);
+}
+
+.herramienta {
+  padding-top: var(--s-3);
+  border-top: var(--borde) solid var(--zona-linea);
+}
+
+.herramienta__cat {
+  font-size: var(--t-1);
+  font-weight: var(--peso-fuerte);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.herramienta__lista {
+  list-style: none;
+  margin-top: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-0);
+  line-height: 1.85;
+  color: var(--zona-texto-2);
+}
+
+/* La IA no es una lista de programas: es una frase. Por eso se lleva dos
+   columnas en vez de una — así no se lee como una categoría a la que le
+   faltan ítems, y de paso completa la fila de Audio. */
+.herramienta--nota { grid-column: 2 / -1; }
+.herramienta--nota p {
+  margin-top: var(--s-3);
+  color: var(--zona-texto-2);
+}
+
+@media (max-width: 620px) {
+  .herramientas { grid-template-columns: 1fr 1fr; }
+  .herramienta--nota { grid-column: 1 / -1; }
+}
+
+
+/* --- 2-c. CONTACTO ------------------------------------------------------ */
+
+/* El mail es lo más grande del bloque: es la única acción de toda la portada
+   que sale del sitio. Pero va en peso MEDIO y no en el fuerte: al tamaño que
+   tiene, en 800 competía con el nombre del hero, que es lo único que debería
+   pesar así en la página. */
+.contacto__mail {
+  display: inline-block;
+  font-size: clamp(1.2rem, 0.9rem + 1.4vw, 2.1rem);
+  font-weight: var(--peso-medio);
+  letter-spacing: -0.015em;
+  /* El subrayado se dibuja con un degradé de ancho 0 que crece al pasar el
+     mouse. Con text-decoration no se puede animar el crecimiento. */
+  background-image: linear-gradient(var(--verde), var(--verde));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size var(--dur-3) var(--ease), color var(--dur-2) var(--ease);
+}
+.contacto__mail:hover,
+.contacto__mail:focus-visible {
+  background-size: 100% 2px;
+  color: var(--verde-oscuro);
+}
+
+/* ESPACIO PREPARADO PARA LAS REDES.
+   El CSS ya está escrito; en el HTML la lista está comentada. Para
+   activarla: descomentar el bloque <ul class="redes"> de index.html y
+   poner los links. No hace falta tocar nada acá. */
+.redes {
+  display: flex;
+  gap: var(--s-4);
+  margin-top: var(--s-5);
+  list-style: none;
+}
+.redes a {
+  display: inline-block;
+  padding: 5px 18px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t--1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--zona-texto-2);
+  transition: background var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease);
+}
+.redes a:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+
+
+/* ==========================================================================
+   3. TRABAJOS — LAS CINCO FICHAS
+   ==========================================================================
+   Las fichas cuelgan del mismo .tramo que el CV, las herramientas y el
+   contacto: rótulo chico en la columna 1 y el contenido a la derecha. Por eso
+   acá no hay ningún título grande. "TRABAJOS" es un letrero más de la serie.
+
+   ORDENADAS, RECTAS Y DEL MISMO TAMAÑO, sobre las columnas 2 y 3:
+
+       col 1        col 2            col 3         col 4
+     TRABAJOS   [ ---------- SIMBIO ---------- ]
+                [   MUSEO    ] [     +54       ]
+                [  TIPINES   ] [    TESIS      ]
+
+   Simbio se lleva las dos columnas porque son CINCO: de a dos, una quedaba
+   suelta. Las otras cuatro miden todas exactamente lo mismo.
+
+   NINGUNA ESTÁ INCLINADA. El componente .ficha trae una micro-rotación de
+   fábrica (--giro-ficha); acá se pone en 0. La versión anterior las tenía
+   torcidas y de tamaños distintos: en un grupo de cinco eso se leía
+   desprolijo, no desacomodado.
+   -------------------------------------------------------------------------- */
+
+/* Cada ficha dice su columna. La proporción es la misma para las cuatro
+   chicas; Simbio es más apaisada porque ocupa el doble de ancho. */
+.ficha--simbio  { grid-column: 2 / span 2; }
+.ficha--museo   { grid-column: 2; }
+.ficha--54      { grid-column: 3; }
+.ficha--tipines { grid-column: 2; }
+.ficha--tesis   { grid-column: 3; }
+
+.tramo .ficha {
+  /* El componente trae un tope de 560px pensado para una ficha suelta; acá
+     manda la grilla. */
+  width: 100%;
+  /* Rectas: sin la micro-rotación del componente */
+  --giro-ficha: 0deg;
+
+  /* TODAS LAS DE UNA FILA, DEL MISMO ALTO.
+     El pie de cada ficha mide lo que mide su texto, así que "Mobiliario de
+     Museo" —dos líneas de título y dos de categoría— dejaba su tarjeta más
+     alta que la de al lado y la fila quedaba despareja. Con la ficha estirada
+     a lo alto de la fila y el pie empujado al fondo, las dos terminan en la
+     misma línea. */
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.tramo .ficha__cuerpo { flex: 1; display: flex; flex-direction: column; }
+.tramo .ficha__pie { margin-top: auto; }
+
+/* Y para que el texto no necesite esas dos líneas de entrada: a este tamaño
+   de tarjeta, el título del componente (pensado para una ficha del doble de
+   ancho) entraba justo o se partía. Un escalón menos y "Mobiliario de Museo"
+   entra en un renglón. */
+.tramo .ficha__titulo { font-size: var(--t-1); }
+
+/* --- LAS PASTILLAS DE LA FICHA ------------------------------------------
+   Las mismas que abren cada página de proyecto (`.proyecto__meta` en
+   simbio.css): rótulo chico adentro de una cápsula con borde fino. Al
+   repetirlas acá, la tarjeta y la página del proyecto se leen como la misma
+   ficha vista de lejos y de cerca.
+
+   Reemplazaron a la línea de categoría con puntos y al año suelto a la
+   derecha. La ventaja no es solo estética: cada dato es una pieza aparte, y
+   cuando no entran en el ancho, la que sobra baja sola en vez de partir una
+   frase por la mitad.
+
+   El 999px del radio no es mágico: cualquier valor mayor a la mitad del alto
+   da un lado perfectamente redondo, así que 999 significa "redondeá todo lo
+   que puedas" y no hay que recalcularlo si cambia el alto. */
+.ficha__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--s-3);
+  list-style: none;
+
+  align-content: start;
+}
+
+/* DOS FILAS DE PASTILLAS SIEMPRE — pero solo en las cuatro chicas.
+   En una tarjeta de una columna, tres pastillas se reparten en dos filas;
+   Tesis tiene una sola pastilla y ocupaba una. Sin este mínimo, su pie queda
+   más bajo que el de la ficha de al lado y las dos imágenes de la fila
+   terminan a distinta altura — que es justo lo que había que arreglar.
+   La cuenta: alto de pastilla (~1.7rem) por dos, más el gap.
+
+   Simbio queda AFUERA: es la única de su fila, no tiene con quién
+   emparejarse, y al doble de ancho sus tres pastillas entran en un renglón.
+   Con el mínimo puesto le quedaba un hueco de aire abajo del pie. */
+.tramo .ficha:not(.ficha--simbio) .ficha__meta {
+  min-height: calc(1.7rem * 2 + 6px);
+}
+.ficha__meta .etiqueta {
+  padding: 4px 12px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+/* El pie deja de ser una fila con el año a la derecha y pasa a ser una
+   columna: título arriba, pastillas abajo. */
+.ficha__pie {
+  display: block;
+  padding: var(--s-4) var(--s-5) var(--s-5);
+}
+
+.tramo .ficha__marco { aspect-ratio: 4 / 3; }
+.ficha--simbio .ficha__marco { aspect-ratio: 21 / 9; }
+
+/* EL DIBUJO DE LÍNEA SE MIDE POR LOS DOS LADOS.
+   El componente le da solo un ancho (62% del marco) y el alto sale de la
+   proporción del lienzo, 100x70. En la ficha apaisada de Simbio eso lo hacía
+   tan alto como el marco entero, tocando los bordes. El max-height es el
+   freno: cuando el alto se pasa, el navegador recalcula el ancho solo y el
+   dibujo mantiene su forma. */
+.tramo .ficha__capa--boceto svg {
+  width: 46%;
+  max-height: 64%;
+}
+
+/* El aire entre filas de fichas. Es más chico que el que separa una sección
+   de otra: las cinco son un grupo y tienen que leerse juntas. Va como
+   row-gap de la grilla y no como margen de cada ficha, así no hay que
+   acordarse de a cuáles ponérselo cuando se reordenan. */
+.tramo--trabajos { row-gap: var(--grid-fila); }
+
+/* La imagen real llena el marco sin deformarse */
+.ficha__capa--real img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cuando hay foto, la capa real es la foto: hay que sacarle el degradé
+   verde que el componente trae como relleno por defecto. */
+.ficha__capa--real:has(img) { background: none; }
+
+/* FICHAS SIN FOTO TODAVÍA.
+   El componente cruza el boceto con la capa real al pasar el mouse. Si no
+   hay foto, ese cruce termina en un rectángulo verde plano, que se lee como
+   un error. Mientras falte la imagen, la ficha se queda en el boceto y el
+   hover es solo el levantón.
+   Al poner la foto: sacar la clase .ficha--sin-foto del <article>. */
+.ficha--sin-foto:hover,
+.ficha--sin-foto:focus-within { --revelado: 0; }
+
+/* --- El tilt va en el CONTENEDOR, no en el papel ---
+   VanillaTilt escribe el transform en línea, y ahí pisa cualquier rotación
+   que el CSS le haya puesto al mismo elemento. Con el tilt en .ficha (que
+   no tiene transform propio) y la micro-rotación en .ficha__cuerpo, las dos
+   conviven: la ficha se inclina siguiendo al mouse y el papel de adentro
+   sigue apoyado torcido. Si el tilt fuera al cuerpo, la ficha se
+   enderezaría de golpe al pasar el mouse. */
+.ficha[data-tilt] { transform-style: preserve-3d; }
+
+/* Y por lo mismo, el hover de acá adentro SOLO levanta: el componente le
+   suma un rotateX/rotateY al papel, y sumado al giro del tilt eran dos
+   inclinaciones distintas peleándose sobre la misma tarjeta. */
+@media (hover: hover) and (pointer: fine) {
+  .tramo .ficha:hover .ficha__cuerpo,
+  .tramo .ficha:focus-within .ficha__cuerpo {
+    transform: rotate(var(--giro-ficha, 0deg)) translateY(-6px);
+  }
+}
+
+/* Las capas a distinta altura: eso es lo que da profundidad de verdad. El
+   tilt solo inclina. */
+.ficha[data-tilt] .ficha__pestana { transform: translateZ(30px); }
+.ficha[data-tilt] .ficha__marco   { transform: translateZ(14px); }
+.ficha[data-tilt] .ficha__titulo  { transform: translateZ(42px); }
+.ficha[data-tilt] .ficha__meta    { transform: translateZ(24px); }
+
+/* En pantalla chica no hay columnas que repartir: van una abajo de la otra,
+   todas del mismo alto. Simbio pierde su formato apaisado, que a ese ancho
+   la dejaba como una franja. */
+@media (max-width: 960px) {
+  .ficha--simbio, .ficha--museo, .ficha--54,
+  .ficha--tipines, .ficha--tesis { grid-column: 1 / -1; }
+  .ficha--simbio .ficha__marco { aspect-ratio: 16 / 9; }
+}

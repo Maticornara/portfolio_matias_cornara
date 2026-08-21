@@ -1,0 +1,2217 @@
+/* ==========================================================================
+   SIMBIO.CSS
+   Página de proyecto + escenario del scroll-scrubbing.
+
+   Separado a propósito: no toca variables.css ni el sistema global. Lo que
+   sea genérico de acá (grilla de la ficha, bloques de texto) se muda a
+   layout.css cuando construyamos las otras 7 páginas de proyecto.
+
+   La página va en ZONA CLARA. Todo lo de acá lee las variables de zona, así
+   que si algún día vuelve a la zona oscura no hay que reescribir colores:
+   se cambia la clase en el <body> y listo.
+   ========================================================================== */
+
+/* ==========================================================================
+   MANUAL RÁPIDO PARA EDITAR A MANO  ·  buscá "PERILLAS" para los bloques
+   --------------------------------------------------------------------------
+   LAS UNIDADES (todas miden lo mismo: distancia)
+     px    pixeles pelados. 100px es siempre 100px.
+     rem   16px. Entonces 1rem=16px · 2rem=32px · 10rem=160px.
+           Se usa para tamaños de cosas y aire entre cosas.
+     vw    1% del ANCHO de la ventana. 50vw = media pantalla de ancho.
+           Se usa para cosas que tienen que crecer con la pantalla.
+     svh   1% del ALTO de la ventana. 66svh = dos tercios de la altura.
+     ch    el ancho de un caracter. 30ch = un renglón de ~30 letras.
+           Solo para textos: mantiene el renglón parejo aunque cambie el cuerpo.
+     fr    "partes" al repartir un ancho entre columnas. "1fr 2fr" = la segunda
+           columna se lleva el doble que la primera. No son medidas, son
+           proporciones.
+     Si no querés pensar: poné px y probá. Después se pasa a la unidad linda.
+
+   CÓMO HACER LAS 4 COSAS QUE MÁS VAS A QUERER
+     1. AGRANDAR / ACHICAR algo
+        width (ancho) o height (alto). Si el objeto tiene su perilla propia
+        (--intro-foto-ancho, --pieza-alto), usá esa.
+
+     2. MOVERLO EN X / Y sin romper nada alrededor
+        translate: 40px -20px;
+                   ↑ x     ↑ y      (positivo x = derecha, positivo y = ABAJO)
+        Es el modo seguro de correr algo: mueve solo el dibujo, no empuja a los
+        vecinos. NO uses margin para acomodar a ojo: eso sí los empuja.
+
+     3. ALINEAR TEXTO
+        text-align: left | center | right;        (cómo caen los renglones)
+        max-width: 34ch;                          (cuántas letras por renglón)
+        Y para mover el BLOQUE entero dentro de su columna:
+        justify-self: start | center | end;       (izquierda / centro / derecha)
+        align-self:   start | center | end;       (arriba / centro / abajo)
+
+     4. ACOMODARLO A LA GRILLA (nunca a ojo)
+        La página son 4 columnas. Para decir dónde empieza y dónde termina:
+        grid-column: 2 / 4;   → arranca en la línea 2 y termina en la 4
+        grid-column: 1 / -1;  → de punta a punta
+        Las líneas se cuentan de 1 a 5 (una más que las columnas).
+        Para VER la grilla dibujada, agregá ?grid al final de la dirección:
+        localhost:8123/proyectos/simbio.html?grid
+
+   REGLA DE ORO
+     Cambiá UN número, guardá, refrescá. Si algo se rompe, ya sabés cuál fue.
+     Y si el navegador ignora el cambio: Ctrl+F5 (guarda el CSS viejo en caché).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. ESCENARIO DEL SCROLL-SCRUBBING
+   ----------------------------------------------------------------------------
+   Dos piezas:
+     .simbio-scroll → la sección ALTA. Su altura es la "distancia" de scroll
+                      disponible para recorrer los 375 frames.
+     .simbio-stage  → el bloque sticky que se queda pegado a la pantalla
+                      mientras se recorre esa sección.
+
+   Sticky y no fixed: sticky se despega solo al terminar la sección, sin
+   agregar y sacar clases con JS. Con fixed hay que manejar a mano cuándo
+   entra y cuándo sale, y siempre queda un salto.
+   -------------------------------------------------------------------------- */
+
+/* TODA la página en crema PLANO, sin el degradé de la zona.
+   Es la excepción al "nada plano" del sistema, y es a propósito: los JPG
+   del render tienen este mismo color aplastado adentro (ver
+   tools/optimizar-frames.ps1, variable $ColorFondo). Si el fondo variara
+   aunque sea un tono, se vería el rectángulo de la imagen recortado contra
+   la página. Plano y exacto = el objeto flota, no hay rectángulo.
+
+   LOS DOS VALORES VAN JUNTOS: si se cambia este color, hay que volver a
+   correr el script con el color nuevo.
+
+   OJO CON LA ESPECIFICIDAD: tiene que ser `body.zona--crema` y no `body`
+   a secas. La clase .zona--crema define --zona-fondo con el degradé, y una
+   clase le gana siempre a un selector de elemento: con `body` solo, el
+   override no se aplicaba y el rectángulo de la imagen seguía viéndose. */
+body.zona--crema { --zona-fondo: var(--crema); }
+
+.simbio-scroll {
+  /* AIRE ANTES Y DESPUÉS.
+     El ensamble es el número central de la página: tiene que llegar después
+     de un silencio y terminar en otro, no pegado a la pantalla anterior.
+     Va como margen y no como padding porque adentro hay un sticky: el padding
+     le cambiaría el recorrido. */
+  margin-block: var(--s-9);
+
+  /* ESTE ES EL NÚMERO DE LA VELOCIDAD.
+     Es cuánto scroll hay disponible para recorrer los 375 frames: son 7
+     pantallas de alto. Más alto = más despacio, porque los mismos frames
+     se reparten en más distancia. Antes estaba en 500vh.
+     De referencia: 700vh son unos 54 frames por pantalla scrolleada. */
+  height: 700vh;
+  position: relative;
+}
+
+.simbio-stage {
+  /* VUELVE A SER STICKY (12/08/2026).
+     Estuvo un rato clavado con el `pin` de ScrollTrigger y el ensamble dejó
+     de funcionar. El pin envuelve el escenario en un `pin-spacer` y lo pasa a
+     position:fixed; eso se pelea con el `overflow-x: clip` del <html> y, si
+     Swup vuelve a montar la página, queda un spacer viejo dado vuelta.
+     Sticky no tiene nada de eso: lo resuelve el navegador, se despega solo al
+     terminar la sección y no depende de que ninguna librería esté viva.
+     ScrollTrigger sigue, pero solo para leer el progreso (sin pin). */
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  align-content: center;
+
+  /* El render puede ser más alto que la pantalla: se recorta arriba y abajo
+     y no pasa nada, porque esa zona del frame es crema vacío. Preferimos
+     eso antes que achicar el render para que entre entero. */
+  overflow: hidden;
+}
+
+/* EL RENDER, 16:9, SIN MARCO.
+   Va de la primera a la última columna: es el protagonista de la página.
+   Sus bordes son los bordes de la grilla, o sea que arranca y termina
+   exactamente donde los botones de la nav.
+
+   El ancho manda y la altura sale del 16:9. En pantallas anchas y bajas eso
+   da un render más alto que la ventana: se recorta arriba y abajo, que es
+   crema vacío, y no se pierde nada de la pieza. La alternativa era achicar
+   el render para que entrara entero, y se veía chico. */
+.simbio-panel-wrap {
+  grid-column: 1 / -1;
+  justify-self: center;
+  position: relative;
+  /* Ancho completo de la grilla: arranca y termina donde arrancan y
+     terminan los botones de la nav. Sin tope ni límite por altura — si
+     no entra a lo alto, se recorta (ver overflow en .simbio-stage). */
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.simbio-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  /* Los bordes se desvanecen.
+     Motivo: el shadow catcher de Blender proyecta una sombra que llega
+     hasta el borde del frame y ahí se corta de golpe. Contra la página
+     eso dibuja un rectángulo tenue pero visible (medido: el crema del
+     fondo es #F3EDE1 y la esquina inferior del render, #EFE9DD).
+     Con el desvanecido, la sombra muere sola y no hay borde.
+
+     Las medidas no son al azar: 5% a los costados y 3% arriba y abajo.
+     El objeto ocupa el tercio central del cuadro y lo más bajo —las algas
+     colgando— llega al 92% de la altura, así que el desvanecido solo
+     agarra sombra, nunca la pieza. */
+  --fundido-x: 5%;
+  --fundido-y: 3%;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 var(--fundido-x),
+                    #000 calc(100% - var(--fundido-x)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 var(--fundido-y),
+                    #000 calc(100% - var(--fundido-y)), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 var(--fundido-x),
+                    #000 calc(100% - var(--fundido-x)), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 var(--fundido-y),
+                    #000 calc(100% - var(--fundido-y)), transparent 100%);
+  mask-composite: intersect;
+}
+
+/* --- Indicador de carga: barra fina y porcentaje. Mínimo. --- */
+.simbio-loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: var(--s-3);
+  justify-items: center;
+  background: var(--crema);
+}
+
+/* IMPRESCINDIBLE. El atributo hidden equivale a display:none, pero es una
+   regla del navegador y cualquier display que pongamos nosotros le gana.
+   Sin esta línea, el JS oculta el loader, el CSS lo vuelve a mostrar, y la
+   pantalla de carga tapa el render para siempre. Pasó exactamente eso.
+   Vale para cualquier elemento con display propio que se oculte con hidden. */
+.simbio-loader[hidden] { display: none; }
+
+.simbio-loader__pista {
+  width: 180px;
+  height: 3px;
+  background: rgba(26, 26, 24, .12);
+  overflow: hidden;
+}
+.simbio-loader__barra {
+  height: 100%;
+  background: var(--verde);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 120ms linear;
+}
+.simbio-loader__pct {
+  font-family: var(--font-mono);
+  font-size: var(--t--1);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-etiqueta);
+  color: var(--gris);
+}
+
+/* Mensaje de error: carpeta vacía, o página abierta como archivo */
+.simbio-mensaje {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: var(--s-6);
+  max-width: 46ch;
+  margin-inline: auto;
+  text-align: center;
+  font-size: var(--t-0);
+  font-weight: var(--peso-medio);
+  color: var(--gris);
+}
+.simbio-mensaje[hidden] { display: none; }
+
+/* --------------------------------------------------------------------------
+   1-bis. FOTO GRANDE 16:9
+   Ancho completo de la grilla, igual que el render: los dos comparten los
+   mismos bordes, así la página tiene un solo eje de lectura.
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   1-ter. LAS TRES MUESTRAS DE PIEZA
+   Tres animaciones cortas dentro de la explicación, una por pieza.
+   Grilla propia de 3 columnas: es un grupo interno, no se apoya en las 4
+   columnas de la página.
+   -------------------------------------------------------------------------- */
+
+.muestras {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-6);
+  margin-top: var(--s-7);
+  align-items: start;
+
+}
+
+/* --- HOVER: crece el DIBUJO, no la columna ---------------------------------
+   Primero lo probé cambiando el ancho de las columnas. Se sentía duro y el
+   motivo es concreto: al angostarse la columna, el pie de texto se vuelve a
+   partir en otras líneas. Un reflujo de texto no se puede animar — las
+   palabras saltan de renglón de golpe, y eso es lo que se veía brusco.
+
+   Así que ahora las columnas no se mueven: crece la pieza dentro de su caja
+   y las vecinas se achican. La grilla queda intacta —ninguna caja cambia de
+   lugar ni de tamaño— y ningún texto se reacomoda. Lo único que respira es
+   el dibujo. */
+
+/* El movimiento es lento y parejo a propósito.
+   --ease (el del sistema) arranca rápido y frena al final: sirve para un
+   botón, pero acá se sentía un tirón. Esta curva es simétrica —entra y sale
+   con la misma suavidad— y casi un segundo de duración, así que el cambio
+   se percibe como que la pieza se acerca, no como que salta.
+   Y el crecimiento es menos: 1.14 en vez de 1.22. Menos recorrido, más
+   tranquilo, sin dejar de notarse. */
+.muestra__canvas,
+.muestra__pie {
+  --suave: cubic-bezier(0.4, 0.05, 0.25, 1);
+  transition: transform 1500ms var(--suave), opacity 1500ms var(--suave);
+
+  /* will-change avisa al navegador que este elemento va a moverse, así lo
+     pone en su propia capa desde el principio. Importa acá porque el canvas
+     se está repintando a 24 cuadros por segundo MIENTRAS crece: sin la capa
+     aparte, cada repintado compite con la animación y el crecimiento se
+     entrecorta. */
+  will-change: transform;
+}
+
+/* La que se mira */
+.muestras:has(.muestra:hover) .muestra:hover .muestra__canvas {
+  transform: scale(1.14);
+}
+
+/* Las otras dos: se retiran un paso */
+.muestras:has(.muestra:hover) .muestra:not(:hover) .muestra__canvas {
+  transform: scale(0.93);
+  opacity: .6;
+}
+.muestras:has(.muestra:hover) .muestra:not(:hover) .muestra__pie {
+  opacity: .45;
+}
+
+/* En touch no hay hover: sin esto, todo quedaría en su estado normal igual,
+   pero lo dejo explícito para que no se herede ningún estado pegado. */
+@media (hover: none) {
+  .muestra__canvas, .muestra__pie { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .muestras { grid-template-columns: 1fr; }
+}
+
+.muestra { display: grid; gap: var(--s-3); }
+
+/* Las tres cajas MIDEN LO MISMO, aunque los renders vengan en proporciones
+   distintas (hongos salió 16:9, algas cuadrada). Es lo que hace que los tres
+   pies de texto arranquen a la misma altura: con cajas de alto distinto, cada
+   texto caía en un escalón diferente.
+   El dibujo entra centrado y sin deformarse dentro de la caja (el canvas
+   ajusta "contain"), y el aire que sobra no se ve porque es del mismo crema
+   que la página. */
+.muestra__marco {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  /* SIN fondo propio. La caja es cuadrada pero los renders no todos: el de
+     hongos es 16:9 y deja dos bandas libres arriba y abajo. Con un fondo
+     más oscuro que la página, esas bandas se veían como un recuadro. Sin
+     fondo, el sobrante es el crema de la página y desaparece. */
+  background: none;
+  /* visible y no hidden: al crecer con el hover, el dibujo se pasa un poco
+     de la caja y no queremos que se corte. Lo que se pasa cae sobre el aire
+     entre columnas, que está vacío. */
+  overflow: visible;
+}
+
+/* Aparece por fade cuando ya hay algo dibujado, en vez de saltar de golpe.
+   La clase la pone muestras.js al dibujar el primer cuadro. */
+.muestra__canvas {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
+}
+.muestra.is-lista .muestra__canvas { opacity: 1; }
+
+/* El cartel de "frames pendientes" ES la caja: cubre todo el cuadro y se
+   lleva puesto el fondo gris. Así el recuadro solo existe cuando falta el
+   material, y no queda dibujado detrás de las animaciones que sí están. */
+.muestra__falta {
+  font-family: var(--font-mono);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--crema-2);
+  border-radius: var(--radio-chico);
+  font-size: var(--t--1);
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
+  color: var(--gris);
+}
+.muestra__falta[hidden] { display: none; }
+
+.muestra__pie {
+  font-size: var(--t-0);
+  line-height: 1.5;
+  color: var(--gris);
+}
+.muestra__pie b {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: var(--peso-fuerte);
+  color: var(--zona-texto);
+}
+
+/* --------------------------------------------------------------------------
+   2. RÓTULO DE FASE
+   El nombre se tipea y se borra en sincro con el scroll. Anclado a la
+   columna 1 de la grilla, no centrado bajo el render.
+   -------------------------------------------------------------------------- */
+
+/* Va ENCIMA del render, anclado abajo a la izquierda de la grilla.
+   Al no ocupar altura propia, el render puede usar toda la pantalla.
+   position: absolute funciona contra .simbio-stage porque sticky también
+   es un elemento posicionado. */
+.simbio-fase {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--s-6);
+  z-index: 2;
+  display: grid;
+  gap: var(--s-1);
+  pointer-events: none;   /* que no tape el scroll ni el cursor */
+}
+
+.simbio-fase__num { color: var(--verde); }
+
+.simbio-fase__nombre {
+  display: flex;
+  align-items: center;
+  /* Chico: el rótulo acompaña al render, no compite con él */
+  font-size: var(--t-2);
+  font-weight: var(--peso-fuerte);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-titulo);
+  /* Reserva el alto de una línea para que el layout no salte mientras se
+     escribe y se borra el texto */
+  min-height: 1.05em;
+}
+
+/* El cursor del typewriter: una barra que parpadea al lado del texto */
+.simbio-fase__caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.9em;
+  margin-left: 4px;
+  background: var(--verde);
+  animation: parpadeo-fase 1s step-end infinite;
+}
+@keyframes parpadeo-fase { 50% { opacity: 0; } }
+
+/* El paréntesis aclaratorio de una de las fases: no se tipea, aparece con
+   un fundido. Si se tipeara también, la línea competiría con el título. */
+.simbio-fase__detalle {
+  font-size: var(--t-0);
+  font-weight: var(--peso-medio);
+  color: var(--zona-texto-2);
+  min-height: 1.5em;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease);
+}
+.simbio-fase__detalle.is-visible { opacity: 1; }
+
+@media (max-width: 960px) {
+  .simbio-panel-wrap { grid-column: 1 / -1; }
+}
+
+/* --------------------------------------------------------------------------
+   3. CABECERA DEL PROYECTO
+   El título va primero y solo: nada de etiquetas ni número de ficha antes.
+   -------------------------------------------------------------------------- */
+
+.proyecto-hero {
+  padding-block: calc(var(--s-9) + var(--s-4)) var(--s-6);
+  row-gap: var(--s-3);
+}
+
+.proyecto-hero__titulo {
+  grid-column: 1 / span 3;
+  font-size: clamp(2.5rem, 1.2rem + 6vw, 6rem);
+  font-weight: var(--peso-maximo);
+  line-height: .92;
+  letter-spacing: -0.03em;
+}
+
+/* Los datos, debajo del título y arrancando en la misma columna 1 */
+.proyecto-hero__meta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+}
+
+/* --------------------------------------------------------------------------
+   4. CUERPO DE LA FICHA
+   Sobre la grilla del sitio: los datos en la columna 1, el texto en las
+   tres restantes. La columna de datos queda fija mientras se lee.
+   -------------------------------------------------------------------------- */
+
+.proyecto-cuerpo {
+  padding-block: var(--s-8) var(--s-9);
+  row-gap: var(--s-7);
+  align-items: start;
+}
+
+.proyecto-ficha { grid-column: 1; }
+.proyecto-cuerpo > article { grid-column: 2 / -1; }
+
+@media (min-width: 961px) {
+  .proyecto-ficha {
+    position: sticky;
+    top: calc(var(--s-9) + var(--s-2));
+  }
+}
+
+@media (max-width: 960px) {
+  .proyecto-ficha,
+  .proyecto-cuerpo > article { grid-column: 1 / -1; }
+}
+
+/* La tarjeta de datos. Usa las variables de zona: en zona clara sale papel
+   crema con borde tostado; en zona oscura, papel oscuro. Sin reescribir nada. */
+.proyecto-ficha {
+  display: grid;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  background: var(--zona-superficie);
+  border: var(--borde) solid var(--zona-superficie-linea);
+  border-radius: var(--radio-ficha);
+  box-shadow: var(--shadow-sm), var(--luz-arriba);
+}
+
+.proyecto-ficha__dato + .proyecto-ficha__dato {
+  padding-top: var(--s-4);
+  border-top: var(--borde) solid var(--zona-linea);
+}
+
+/* Bloques de texto */
+.bloque {
+  padding-block: var(--s-7);
+  border-top: var(--borde) solid var(--zona-linea);
+}
+.bloque:first-child { border-top: none; padding-top: 0; }
+
+.bloque__titulo {
+  font-size: var(--t-2);
+  font-weight: var(--peso-fuerte);
+  /* El acento de la zona: verde oscuro sobre claro, verde claro sobre negro */
+  color: var(--zona-acento);
+  margin-bottom: var(--s-3);
+}
+
+.bloque p {
+  max-width: var(--medida);
+  font-size: var(--t-1);
+  font-weight: var(--peso-cuerpo);
+  line-height: 1.7;
+  color: var(--zona-texto-2);
+}
+.bloque p + p { margin-top: var(--s-3); }
+
+/* Los tres conceptos del proyecto, como etiquetas */
+.conceptos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  list-style: none;
+}
+.conceptos li {
+  padding: 4px 14px;
+  border: var(--borde) solid var(--zona-acento);
+  border-radius: 999px;
+  font-size: var(--t--1);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: 0.06em;
+  color: var(--zona-acento);
+}
+
+/* Créditos de cátedra: cuerpo chico, al pie del bloque */
+.creditos {
+  font-size: var(--t-0);
+  line-height: 1.6;
+  color: var(--zona-texto-2);
+}
+
+/* --------------------------------------------------------------------------
+   5. MOBILE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .pastilla { padding-inline: 14px; }
+  .simbio-scroll { height: 550vh; }
+}
+
+/* ==========================================================================
+   5. LÍQUENES — la referencia real, antes de todo
+   Va antes de El Concepto a propósito: primero se entiende el organismo,
+   después el juego que lo traduce.
+   ========================================================================== */
+
+/* Más aire: la referencia necesita separarse de la portada y del concepto */
+/* ==========================================================================
+   6. COLLAGE DE PROCESO — POR GRUPOS
+   ----------------------------------------------------------------------------
+   Cuatro grupos, dos por fila: todo el proceso entra en unas dos pantallas.
+
+   La unidad de interacción es el GRUPO, no la imagen. Apuntás cualquier
+   parte de un grupo y se activa entero: las piezas se acomodan, se levantan,
+   y aparece UN post-it con el texto de ese momento del proceso.
+   Antes cada imagen tenía su propio texto y era demasiado: doce carteles
+   para leer de a uno, y el conjunto se leía disperso.
+
+   Las piezas van posicionadas en PORCENTAJES sobre un lienzo con proporción
+   fija, así el collage se mantiene igual en cualquier tamaño de pantalla.
+   Cada posición e inclinación está puesta a mano, una por una.
+   ========================================================================== */
+
+/* Sin .reveal en el HTML: si por cualquier motivo el observador de scroll no
+   llega a marcarla como visible, la sección quedaba en opacidad 0 y el
+   proceso entero desaparecía. Un bloque de contenido no debería depender de
+   una animación para existir. */
+.collage-seccion { padding-block: var(--s-9) calc(var(--s-9) + var(--s-6)); }
+
+.collage__head { grid-column: 1 / span 3; }
+.collage__head h2 {
+  margin-top: var(--s-2);
+  font-size: var(--t-3);
+  font-weight: var(--peso-fuerte);
+}
+.collage__ayuda {
+  grid-column: -2;
+  justify-self: end;
+  align-self: end;
+  text-align: right;
+}
+
+/* --- EL GRUPO ----------------------------------------------------------- */
+
+.grupo {
+  grid-column: span 2;      /* dos grupos por fila en la grilla de 4 */
+  position: relative;
+  margin-top: var(--s-8);
+}
+.grupo:hover { z-index: 10; }   /* al activarse, pasa por delante del vecino */
+
+.grupo__rotulo {
+  padding-bottom: var(--s-2);
+  border-bottom: var(--borde) solid var(--zona-linea);
+  transition: color var(--dur-3) var(--ease);
+}
+.grupo:hover .grupo__rotulo { color: var(--verde); }
+
+/* El lienzo: proporción fija para que las posiciones en % siempre den la
+   misma composición. overflow visible porque las piezas asoman a propósito. */
+.grupo__lienzo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  margin-top: var(--s-4);
+}
+
+/* --- LAS PIEZAS --------------------------------------------------------- */
+
+/* UN SOLO TRANSFORM, ARMADO CON VARIABLES.
+   Tres cosas quieren mover la misma foto: la separación del grupo al pasar el
+   mouse por él, el levantar de la foto puntual, y el giro de base. Si cada una
+   escribe su propio `transform`, la última gana y borra a las otras — que es
+   lo que pasaba: al pasar el mouse por una foto, perdía la separación del
+   grupo y volvía de golpe a su lugar.
+   Ahora el transform está escrito UNA vez acá, y cada estado solo cambia las
+   variables que le tocan. Se suman en vez de pelearse. */
+.grupo .pieza {
+  --corr-x: 0px;                    /* separación del grupo */
+  --corr-y: 0px;
+  --alzar: 0px;                     /* levantar de la foto puntual */
+  --escala: 1;
+  --giro-actual: var(--giro, 0deg);
+
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  transform: translate(var(--corr-x), calc(var(--corr-y) + var(--alzar)))
+             scale(var(--escala))
+             rotate(var(--giro-actual));
+  /* 800ms es la velocidad del VOLCADO (cuando la carpeta se abre y las piezas
+     viajan a su lugar). El hover y el clic la pisan con la suya más abajo:
+     420ms para levantar, 90ms para apoyar. */
+  transition: transform 800ms var(--ease), box-shadow 800ms var(--ease);
+}
+
+/* Cada imagen conserva su proporción natural: nada se recorta. Con las
+   piezas ya chicas no hace falta recortar, y en los dibujos el recorte se
+   comía las anotaciones al pie. */
+.grupo .pieza img,
+.grupo .pieza video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: var(--crema-2);
+}
+
+/* Tratamientos: polaroid para fotos, hoja para dibujos, referencia para el
+   material ajeno que inspiró. */
+.pieza--polaroid {
+  background: var(--grad-polaroid);
+  padding: 6px 6px 22px;
+  box-shadow: var(--shadow-sm);
+}
+.pieza--hoja {
+  background: var(--grad-ficha);
+  padding: 5px;
+  border: var(--borde) solid var(--linea-clara);
+  border-radius: 2px 10px 2px 2px;
+  box-shadow: var(--shadow-sm);
+}
+.pieza--ref {
+  background: var(--crema);
+  padding: 4px;
+  border: var(--borde) solid var(--linea-clara);
+  box-shadow: none;
+}
+
+/* AL ACTIVAR EL GRUPO: las piezas se separan un poco (cada una hacia donde
+   dice su --dx/--dy), se enderezan casi del todo y levantan sombra.
+   No se enderezan del todo a propósito: quedan como objetos acomodados, no
+   como una grilla. */
+.grupo:hover .pieza {
+  --corr-x: var(--dx, 0px);
+  --corr-y: var(--dy, -10px);
+  --giro-actual: calc(var(--giro, 0deg) * 0.25);
+  box-shadow: var(--shadow-md);
+}
+
+/* LA FOTO PUNTUAL: se levanta de la mesa.
+   Mantiene la separación del grupo (esas variables las sigue poniendo la regla
+   de arriba) y le suma el levantar, la escala y el enderezarse del todo.
+   Y al hacer clic baja de golpe y la sombra se achica: la foto no lleva a
+   ninguna parte, pero si se mueve cuando la toco tiene que confirmar el toque.
+   El apoyar es rápido (90ms) y el levantar suave: es lo que lo hace sentir
+   físico y no como dos animaciones iguales. */
+.grupo .pieza:hover {
+  transition-duration: 420ms;
+  --alzar: -12px;
+  --escala: 1.05;
+  --giro-actual: 0deg;
+  z-index: 5;
+  box-shadow: var(--shadow-lg);
+}
+.grupo .pieza:active {
+  --alzar: -2px;
+  --escala: 0.99;
+  box-shadow: var(--shadow-sm);
+  transition-duration: 90ms;
+}
+
+/* --- EL POST-IT DEL GRUPO ---------------------------------------------- */
+
+.grupo__nota {
+  position: absolute;
+  z-index: 25;
+  bottom: -4%;
+  right: 0;
+  width: min(280px, 60%);
+  padding: 14px 16px;
+  background: linear-gradient(165deg, #fff9dd, #fff2b8);
+  box-shadow: var(--shadow-md);
+  transform: rotate(var(--giro-b)) translateY(10px);
+  font-size: var(--t-0);
+  line-height: 1.45;
+  color: var(--tinta);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 450ms var(--ease), transform 450ms var(--ease);
+}
+.grupo:hover .grupo__nota {
+  opacity: 1;
+  transform: rotate(var(--giro-b)) translateY(0);
+}
+.grupo__nota b { display: block; margin-bottom: 3px; }
+
+/* Los grupos de la izquierda sacan el post-it hacia la izquierda, para que
+   nunca se cruce con el grupo vecino. */
+.grupo--nota-izq .grupo__nota {
+  right: auto;
+  left: 0;
+  transform: rotate(var(--giro-a)) translateY(10px);
+}
+.grupo--nota-izq:hover .grupo__nota {
+  transform: rotate(var(--giro-a)) translateY(0);
+}
+
+/* --- MOBILE ------------------------------------------------------------- */
+/* Sin hover no hay activación, así que el collage se desarma: las piezas
+   pasan a una fila normal y el texto queda siempre visible. */
+@media (hover: none), (max-width: 760px) {
+  .grupo { grid-column: 1 / -1; }
+  .grupo__lienzo {
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-3);
+    align-items: start;
+  }
+  .grupo .pieza {
+    position: static;
+    width: auto;
+    transform: none;
+  }
+  .grupo__nota {
+    position: static;
+    opacity: 1;
+    width: auto;
+    margin-top: var(--s-4);
+    transform: none;
+    grid-column: 1 / -1;
+  }
+}
+
+/* --- Piezas que se revelan al activar el grupo ---------------------------
+   Los muñecos que inspiraron la pieza alga son material ajeno. Mostrados de
+   entrada parecen obra propia; apareciendo junto al texto que los explica,
+   se leen como lo que son: una referencia.
+   El retardo los hace entrar DESPUÉS de que las piezas propias se acomodan. */
+.pieza--oculta {
+  opacity: 0;
+  transform: rotate(var(--giro, 0deg)) scale(0.92);
+  transition: opacity 500ms var(--ease) 150ms,
+              transform 500ms var(--ease) 150ms;
+}
+.grupo:hover .pieza--oculta {
+  opacity: 1;
+  transform: translate(var(--dx, 0), var(--dy, 0))
+             rotate(calc(var(--giro, 0deg) * 0.25)) scale(1);
+}
+
+/* El grupo del timelapse lleva una sola pieza: no necesita lienzo alto */
+.grupo__lienzo--video { aspect-ratio: 16 / 9; }
+
+/* Sin rótulos, el crédito de los líquenes queda como única línea suelta */
+.liquenes__credito { line-height: 1.4; }
+
+/* ==========================================================================
+   7. CARPETAS QUE SE ABREN
+   ----------------------------------------------------------------------------
+   El material de proceso vive dentro de carpetas cerradas. Se hace clic en la
+   pestaña y la carpeta se abre, revelando el collage adentro.
+
+   Por qué clic y no hover acá: abrir una carpeta es una decisión, no un roce.
+   Con hover se abriría sola al pasar el mouse camino a otra cosa. Adentro,
+   una vez abierta, la activación de cada grupo sigue siendo por hover.
+
+   El truco para animar la apertura: grid-template-rows de 0fr a 1fr. Es la
+   única forma de animar "de cerrado a la altura que haga falta" sin saber de
+   antemano cuánto mide el contenido (max-height obliga a inventar un número).
+   ========================================================================== */
+
+/* El cuerpo siempre ocupa las cuatro columnas, aunque su tapa ocupe dos */
+.carpeta__cuerpo { grid-column: 1 / -1; }
+
+/* La pestaña: es el botón. Trapecio de corte limpio, como la ficha del índice. */
+.carpeta__pestana {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: 8px 30px 10px 18px;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 100%, 0 100%);
+  background: var(--grad-ficha);
+  border: var(--borde) solid var(--linea-clara);
+  border-bottom: none;
+  font-size: var(--t--1);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
+  color: var(--gris);
+  cursor: pointer;
+  transition: background var(--dur-2) var(--ease), color var(--dur-2) var(--ease);
+}
+.carpeta__pestana:hover { color: var(--tinta); }
+
+.carpeta.is-abierta .carpeta__pestana {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+
+/* La flechita gira al abrir: el único indicador de estado que hace falta */
+.carpeta__flecha {
+  transition: transform var(--dur-3) var(--ease);
+  font-size: 1.1em;
+  line-height: 1;
+}
+.carpeta.is-abierta .carpeta__flecha { transform: rotate(90deg); }
+
+.carpeta__cuenta { margin-left: auto; opacity: .7; }
+
+/* El cuerpo de la carpeta */
+.carpeta__cuerpo {
+  display: grid;
+  margin-top: var(--s-4);
+  grid-template-rows: 0fr;          /* cerrado */
+  /* Sin borde mientras está cerrada: un borde de 0 de alto igual se dibuja,
+     y se veía una raya suelta cruzando la página al costado de la carpeta. */
+  border-top: 0 solid var(--verde);
+  transition: grid-template-rows 700ms var(--ease), border-top-width 300ms var(--ease);
+}
+.carpeta__cuerpo.is-abierta {
+  grid-template-rows: 1fr;          /* abierto: la altura que haga falta */
+  border-top-width: 3px;
+}
+
+/* El hijo directo es el que se recorta mientras está cerrado */
+/* SOMBRAS CORTADAS — ACÁ ESTABA EL PROBLEMA.
+   Este overflow es imprescindible para que la carpeta se pueda plegar (el
+   contenido tiene que poder recortarse mientras la fila mide 0). Pero recorta
+   también las sombras de las polaroids que quedan pegadas al borde: se veían
+   cortadas con un filo recto.
+   `overflow: clip` + `overflow-clip-margin` es exactamente la herramienta para
+   esto: recorta igual, pero deja pintar 60px más allá del borde. Así la sombra
+   se termina de dibujar y el plegado sigue funcionando.
+   En un navegador que no soporte overflow-clip-margin se comporta como antes
+   (recorta en el borde): no rompe nada, solo no mejora. */
+.carpeta__interior {
+  overflow: clip;
+  overflow-clip-margin: 60px;
+  min-height: 0;                    /* imprescindible: sin esto el grid no
+                                       deja que el hijo baje de su alto */
+}
+
+/* El contenido entra con un fade apenas retrasado, para que no aparezca
+   pegado al borde mientras la carpeta todavía se está abriendo */
+.carpeta__interior > * {
+  opacity: 0;
+  transition: opacity 450ms var(--ease) 200ms;
+}
+.carpeta__cuerpo.is-abierta .carpeta__interior > * { opacity: 1; }
+
+/* Aviso de carpeta vacía */
+.carpeta__vacia {
+  padding: var(--s-6) 0;
+  font-size: var(--t-0);
+  color: var(--gris);
+}
+
+/* Los grupos dentro de la carpeta: misma grilla de 4 columnas, pero anidada,
+   así el collage sigue apoyado en la estructura de la página. */
+.carpeta__grupos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gap);
+  padding-block: var(--s-4) var(--s-8);
+}
+@media (max-width: 960px) {
+  .carpeta__grupos { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ==========================================================================
+   7-bis. LA CARPETA COMO OBJETO
+   ----------------------------------------------------------------------------
+   Reemplaza a la pestaña sola de antes (.carpeta__pestana, que queda sin uso).
+   Ahora la carpeta es una pieza cerrada de verdad: cartulina verde con dos
+   lengüetas arriba, una marca, el rótulo chico y el título grande. Se hace
+   clic y se abre.
+
+   Al abrirse, las piezas de adentro SALEN DISPARADAS hacia su posición: cada
+   una arranca amontonada en el centro de la carpeta, chica y transparente, y
+   viaja a su lugar. El disparo está escalonado, así se lee como que se
+   vuelcan y se acomodan, no como que aparecen todas de golpe.
+   ========================================================================== */
+
+.carpeta__frente {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-top: 22px;                  /* aire para las lengüetas */
+  padding: var(--s-5);
+  text-align: left;
+  background: linear-gradient(155deg, var(--verde) 0%, var(--verde-oscuro) 100%);
+  border: var(--borde) solid var(--verde-oscuro);
+  border-radius: 3px 16px 3px 3px;   /* radio asimétrico del sistema */
+  box-shadow: var(--shadow-md), var(--luz-arriba);
+  color: #f0eee6;
+  cursor: pointer;
+  transition: transform 500ms var(--ease), box-shadow 500ms var(--ease);
+}
+.carpeta__frente:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.carpeta__frente.is-abierta {
+  /* ABIERTA = VACIADA. Tres señales a la vez, porque una sola no se leía:
+     · la cartulina se oscurece (ya no tiene nada adentro)
+     · se hunde y se inclina, como una carpeta abierta y apoyada
+     · el título se atenúa: el protagonismo pasó al contenido
+     Y encima aparece el interior claro asomando por el borde de arriba
+     (ver ::after). */
+  transform: rotate(-1.3deg) translateY(10px) scale(0.985);
+  background: linear-gradient(155deg, var(--verde-oscuro) 0%, #263006 100%);
+  border-color: #1c2405;
+  box-shadow: inset 0 8px 20px rgba(0, 0, 0, .35), var(--shadow-sm);
+}
+
+/* El interior de la carpeta asomando: una franja clara sobre el borde
+   superior. Es lo que hace que se lea "abierta" y no solo "apagada". */
+.carpeta__frente::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0;
+  background: linear-gradient(180deg, var(--crema) 0%, var(--crema-2) 100%);
+  border-radius: 3px 16px 0 0;
+  transition: height 450ms var(--ease);
+}
+.carpeta__frente.is-abierta::after { height: 14px; }
+
+/* Las lengüetas de la abierta también se aclaran: la pila quedó a la vista */
+.carpeta__frente.is-abierta .carpeta__lengueta {
+  background: linear-gradient(155deg, var(--verde-claro) 0%, var(--verde) 100%);
+}
+
+.carpeta__frente.is-abierta .carpeta__titulo { opacity: .5; }
+.carpeta__frente.is-abierta .carpeta__marca { opacity: .35; }
+
+/* Las lengüetas: dos, arriba, asomando por encima del borde */
+.carpeta__lenguetas {
+  position: absolute;
+  top: -22px;
+  left: 18px;
+  display: flex;
+  gap: 4px;
+}
+.carpeta__lengueta {
+  padding: 5px 14px 8px;
+  background: linear-gradient(155deg, var(--verde) 0%, var(--verde-oscuro) 100%);
+  border: var(--borde) solid var(--verde-oscuro);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  font-size: 0.625rem;
+  font-weight: var(--peso-fuerte);
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, #f0eee6 70%, transparent);
+}
+/* La segunda, más clara y un poco más baja: da profundidad de pila */
+.carpeta__lengueta:nth-child(2) {
+  background: linear-gradient(155deg, var(--verde-claro) 0%, var(--verde) 100%);
+  margin-top: 3px;
+}
+
+/* La marca: la misma geometría de las piezas, reducida a un signo */
+.carpeta__marca { transition: opacity 450ms var(--ease); position: absolute; top: var(--s-5); left: var(--s-5); width: 22px; }
+.carpeta__marca svg { width: 100%; height: auto; display: block; }
+
+/* Rótulo chico arriba a la derecha */
+.carpeta__meta {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-5);
+  text-align: right;
+  font-size: 0.5625rem;
+  font-weight: var(--peso-fuerte);
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #f0eee6 65%, transparent);
+}
+
+/* El título, abajo a la izquierda: peso máximo y la segunda mitad en itálica,
+   como en la referencia */
+.carpeta__titulo {
+  transition: opacity 450ms var(--ease);
+  position: absolute;
+  left: var(--s-5);
+  bottom: var(--s-5);
+  font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.25rem);
+  font-weight: var(--peso-maximo);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+/* Sin itálica: el título va en la misma redonda que el resto del sitio */
+
+/* Cantidad de piezas, abajo a la derecha */
+.carpeta__cuenta {
+  position: absolute;
+  right: var(--s-5);
+  bottom: calc(var(--s-5) + 2px);
+  font-size: 0.5625rem;
+  font-weight: var(--peso-fuerte);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #f0eee6 55%, transparent);
+}
+
+/* --- EL DISPARO ---------------------------------------------------------
+   Cerrada: cada pieza está amontonada cerca del centro de la carpeta
+   (--vx / --vy la traen desde su posición final hasta ahí), chica y
+   transparente. Al abrir, se sueltan y viajan a su lugar.
+   El retardo escalonado (--orden) es lo que hace que se lea como un volcado. */
+.carpeta__cuerpo:not(.is-abierta) .pieza {
+  transform: translate(var(--vx, 0), var(--vy, 0)) scale(0.3) rotate(0deg);
+  opacity: 0;
+}
+.carpeta__cuerpo .pieza {
+  transition: transform 900ms var(--ease), opacity 500ms var(--ease),
+              box-shadow 800ms var(--ease);
+  transition-delay: calc(var(--orden, 0) * 55ms);
+}
+
+/* ==========================================================================
+   8. LAS DOS COLUMNAS DEL PROYECTO
+   ----------------------------------------------------------------------------
+   Izquierda fija, derecha en movimiento. La columna de la izquierda queda
+   pegada mientras se recorre el material y va sumando sus textos: primero el
+   liquen, después la traducción a piezas. Cada texto entra cuando su sección
+   de la derecha llega a pantalla, no antes — así el texto acompaña lo que se
+   está mirando en vez de adelantarse.
+   ========================================================================== */
+
+.proyecto {
+  align-items: start;
+  padding-top: calc(var(--s-9) + var(--s-2));
+  padding-bottom: var(--s-9);
+}
+
+/* Las etiquetas de la columna fija, más chicas todavía */
+.proyecto__col .etiqueta { font-size: 0.5625rem; }
+
+.proyecto__pie {
+  margin-top: auto;        /* lo empuja al fondo de la columna */
+  padding-top: var(--s-6);
+  display: grid;
+  gap: var(--s-2);
+}
+.proyecto__pie .dato { font-size: 0.5625rem; }
+.proyecto__pie .dato b { font-size: 0.8125rem; margin-top: 3px; }
+.proyecto__scroll { color: var(--verde); }
+
+/* LA IDENTIDAD YA NO ES UNA COLUMNA FIJA (12/08/2026).
+   Antes iba pegada con position: sticky y acompañaba todo el scroll. Ahora es
+   un bloque de apertura: se lee una vez, arriba, y se va con la página.
+   Consecuencia buena: el flujo queda libre para usar LAS 4 COLUMNAS, y por eso
+   ahora las imágenes pueden ir en la 1 y la 2 y el texto en la 3 y la 4.
+   Ocupa dos columnas porque el texto de apertura necesita ancho de lectura. */
+.proyecto__col {
+  grid-column: 1 / span 2;
+  position: relative;   /* por encima de la foto de portada, que cruza atrás */
+  z-index: 2;
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+}
+
+/* LA FLECHA DE VOLVER, EN PASTILLA
+   Misma forma que los botones de la nav: mismo borde, mismo radio de 999px y
+   el mismo relleno verde al pasar el mouse. Ya no lleva texto, así que la
+   pastilla queda casi redonda — y eso la vuelve reconocible como botón, que es
+   lo que le faltaba cuando era una flecha suelta.
+   Sigue alineada al borde izquierdo de la columna, no metida adentro. */
+.volver--pastilla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.volver--pastilla:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+/* Adentro de la pastilla la flecha ya no se corre: la que se mueve es la
+   pastilla entera, y moverla además a ella se sentía doble. */
+.volver--pastilla:hover svg { transform: none; }
+
+.volver {
+  margin-left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.625rem;   /* más chico: es una salida, no un título */
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gris);
+  transition: color var(--dur-1) var(--ease);
+}
+.volver:hover { color: var(--verde); }
+/* La flecha es un SVG dibujado, no el carácter ←: una línea larga con la
+   punta corta, que acompaña mejor a la mono que el glifo de la tipografía. */
+.volver svg {
+  width: 15px;   /* más chica: es una salida, y ahora va sola, sin texto */
+  height: auto;
+  flex: 0 0 auto;
+  transition: transform var(--dur-2) var(--ease);
+}
+.volver:hover svg { transform: translateX(-5px); }
+
+.proyecto__titulo {
+  /* Más chico que antes: la columna fija identifica, no protagoniza. El
+     protagonismo pasó al desarrollo de la derecha. */
+  font-size: clamp(1.7rem, 1.2rem + 1.1vw, 2.2rem);
+  font-weight: var(--peso-maximo);
+  line-height: .95;
+  letter-spacing: -0.03em;
+}
+
+.proyecto__meta { display: grid; gap: 2px; }
+
+.proyecto__bajada {
+  max-width: 34ch;
+  /* Más grande y en tinta, no en gris: dejó de ser una síntesis de una línea
+     y pasó a ser el texto que abre el proyecto. Si va a leerse, tiene que
+     tener el contraste de un texto. */
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--tinta);
+}
+
+/* Los textos que se van sumando. Arrancan invisibles y corridos: la clase
+   .is-visible la pone initColumnaSincro en main.js cuando su sección entra. */
+.proyecto__texto {
+  display: grid;
+  gap: var(--s-3);
+  padding-top: var(--s-5);
+  border-top: var(--borde) solid var(--zona-linea);
+  max-width: 34ch;
+  font-size: var(--t-0);
+  line-height: 1.6;
+  color: var(--gris);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+}
+.proyecto__texto.is-visible { opacity: 1; transform: none; }
+.proyecto__texto b { font-weight: var(--peso-fuerte); color: var(--tinta); }
+
+/* DE PUNTA A PUNTA: el flujo usa las 4 columnas de la página, las mismas que
+   los botones de la nav. Antes arrancaba en la 2 porque la 1 era de la columna
+   fija. */
+.proyecto__flujo {
+  grid-column: 1 / -1;
+  display: grid;
+}
+
+/* ==========================================================================
+   9. PANTALLAS
+   Cada sección ocupa MÁS O MENOS una pantalla y su contenido queda centrado
+   verticalmente. min-height y no height: si un contenido necesita un poco
+   más, crece en vez de recortarse.
+   El aire lo da la propia pantalla: no hacen falta márgenes grandes entre
+   secciones si cada una ya ocupa su propio alto.
+   ========================================================================== */
+
+.pantalla {
+  /* Descontamos el aire de arriba de .proyecto: si no, la primera pantalla
+     mide una ventana ENTERA por debajo de ese aire y se corta abajo. */
+  min-height: calc(100svh - var(--s-9));
+  display: grid;
+  /* Tres columnas internas. La primera queda LIBRE a propósito: los textos
+     empiezan en la segunda, así no se pegan a la columna fija de la
+     izquierda y se lee claramente qué es cada cosa. */
+  /* LAS 4 COLUMNAS DE LA PÁGINA, no tres.
+     Es lo que permite la regla de composición de toda la página:
+       IMAGEN en la 1 y la 2   ·   TEXTO en la 3 y la 4
+     Para verlas dibujadas, agregá ?grid a la dirección. */
+  grid-template-columns: repeat(4, 1fr);
+  /* Aire: del --s-6 al --s-9 entre bloques y del --s-7 al --s-9 alrededor.
+     Cada pantalla ya ocupa su propio alto, así que el aire de adentro es lo
+     que hace que no se sienta apretada. */
+  /* EL GAP DE LAS COLUMNAS ES EL DE LA GRILLA DEL SITIO, no el aire grande.
+     Con --s-9 (7rem) entre columnas, las 4 columnas de la pantalla eran más
+     angostas que las 4 de la página: nada caía donde caen los botones de la
+     nav. El aire grande queda solo entre FILAS. */
+  column-gap: var(--grid-gap);
+  row-gap: var(--s-9);
+  align-content: center;
+  padding-block: var(--s-9);
+}
+
+/* El texto de cada sección vive CON sus imágenes, no en la columna fija */
+/* EL DESARROLLO. Grande a propósito: es lo que se viene a leer.
+   El contraste con la columna fija —chica y gris— es lo que ordena la
+   jerarquía: uno identifica, el otro cuenta. */
+.pantalla__texto {
+  grid-column: 3 / -1;   /* columnas 3 y 4: el texto siempre a la derecha */
+  display: grid;
+  gap: var(--s-4);
+  max-width: 34ch;
+  font-size: clamp(1.15rem, 0.95rem + 0.7vw, 1.6rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--tinta);
+}
+/* La etiqueta del capítulo queda chica: contrasta con el texto grande */
+.pantalla__texto .etiqueta { font-size: 0.5625rem; }
+.pantalla__texto--ancho { max-width: 38ch; }
+/* Los dos organismos, en el verde del sistema: son el concepto del
+   proyecto, no un énfasis cualquiera. */
+.pantalla__texto b { font-weight: var(--peso-fuerte); color: var(--verde); }
+.pantalla__credito { margin-top: var(--s-3); }
+
+/* --- PANTALLA 1: la imagen de entrada -----------------------------------
+   Sin proporción fija: toma el alto que le queda a la pantalla y llena el
+   ancho. Los bordes se desvanecen para que no se vea dónde termina el JPG
+   contra el crema de la página. */
+/* Arranca arriba en vez de centrarse: así la pieza sube y aprovecha el
+   espacio que quedaba libre debajo. */
+/* PERILLAS DE LA PORTADA (subir / correr a la izquierda)
+     --portada-sube  cuánto trepa la foto. Sube por margen negativo, así se
+                     mete en el aire vacío que queda al lado del bloque de
+                     apertura (que solo ocupa las columnas 1 y 2).
+     --portada-izq   cuánto se corre a la izquierda, fuera del margen.
+   Los dos en svh/vw para que se comporte igual en cualquier pantalla. */
+.pantalla--portada {
+  --portada-sube: 50svh;
+  --portada-izq: -15vw;
+  /* Ajuste fino de la imagen dentro de su caja (ver .portada__foto img).
+     En % del tamaño de la propia imagen. */
+  --portada-foto-x: 15%;
+  --portada-foto-y: -12%;
+
+  align-content: start;
+  padding-block: 0 var(--s-4);
+  margin-top: calc(-1 * var(--portada-sube));
+  /* Se le descuenta lo que subió: si no, la sección sigue midiendo una
+     pantalla entera y empuja al liquen para abajo dejando un hueco. */
+  min-height: calc(100svh - var(--s-9) - var(--portada-sube));
+
+  /* La foto es decoración y cruza por detrás del bloque de apertura: si
+     capturara clics, taparía el link de volver y las pastillas. */
+  pointer-events: none;
+}
+
+/* LA FOTO DE ENTRADA
+   ----------------------------------------------------------------------------
+   EL BUG QUE HABÍA: la figura tenía `width: 100%` junto con márgenes
+   negativos. Con un ancho explícito, un margen negativo NO estira el
+   elemento — solo lo corre de lugar. Por eso la imagen no crecía por más
+   que le subiera el porcentaje: el ancho estaba clavado en 100% de las tres
+   columnas del flujo y los márgenes la movían sin agrandarla.
+   La solución es dejar el ancho en auto: ahí sí los márgenes negativos
+   ensanchan la caja.
+
+   Sin background propio, además: el PNG tiene canal alfa y el crema de la
+   página tiene que verse a través. Cualquier background volvería a "pegar"
+   la imagen sobre un rectángulo de otro tono. */
+.portada__foto {
+  grid-column: 1 / -1;
+  position: relative;
+  background: none;
+
+  /* width: auto — imprescindible para que los márgenes de abajo estiren */
+  width: auto;
+
+  /* Izquierda: sale del margen de la grilla hacia el borde de la ventana.
+     Antes esta cuenta descontaba "una columna del flujo" porque el flujo
+     arrancaba en la columna 2. Ahora el flujo ya empieza en la 1, así que esa
+     cuenta corría la foto de más. */
+  margin-left: calc(-1 * (var(--gutter) + var(--portada-izq)));
+
+  /* Derecha: sale del margen de la grilla hasta el borde de la ventana.
+     El margen lateral de la página, más —en pantallas anchas— la mitad del
+     sobrante que deja el ancho máximo de la grilla al quedar centrada. */
+  margin-right: calc(-1 * (var(--gutter) + max(0px, (100vw - var(--ancho-max)) / 2)));
+}
+
+.portada__foto img {
+  /* Ahora sí: la imagen llena esa caja ancha. contain para que entre
+     entera y no se recorte nada; el archivo ya viene cortado a su
+     contenido real, así que la pieza ocupa todo sin aire de sobra.
+     El tope de altura es solo una red de seguridad para pantallas muy
+     bajas: al ser contain, si actúa deja aire a los costados, no recorta. */
+  display: block;
+  width: 100%;
+  /* 92svh: el tope de altura era lo que estaba frenando el ancho. La caja
+     da para más, así que subirlo agranda la imagen de verdad. */
+  max-height: 92svh;
+  object-fit: contain;
+  object-position: center right;
+
+  /* El desenfoque lo maneja el scroll (ver initBlurPortada en main.js).
+     Arranca en cero: la imagen se ve nítida al entrar. */
+  filter: blur(0px);
+  will-change: filter;
+
+  /* La imagen se pasa por encima de la columna y del botón de volver.
+     Sin esto se come los clics: se ve el link pero no se puede tocar. */
+  pointer-events: none;
+
+  /* AJUSTE FINO DE LA FOTO — las dos perillas están arriba, en
+     .pantalla--portada (--portada-foto-x / --portada-foto-y).
+     Los % de translate son relativos al tamaño de LA PROPIA IMAGEN, no del
+     contenedor, así que la corrida se mantiene proporcional en cualquier
+     pantalla. Negativo en x = a la izquierda; negativo en y = para arriba.
+
+     ACÁ DECÍA translate(23%, -8%) Y ERA DE LA MAQUETA VIEJA.
+     Ese 23% se calculó cuando la caja de la foto arrancaba en la columna 2 y
+     había que empujarla hacia la derecha. Con la caja actual —que ya llega
+     sola hasta el borde de la ventana— ese 23% son 399px que se van de la
+     pantalla: la pieza quedaba cortada a la derecha. Medido: la imagen
+     terminaba en x=2274 con la ventana en 1882. */
+  transform: translate(var(--portada-foto-x), var(--portada-foto-y));
+}
+
+/* Aire extra entre la portada y esta sección: la portada termina en el
+   borde de la pantalla y sin este respiro el liquen le pisaba los talones. */
+.pantalla--liquen { padding-top: calc(var(--s-9) * 2); }
+
+/* --- PANTALLA 2: el liquen ----------------------------------------------
+   FOTOS A LA IZQUIERDA, TEXTO A LA DERECHA, lado a lado.
+
+   Antes estaban apilados —texto arriba, fotos abajo— y competían por el
+   mismo alto: la sección se pasaba de una pantalla y las polaroids quedaban
+   cortadas abajo. Puestos uno al lado del otro, las fotos usan el alto que
+   antes sobraba y todo entra sin apretar nada.
+
+   Las fotos van en la primera columna del contenido. No pueden ir más a la
+   izquierda que eso: la columna 1 de la página es la columna fija, y ahí
+   está el título del proyecto. */
+/* DOS COLUMNAS, no tres: las fotos se llevan la mitad izquierda y el texto
+   la derecha. Con las tres columnas de las otras pantallas, las fotos
+   quedaban encerradas en un tercio y no había forma de agrandarlas sin que
+   la del medio se metiera en el texto. */
+/* Usa las 4 columnas de .pantalla tal cual: fotos en la 1 y la 2 (ver
+   .liquenes), texto en la 3 y la 4 (ver .pantalla__texto). */
+.pantalla--liquen {
+  padding-top: var(--s-9);
+  align-content: center;
+}
+
+/* PERILLA DEL TAMAÑO DE LAS POLAROIDS
+   --polaroid-ancho: el ancho de cada foto. Bajalo y las tres se achican
+   manteniendo la misma composición (dos arriba, una abajo corrida).
+   Van en la COLUMNA 2, no en la 1 y la 2: quedan como un bloque compacto
+   contra el texto, y la columna 1 queda de aire. */
+.liquenes {
+  --polaroid-ancho: 8.5rem;
+
+  grid-column: 2;
+  /* FILA 1 EXPLÍCITA. Sin esto las fotos caían debajo del texto: el texto va
+     primero en el HTML y ocupa las columnas 2 y 3, y cuando el navegador
+     coloca algo en la columna 1 su cursor ya pasó de largo — no vuelve
+     atrás, manda el elemento a la fila siguiente. Por eso quedaban abajo por
+     más que les diera la columna izquierda. */
+  grid-row: 1;
+  display: grid;
+  gap: var(--s-4);
+  justify-items: start;
+  align-content: center;
+}
+
+/* El texto pasa a las dos columnas de la derecha y se centra contra las
+   fotos, en vez de arrancar arriba de todo. */
+.pantalla--liquen .pantalla__texto {
+  /* Columnas 3 y 4. Decía `grid-column: 2` y era de la maqueta vieja de 3
+     columnas: con las 4 nuevas, el texto caía en la columna 2 y las polaroids
+     se le montaban encima. Medido: el texto iba de 616 a 915 px, o sea justo
+     arriba de la segunda foto. */
+  grid-column: 3 / -1;
+  grid-row: 1;
+  align-self: center;
+}
+
+.liquenes__suelto {
+  position: relative;
+  width: var(--polaroid-ancho);
+  background: var(--grad-polaroid);
+  padding: 6px 6px 18px;
+  box-shadow: var(--shadow-sm);
+  /* --p lo mueve el scroll (initParallaxLiquenes). El giro va en la misma
+     transform para que no se pisen. */
+  transform: translate(var(--x, 0), var(--p, 0px)) rotate(var(--giro, 0deg));
+  transition: transform var(--dur-3) var(--ease),
+              box-shadow var(--dur-3) var(--ease);
+}
+
+/* Anchos y alineación alternados: apiladas y todas iguales se leerían como
+   una lista. Así el grupo tiene ritmo sin dejar de estar ordenado. */
+/* Las tres del MISMO tamaño, corridas en diagonal hacia la derecha.
+   Antes tenían tamaños distintos y caían una debajo de la otra: se leía como
+   una columna. Iguales y escalonadas, se leen como una pila de fotos tirada
+   sobre la mesa — que es lo que son.
+   El desplazamiento va en --x y se suma a la misma transform que el giro y
+   el parallax, así ninguno de los tres se pisa. */
+/* ZIGZAG, no cascada: izquierda, derecha, izquierda.
+   Las tres del mismo tamaño y en dos posiciones alternadas — la de arriba y
+   la de abajo comparten el eje izquierdo, la del medio se corre una columna
+   a la derecha. Bajando siempre hacia el mismo lado se leía como una
+   escalera; alternando, como piezas repartidas sobre la mesa.
+
+   El desplazamiento es en % del ANCHO DE LA PROPIA POLAROID, así que 115%
+   la corre poco más de su ancho: cae justo en la posición de al lado sin
+   depender de cuánto mida la columna. */
+/* DOS EJES, NO TRES POSICIONES.
+   La primera y la tercera comparten exactamente el mismo eje izquierdo, y la
+   del medio se corre poco más de su propio ancho. Antes cada una caía en un
+   lugar distinto (0%, 115%, 6%) y el conjunto se leía desordenado: tres
+   posiciones sueltas en vez de una alternancia.
+
+   El desplazamiento es en % del ancho de la PROPIA polaroid, así que el
+   zigzag se mantiene igual sin importar cuánto mida la columna. */
+/* EL LÍMITE QUE HAY QUE RESPETAR: las fotos viven en UNA columna de la
+   grilla; el texto ocupa las otras dos. Si el desplazamiento del zigzag pasa
+   de ~50% del ancho de la polaroid, la del medio se mete en la columna del
+   texto y se lo come. Con 106% pasaba exactamente eso.
+   Por eso el corrimiento es corto: alcanza para que se lea como alternancia
+   y no invade lo de al lado. */
+/* Dos arriba (una al lado de la otra) y la tercera abajo, corrida hacia la
+   derecha para que el grupo no quede como una tabla de 2x2 con un hueco.
+   Los desplazamientos son chicos: alcanzan para que se lean como objetos
+   apoyados sin desarmar el bloque. */
+
+.liquenes__suelto--a { --giro: var(--giro-a); grid-area: 1 / 1; --x: 0%;  --p: 0px;   }
+.liquenes__suelto--b { --giro: var(--giro-b); grid-area: 1 / 2; --x: 0%;  --p: 26px;  z-index: 2; }
+.liquenes__suelto--c { --giro: -0.6deg;      grid-area: 2 / 1; --x: 42%; --p: -10px; }
+
+/* Al pasar el mouse se endereza y se levanta: apenas, lo justo para que se
+   sienta un objeto apoyado y no una imagen pegada. */
+.liquenes__suelto:hover {
+  transform: translate(var(--x, 0), calc(var(--p, 0px) - 10px))
+             rotate(calc(var(--giro, 0deg) * 0.3)) scale(1.04);
+  /* La que se mira pasa al frente: en cascada, si no, queda tapada */
+  z-index: 5;
+  box-shadow: var(--shadow-md);
+  z-index: 3;
+}
+
+.liquenes__ver {
+  display: block;
+  width: 100%;
+  padding: 0;
+  cursor: zoom-in;
+}
+.liquenes__ver img {
+  /* Medida por ANCHO. Antes era por alto (height + width:auto), pero el
+     `max-width: 100%` del reset recortaba el ancho dentro de la columna y el
+     cuadrado se deformaba en un rectángulo alto y finito.
+     Con el ancho al 100% de su celda, el alto sale del cuadrado y ninguna
+     regla lo puede pisar. El tamaño del grupo se controla desde .liquenes. */
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  filter: saturate(.92);
+  transition: filter var(--dur-3) var(--ease);
+}
+.liquenes__suelto:hover .liquenes__ver img { filter: saturate(1); }
+
+/* --- PANTALLA INTRO DE LA TRADUCCIÓN -------------------------------------
+   Un enunciado a pantalla completa. No usa las columnas de las otras
+   pantallas: el texto se centra y ocupa el ancho de lectura cómodo.
+   El cuerpo es más chico que el de las pantallas partidas porque acá el
+   párrafo es largo — al mismo tamaño quedaba desbordado. */
+/* --- PANTALLA INTRO DE LA TRADUCCIÓN -------------------------------------
+   Misma composición que la pantalla del liquen: la foto REAL3 en las columnas
+   1 y 2, el enunciado en la 3 y la 4.
+
+   ANTES ESTABA HECHO CON position: absolute Y UN calc().
+   La foto se colgaba a la izquierda del texto con una cuenta que necesitaba
+   saber el ancho exacto del texto. Cada vez que cambiaba la tipografía ese
+   número quedaba viejo y la foto se montaba encima del texto. Ahora las dos
+   son celdas de la grilla: no hay nada que calcular y no se puede
+   desincronizar. Para mover algo, se cambia en qué columnas cae
+   (grid-column), nunca con márgenes. */
+.pantalla--intro { align-content: center; }
+
+.intro__foto {
+  grid-column: 1 / span 2;   /* columnas 1 y 2 */
+  align-self: center;
+  margin: 0;
+}
+.intro__foto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Techo de alto por si la ventana es baja: al chocarlo, el navegador achica
+     el ancho solo y la proporción NO se deforma. */
+  max-height: 62svh;
+}
+
+.pantalla__enunciado {
+  grid-column: 3 / -1;   /* columnas 3 y 4, igual que todos los textos */
+  align-self: center;
+  display: grid;
+  gap: var(--s-5);
+  font-size: clamp(1.4rem, 1rem + 1.5vw, 2.4rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--tinta);
+}
+.pantalla__enunciado .etiqueta { font-size: 0.5625rem; }
+.pantalla__enunciado b { font-weight: var(--peso-maximo); color: var(--verde); }
+
+/* --- LA LUPA -------------------------------------------------------------
+   La misma polaroid, más grande. El zoom se aplica al objeto ENTERO —marco
+   incluido— porque lo que estás manipulando es la foto impresa, no una
+   ventana con una imagen adentro. */
+.lupa {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  padding: var(--s-8);
+  background: rgba(26, 26, 24, .82);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease);
+}
+.lupa.is-abierta { opacity: 1; pointer-events: auto; }
+
+.lupa__polaroid {
+  background: var(--grad-polaroid);
+  padding: 16px 16px 46px;
+  box-shadow: var(--shadow-lg);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  /* La entrada: llega desde atrás y algo girada, y se endereza hacia vos */
+  transform: scale(.86) rotate(-2.5deg);
+  transition: transform 520ms var(--ease);
+}
+.lupa.is-abierta .lupa__polaroid { transform: scale(1) rotate(0deg); }
+/* Mientras se manipula, sin transición: tiene que seguir a la mano */
+.lupa__polaroid.is-manipulando { transition: none; }
+.lupa__polaroid.is-agarrando { cursor: grabbing; }
+
+.lupa__polaroid img {
+  display: block;
+  width: min(58vw, 56svh);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  pointer-events: none;   /* el arrastre lo maneja el marco */
+}
+
+/* LAS FLECHAS: afuera de la polaroid, a los costados. Sutiles. */
+.lupa__flecha {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--crema);
+  opacity: .45;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
+}
+.lupa__flecha:hover { opacity: 1; }
+.lupa__flecha svg { width: 24px; height: 24px; }
+.lupa__flecha--prev { left: var(--s-6); }
+.lupa__flecha--next { right: var(--s-6); }
+.lupa__flecha--prev:hover { transform: translateX(-4px); }
+.lupa__flecha--next:hover { transform: translateX(4px); }
+
+/* LA FUENTE: afuera de la polaroid, abajo. Solo existe acá, con la foto
+   abierta — en la página no se ve. */
+.lupa__fuente {
+  position: absolute;
+  bottom: var(--s-5);
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.04em;
+  color: var(--crema);
+  opacity: .4;
+  transition: opacity var(--dur-2) var(--ease);
+}
+.lupa__fuente:hover { opacity: .9; }
+
+.lupa__cerrar {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-6);
+  font-family: var(--font-mono);
+  font-size: var(--t--1);
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
+  color: var(--crema);
+  opacity: .55;
+}
+.lupa__cerrar:hover { opacity: 1; }
+
+/* --- LAS TRES PIEZAS, UNA POR PANTALLA -----------------------------------
+   Cada pieza sola en su pantalla, en las columnas 3 y 4 (la 2 queda libre,
+   como en todas las pantallas). Al tener media página para ella, la
+   animación se ve mucho más grande que cuando iban las tres en fila. */
+/* PARTIDA: texto a la izquierda, objeto a la derecha.
+   El texto tiene columna propia y ancho de lectura, así que aguanta párrafos
+   más largos que los de ahora sin tocar nada más. */
+/* ---------------------------------------------------------------------------
+   PANTALLAS DE PIEZA — PERILLAS PARA EDITAR A MANO
+
+     (El reparto texto / objeto ya no se toca acá: lo decide la grilla de 4
+      columnas de la página — texto en la 1 y la 2, objeto en la 3 y la 4.)
+     --pieza-alto       Alto del cuadro, y la perilla principal para que la
+                        pieza se vea más grande. Techo práctico ~70svh: más que
+                        eso y la sección pasa de una pantalla (el padding de
+                        abajo se suma).
+     --pieza-ancho-max  Freno de ancho, en vw. Es lo que evita que en una
+                        ventana angosta el cuadro se pase del borde derecho y
+                        la pieza quede cortada. Si lo subís, revisá la página
+                        angostando la ventana.
+
+   POR QUÉ EL CUADRO SE MIDE POR ALTO Y NO POR EL ANCHO DE SU COLUMNA
+   El render de Blender tiene mucho aire alrededor de la pieza (la de hongos
+   ocupa la mitad del cuadro; la del árbol, un cuarto). Con el cuadro atado al
+   ancho de su columna, la pieza queda chiquita en el medio de todo ese aire.
+   Midiéndolo por el ALTO, el cuadro crece y se pasa de su columna hacia la
+   derecha: la pieza se ve casi el doble. Lo que se pasa es aire, no pieza.
+
+   OJO — EL AIRE DEL CUADRO NO ES TRANSPARENTE
+   Los frames son JPG con el crema de la página horneado adentro (lo hace
+   tools/optimizar-frames.ps1, porque 300 PNG con transparencia no los aguanta
+   el navegador). Ese aire tapa lo que tenga debajo: no se ve porque es del
+   mismo color del fondo, pero si el cuadro se corre encima del texto, el
+   texto DESAPARECE. Por eso el cuadro nunca se corre hacia la izquierda: se
+   queda en su columna y crece para el otro lado.
+
+   POR QUÉ EL TEXTO LLEVA minmax Y NO UN fr PELADO
+   Con "0.8fr" solo, la caja de la pieza —que es más ancha que su columna—
+   infla su propia columna y le come todo el ancho a la del texto: quedaba una
+   palabra por renglón. El minmax le pone un piso al texto y el problema
+   desaparece.
+
+   Y POR QUÉ NO SE AGRANDA EL DIBUJO EN VEZ DEL CUADRO
+   Porque eso ya se probó y fue el bug del recorte: en js/muestras.js hay un
+   `zoom` por secuencia que agranda el dibujo dentro del cuadro, y todo lo que
+   se sale del cuadro NO se dibuja. Está en 1 (= sin agrandar) y conviene
+   dejarlo ahí. Para que la pieza se vea más grande, agrandá el cuadro con
+   --pieza-alto, no el zoom.
+   --------------------------------------------------------------------------- */
+.pantalla--pieza {
+  /* 76svh. Con tres columnas de ancho disponible, el cuadro puede crecer
+     bastante más que antes: a 76svh mide unos 1150px de ancho (16:9), o sea
+     que se pasa un poco de su columna 4 hacia el borde de la ventana — que es
+     aire del render, no pieza. Techo práctico: --pieza-alto + el padding de la
+     sección (2 x --s-7) tiene que entrar en 100svh. */
+  --pieza-alto: 76svh;
+  /* DOS FRENOS, gana el más chico:
+       56vw                  → en pantallas grandes, que no se coma todo
+       100vw menos 42rem     → en pantallas medianas, lo que queda de ancho
+                               descontando lo que hay a la izquierda del
+                               cuadro (columna fija + columna de texto).
+     Sin el segundo, a 1280 px de ancho la pieza se salía por la derecha y se
+     cortaba. Está medido: probado a 1900 y a 1280. */
+  /* 64vw: ahora el cuadro arranca en la columna 2, que cae cerca del 33% del
+     ancho de la ventana (medido a 1882) o antes en pantallas más chicas. 64vw
+     es lo máximo que puede medir sin pasarse del borde derecho y cortar la
+     pieza. Si subís --pieza-alto y la pieza aparece cortada a la derecha, es
+     este freno el que está actuando. */
+  --pieza-ancho-max: 64vw;
+
+  /* Menos aire arriba y abajo que las otras pantallas: acá el cuadro es
+     grande y necesita el alto. Con el --s-9 de siempre no entraba. */
+  padding-block: var(--s-7);
+}
+
+/* La figura repite las 4 columnas de la página con el MISMO gap, así el texto
+   y el objeto caen exactamente donde caen en las otras pantallas.
+   (Se podría usar `grid-template-columns: subgrid`, que es más elegante, pero
+   repetirlo es igual de exacto acá —las 4 columnas son iguales— y funciona en
+   navegadores más viejos.)
+   Acá el texto va en la 1 y la 2 y el objeto en la 3 y la 4. */
+.pantalla--pieza .muestra {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: var(--grid-gap);
+  row-gap: var(--s-5);
+  /* CENTER Y NO STRETCH: el texto se apoya en el medio del alto del objeto.
+     Estaba todo demasiado separado porque el texto quedaba arriba y el objeto
+     bajaba; centrados, se leen como una sola pieza. */
+  align-items: center;
+}
+/* EL OBJETO SE LLEVA TRES COLUMNAS (2, 3 y 4) y el texto se queda en la 1.
+   Es el reparto más desbalanceado de la página, a propósito: en estas tres
+   pantallas lo que hay que mirar es la pieza girando, y el texto es la ficha
+   que la acompaña. */
+.pantalla--pieza .muestra__pie   { grid-column: 1; }
+.pantalla--pieza .muestra__marco { grid-column: 2 / -1; }
+
+/* El cuadro pasa a 16:9 y ya no es cuadrado: a todo el ancho, un cuadrado
+   mediría casi mil pixeles de alto y no entraría en la pantalla.
+   Las tres piezas comparten la misma forma aunque sus renders no la tengan
+   —el de algas es cuadrado— porque el canvas centra el dibujo y el sobrante
+   es del mismo crema de la página: no se ve. */
+/* El cuadro de la pieza: 16:9 y limitado POR ANCHO, no por altura.
+   Antes tenía `max-height` junto con `aspect-ratio`: con un ancho definido,
+   el max-height recortaba la altura y la proporción se rompía. Limitando el
+   ancho, la altura sale sola del 16:9 y siempre entra en la pantalla junto
+   con el texto de abajo (las 15rem que se descuentan son ese texto más el
+   aire de la sección). */
+.pantalla--pieza .muestra__marco {
+  /* El alto manda y el ancho sale del 16:9 (por eso `width: auto`): así la
+     caja se pasa de su columna hacia la DERECHA y la pieza se ve grande.
+     Arranca donde termina el texto y no se le encima nunca. */
+  height: var(--pieza-alto);
+  aspect-ratio: 16 / 9;
+  width: auto;
+  /* Si choca este techo, la caja deja de ser 16:9 y el dibujo queda un poco
+     más chico, pero COMPLETO: el canvas siempre lo mete entero adentro. */
+  max-width: var(--pieza-ancho-max);
+  max-height: none;
+  /* Pegada al inicio de su columna. Sin esto, al ser más ancha que la columna,
+     se centraría y se metería sobre el texto. */
+  justify-self: start;
+  /* El dibujo entra completo: nada que recortar, así que no hace falta
+     esconder lo que se desborde. */
+  overflow: visible;
+}
+.pantalla--pieza .muestra__canvas { max-height: none; }
+/* El pie sí respeta la sangría: el texto empieza en la segunda columna
+   interna, igual que en todas las pantallas. La imagen usa todo el ancho,
+   el texto no. */
+/* El texto de la pieza va en TINTA, igual que el del liquen: es texto de
+   lectura, no un epígrafe. En gris se leía como una nota al pie de la imagen y
+   quedaba en segundo plano cuando en realidad es lo que explica la pieza. */
+.pantalla--pieza .muestra__pie {
+  display: grid;
+  gap: var(--s-3);
+  /* Sin tope propio: el texto vive en UNA columna y es ella la que le da la
+     medida. Un max-width en ch acá solo lo haría más angosto todavía. */
+  max-width: none;
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+  line-height: 1.45;
+  /* EN TINTA, NO EN GRIS. Ojo: acá había un color: var(--gris) más abajo en
+     esta misma regla, y por estar después ganaba aunque arriba dijera tinta.
+     Dos declaraciones del mismo color en una regla: la última manda. */
+  color: var(--tinta);
+}
+.pantalla--pieza .muestra__pie b {
+  font-size: clamp(1.3rem, 1.05rem + 0.9vw, 1.9rem);
+  margin-bottom: var(--s-3);
+  letter-spacing: -0.015em;
+}
+
+@media (max-width: 960px) {
+  .proyecto__col { position: static; }
+  .proyecto__col, .proyecto__flujo { grid-column: 1 / -1; }
+  .pantalla {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding-block: var(--s-8);
+  }
+  /* Todo a una columna: se apila imagen arriba, texto abajo. */
+  .pantalla__texto,
+  .liquenes,
+  .intro__foto,
+  .pantalla__enunciado,
+  .pantalla--pieza .muestra__pie,
+  .pantalla--pieza .muestra__marco { grid-column: 1 / -1; }
+  .intro__foto img { max-height: 40svh; }
+  .liquenes { grid-template-columns: 1fr 1fr; max-height: none; }
+  .liquenes__suelto { transform: none; margin-top: 0 !important; }
+  .liquenes, .pantalla--liquen .pantalla__texto { grid-column: 1 / -1; }
+  .liquenes { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+  .liquenes__suelto { transform: none; }
+  .liquenes__ver img { height: auto; width: 100%; }
+  /* En pantalla angosta se apila todo: el objeto arriba y el texto abajo,
+     a lo ancho. El cuadro vuelve a medirse por ancho, porque acá el alto
+     sobra y el ancho es lo que falta. */
+  .pantalla--pieza .muestra {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
+  }
+  .pantalla--pieza .muestra__pie,
+  .pantalla--pieza .muestra__marco { grid-column: 1; }
+  .pantalla--pieza .muestra__marco {
+    width: 100%;
+    height: auto;
+    max-width: none;
+  }
+
+  /* La foto de la intro sale del absoluto y pasa a ser un bloque normal
+     arriba del texto: al costado no le queda ancho. */
+  .intro__foto {
+    position: static;
+    width: 100%;
+    translate: none;
+    margin-bottom: var(--s-5);
+  }
+  .intro__foto img { max-height: none; }
+}
+
+/* --- 3. LA PISTA DE SCROLL -----------------------------------------------
+   La única indicación de la página. Se va sola en cuanto el recorrido
+   arranca (lo hace simbio-scroll.js). */
+.simbio-pista {
+  font-family: var(--font-mono);
+  position: absolute;
+  left: 50%;
+  bottom: var(--s-6);
+  transform: translateX(-50%);
+  z-index: 3;
+  font-size: var(--t--1);
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
+  color: var(--gris);
+  opacity: .75;
+  transition: opacity 600ms var(--ease);
+  animation: pista-respira 2.8s ease-in-out infinite;
+}
+.simbio-pista.is-ida { opacity: 0; }
+@keyframes pista-respira {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 6px); }
+}
+
+.creditos-pie { font-family: var(--font-mono); text-align: right; line-height: 1.6; }
+
+/* ==========================================================================
+   SISTEMA TIPOGRÁFICO — LA ÚNICA FUENTE DE VERDAD  (12/08/2026)
+   --------------------------------------------------------------------------
+   TODO lo tipográfico de la página de Simbio se decide en este bloque. Si
+   querés cambiar un tamaño, un peso o una alineación, es acá: los tamaños que
+   hay más arriba en el archivo quedaron de la versión anterior y este bloque
+   los pisa a propósito (cuelga de .pag-simbio, así que gana siempre).
+
+   UNA FAMILIA: ARCHIVO. TRES USOS. NADA MÁS.
+
+     1. TÍTULO   grande, peso 600, letras apretadas
+                 → "Simbio", el enunciado de la traducción, el nombre de cada
+                   pieza, los títulos de carpeta, el nombre de fase
+     2. CUERPO   tamaño de lectura, peso 400
+                 → la bajada, los párrafos del liquen, las descripciones de
+                   las piezas, las notas del proceso
+     3. RÓTULO   chico, MAYÚSCULA, letras separadas
+                 → 2023, Diseño industrial, LA TRADUCCIÓN, 01/04, los
+                   créditos, "volver a los trabajos"
+
+   LA JERARQUÍA NO LA HACE EL TAMAÑO
+   Antes había como diez tamaños distintos y aun así no se leía qué era más
+   importante. Con tres, la diferencia la marcan el PESO, la CAJA (mayúscula
+   o no) y el COLOR. Es más difícil de arruinar y se ve más armado.
+
+   REGLA PARA AGREGAR ALGO NUEVO
+   Preguntate cuál de los tres usos es y ponele esa variable. Si sentís que
+   necesitás un cuarto tamaño, casi siempre lo que falta es peso o color.
+   ========================================================================== */
+
+.pag-simbio {
+  /* Una sola familia para los tres usos. El var(--font-mono) también apunta
+     acá: así los rótulos que en el resto del sitio son monoespaciados, en esta
+     página son Archivo en mayúscula. */
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --font-mono: "Archivo", system-ui, sans-serif;
+
+  /* --- 1. TÍTULO --------------------------------------------------------
+     El clamp son tres números: mínimo, cómo crece, máximo. El del medio usa
+     vw (ancho de la ventana), así que el título se adapta solo de un celular
+     a un monitor grande. Para agrandar TODOS los títulos, subí el 3er número. */
+  --t-titulo: clamp(1.9rem, 1.1rem + 2.4vw, 3.2rem);
+  --peso-titulo: 600;
+  --track-titulo: -0.03em;   /* negativo = letras más juntas */
+  --alto-titulo: 1.05;       /* separación entre renglones */
+
+  /* --- 1-bis. SUBTÍTULO — el "subtipo" ----------------------------------
+     El cuarto tamaño, y el único. Existe para el enunciado de la traducción:
+     al tamaño de TÍTULO ese párrafo es demasiado grande (ocupaba media
+     pantalla), y al de CUERPO deja de ser un enunciado y parece una nota.
+     Si aparece otro texto con el mismo papel —una frase sola que abre una
+     sección— va con este mismo tamaño. */
+  --t-subtitulo: clamp(1.25rem, 0.95rem + 0.9vw, 1.75rem);
+
+  /* --- 2. CUERPO -------------------------------------------------------- */
+  /* Más chico que antes (llegaba a 1.2rem): con Archivo, a ese tamaño el
+     desarrollo se veía enorme al lado del título. */
+  --t-cuerpo: clamp(0.9rem, 0.85rem + 0.2vw, 1.02rem);
+  --peso-cuerpo-txt: 400;
+  --alto-cuerpo-txt: 1.55;
+  --medida-cuerpo: 34ch;     /* letras por renglón: el largo cómodo de lectura */
+
+  /* --- 3. RÓTULO -------------------------------------------------------- */
+  --t-rotulo: 0.6875rem;     /* 11px, fijo: es un rótulo, no tiene que crecer */
+  --peso-rotulo: 500;
+  --track-rotulo: 0.14em;    /* positivo = letras separadas */
+}
+
+/* --- USO 1: TÍTULO -------------------------------------------------------
+   Todos el MISMO tamaño, a propósito. Lo que los diferencia es dónde caen en
+   la grilla y qué tienen alrededor. */
+.pag-simbio .proyecto__titulo,
+.pag-simbio .proyecto-hero__titulo,
+.pag-simbio .pantalla__enunciado,
+.pag-simbio .pantalla--pieza .muestra__pie b,
+.pag-simbio .carpeta__titulo,
+.pag-simbio .collage__head h2,
+.pag-simbio .bloque__titulo,
+.pag-simbio .simbio-fase__nombre {
+  font-family: var(--font-display);
+  font-size: var(--t-titulo);
+  font-weight: var(--peso-titulo);
+  line-height: var(--alto-titulo);
+  letter-spacing: var(--track-titulo);
+  /* Reparte los renglones para que no quede uno con una sola palabra. */
+  text-wrap: balance;
+}
+
+/* EL ENUNCIADO USA EL SUBTIPO, no el tamaño de título.
+   Conserva del título la familia, el peso y las letras apretadas —por eso
+   sigue en la lista de arriba—, pero baja de tamaño. Es el único texto de la
+   página con este tratamiento. */
+.pag-simbio .pantalla__enunciado {
+  font-size: var(--t-subtitulo);
+  line-height: 1.2;
+}
+
+/* --- USO 2: CUERPO ------------------------------------------------------- */
+.pag-simbio .proyecto__bajada,
+.pag-simbio .proyecto__texto,
+.pag-simbio .pantalla__texto,
+.pag-simbio .muestra__pie,
+.pag-simbio .pantalla--pieza .muestra__pie,
+.pag-simbio .grupo__nota,
+.pag-simbio .carpeta__vacia,
+.pag-simbio .simbio-mensaje,
+.pag-simbio .simbio-fase__detalle,
+.pag-simbio .bloque p,
+.pag-simbio .creditos {
+  font-family: var(--font-body);
+  font-size: var(--t-cuerpo);
+  font-weight: var(--peso-cuerpo-txt);
+  line-height: var(--alto-cuerpo-txt);
+  letter-spacing: 0;
+}
+
+/* La negrita dentro del cuerpo NO cambia de tamaño: sube de peso y de color.
+   El verde está reservado para los dos organismos (hongo y alga), que son el
+   concepto del proyecto. */
+.pag-simbio .pantalla__texto b,
+.pag-simbio .grupo__nota b { font-weight: 600; color: var(--verde); }
+.pag-simbio .pantalla__enunciado b { font-weight: var(--peso-titulo); color: var(--verde); }
+
+/* --- USO 3: RÓTULO ------------------------------------------------------ */
+.pag-simbio .etiqueta,
+.pag-simbio .dato,
+.pag-simbio .volver,
+.pag-simbio .simbio-pista,
+.pag-simbio .simbio-loader__pct,
+.pag-simbio .simbio-fase__num,
+.pag-simbio .muestra__falta,
+.pag-simbio .carpeta__pestana,
+.pag-simbio .carpeta__meta,
+.pag-simbio .carpeta__cuenta,
+.pag-simbio .carpeta__lengueta,
+.pag-simbio .conceptos li,
+.pag-simbio .lupa__fuente,
+.pag-simbio .lupa__cerrar,
+.pag-simbio .creditos-pie,
+.pag-simbio .proyecto__pie .dato {
+  font-family: var(--font-mono);
+  font-size: var(--t-rotulo);
+  font-weight: var(--peso-rotulo);
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Los créditos del pie son el único rótulo en caja normal: son tres renglones
+   de nombres propios y en mayúscula se vuelven ilegibles. */
+.pag-simbio .creditos-pie { text-transform: none; letter-spacing: 0.02em; }
+
+/* Los tamaños viejos que quedaron sueltos en reglas de una línea más arriba:
+   los igualamos acá para que no queden dos verdades. */
+.pag-simbio .proyecto__col .etiqueta,
+.pag-simbio .pantalla__texto .etiqueta,
+.pag-simbio .pantalla__enunciado .etiqueta { font-size: var(--t-rotulo); }
+.pag-simbio .proyecto__pie .dato b { font-size: var(--t-rotulo); font-weight: 700; }
+
+/* --- LOS DATOS DEL PROYECTO, EN PASTILLAS ---------------------------------
+   "Diseño industrial", "Biomímesis", "2023" pasan de ser tres renglones
+   apilados a tres pastillas en fila, con la misma forma que los botones de la
+   nav (mismo borde, mismo radio de 999px). Motivo: son etiquetas de
+   clasificación, no un texto que se lee de corrido — y la forma lo dice.
+
+   El 999px del radio no es un número mágico: cualquier valor más grande que la
+   mitad del alto da un lado perfectamente redondo, así que 999 significa
+   "redondeá todo lo que puedas" y no hay que recalcularlo si cambia el alto.
+
+   flex-wrap: si no entran las tres en el ancho, la que sobra baja sola. */
+.pag-simbio .proyecto__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.pag-simbio .proyecto__meta .etiqueta {
+  padding: 5px 14px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  white-space: nowrap;
+  transition: border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+/* SIN HOVER. ACÁ ESTABA EL BUG DEL "HOVER RARO" (13/08/2026).
+   Había una regla `.proyecto__col:hover .proyecto__meta .etiqueta` que teñía las
+   tres pastillas de verde. La idea era que se despertaran como conjunto, pero el
+   selector cuelga de TODA la columna de apertura: la flecha de volver, el título
+   y la bajada están adentro, así que al pasar el mouse por la flecha se
+   encendían las pastillas. Parecía que la flecha las controlaba.
+
+   Se saca en vez de reescribirse: las pastillas no son botones ni links, no
+   llevan a ninguna parte. Un hover en algo que no se puede tocar promete una
+   acción que no existe — y era justo lo que confundía. Si algún día se quiere el
+   efecto de conjunto, el selector tiene que ser `.proyecto__meta:hover` (el
+   bloque de las pastillas), nunca la columna entera. */
+
+/* ==========================================================================
+   AGREGADOS DEL 12/08/2026 — ficha técnica, vectores, grupos anchos y el
+   rebranding de las polaroids de las carpetas.
+   ========================================================================== */
+
+/* --- LA FICHA TÉCNICA DE LA PIEZA ----------------------------------------
+   El dato de medidas va en la categoría más chica del sistema (RÓTULO), y
+   separado del párrafo por una línea: se lee como una especificación, no como
+   la continuación de la explicación. */
+.pag-simbio .muestra__ficha {
+  display: block;
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: var(--borde) solid var(--zona-linea);
+  font-family: var(--font-mono);
+  font-size: var(--t-rotulo);
+  font-weight: var(--peso-rotulo);
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--gris);
+}
+
+/* --- LA GRÁFICA Y LOS INSTRUCTIVOS (carpeta de Prototipo) ---------------
+   Un grupo chico y desacomodado, a la derecha del timelapse. Pasó por tres
+   versiones y vale saber por qué quedó así:
+     1. esparcidos por detrás de la carpeta de Proceso → desorden sobre algo que
+        ya era desordenado, no aportaba;
+     2. en cuadrícula pareja y numerada acá → parecía un manual de instrucciones
+        paso a paso, y no lo son;
+     3. como está ahora → material gráfico agrupado, sin números ni orden.
+
+   flex + wrap y no grid: en una grilla todo cae en celdas iguales y el conjunto
+   se ordena solo, que es justo lo que NO queremos. Con flex cada uno mide lo
+   suyo y el grupo respira distinto en cada fila.
+   El tamaño, el giro y el corrimiento de cada uno están en el HTML, uno por uno
+   y con valores FIJOS: en este proyecto nada se rota al azar. */
+.graficas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  /* EL GAP GARANTIZA QUE NO SE PISEN.
+     Los --dx/--dy corren cada uno hasta 8 y 10px. Dos vecinos pueden acercarse
+     como máximo el doble de eso, así que con un gap mayor a 20px nunca llegan a
+     tocarse. Si algún día agrandás los corrimientos, agrandá también el gap con
+     la misma cuenta. */
+  gap: var(--s-6) var(--s-5);
+  margin-top: var(--s-4);
+}
+.graficas__rotulo { color: var(--gris); }
+
+.grafica {
+  display: block;
+  width: var(--w, 4.5rem);
+  height: auto;
+  /* --dx y --dy corren cada uno de su lugar, --giro lo inclina. Se mueven con
+     translate y NO con márgenes: así la fila se sigue calculando igual y nada
+     se desborda de la carpeta, pero visualmente el renglón se rompe. Que un par
+     se pisen apenas es parte del efecto. */
+  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--giro, 0deg));
+  /* Un roce apenas perceptible: se endereza. No es un botón, así que no cambia
+     de tamaño ni levanta sombra — solo acusa que el mouse pasó por ahí. */
+  transition: transform var(--dur-2) var(--ease);
+}
+.grafica:hover { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(0deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .grafica { transition: none; }
+}
+
+/* --- EL TIMELAPSE -------------------------------------------------------
+   Video VERTICAL (480x848). Manda el alto y el ancho sale de la proporción:
+   al revés que todo el resto de la página. Si se midiera por ancho, el alto se
+   iría a más de mil pixeles.
+   --timelapse-alto es LA perilla para agrandarlo o achicarlo. */
+.timelapse {
+  /* 88svh. El techo real no es el ancho —el video es angosto y le sobra
+     columna— sino la ALTURA de la ventana: más de 90svh y no entra entero
+     en pantalla, así que habría que scrollear para ver un video de 6
+     segundos. Si lo querés más grande todavía, subilo sabiendo eso. */
+  --timelapse-alto: 88svh;
+
+  margin: var(--s-4) 0 0;
+  /* Mismo tratamiento de papel que las piezas del collage, para que se lea como
+     parte del mismo material y no como un reproductor de video. */
+  background: var(--grad-ficha);
+  padding: 6px;
+  border: var(--borde) solid var(--linea-clara);
+  border-radius: 2px 10px 2px 2px;
+  box-shadow: var(--shadow-sm);
+  /* width: max-content — la ficha mide lo que mide el video, no la columna. */
+  width: max-content;
+}
+.timelapse video {
+  display: block;
+  height: var(--timelapse-alto);
+  width: auto;
+}
+
+/* --- GRUPOS A TODO EL ANCHO ----------------------------------------------
+   Los grupos normales ocupan 2 de las 4 columnas (dos grupos por fila). Con
+   .grupo--ancho ocupan las 4: el material se ve al doble de tamaño. Se usa en
+   la carpeta de Prototipo, donde las fotos son el resultado y no un apunte. */
+.grupo--ancho { grid-column: 1 / -1; }
+/* Con el doble de ancho, el lienzo 4:3 quedaría altísimo: se achata para que
+   la fila siga entrando en pantalla. */
+/* 16/6 para la fila de fotos: es una FILA, no una grilla, así que necesita
+   poco alto. Las fotos son verticales y miden ~21% del ancho: a 1300px de
+   lienzo eso da 273px de ancho y unos 364 de alto, que entran en los 487 que
+   deja el 16/6. Si las agrandás (--w), revisá que no se salgan por abajo. */
+.grupo--ancho .grupo__lienzo { aspect-ratio: 16 / 6; }
+/* EL TIMELAPSE SE MIDE POR ALTO, NO POR ANCHO.
+   El archivo es vertical (480x848). Con un ancho en % quedaba enorme y se
+   salía de la carpeta. Atado al alto de su lienzo, se ve grande y siempre
+   entra, sin importar el ancho de la ventana.
+   Su grupo ocupa 2 columnas (no las 4): un video vertical solo, a todo el
+   ancho, deja la fila casi vacía. */
+/* 16/9 y no 4/3: el video ocupa 190x336px, así que con 4/3 quedaba media fila
+   vacía debajo. Con 16/9 el lienzo mide justo lo que necesita. */
+.grupo__lienzo--video { aspect-ratio: 16 / 9; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Con movimiento reducido no se mueve nada: el hover solo cambia la sombra. */
+  .grupo .pieza,
+  .grupo .pieza:hover,
+  .grupo .pieza:active { --alzar: 0px; --escala: 1; transition: none; }
+}
