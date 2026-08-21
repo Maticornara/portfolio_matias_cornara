@@ -737,12 +737,13 @@
    van a ver con un recuadro negro (el JPEG no guarda transparencia). */
 .casa54__foto {
   width: 100%;
-  /* Las cuatro a la misma proporción para que la grilla quede pareja: los
-     originales miden parecido pero no igual (1481x833, 1416x797, 1572x885,
-     1304x734) y sin esto la 2x2 queda escalonada.
+  /* Las cuatro a la misma proporción para que la grilla quede pareja. Después
+     del recorte de transparencia miden 760x558, 760x566, 760x569 y 760x566:
+     casi 4:3, pero no idénticas. Sin fijar la proporción, la 2x2 queda
+     escalonada por unos pocos píxeles, que es peor que no tenerla pareja.
      contain y no cover: con alfa no hay nada que rellenar, y cover le
      recortaría un borde a la habitación. */
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 760 / 566;
   object-fit: contain;
   opacity: 0;
   transition: opacity 620ms var(--ease);
