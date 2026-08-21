@@ -21,8 +21,8 @@
   <!-- Ojo con las rutas: estamos dentro de /proyectos/, por eso el ../ -->
   <link rel="stylesheet" href="../css/variables.css?v=6">
   <link rel="stylesheet" href="../css/base.css?v=11">
-  <link rel="stylesheet" href="../css/layout.css?v=8">
-  <link rel="stylesheet" href="../css/mas-54.css?v=13">
+  <link rel="stylesheet" href="../css/layout.css?v=9">
+  <link rel="stylesheet" href="../css/mas-54.css?v=16">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -43,16 +43,21 @@
 <body class="pag-54" data-cursor="anillo">
 
 <!-- Los mismos cuatro botones que la portada, en el mismo orden. Las anclas
-     apuntan a las secciones de index.html: #sobre, #archivo, #contacto. -->
+     apuntan a las secciones de index.html: #sobre, #trabajos, #contacto.
+     Esos son los ids que existen de verdad — antes acá decía #archivo, que no
+     existe en ninguna parte, y el botón no llevaba a ningún lado. -->
 <nav class="site-nav grilla">
   <a class="pastilla" href="../index.html">Home</a>
   <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
-  <a class="pastilla is-activa" href="../index.html#archivo">Archivo</a>
+  <!-- Decía "Archivo" y apuntaba a #archivo, que NO existe en la portada: sus
+       secciones son #sobre, #herramientas, #contacto y #trabajos. El botón se
+       clickeaba y no pasaba nada. Es el mismo destino que en simbio.html. -->
+  <a class="pastilla is-activa" href="../index.html#trabajos">Trabajos</a>
   <div class="site-nav__fin">
     <a class="pastilla" href="../index.html#contacto">Contacto</a>
     <div class="nav-idioma">
-      <a class="pastilla is-activa" href="#" aria-current="true">ES</a>
-      <a class="pastilla" href="#">EN</a>
+      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
+      <button type="button" class="pastilla" aria-pressed="false">EN</button>
     </div>
   </div>
 </nav>
@@ -81,8 +86,8 @@
     <div class="hero54__grilla grilla">
 
       <aside class="proyecto__col">
-        <a class="volver volver--pastilla" href="../index.html#archivo"
-           aria-label="Volver al archivo">
+        <a class="volver volver--pastilla" href="../index.html#trabajos"
+           aria-label="Volver a los trabajos">
           <svg viewBox="0 0 28 10" fill="none" aria-hidden="true"
                stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
                stroke-linejoin="round">
@@ -508,9 +513,9 @@
 
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Tiene que estar en TODAS las páginas. -->
-<script src="../js/smooth-scroll.js?v=2" defer></script>
-<script src="../js/transiciones.js?v=3" defer></script>
-<script src="../js/main.js?v=22" defer></script>
+<script src="../js/smooth-scroll.js?v=3" defer></script>
+<script src="../js/transiciones.js?v=4" defer></script>
+<script src="../js/main.js?v=23" defer></script>
 <script src="../js/mas-54.js?v=5" defer></script>
 </body>
 </html>

@@ -61,6 +61,14 @@
      que decide qué tan lejos de la caja cae el nombre. */
   --texto-abajo: clamp(3rem, 9vh, 7rem);
 
+  /* Aire entre el nombre y la frase de abajo. Son una sola unidad —un
+     nombre y su bajada—, así que van casi pegados: lo único que los separa
+     es el interlineado propio de cada uno. */
+  --nombre-frase-aire: 0.1rem;
+
+  /* Y esto es lo que baja la flecha, que sí va separada del bloque de texto */
+  --flecha-aire: var(--s-6);
+
   /* Tamaño del nombre. El clamp es (mínimo, ideal, máximo): nunca baja de
      1.35rem ni pasa de 2.2rem, y en el medio crece con el ancho de ventana.
      Es CHICO a propósito: el protagonista del hero es la caja en la esquina,
@@ -98,10 +106,25 @@
 
   /* --- LA CAJA DEL HERO --------------------------------------------- */
 
-  /* Cuánto mide la caja de ancho. Es el objeto de la portada: si la achicás
-     mucho se pierde entre las líneas, si la agrandás se le va encima al
-     nombre. Entre 200 y 340 anda bien. */
-  --caja-ancho: clamp(190px, 19vw, 330px);
+  /* LA CAJA MIDE LO MISMO QUE EL TEXTO, Y NO ES UN NÚMERO A OJO.
+     ------------------------------------------------------------------
+     Los dos anchos se calculan del MISMO valor —el tamaño del nombre—, así
+     que la caja y el texto quedan igual de anchos en cualquier pantalla, sin
+     una sola media query. Si mañana cambia --nombre-tam, se acomodan solos.
+
+     --texto-ancho: cuánto mide el nombre. Son 14 caracteres en peso 800, y
+     medido en pantalla ocupan 9,09 px de ancho por cada px de tamaño de
+     letra. (Es el mismo 9,09 que usa --frase-tam más arriba.)
+
+     --caja-ancho: OJO, este número NO es el ancho del cubo, es el del
+     dibujo entero. El lienzo del SVG mide 200 de ancho y el cubo ocupa 68 de
+     esos 200 — el resto es el piso, donde caen las hojas y las polaroids.
+     Por eso hay que agrandar en la proporción 200/68 = 2,941 para que el
+     CUBO termine midiendo lo mismo que el texto.
+     Acá estaba el "quedó chiquito": el número de antes era el del lienzo, o
+     sea que el cubo se veía a un tercio de eso. */
+  --texto-ancho: calc(var(--nombre-tam) * 9.09);
+  --caja-ancho: calc(var(--texto-ancho) * 2.941);
 
   /* --- SEPARACIÓN ENTRE SECCIONES ------------------------------------
      ES LA PERILLA MÁS IMPORTANTE DE LA PÁGINA. Lo único que separa una
@@ -246,9 +269,14 @@
   grid-column: 1 / -1;
   display: grid;
   justify-items: center;
-  gap: var(--s-2);
+  /* Sin gap general: el nombre y la frase van pegados con su propia perilla
+     y la flecha se despega con la suya. Con un gap único, achicar lo primero
+     obligaba a subir la flecha. */
+  gap: 0;
   text-align: center;
 }
+.portada-hero__frase { margin-top: var(--nombre-frase-aire); }
+.portada-hero__flecha { margin-top: var(--flecha-aire); }
 
 /* EL NOMBRE VA EN VERDE Y CHICO.
    Antes era negro, enorme y contra el margen izquierdo. Acá acompaña a la
@@ -312,7 +340,13 @@
      derecha y --fuga-y cuánto abajo, los dos en % del hero. El JS les suma el
      vaivén encima; si el JS no corre, la esquina se queda acá y se ve igual. */
   --fuga-x: 50;
-  --fuga-y: 55;
+
+  /* 60 y no 55: el rincón entero baja un poco y la caja queda MÁS CERCA del
+     nombre. El texto no se mueve —está anclado al pie del hero con
+     --texto-abajo—, así que lo único que cambia es cuánto aire queda entre
+     los papeles del piso y el nombre. Subilo y la caja se aleja del texto;
+     bajalo y se le acerca. */
+  --fuga-y: 60;
 
   position: absolute;
   left: calc(var(--fuga-x) * 1%);
@@ -330,12 +364,13 @@
      deja de medir cero, el punto de fuga tiene que seguir siendo el eje. */
   transform-origin: 0 0;
 
-  /* EL VAIVÉN SE HACE CON transform, Y ESTO ES LO QUE LO HACE FLUIDO.
-     will-change le avisa al navegador que este bloque se va a mover: lo
-     dibuja UNA vez, lo guarda como una capa aparte y después solo la corre.
-     Sin esto vuelve a rasterizar el cubo, los degradés y la sombra en cada
-     cuadro, y ahí es donde se sentía el tirón. */
-  will-change: transform;
+  /* Lo que se anima hoy es el DESENFOQUE al scrollear (archivo.js), así que
+     el aviso al navegador va sobre esas dos propiedades y no sobre transform.
+     will-change le dice que prepare una capa aparte para este bloque: sin
+     eso, cada paso del scroll vuelve a rasterizar el cubo, los degradés y la
+     sombra desde cero.
+     Si algún día se vuelve a encender el vaivén, hay que sumar transform. */
+  will-change: filter, opacity;
 }
 
 .esquina__linea {
@@ -460,14 +495,21 @@
   stroke-linecap: round;
 }
 .caja__agarre-canto {
-  /* La fibra cruda del troquel, el mismo tono que el canto de la tapa */
-  stroke: #BDCB95;
-  stroke-width: 6.2;
+  /* La fibra cruda del troquel. Va corrido un pelo hacia ABAJO respecto del
+     hueco, así asoma como un filo de luz en el borde de abajo del agujero y
+     casi nada arriba — que es donde le pega la luz del sitio, que viene de
+     arriba. Es lo que le da espesor al cartón. */
+  stroke: #C3D09C;
+  stroke-width: 6.6;
 }
 .caja__agarre-hueco {
-  /* El interior de la caja, en sombra */
-  stroke: #29331A;
-  stroke-width: 5;
+  /* El interior de la caja, en sombra. MÁS OSCURO QUE LA CARA MÁS OSCURA:
+     los dos agujeros están en paredes de distinto claro, y si el hueco no
+     baja de las dos, el de la pared en sombra desaparece. Con este valor el
+     de la izquierda contrasta por oscuro y el de la derecha se sostiene por
+     el filo claro de abajo. */
+  stroke: #1C2410;
+  stroke-width: 5.2;
 }
 
 /* El contorno, apenas marcado: sobre un fondo claro, un objeto sin ningún

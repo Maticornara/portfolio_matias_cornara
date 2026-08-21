@@ -465,10 +465,16 @@ function initColumnaSincro() {
    a ella en medio de una sección larga sin tener que volver arriba.
    -------------------------------------------------------------------------- */
 
+/* Los listeners van en window y se ponen UNA sola vez, pero el nodo de la nav
+   cambia: Swup la reemplaza en cada navegación. Por eso la referencia se
+   guarda afuera y se vuelve a apuntar en cada init — si no, después de entrar
+   a un proyecto la barra le seguía poniendo la clase a una nav que ya no
+   estaba en la página, y dejaba de esconderse. */
+let navActual = null;
 let navLista = false;
 function initNavEsquiva() {
-  const nav = document.querySelector(".site-nav");
-  if (!nav || navLista) return;
+  navActual = document.querySelector(".site-nav");
+  if (!navActual || navLista) return;
   navLista = true;
 
   let ultimo = window.scrollY;
@@ -479,17 +485,18 @@ function initNavEsquiva() {
   const ZONA_ALTA = 120;
 
   window.addEventListener("scroll", () => {
+    if (!navActual) return;
     const ahora = window.scrollY;
     const dif = ahora - ultimo;
     if (Math.abs(dif) < MINIMO) return;
 
-    nav.classList.toggle("is-oculta", dif > 0 && ahora > ZONA_ALTA);
+    navActual.classList.toggle("is-oculta", dif > 0 && ahora > ZONA_ALTA);
     ultimo = ahora;
   }, { passive: true });
 
   // El mouse cerca del borde la trae de vuelta
   window.addEventListener("mousemove", (e) => {
-    if (e.clientY < 90) nav.classList.remove("is-oculta");
+    if (navActual && e.clientY < 90) navActual.classList.remove("is-oculta");
   }, { passive: true });
 }
 

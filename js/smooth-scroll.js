@@ -64,4 +64,55 @@
   //    "amortigua" el salto. Para un scrubbing atado al scroll eso se ve
   //    como que la animación se atrasa respecto del dedo.
   gsap.ticker.lagSmoothing(0);
+
+  /* --- LOS LINKS A UNA SECCIÓN DE ESTA MISMA PÁGINA ---
+     Los botones de la nav (#sobre, #trabajos, #contacto) los resolvía el
+     navegador con su propio salto suave (scroll-behavior: smooth, base.css).
+     Pero acá el que manda el scroll es Lenis: los dos empujan la página al
+     mismo tiempo y el salto se traba a mitad de camino, o llega y rebota.
+     Se veía como que el botón "no linkea bien".
+
+     La solución es que el ancla pase por Lenis, que es el que lleva la
+     cuenta. El listener va en document —no en cada <a>— para que sobreviva a
+     Swup, que reemplaza la nav entera en cada navegación.
+
+     El aire de arriba tiene que coincidir con el scroll-margin-top de
+     archivo.css (--s-7 = 3rem = 48px): Lenis no lee scroll-margin. Si cambia
+     uno, cambiá el otro. El mismo número está en transiciones.js. */
+  const AIRE_NAV = 48;
+
+  /* --- ENTRAR DIRECTO A UNA SECCIÓN (index.html#sobre) ---
+     Cuando la página se abre CON un ancla en la URL —un refresh, un link
+     pegado, o venir desde una página de proyecto sin que Swup se meta— el
+     salto lo hace el navegador apenas parsea el HTML. Pero Lenis arranca
+     leyendo la posición del scroll y escribiéndola cada cuadro, así que ese
+     salto lo pisaba y la página quedaba arriba de todo. Medido: entrar a
+     index.html#sobre te dejaba en el hero.
+     Lo hacemos al "load" y no antes a propósito: recién cuando las imágenes
+     tienen su tamaño definitivo la sección está en su altura de verdad. */
+  window.addEventListener("load", () => {
+    const ancla = window.location.hash.slice(1);
+    if (!ancla) return;
+    const destino = document.getElementById(ancla);
+    if (destino) lenis.scrollTo(destino, { offset: -AIRE_NAV, immediate: true });
+  });
+
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href*="#"]');
+    if (!link || e.metaKey || e.ctrlKey || e.shiftKey || link.target === "_blank") return;
+
+    // Solo las anclas de ESTA página. Las que van a otra (por ejemplo
+    // "../index.html#sobre") son navegación: las maneja Swup, y de
+    // posicionarlas al llegar se encarga transiciones.js.
+    if (link.pathname !== window.location.pathname) return;
+
+    const destino = link.hash.length > 1
+      ? document.getElementById(link.hash.slice(1))
+      : null;
+    if (!destino) return;
+
+    e.preventDefault();
+    lenis.scrollTo(destino, { offset: -AIRE_NAV });
+    history.pushState(null, "", link.hash);
+  });
 })();

@@ -364,28 +364,62 @@
 /* ==========================================================================
    4. LA BANDA DE PICTOGRAMAS
    --------------------------------------------------------------------------
-   Un separador, no una sección. Antes tenía 18svh de alto con object-fit:
-   cover y los pictogramas quedaban cortados arriba y abajo; ahora el alto lo
-   da el video y lo que sobra es aire a los costados.
+   Un separador entre el hero y "Qué es", no una sección.
 
-   PERILLAS — LA BANDA
+   EL ALTO DE ESTA BANDA NO ES UNA DECISIÓN DE DISEÑO: ES UNA CUENTA.
+   Vale la pena entenderla antes de tocar el número, porque es el error que ya
+   se cometió dos veces acá.
+
+   `ilustraciones.mp4` NO es una tira infinita: es un cuadro de 1460x820 con
+   pictogramas grandes que van pasando. Recortado al dibujo queda 1460x520, o
+   sea 2,8:1. Ese es TODO el contenido que hay — no existe más ancho.
+
+   De ahí salen las dos únicas opciones posibles, y las dos se probaron:
+
+     · Banda ancha y BAJA (1440x216) con object-fit: cover → el navegador
+       escala por el ancho y recorta 280 px de alto: parte los pictogramas al
+       medio. Así se veía "rota": una lonja de magenta con un pedazo de dibujo
+       cruzando.
+
+     · La misma banda baja con object-fit: contain → no corta nada, pero el
+       video entra a 626 px de ancho sobre 1425 de banda. O sea el 44%: queda
+       una barra magenta casi vacía con un grupito de dibujos en el medio.
+       Pintar la banda del mismo magenta que el video no alcanza — el color
+       calza perfecto, pero el vacío a los costados se sigue viendo.
+
+   La salida es la tercera: QUE EL ALTO LO PONGA EL VIDEO. Con `width: 100%` y
+   `height: auto`, el video ocupa el ancho completo y su alto es el que le
+   corresponde a su proporción. Nada recortado, nada vacío. Da unos 500 px en
+   una pantalla de escritorio y unos 135 en un teléfono, porque escala sola.
+
+   SI HACE FALTA QUE LA BANDA SEA MÁS BAJA, el número a tocar NO está acá: hay
+   que recortarle más magenta al video en tools\optimizar-54.ps1 (el filtro
+   `crop`). Cuanto más ajustado el recorte, más apaisada la proporción y más
+   baja puede ser la banda sin cortar un solo pictograma. Hoy el recorte ya está
+   pegado al dibujo, así que no hay mucho margen.
+
+   El fondo magenta es el del propio video (#D30A59, medido): tapa cualquier
+   fracción de píxel que quede sin cubrir por redondeo.
    ========================================================================== */
-.banda54 {
-  --banda-alto: clamp(84px, 12svh, 130px);
 
+.banda54 {
   width: 100%;
-  height: var(--banda-alto);
+  background: #D30A59;
   overflow: hidden;
-  background: var(--crema);
-  border-block: var(--borde) solid var(--zona-linea);
 }
+
 .banda54 video {
+  display: block;
   width: 100%;
-  height: 100%;
-  /* contain: el pictograma entra entero. Lo que sobra a los costados se
-     rellena con el fondo del propio video, que es magenta pleno. */
-  object-fit: cover;
-  object-position: center;
+  height: auto;
+
+  /* La proporción escrita, aunque el archivo ya la traiga. Hace falta porque
+     hasta que el video no carga sus metadatos el navegador le asigna 300x150 —
+     o sea 2:1 — y reservaría un hueco de la altura equivocada, con el salto de
+     página correspondiente cuando finalmente llega.
+     ES LA DEL VIDEO RECORTADO (1280x456). Si cambia el `crop` del script, hay
+     que cambiar este número o vuelve el salto. */
+  aspect-ratio: 1280 / 456;
 }
 
 
@@ -774,27 +808,35 @@
 
 
 /* ==========================================================================
-   10. LA CASA EN MOVIMIENTO — a pantalla completa
+   10. LA CASA EN MOVIMIENTO — todo el ancho de la pantalla
    --------------------------------------------------------------------------
-   La única pieza de la página que ocupa todo. Es la casa entera
+   La única pieza de la página que va de borde a borde. Es la casa entera
    recorriéndose: a media pantalla no se leía como un recorrido, se leía como
    una miniatura de un render.
+
+   MANDA EL ANCHO Y EL ALTO SALE SOLO. Antes la sección estaba clavada en
+   100svh con el video en object-fit, y el resultado dependía de la forma de
+   la ventana: en una pantalla más apaisada que el video quedaba recortado
+   arriba y abajo. Con `height: auto` el video ocupa el ancho completo y su
+   alto es el que le corresponde — nunca se recorta nada, en ninguna ventana.
    ========================================================================== */
 
 .casa54__pantalla {
   width: 100%;
-  height: 100svh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
   background: var(--negro);
 }
 .casa54__pantalla video {
+  display: block;
   width: 100%;
-  height: 100%;
-  /* contain: el recorrido se ve ENTERO. Con cover, en una pantalla ancha se
-     le comía el piso y el techo de cada habitación. */
-  object-fit: contain;
+  height: auto;
+
+  /* La proporción escrita, aunque el video ya la traiga. Hace falta por el
+     preload="none": hasta que el archivo no empieza a bajar, el navegador no
+     sabe cuánto mide y a un <video> sin metadatos le asigna 300x150 — o sea
+     2:1. Con height:auto eso reserva un hueco de la altura equivocada y,
+     cuando el video finalmente carga, la página pega un salto. Con el
+     aspect-ratio puesto, el lugar está bien reservado desde el principio. */
+  aspect-ratio: 16 / 9;
 }
 
 
@@ -1073,7 +1115,6 @@
   .tira54__pista { transform: none !important; --tira-alto: 60svh; }
   .postal54__caras { transition: none !important; }
   .hero54__riel, .contexto54__pieza { transition: none !important; }
-  .casa54__pantalla { height: auto; }
   /* Las fotos de la casa aparecen y punto, sin escalonarse. */
   .casa54__foto { opacity: 1 !important; transition: none !important; transition-delay: 0s !important; }
 }

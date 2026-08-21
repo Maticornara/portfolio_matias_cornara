@@ -49,6 +49,29 @@
 }
 .site-nav.is-oculta { transform: translateY(calc(-100% - 6px)); }
 
+/* LA BANDA LLEGA A LOS DOS BORDES; LOS BOTONES SIGUEN EN LA GRILLA.
+   La nav lleva .grilla, y .grilla trae max-width + margin-inline: auto. En un
+   elemento con position: fixed eso NO deja el fondo pegado a los bordes: con
+   left:0 y right:0 puestos, el margen automático CENTRA la caja al ancho
+   máximo. En una pantalla de 1920 la barra medía 1400 y quedaban 260px de
+   página asomando a cada lado — se veía corta y flotando, no como una barra.
+
+   Arreglo: la caja ocupa la pantalla entera y las columnas se vuelven a
+   plantar donde estaban, con padding en vez de margen.
+     - pantalla angosta (≤ --ancho-max) → el max() da --gutter, igual que
+       cualquier bloque de la página
+     - pantalla ancha                   → el sobrante de los costados MÁS el
+       gutter, o sea exactamente donde arranca un .grilla centrado
+   Resultado: el contenido de la nav mide lo mismo y cae en el mismo lugar que
+   el de cualquier .grilla, pero el crema y el blur van de borde a borde. */
+.site-nav.grilla {
+  max-width: none;
+  padding-inline: max(
+    var(--gutter),
+    (100% - var(--ancho-max)) / 2 + var(--gutter)
+  );
+}
+
 /* Cada hijo directo cae en una columna. justify-self: start evita que el
    botón se estire a lo ancho de la columna: arranca donde arranca ella. */
 .site-nav > * { justify-self: start; }
@@ -63,9 +86,17 @@
   width: 100%;
 }
 
-/* Botón-píldora: la forma de navegación del sistema */
+/* Botón-píldora: la forma de navegación del sistema.
+   Sirve para un <a> y también para un <button> — el par ES/EN todavía no
+   linkea a ningún lado, así que es un botón de verdad y no un <a href="#">,
+   que lo único que hacía era saltar al tope de la página. Las tres líneas de
+   reset (font, background, cursor) son para que el <button> no traiga la
+   tipografía ni el fondo gris del navegador. */
 .pastilla {
   display: inline-block;
+  font-family: inherit;
+  background: transparent;
+  cursor: pointer;
   padding: 5px 22px;
   border: var(--borde) solid var(--zona-linea);
   border-radius: 999px;

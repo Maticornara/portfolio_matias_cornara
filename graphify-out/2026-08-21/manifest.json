@@ -170,13 +170,13 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787292597.3132842,
-    "ast_hash": "8f7285c565a42b40a420b61d186280bd",
+    "mtime": 1787291490.1226702,
+    "ast_hash": "26b8b78634a8029a11f458c481d2d1f8",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787292811.376593,
-    "ast_hash": "02d1d5add5af4f8fb6eb00823816338e",
+    "mtime": 1787291514.179144,
+    "ast_hash": "77b6b86e278895152ec773c9cbd04063",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
@@ -200,8 +200,8 @@
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787292597.2951486,
-    "ast_hash": "d18449d065711eaffa5ec21ca6847528",
+    "mtime": 1787291490.09794,
+    "ast_hash": "9d95a892de75c4cac5f798e3d77ad872",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
@@ -7310,8 +7310,8 @@
     "semantic_hash": ""
   },
   "tools/optimizar-54.ps1": {
-    "mtime": 1787292562.403941,
-    "ast_hash": "ff5de972412553a04cff07b779fdbc77",
+    "mtime": 1787291299.79781,
+    "ast_hash": "03228fdb895e2ff044222aa3930ef981",
     "semantic_hash": ""
   },
   "assets/+54/MOCKUPS/MANUAL DE MARCA 2.jpeg": {
@@ -7460,8 +7460,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/ilustraciones.jpg": {
-    "mtime": 1787292565.7690115,
-    "ast_hash": "7b74829dbdf8d59a77dfcddf05ca245d",
+    "mtime": 1787291303.4180727,
+    "ast_hash": "fa2062288ecb861992d0239a4c2f0416",
     "semantic_hash": ""
   },
   "assets/+54/web/logo.jpg": {
@@ -7585,8 +7585,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/ilustraciones.mp4": {
-    "mtime": 1787292565.596581,
-    "ast_hash": "a44126320f0b897c1af776368dcec0ac",
+    "mtime": 1787291303.1976283,
+    "ast_hash": "f9d0007afeaffce6ef42557850ea9386",
     "semantic_hash": ""
   },
   "assets/+54/web/logo.mp4": {
@@ -7687,16 +7687,6 @@
   "assets/amigos tipines/imagenes/HERO3.mov": {
     "mtime": 1787281114.5505278,
     "ast_hash": "eb547502b5bdcb16aca35c13885defb6",
-    "semantic_hash": ""
-  },
-  "assets/amigos tipines/paginas/1_TAPA.png": {
-    "mtime": 1787292791.2013142,
-    "ast_hash": "3c3d732e77532451021543938732a418",
-    "semantic_hash": ""
-  },
-  "assets/amigos tipines/paginas/2.png": {
-    "mtime": 1787292806.1735055,
-    "ast_hash": "0422c69f20786f220b643f8944ac0d35",
     "semantic_hash": ""
   }
 }

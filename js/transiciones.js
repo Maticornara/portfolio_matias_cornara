@@ -27,8 +27,18 @@
 
   const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* --- LA NAV TAMBIÉN SE REEMPLAZA ---
+     La nav vive FUERA de #swup, así que Swup no la tocaba: al navegar quedaba
+     colgada la de la página anterior. Y como sus links son relativos, desde la
+     portada entrabas a un proyecto y el botón Home seguía diciendo
+     "index.html", que parado en /proyectos/ apunta a /proyectos/index.html
+     — un 404. El botón verde de "estás acá" también quedaba en el lugar
+     equivocado.
+     Poniéndola como segundo contenedor, cada página trae su propia nav con sus
+     links y su marca de activa. No se le pega el fade porque el selector de
+     animación es [class*="transicion-"] y la nav no lleva esa clase. */
   const swup = new window.Swup({
-    containers: ["#swup"],
+    containers: ["#swup", ".site-nav"],
     // El selector de lo que se anima. Tiene que coincidir con la clase del
     // contenedor en el HTML y con el CSS de base.css.
     animationSelector: '[class*="transicion-"]',
@@ -71,10 +81,36 @@
 
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();
 
-    // Lenis mantiene su propia posición de scroll: hay que devolverla a cero
-    // en la página nueva, si no se entra a mitad de camino.
-    if (window.lenis) window.lenis.scrollTo(0, { immediate: true });
+    /* --- DÓNDE QUEDA PARADA LA PÁGINA NUEVA ---
+       Antes esto era siempre scrollTo(0). El problema: los botones de la nav
+       de un proyecto apuntan a "../index.html#sobre", y Swup navega sin
+       recargar, así que el navegador nunca hace el salto al ancla — lo hacía
+       este archivo, y lo mandaba al tope. Entrabas a la portada arriba de
+       todo y el botón parecía roto, cuando el link estaba bien.
+       Ahora: si la URL trae un ancla que existe, se va ahí; si no, al tope. */
+    const ancla = window.location.hash.slice(1);
+    const destino = ancla ? document.getElementById(ancla) : null;
+    irA(destino);
   });
+
+  /* El aire que se deja por encima de la sección para que la nav fija no le
+     tape la primera línea. Es el mismo valor que el scroll-margin-top de
+     archivo.css (--s-7 = 3rem = 48px); Lenis no lee scroll-margin, hay que
+     dárselo a mano. Si cambia uno, cambiá el otro. */
+  const AIRE_NAV = 48;
+
+  function irA(destino) {
+    if (window.lenis) {
+      window.lenis.scrollTo(destino || 0, {
+        offset: destino ? -AIRE_NAV : 0,
+        immediate: true,
+      });
+    } else if (destino) {
+      destino.scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
 
   /* --- LIMPIEZA ANTES DE IRSE ---
      Los ScrollTrigger de la página que se va apuntan a elementos que están

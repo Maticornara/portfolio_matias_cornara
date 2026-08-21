@@ -1,7 +1,7 @@
 # Graph Report - CODIGO_CLAUDE  (2026-08-21)
 
 ## Corpus Check
-- 27 files · ~32,169,618 words
+- 27 files · ~32,096,953 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

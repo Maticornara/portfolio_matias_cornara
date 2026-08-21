@@ -1,8 +1,11 @@
 /* ==========================================================================
    ARCHIVO.JS — LA ESQUINA DEL HERO
    --------------------------------------------------------------------------
-   Lo único que hace este archivo es mover el punto de fuga de las tres
-   líneas del hero. Nada más.
+   Dos cosas, y nada más:
+     · el desenfoque de la ilustración a medida que el hero sale de pantalla
+       (esto es lo que corre hoy);
+     · un vaivén lento del punto de fuga, que está APAGADO — ver la perilla
+       `activo` acá abajo.
 
    CÓMO ESTÁ REPARTIDO EL TRABAJO
    La geometría NO vive acá. Las tres líneas son barras rotadas un ángulo fijo
@@ -19,11 +22,13 @@
      · para mover la esquina de lugar se tocan --fuga-x y --fuga-y en
        archivo.css. Este archivo no hay que tocarlo.
 
-   POR QUÉ NO USA GSAP, SI ESTÁ CARGADO
-   GSAP está en el sitio para lo que se engancha al scroll (el ensamble de
-   Simbio). Esto no depende del scroll: es un loop de fondo que corre solo.
-   Con dos senos y requestAnimationFrame son diez líneas, se lee de arriba a
-   abajo, y sigue funcionando aunque el CDN de GSAP no conteste.
+   POR QUÉ UNA COSA USA GSAP Y LA OTRA NO
+   El desenfoque va con GSAP porque depende del scroll, y "scrub" —seguir al
+   dedo, y volver atrás si se sube— ya está resuelto ahí, con el puente a
+   Lenis hecho en smooth-scroll.js.
+   El vaivén no depende del scroll: es un loop de fondo. Con un seno y
+   requestAnimationFrame son diez líneas, se lee de arriba a abajo, y sigue
+   funcionando aunque el CDN de GSAP no conteste.
    ========================================================================== */
 
 (function () {
@@ -34,6 +39,13 @@
      ------------------------------------------------------------------ */
 
   const ESQUINA = {
+    /* ¿CORRE EL VAIVÉN? Hoy NO.
+       El movimiento de subir y bajar está apagado a pedido. El código queda
+       entero y probado: se vuelve a encender poniendo `true` acá y no hay
+       nada más que tocar. Apagado, la esquina se ve exactamente como la deja
+       el CSS, quieta. */
+    activo: false,
+
     /* Cuánto sube y baja el rincón, EN PÍXELES.
        Antes el punto de fuga hacía un recorrido en dos ejes, con dos
        períodos distintos, y se leía como un movimiento errático: la esquina
@@ -95,7 +107,7 @@
 
     // Con movimiento reducido no se arranca nada: la esquina se queda donde
     // la dejó el CSS y listo.
-    if (sinMovimiento) return;
+    if (sinMovimiento || !ESQUINA.activo) return;
 
     // Swup vuelve a llamar a este init sin recargar la página. La marca va
     // en el elemento y no en una variable del módulo: si es el mismo de antes
@@ -147,13 +159,71 @@
     requestAnimationFrame(pintar);
   }
 
+  /* ------------------------------------------------------------------
+     LA ILUSTRACIÓN SE DESENFOCA AL BAJAR
+     --------------------------------------------------------------------
+     A medida que el hero sale de pantalla, el rincón pierde foco: es la
+     portada pasando a segundo plano.
+
+     ACÁ SÍ SE USA GSAP, al revés que el vaivén de arriba. La diferencia es
+     que esto SÍ depende del scroll, y "scrub" es justamente lo que hace
+     falta: el desenfoque sigue al dedo cuadro a cuadro y también vuelve
+     atrás si se sube. Escrito a mano habría que resolver el scroll suave de
+     Lenis, y ese puente ya está hecho en smooth-scroll.js.
+
+     Va también un poco de opacidad. Es el mismo aprendizaje que la portada
+     de Simbio (initBlurPortada en main.js): el desenfoque solo no alcanza
+     para que algo se lea como "pasó atrás" — sigue estando igual de
+     presente, solo que borroso.
+     ------------------------------------------------------------------ */
+
+  const DESENFOQUE = {
+    /* Cuánto llega a desenfocarse, en píxeles de blur, cuando el hero
+       terminó de salir. Abajo de 8 casi no se nota; arriba de 20 el dibujo
+       se convierte en una mancha antes de irse. */
+    blur: 14,
+
+    /* Cuánto se apaga en el camino. 1 = no se apaga nada. */
+    opacidad: 0.45,
+  };
+
+  function initDesenfoque() {
+    const esquina = document.querySelector("[data-esquina]");
+    if (!esquina) return;
+
+    const hero = esquina.closest(".portada-hero");
+    if (!hero) return;
+
+    // Sin GSAP (o si no contestó el CDN), o con movimiento reducido: la
+    // ilustración se queda nítida y no pasa nada. Es una capa de más, no
+    // algo de lo que dependa que la página se entienda.
+    if (!window.gsap || !window.ScrollTrigger || sinMovimiento) return;
+
+    window.gsap.to(esquina, {
+      filter: "blur(" + DESENFOQUE.blur + "px)",
+      opacity: DESENFOQUE.opacidad,
+      ease: "none",
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",      // arranca cuando el hero toca el borde
+        end: "bottom top",     // termina cuando terminó de salir
+        scrub: true,
+      },
+    });
+  }
+
+  function init() {
+    initEsquina();
+    initDesenfoque();
+  }
+
   // Swup reemplaza el contenido sin recargar y los scripts no se vuelven a
   // ejecutar: transiciones.js llama a esto de nuevo en cada navegación.
-  window.initArchivoEsquina = initEsquina;
+  window.initArchivoEsquina = init;
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initEsquina);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    initEsquina();
+    init();
   }
 })();

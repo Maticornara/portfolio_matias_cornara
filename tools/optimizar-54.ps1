@@ -115,6 +115,27 @@ function ConvertirVideo($entrada, $salida, $anchoMax, $crf, $conAudio) {
 }
 
 # ------------------------------------------------------------------------------
+# VIDEO CON RECORTE
+# Igual que ConvertirVideo pero le mete un filtro crop ANTES de escalar. Se usa
+# para las piezas que traen aire de fondo que en la pagina no aporta nada.
+# El crop va primero a proposito: recortar y despues escalar deja el resultado a
+# la resolucion pedida; al reves, el ancho final termina siendo cualquier cosa.
+# ------------------------------------------------------------------------------
+function ConvertirVideoRecortado($entrada, $salida, $crop, $anchoMax, $crf) {
+  if (-not (Test-Path $entrada)) {
+    Write-Host "  falta: $(Split-Path -Leaf $entrada)" -ForegroundColor Yellow
+    return
+  }
+  if (-not (HayQueHacerlo $entrada $salida)) {
+    Write-Host "  ya esta: $(Split-Path -Leaf $salida) ($(Peso $salida))" -ForegroundColor DarkGray
+    return
+  }
+  & ffmpeg -y -v error -i $entrada -vf "$crop,scale='min($anchoMax,iw)':-2" `
+    -c:v libx264 -crf $crf -preset slow -pix_fmt yuv420p -movflags +faststart -an $salida
+  Write-Host "  $(Split-Path -Leaf $salida)  $(Peso $entrada) -> $(Peso $salida)" -ForegroundColor Green
+}
+
+# ------------------------------------------------------------------------------
 # POSTER DEL VIDEO
 # El primer cuadro, como JPEG. Va en el atributo poster="" del <video>: con
 # preload="none" el navegador no baja un solo byte del video hasta que hace
@@ -157,7 +178,29 @@ Write-Host "VIDEOS" -ForegroundColor Cyan
 
 $paraWeb = Join-Path $origen "PARA WEB"
 
-ConvertirVideo (Join-Path $paraWeb "animacion_ilustraciones.mp4") (Join-Path $destino "ilustraciones.mp4") 1280 30 $false
+# LA TIRA DE PICTOGRAMAS.
+# Se le RECORTA el magenta vacio de arriba y de abajo antes de escalarla.
+#
+# MEDIDO SOBRE LOS 43 SEGUNDOS DEL VIDEO, no sobre cuatro cuadros sueltos: se
+# saco un cuadro por segundo y se busco, en cada uno, la primera y la ultima
+# fila con dibujo. La union de todos da un contenido que va de la fila 144 a la
+# 644 de 820. O sea que 144 px arriba y 176 abajo son fondo liso: casi el 40%
+# del alto del archivo no muestra nada.
+#
+# El recorte toma desde la fila 132 y 520 px de alto, con una decena de pixeles
+# de aire a cada lado para no rozar el borde de ningun pictograma. Queda
+# 1460x520, o sea 2.8:1, y escalado 1280x456.
+#
+# POR QUE IMPORTA: en la pagina esto va en una BANDA de ancho completo. El alto
+# de esa banda NO es libre: sale de esta proporcion. Cuanto mas se recorte, mas
+# baja puede ser la banda sin cortar nada. Ver "LA BANDA DE PICTOGRAMAS" en
+# css/mas-54.css, que explica la cuenta entera.
+#
+# OJO: el crop se aplica al ORIGINAL de 1460x820, NO a la version web de
+# 1280x718. Las filas de arriba estan en la escala del original. La primera vez
+# se copiaron filas medidas sobre la version web y el recorte quedo corrido.
+ConvertirVideoRecortado (Join-Path $paraWeb "animacion_ilustraciones.mp4") (Join-Path $destino "ilustraciones.mp4") "crop=iw:520:0:132" 1280 30
+
 ConvertirVideo (Join-Path $paraWeb "animacion_paleta.mp4")        (Join-Path $destino "paleta.mp4")        1000 30 $false
 ConvertirVideo (Join-Path $paraWeb "animacion_exposicion.mp4")    (Join-Path $destino "exposicion.mp4")    1280 30 $false
 ConvertirVideo (Join-Path $origen  "COMPORTAMIENTO.mp4")          (Join-Path $destino "logo.mp4")          1000 30 $false

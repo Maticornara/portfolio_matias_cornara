@@ -17,10 +17,10 @@
 
   <link rel="stylesheet" href="css/variables.css?v=6">
   <link rel="stylesheet" href="css/base.css?v=11">
-  <link rel="stylesheet" href="css/layout.css?v=8">
+  <link rel="stylesheet" href="css/layout.css?v=9">
   <!-- Todo lo que se ve en ESTA página: hero, CV, herramientas, contacto,
        título de transición y grid de proyectos. -->
-  <link rel="stylesheet" href="css/archivo.css?v=17">
+  <link rel="stylesheet" href="css/archivo.css?v=18">
 
   <!-- El CSS de las páginas de proyecto se carga TAMBIÉN acá, aunque esta
        página no lo use.
@@ -31,7 +31,7 @@
        también linkee. Es inofensivo: sus selectores no existen acá, porque
        todo cuelga de .pag-simbio y .pag-54. -->
   <link rel="stylesheet" href="css/simbio.css?v=116">
-  <link rel="stylesheet" href="css/mas-54.css?v=13">
+  <link rel="stylesheet" href="css/mas-54.css?v=16">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -60,10 +60,14 @@
   <a class="pastilla" href="#trabajos">Trabajos</a>
   <div class="site-nav__fin">
     <a class="pastilla" href="#contacto">Contacto</a>
-    <!-- El cambio de idioma está puesto como forma, todavía sin función -->
+    <!-- El cambio de idioma está puesto como forma, todavía sin función.
+         Son <button> y no <a href="#">: un href vacío es un ancla al tope del
+         documento, así que hacer clic en ES te disparaba la página para
+         arriba. Un botón sin handler no hace nada, que es lo que queremos
+         hasta que exista la versión en inglés. -->
     <div class="nav-idioma">
-      <a class="pastilla is-activa" href="#" aria-current="true">ES</a>
-      <a class="pastilla" href="#">EN</a>
+      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
+      <button type="button" class="pastilla" aria-pressed="false">EN</button>
     </div>
   </div>
 </nav>
@@ -161,30 +165,68 @@
 
           <!-- La sombra: la huella de la caja en el piso, apenas más grande
                que ella y corrida hacia adelante, del lado contrario a la luz. -->
-          <polygon class="caja__sombra" points="101,63 65,80 101,98 138,80"
+          <polygon class="caja__sombra" points="101,61 63,80 101,99 139,80"
                    filter="url(#caja-sombra)"/>
 
-          <!-- Las hojitas y las polaroids, tiradas en el piso. Van ANTES que
-               el cubo para que las que caen por detrás queden tapadas por él.
-               Cada una es un paralelogramo con los lados en 2:1, igual que el
-               piso: por eso se leen acostadas y no paradas. Y son chicas a
-               propósito: si crecen, dejan de ser cosas tiradas y empiezan a
-               parecer baldosas. -->
+          <!-- ============================================================
+               LO QUE HAY TIRADO EN EL PISO
+               ------------------------------------------------------------
+               DOS REGLAS, Y LAS DOS IMPORTAN.
+
+               1. TODO SIGUE EL MISMO PISO. Cada lado de cada cosa avanza 2 a
+                  lo ancho por 1 a lo alto, igual que las diagonales del
+                  rincón y que las aristas de la caja. Si una sola pieza se
+                  sale de esa proporción, deja de estar apoyada y flota — y se
+                  nota aunque uno no sepa por qué.
+
+                  De ahí sale también dónde puede estar cada cosa: el piso
+                  arranca en la diagonal, así que una pieza a la altura x
+                  tiene que caer POR DEBAJO de y = 62 + |x-100| / 2. Más
+                  arriba de esa línea ya no es piso, es pared.
+
+               2. EL CENTRO DE ADELANTE QUEDA VACÍO. Ahí abajo va el nombre.
+                  Por eso las cosas se reparten hacia los costados, siguiendo
+                  las dos diagonales, en vez de desparramarse hacia adelante:
+                  así el texto no tapa nada y nada tapa al texto.
+                  Las que están cerca de la base sí entran por detrás de la
+                  caja: van dibujadas ANTES que ella, así que la caja las
+                  tapa y se leen como metidas abajo.
+               ============================================================ -->
+
+          <!-- Hojas y respaldos de polaroid -->
           <g class="caja__papel">
-            <polygon points="67,108 78,103 65,96 54,101"/>
-            <polygon points="141,105 151,101 139,95 129,99"/>
-            <polygon points="101,118 110,114 99,108 90,112"/>
-            <polygon points="79,125 87,121 77,115 69,119"/>
-            <polygon points="125,124 136,119 123,112 112,117"/>
+            <polygon points="71,98.5 83,92.5 69,85.5 57,91.5"/>
+            <polygon points="133,97.5 143,92.5 131,86.5 121,91.5"/>
+            <polygon points="59,95.5 67,91.5 57,86.5 49,90.5"/>
+            <polygon points="145,95.5 153,91.5 143,86.5 135,90.5"/>
+            <polygon points="157,106.5 169,100.5 155,93.5 143,99.5"/>
+
+            <!-- La pila: tres hojas iguales, cada una 1,5 más arriba que la
+                 de abajo. El desfase vertical ES el espesor. -->
+            <polygon points="46,112 56,107 42,100 32,105"/>
+            <polygon points="46,110.5 56,105.5 42,98.5 32,103.5"/>
+            <polygon points="46,109 56,104 42,97 32,102"/>
+
+            <!-- El cuaderno abierto -->
+            <polygon points="154,118 166,112 150,104 138,110"/>
           </g>
 
-          <!-- Las dos que son polaroid y no hoja: el recuadro de la foto,
-               corrido hacia el fondo, que es lo que les deja el borde ancho
-               abajo. -->
+          <!-- El lomo del cuaderno: lo que lo convierte en dos páginas y no
+               en una hoja grande. Va por el eje largo, no en diagonal. -->
+          <path class="caja__doblez" d="M144 107 L160 115"/>
+
+          <!-- El recuadro de la foto en las dos polaroids, corrido hacia el
+               fondo: eso es lo que les deja el borde ancho abajo. -->
           <g class="caja__foto">
-            <polygon points="67,105 74,101 65,97 58,100"/>
-            <polygon points="125,120 132,117 123,113 116,116"/>
+            <polygon points="71,95 79,91 69,86 61,90"/>
+            <polygon points="157,103 165,99 155,94 147,98"/>
           </g>
+
+          <!-- El lápiz. El cuerpo va por el eje del piso; la punta es el
+               único triángulo del dibujo que no respeta el 2:1, y está bien:
+               es una punta tallada, no una cara apoyada. -->
+          <polygon class="caja__lapiz" points="28.2,100.9 31.8,99.1 49.8,108.1 46.2,109.9"/>
+          <polygon class="caja__punta" points="49.8,108.1 46.2,109.9 52.8,111.4"/>
 
           <!-- Las dos caras verticales -->
           <polygon class="caja__cara caja__cara--izq" points="66,45 100,62 100,96 66,79"/>
@@ -223,25 +265,35 @@
           <polygon class="caja__canto" points="66,45 100,62 134,45 134,43.6 100,60.6 66,43.6"/>
 
           <!-- ============================================================
-               LOS AGARRES: DOS AGUJEROS, UNO POR SOLAPA
+               LOS AGARRES: EN LAS PAREDES, NO EN LA TAPA
                ------------------------------------------------------------
-               Van en DOS capas y el orden importa:
-                 1. una cápsula CLARA, corrida un pelo hacia abajo — es el
-                    canto del cartón troquelado, la fibra cruda que queda a
-                    la vista en el borde cercano del agujero;
-                 2. encima, la cápsula OSCURA: el interior de la caja, que
-                    está en sombra.
+               Acá estaba el error. Los tenía troquelados en la tapa, y en la
+               tapa no van: una caja se levanta metiendo los dedos en dos
+               huecos abiertos en las PAREDES, cerca del borde de arriba. Con
+               los agujeros en la tapa no había por dónde agarrarla — y eso se
+               nota aunque uno no sepa decir por qué.
 
-               Antes eran claras y por eso se veían raras: un agujero que
-               muestra el interior de una caja no puede ser más claro que la
-               tapa. Con el hueco oscuro y el filito claro adelante se leen
-               como troquelados de verdad.
+               Cada uno se acuesta sobre el plano de SU pared, así que siguen
+               direcciones opuestas: el de la izquierda baja hacia la derecha
+               (2,1) y el de la derecha sube hacia la derecha (2,-1), cada uno
+               paralelo al borde superior de su cara. Por eso se ven espejados
+               sin que haya que forzarlos.
+
+               Van a media altura del borde de arriba, no pegados: en una caja
+               real el troquel deja una franja de cartón por encima, que es lo
+               que aguanta el peso cuando la levantás.
+
+               Dos trazos, y el orden importa:
+                 1. el CLARO, corrido un pelo hacia abajo — el canto del
+                    cartón troquelado, la fibra cruda que toma la luz de
+                    arriba en el borde de abajo del hueco;
+                 2. encima, el OSCURO: el interior de la caja, en sombra.
                ============================================================ -->
           <g class="caja__agarre">
             <path class="caja__agarre-canto"
-                  d="M83.3 48.6 L94.1 43.2 M105.9 48.6 L116.7 43.2"/>
+                  d="M76.8 61.6 L89.2 67.8 M110.8 67.8 L123.2 61.6"/>
             <path class="caja__agarre-hueco"
-                  d="M83.3 47.7 L94.1 42.3 M105.9 47.7 L116.7 42.3"/>
+                  d="M76.8 60.6 L89.2 66.8 M110.8 66.8 L123.2 60.6"/>
           </g>
 
           <!-- El contorno, apenas marcado: sobre un fondo claro, un objeto sin
@@ -641,10 +693,10 @@
 
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
-<script src="js/smooth-scroll.js?v=2" defer></script>
-<script src="js/transiciones.js?v=3" defer></script>
-<script src="js/main.js?v=22" defer></script>
-<script src="js/archivo.js?v=5" defer></script>
+<script src="js/smooth-scroll.js?v=3" defer></script>
+<script src="js/transiciones.js?v=4" defer></script>
+<script src="js/main.js?v=23" defer></script>
+<script src="js/archivo.js?v=6" defer></script>
 <script src="js/simbio-scroll.js?v=20" defer></script>
 <script src="js/muestras.js?v=10" defer></script>
 <!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a

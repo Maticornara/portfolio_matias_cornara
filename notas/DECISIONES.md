@@ -1499,3 +1499,145 @@ se traba: **si una animación toca el layout, se va a sentir**. La regla es anim
 Las amplitudes del vaivén pasaron a estar **en píxeles** (`ampX: 16`,
 `ampY: 10`), que antes eran porcentajes del hero y por eso el recorrido cambiaba
 de tamaño con la ventana.
+
+---
+
+## 23. La caja como caja, el aire y un solo crema (21/08/2026)
+
+### LA DIAGONAL QUE NO IBA: LA TAPA TIENE DOS SOLAPAS, NO CUATRO
+
+Mati marcó en rojo la línea que cruzaba de la punta izquierda a la derecha del
+rombo de arriba. **Sacarla no era borrar una raya: era cambiar la tapa.**
+
+Una caja de cartón se cierra plegando **dos** solapas grandes que se encuentran
+en el centro, así que lo que se ve desde arriba es **una sola costura**, de punta
+a punta en un solo sentido. Con cuatro solapas aparecía la cruz — y la cruz no
+existe en una caja.
+
+(En la sección 22 había quedado anotado justo al revés: que las cuatro solapas
+eran lo correcto y una sola costura "se veía peor". Estaba mal: la cruz era
+exactamente lo que hacía que no pareciera una caja.)
+
+Sigue en pie lo otro de aquella sección: **cada solapa lleva un verde apenas
+distinto**, porque plegadas nunca terminan en el mismo plano.
+
+### LOS AGARRES: EL AGUJERO VA OSCURO
+
+Estaban claros y por eso se veían raros. **Un agujero que muestra el interior de
+una caja no puede ser más claro que la tapa.** Ahora van en dos capas:
+
+1. una cápsula CLARA corrida un pelo hacia abajo — el canto del cartón
+   troquelado, la fibra cruda que queda a la vista en el borde cercano;
+2. encima, la cápsula OSCURA: el interior, en sombra.
+
+### LA ANIMACIÓN: DE ARRIBA A ABAJO, Y LA PERSPECTIVA ACOMPAÑA
+
+El vaivén en dos ejes con dos períodos distintos se leía como un movimiento
+errático — la esquina se iba para cualquier lado. Ahora es **un solo movimiento**
+de arriba abajo y de vuelta.
+
+**Y no alcanza con mover.** Si el dibujo se desliza entero y rígido, parece un
+sticker. Lo que lo convierte en una cámara es que al bajar se vea MÁS el piso
+—las diagonales se abren, la tapa se ve más grande, los laterales se acortan— y
+al subir, menos.
+
+Eso se consigue con **un solo número**: un `scaleY` sobre todo el bloque de la
+esquina. Y funciona sin romper nada porque **escala TODO junto**: la pendiente de
+las diagonales y la de las aristas de la caja se multiplican por lo mismo y
+siguen coincidiendo. La geometría de la sección 21 se mantiene exacta durante
+toda la animación.
+
+Medido a lo largo del ciclo: el ángulo del piso va de **25,35° a 27,8°** y el
+alto de la caja de **250 a 278 px**, los dos ligados al mismo seno. Sigue en
+`transform`, así que sigue en 0 layouts.
+
+### UN SOLO CREMA
+
+`.zona--crema` trae un **degradé** de fondo (`--grad-crema`, de #F7F2E8 a
+#ECE4D3 en diagonal). Con una sección por pantalla eso se nota mucho: cada
+bloque tenía su propio degradé y al scrollear se veían bandas y cambios de tono
+que no respondían a nada. Sumado a los cremas sueltos de los papeles y los
+agarres, había cinco parecidos conviviendo.
+
+Ahora la portada pisa la variable y usa **un color plano, `--crema`**, de punta a
+punta: nav, secciones, pie y hasta los papeles del piso del hero. **A los papeles
+lo que los despega del suelo es la sombra y la línea del borde, no un tono
+distinto** — que es como funciona de verdad una hoja apoyada sobre una mesa del
+mismo color.
+
+### FUERA LAS RAYAS
+
+Había una línea fina de borde a borde al principio de cada tramo y otra encima de
+cada categoría de herramientas. Con cada sección ocupando una pantalla, esas
+rayas no separaban nada: quedaban **flotando en el medio del aire**, a media
+altura, sin nada arriba ni abajo. Lo que separa una sección de otra es el aire.
+
+### EL NOMBRE Y LA FRASE, DEL MISMO LARGO
+
+No se logra eligiendo un tamaño a ojo: los dos textos crecen con la ventana y a
+cada ancho la relación sería otra. **La frase no tiene tamaño propio: se calcula
+como una fracción del nombre** (`calc(var(--nombre-tam) * 0.4875)`), así los dos
+escalan juntos y la relación entre sus anchos queda igual en cualquier pantalla.
+
+De dónde sale el 0,4875: el nombre son 14 caracteres en peso 800 y la frase 32 en
+peso 400. Medido, el nombre ocupa 9,09 px de ancho por cada px de tamaño de letra
+y la frase 18,64; la fracción es el cociente. **Es lo único que hay que
+recalcular si cambia alguno de los dos textos.** El kerning no se toca.
+
+Verificado a 1920, 1440, 1280 y 900 de ancho: **0,8 px de diferencia** entre los
+dos, siempre.
+
+### APTITUDES
+
+Sección nueva entre Sobre mí y Herramientas: **qué sabe hacer**, contra
+Herramientas que es **con qué lo hace**. Una lista sin viñetas, sin líneas y sin
+columnas — son siete renglones que se leen de un tirón, y repartidos en columnas
+habría que decidir cuál va primero cuando ninguno es más importante que otro.
+
+El párrafo largo de cierre del CV se reemplazó por una línea: *"Estoy abierto a
+seguir ampliando mi rincón."*, sin el recuadro con rayita al costado.
+
+### 20-bis. La banda de pictogramas y el video de la casa (20/08/2026)
+
+**LA BANDA DE PICTOGRAMAS: DOS INTENTOS FALLIDOS Y LA CUENTA QUE LOS EXPLICA.**
+
+`ilustraciones.mp4` **no es una tira infinita**: es un cuadro de 1460x820 con
+pictogramas grandes que van pasando. Recortado al dibujo queda 1460x520, o sea
+2,8:1. **Ese es todo el contenido que hay: no existe más ancho.** De ahí salen
+las opciones, y las dos primeras se probaron y se descartaron:
+
+1. **Banda ancha y baja (1440x216) con `object-fit: cover`.** El navegador
+   escala por el ancho y recorta 280 px de alto: parte los pictogramas al medio.
+   Así se veía "rota" — una lonja de magenta con un pedazo de dibujo cruzando.
+2. **La misma banda baja con `contain`, y la banda pintada del mismo magenta que
+   el video** (`#D30A59`, medido). No corta nada, pero el video entra a 626 px
+   sobre 1425 de banda: **el 44%**. Queda una barra magenta casi vacía con un
+   grupito de dibujos en el medio. El truco del color calza perfecto y aun así
+   no alcanza: lo que se ve es el vacío a los costados.
+3. **La que quedó: que el alto lo ponga el video.** `width: 100%` y
+   `height: auto`. Ocupa el ancho completo y su alto es el de su proporción.
+   Nada recortado, nada vacío. Da unos 508 px en escritorio y unos 135 en un
+   teléfono, porque escala sola.
+
+**EL ALTO DE ESA BANDA NO ES UNA DECISIÓN DE DISEÑO, ES UNA CUENTA:**
+`alto = ancho / proporción`. No se puede tener a la vez banda baja y pictogramas
+de ancho completo, porque el archivo no tiene más ancho que dar. Si hace falta
+bajarla, el número a tocar **no está en el CSS**: hay que recortarle más magenta
+al video en `tools\optimizar-54.ps1`. Hoy el recorte ya está pegado al dibujo,
+así que no hay mucho margen.
+
+**EL RECORTE SE MIDIÓ MAL DOS VECES.** Primero se copiaron filas medidas sobre
+la versión web (1280x718) al filtro `crop`, que se aplica al **original**
+(1460x820): quedó corrido. Después se midió sobre cuatro cuadros sueltos, y
+sirvió para esos cuatro nada más. **La medición buena es un cuadro por segundo a
+lo largo de los 43 s**, buscando en cada uno la primera y la última fila con
+dibujo: la unión da 144 a 644 de 820. El recorte final toma desde la 132, 520 px
+de alto.
+
+**EL VIDEO DE LA CASA SE VEÍA CORTADO.** Estaba clavado en `height: 100svh` con
+`object-fit`, así que el resultado dependía de la forma de la ventana: en una
+pantalla más apaisada que el video quedaba recortado arriba y abajo. Ahora manda
+el ancho (`width: 100%`) y el alto sale solo. Lleva además `aspect-ratio: 16/9`
+escrito: con `preload="none"`, hasta que el archivo no empieza a bajar el
+navegador le asigna 300x150 a un `<video>` sin metadatos, reserva un hueco de la
+altura equivocada y la página pega un salto cuando el video carga.
