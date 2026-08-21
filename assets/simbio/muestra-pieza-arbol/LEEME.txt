@@ -1,0 +1,19 @@
+FRAMES DE: muestra-pieza-arbol
+=====================================
+
+Copia aca los PNG de esta animacion, nombrados con 4 digitos y
+empezando en 0000:
+
+    0000.png
+    0001.png
+    ...
+
+Si Blender los exporto con otro nombre o empezando en 1, hay que
+renombrarlos: el cargador busca ese formato exacto.
+
+DESPUES DE COPIARLOS, AVISAME
+Hay que hacer dos cosas mas:
+  1. Correr tools/optimizar-frames.ps1 apuntado a esta carpeta
+     (los PNG originales pesan demasiado para la web).
+  2. Conectar la animacion en la pagina: ya esta el hueco hecho
+     en proyectos/simbio.html, marcado con el nombre de esta carpeta.

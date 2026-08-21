@@ -1,0 +1,30 @@
+LIQUENES — fotos de referencia
+==============================
+
+Fotos de liquenes REALES, para que se entienda la referencia biologica
+antes de ver el juego.
+
+NOMBRE DE LOS ARCHIVOS
+----------------------
+    01-liquen-corteza.jpg
+    02-liquen-detalle.jpg
+    ...
+
+CUANTAS
+-------
+Tres o cuatro alcanzan. Es una referencia, no una galeria: la idea es
+que se entienda de donde sale la logica de las piezas, no mostrar
+fotografia de naturaleza.
+
+QUE BUSCAR EN LAS FOTOS
+-----------------------
+Si podes elegir, priorizar las que muestren lo que el juego traduce:
+  - como el liquen COLONIZA una superficie (se mete, no se apoya)
+  - la trama de hongo + alga junta
+  - el detalle de la ramificacion fina
+
+SI SON DE INTERNET
+------------------
+Guardame de donde salio cada una (un .txt con los links esta bien).
+Si el portfolio se publica, las fotos ajenas necesitan credito o
+licencia libre. Es mejor resolverlo ahora que despues.

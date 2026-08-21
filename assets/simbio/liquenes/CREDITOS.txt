@@ -1,0 +1,33 @@
+CREDITOS — FOTOS DE LIQUENES
+============================
+
+Son fotos de TERCEROS, usadas como referencia del organismo que inspiro el
+proyecto. En la pagina se muestran con nombres neutros (liquen1.jpg,
+liquen2.jpg...) para no exponer las URLs, y las fuentes quedan asentadas aca.
+
+Las URLs estaban guardadas en el nombre de cada archivo, con los separadores
+comidos. Las reconstrui, asi que les faltan algunas barras: sirven igual para
+encontrar la fuente buscando el dominio + el resto del texto.
+
+liquen1.jpg   <-   https://muyinteresante.okdiario.comnaturaleza30774.html
+liquen2.jpg   <-   https://orionmagazine.orgwp-contentuploads202308lichen-720x930.png
+liquen3.jpg   <-   https://sbbotanicgarden.orgesinsightwhat-is-a-lichen
+liquen4.jpg   <-   https://treparriscosfieldnotebook.blogspot.com199205xanthoria-parietina.html
+
+Reconstruidas mas legibles:
+  liquen1 -> muyinteresante.okdiario.com / naturaleza / 30774.html
+  liquen2 -> orionmagazine.org / wp-content/uploads/2023/08/lichen-720x930.png
+  liquen3 -> sbbotanicgarden.org / es / insight / what-is-a-lichen
+  liquen4 -> treparriscosfieldnotebook.blogspot.com / 1992/05/xanthoria-parietina.html
+
+QUE FALTA PARA ESTAR EN REGLA (antes de publicar el portfolio)
+--------------------------------------------------------------
+Para cada foto: entrar al link, mirar la licencia. Si no es libre, pedir
+permiso o reemplazarla.
+
+LO MAS PRACTICO: reemplazarlas por fotos de Wikimedia Commons, que son
+libres y hay muchisimas de liquenes (incluida Xanthoria parietina, que es
+la de liquen4). Es media hora de trabajo y el tema queda cerrado.
+
+La pagina no muestra las URLs, pero si una linea de credito discreta que
+dice que son fotos de referencia de terceros.

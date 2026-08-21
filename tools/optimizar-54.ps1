@@ -260,8 +260,28 @@ function ConvertirPNG($entrada, $salida, $anchoMax) {
   Write-Host "  $(Split-Path -Leaf $salida)  $(Peso $entrada) -> $(Peso $salida)" -ForegroundColor Green
 }
 
+# ANTES DE ESCALAR, SE LES SACA EL AIRE TRANSPARENTE.
+# Los cuatro renders vienen con la habitacion chiquita en el medio y el resto
+# transparente. Sin recortar, en la pagina se ven diminutas: el ancho del CSS
+# se lo come el aire vacio, no el dibujo. Recortadas, el ancho que se les da
+# en el CSS es el ancho REAL de la habitacion.
+# El recorte lo hace tools\recortar-transparencia.ps1, que ya existia para los
+# renders de Simbio y hace exactamente esto (lee el canal alfa con LockBits y
+# busca el rectangulo que de verdad tiene dibujo).
+$recortador = Join-Path $PSScriptRoot "recortar-transparencia.ps1"
+
 for ($i = 1; $i -le 4; $i++) {
-  ConvertirPNG (Join-Path $paraWeb "fotos instalacion\$i.png") (Join-Path $destino "instalacion-$i.png") 1100
+  $original = Join-Path $paraWeb "fotos instalacion\$i.png"
+  $recorte  = Join-Path $paraWeb "fotos instalacion\$i-recorte.png"
+
+  if ((Test-Path $original) -and ($Forzar -or -not (Test-Path $recorte))) {
+    & powershell -ExecutionPolicy Bypass -File $recortador -Archivo $original | Out-Null
+  }
+
+  # Si el recorte existe se usa ese; si no, el original. Asi el script sigue
+  # andando aunque el recortador falle.
+  $fuente = if (Test-Path $recorte) { $recorte } else { $original }
+  ConvertirPNG $fuente (Join-Path $destino "instalacion-$i.png") 760
 }
 
 Write-Host ""
