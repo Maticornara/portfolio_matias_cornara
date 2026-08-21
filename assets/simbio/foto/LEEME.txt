@@ -1,0 +1,15 @@
+FOTO GRANDE 16:9 — SIMBIO
+=========================
+
+Copia aca la foto de portada del proyecto, en 16:9.
+
+    portada.jpg
+
+Recomendaciones:
+  - Proporcion 16:9 exacta (por ejemplo 2400 x 1350).
+  - JPG de calidad alta, entre 300 KB y 800 KB.
+    Mas que eso no se nota en pantalla y tarda en cargar.
+  - Si la tenes en PNG o mas grande, avisame y la convierto.
+
+El hueco ya esta hecho en proyectos/simbio.html: hasta que
+copies el archivo se ve un marco vacio con una nota.

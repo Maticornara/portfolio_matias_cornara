@@ -1,0 +1,33 @@
+PROCESO — imagenes para el collage
+==================================
+
+Aca van las imagenes, gifs e ilustraciones del proceso: bocetos, pruebas,
+maquetas, cosas que no funcionaron, fotos de taller.
+
+NOMBRE DE LOS ARCHIVOS
+----------------------
+Numeradas, porque el numero define el ORDEN en el collage:
+
+    01-boceto-inicial.jpg
+    02-primer-molde.jpg
+    03-prueba-tanza.gif
+    ...
+
+El texto de cada una (el post-it) NO va en el nombre del archivo:
+eso me lo pasas por separado y lo escribo en el HTML.
+
+FORMATOS
+--------
+  - Fotos y renders  -> JPG. No hace falta que las optimices, yo las
+                        convierto. Mandalas lo mas grandes que tengas.
+  - Ilustraciones    -> PNG si tienen transparencia, o SVG si son vectores
+                        (el SVG es lo mejor: pesa nada y nunca se pixela).
+  - Animaciones      -> Si es un GIF, mandalo igual, pero avisame: un GIF
+                        de unos segundos pesa muchisimo mas que la misma
+                        animacion en secuencia de frames o en video.
+                        Si lo tenes como frames de Blender, mejor.
+
+CUANTAS
+-------
+Para un collage que se lea, entre 6 y 12 piezas. Mas que eso se vuelve
+ruido y hay que empezar a elegir.
