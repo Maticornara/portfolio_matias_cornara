@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "js/muestras.js": {
-    "mtime": 1787416116.0739555,
-    "ast_hash": "e521015853b5641870dcd2c05931ed3c",
+    "mtime": 1787416911.2101462,
+    "ast_hash": "f822e16f387c3c3138229be315e57ca4",
     "semantic_hash": ""
   },
   "js/simbio-scroll.js": {
@@ -170,18 +170,18 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787416515.1281319,
-    "ast_hash": "fe5b2444e25b96c47010881474a27fbf",
+    "mtime": 1787417014.2938356,
+    "ast_hash": "d8ce32e271b5b18817ef1a1afc81662c",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787416584.0590656,
-    "ast_hash": "5a16ba1de56aaa2acfe961764a0df969",
+    "mtime": 1787417088.9084291,
+    "ast_hash": "3ba8bf05fc467286d04b2241c75b592d",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
-    "mtime": 1787416515.154699,
-    "ast_hash": "7a980d4babedfc719c982e5304cb0447",
+    "mtime": 1787417014.3091822,
+    "ast_hash": "22e87fc40ccdd4c7fac76d674a587598",
     "semantic_hash": ""
   },
   "proyectos/cero-al-infinito.html": {
@@ -200,8 +200,8 @@
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787416515.153704,
-    "ast_hash": "f36da9a18d0010a5135b753e17f7d9d8",
+    "mtime": 1787417014.3272922,
+    "ast_hash": "548e10c521b78d991876a8c6b0ffffd7",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
@@ -215,8 +215,8 @@
     "semantic_hash": ""
   },
   "proyectos/simbio.html": {
-    "mtime": 1787416515.1401243,
-    "ast_hash": "a8b0684b42e59dd2a78367c68d85dfb5",
+    "mtime": 1787417014.3408868,
+    "ast_hash": "b9d887f8c5cd488e9883cd50a78d6b22",
     "semantic_hash": ""
   },
   "sandbox/index.html": {

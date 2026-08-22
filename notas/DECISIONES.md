@@ -3107,3 +3107,107 @@ Y para que "Cargando" no mienta nunca: si la carga **termina** y no entró ni un
 imagen, `muestras.js` le cambia el texto a "No se pudieron cargar los frames".
 Ahí sí es un problema de material y hay que decirlo — un "Cargando" eterno es
 exactamente lo que parece roto.
+
+
+---
+
+## 33. Mobiliario de Museo: de cero a página entera (22/08/2026)
+
+Séptima página del sitio y quinta "moderna". Era uno de los 6 esqueletos
+vacíos (84 líneas con `<!-- TODO -->` en los 5 bloques). Ahora tiene las tres
+animaciones de scroll, carrusel, pantalla de investigación y cierre en paneo.
+
+### LOS FRAMES PESABAN 654 MB
+
+Los renders de Blender llegaron en tres carpetas llamadas `..._WEB`, pero de
+web no tenían nada: 1007 PNG a 1920, 654 MB en disco y unos 8,9 GB de RAM al
+descomprimir. El mismo muro que Simbio, tres veces más grande.
+
+`tools/optimizar-frames-museo.ps1` los deja en 92 MB (JPG calidad 93, ancho
+1600). Va aparte de `optimizar-frames.ps1` porque el de Simbio filtra por
+nombre numérico puro (`0000.png`) y estos vienen con prefijo
+(`ASIENTO_00042.png`), en dos proporciones distintas.
+
+| | crudo | web |
+|---|---|---|
+| descanso | 297 frames | 18,8 MB |
+| exposicion | 336 frames | 21,9 MB |
+| comunicacion | 374 frames | 51,7 MB |
+
+Comunicación pesa el doble por cuadro (138 KB contra 63) porque es una escena
+a sangre y no un objeto sobre fondo plano. Por eso es la única con `salto: 2`
+en `museo-scroll.js`: usa 187 cuadros en vez de 374 y baja a la mitad la
+memoria, que con tres animaciones en una página es lo que más aprieta.
+
+### VAN SOBRE NEGRO, NO SOBRE CREMA
+
+**Al revés que Simbio.** Los renders de Simbio venían con alfa y se aplastaron
+contra el crema. Los de Museo no: Descanso y Comunicación traen `#000000`
+horneado y solo Exposición tiene alfa. Aplastarlos contra crema dejaba tres
+rectángulos negros flotando sobre la página.
+
+Las tres secciones de animación son negras. Y el negro es `#000000` puro, NO
+el `--negro` del sitio (`#0B0B0B`): tiene que coincidir con el que ya viene
+adentro del render, si no se ve el borde del rectángulo. Está como perilla
+`--museo-negro-render` y también en el script de conversión. **Si algún día se
+re-exportan los frames sobre otro color, hay que cambiarlo en los dos lados.**
+
+### EL MAPEO POR TRAMOS: LO ÚNICO QUE NO EXISTÍA
+
+Simbio avanza los frames parejo de punta a punta:
+`indice = round(progreso * (TOTAL-1))`. Museo necesitaba que la rotación de
+Descanso (cuadros 46 a 112) se viera más rápido que el resto.
+
+`frameSegunAvance()` reparte el scroll por fase según un peso, y el peso es
+`cuadros / veloc`. Con `veloc: 2`, la fase se lleva la mitad del scroll para
+los mismos cuadros, o sea que pasa al doble de velocidad. Medido: la rotación
+son 67 cuadros (22,6% de la secuencia) que ocupan 12,7% del scroll, contra
+0,89x de las otras tres. Sale 1,99x exacto.
+
+### LA FASE SIN TÍTULO
+
+La rotación de Descanso no lleva texto. Contarla como fase dejaba las
+tituladas en `01/04`, `03/04`, `04/04`, salteando la 02, que se lee como
+error. Se trata como **interludio**: `nombre: null` esconde el rótulo entero y
+la numeración cuenta solo las fases con título. Descanso va `01/03` a `03/03`
+con el mismo formato visual de Simbio.
+
+### DOS COSAS QUE EL SPEC DECÍA MAL Y SE VERIFICARON CONTRA EL MATERIAL
+
+1. **"Formato de frames: PNG, mismo criterio que Simbio"** se contradice: el
+   criterio de Simbio es JPG. Los PNG son los originales de Blender.
+2. **Los tres detalles de Comunicación** (`detalle_panel`, `detalle_tomate`,
+   `explotada_modulos`) no son renders sino **dibujos de línea sobre blanco**.
+   Los renders de detalle son otros dos que no figuraban. Con renders el
+   reparto es 2/2/2 y los tres bloques se ven iguales; los planos se fueron a
+   la pantalla de investigación.
+
+Descanso no tenía ningún detalle transparente (el único es opaco gris), así
+que sus dos círculos salen de su propia secuencia de frames, que ya está
+sobre negro.
+
+### EL JS TAMBIÉN TIENE LA REGLA DE "TODAS LAS PÁGINAS, LA MISMA LISTA"
+
+Estaba escrita solo para los CSS, pero aplica igual a los scripts, y no se
+cumplía. `index.html` carga los scripts de TODOS los proyectos; cada página de
+proyecto, solo el suyo. Por eso Home a cualquier proyecto anda, pero
+**entrar por Simbio y navegar a Tipines deja `tipines.js` sin cargar y el
+librito muerto, sin error en consola.** Museo carga la lista completa, y los
+scripts de Museo se sumaron a `index.html`.
+
+**Queda pendiente:** las otras tres páginas modernas siguen cargando solo su
+propio JS. El bug existe hoy entre Simbio, +54 y Tipines.
+
+### PENDIENTES DE ESTA PÁGINA
+
+- Los PNG crudos (`assets/mobiliario museo/`, 654 MB) están versionados y ya
+  commiteados en `8f41416`. Mati pidió NO sacarlos por ahora. Cuando se saquen,
+  es un `.gitignore` como el de los videos de Tipines; el historial ya los
+  tiene, así que achicar el repo de verdad sería reescribirlo.
+- Ajustar a ojo la posición de la llamada del "sistema de riel"
+  (`--museo-anotacion__llamada`, hoy en left 58% / top 12%).
+- Las tres animaciones ocupan ~92 MB. Cargan por separado con
+  IntersectionObserver, pero nunca se liberan: si la memoria molesta, la
+  perilla es `salto` en `museo-scroll.js`.
+- Falta mirar la página en teléfono. El corte de 960px ya apila todo y baja
+  los recorridos de scroll, pero está preparado, no diseñado.

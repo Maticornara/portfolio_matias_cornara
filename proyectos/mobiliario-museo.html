@@ -70,7 +70,13 @@
   </div>
 </nav>
 
-<main id="swup" class="transition-fade">
+<!-- data-body y data-cursor-pag: la clase y el cursor que le tocan al <body>
+     en esta página. Los copia transiciones.js después de cada navegación de
+     Swup, que reemplaza solo lo de adentro de #swup y deja el <body> de la
+     página anterior. Sin esto, entrar a Museo navegando (no por URL directa)
+     deja el body en .pag-simbio o el que fuera, y NINGÚN estilo de museo.css
+     se aplica, porque todos cuelgan de .pag-museo. -->
+<main id="swup" class="transicion-fade" data-body="pag-museo" data-cursor-pag="anillo">
 
   <!-- ======================================================================
        1. HERO
@@ -465,9 +471,19 @@
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Tiene que estar en TODAS las páginas. -->
 <script src="../js/smooth-scroll.js?v=6" defer></script>
-<script src="../js/transiciones.js?v=7" defer></script>
+<script src="../js/transiciones.js?v=8" defer></script>
 <script src="../js/main.js?v=24" defer></script>
 <script src="../js/traduccion.js?v=4" defer></script>
+<!-- Los scripts de los OTROS proyectos. Van acá por el mismo motivo
+     que los CSS: Swup no toca el <head> ni el final del <body>, así
+     que si entrás por Museo y navegás a Simbio, simbio-scroll.js
+     nunca se cargó y el ensamble queda muerto sin dar error.
+     index.html hace exactamente esto mismo. -->
+<script src="../js/archivo.js?v=12" defer></script>
+<script src="../js/simbio-scroll.js?v=16" defer></script>
+<script src="../js/muestras.js?v=14" defer></script>
+<script src="../js/mas-54.js?v=12" defer></script>
+<script src="../js/tipines.js?v=5" defer></script>
 <script src="../js/museo-scroll.js?v=1" defer></script>
 <script src="../js/museo.js?v=1" defer></script>
 </body>

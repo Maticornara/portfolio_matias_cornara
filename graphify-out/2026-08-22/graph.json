@@ -3784,6 +3784,17 @@
       "community": 51,
       "community_name": "32. Tipines: la composici\u00f3n de la miniserie y el bot\u00f3n que no se ve\u00eda (22/08/2026)",
       "norm_label": "el boton de jugar era un problema de contraste"
+    },
+    {
+      "label": "24. La caja m\u00e1s grande en el tel\u00e9fono, y \"Cargando\" (20/08/2026)",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3082",
+      "_origin": "ast",
+      "id": "notas_decisiones_24_la_caja_m\u00e1s_grande_en_el_tel\u00e9fono_y_cargando_20_08_2026",
+      "community": 1,
+      "community_name": "ARCHIVO / MI CAJ\u00d3N \u2014 bit\u00e1cora del proyecto",
+      "norm_label": "24. la caja mas grande en el telefono, y \"cargando\" (20/08/2026)"
     }
   ],
   "links": [
@@ -7032,6 +7043,17 @@
       "_origin": "ast",
       "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
       "target": "notas_decisiones_23_simbio_en_mobile_20_08_2026",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3082",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
+      "target": "notas_decisiones_24_la_caja_m\u00e1s_grande_en_el_tel\u00e9fono_y_cargando_20_08_2026",
       "confidence_score": 1.0
     },
     {

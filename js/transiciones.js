@@ -82,6 +82,12 @@
     if (typeof window.initMuestras === "function") window.initMuestras();
     if (typeof window.init54 === "function") window.init54();
     if (typeof window.initTipines === "function") window.initTipines();
+    // Museo son DOS: initMuseoScroll arma las tres animaciones de frames y
+    // initMuseo el carrusel de apertura. Si falta cualquiera de las dos,
+    // entrar a Museo navegando (en vez de por URL directa) deja esa parte
+    // muerta y sin error en consola, que es el síntoma más difícil de ver.
+    if (typeof window.initMuseoScroll === "function") window.initMuseoScroll();
+    if (typeof window.initMuseo === "function") window.initMuseo();
 
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();
 

@@ -63,10 +63,22 @@
       "norm_label": "initmedida()"
     },
     {
+      "label": "initEntrada()",
+      "file_type": "code",
+      "source_file": "js/archivo.js",
+      "source_location": "L383",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "js_archivo_initentrada",
+      "community": 27,
+      "community_name": "archivo.js",
+      "norm_label": "initentrada()"
+    },
+    {
       "label": "init()",
       "file_type": "code",
       "source_file": "js/archivo.js",
-      "source_location": "L366",
+      "source_location": "L407",
       "_callable": true,
       "_origin": "ast",
       "id": "js_archivo_init",
@@ -441,6 +453,88 @@
       "community": 6,
       "community_name": "muestras.js",
       "norm_label": "armarmuestra()"
+    },
+    {
+      "label": "museo-scroll.js",
+      "file_type": "code",
+      "source_file": "js/museo-scroll.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "js_museo_scroll",
+      "community": 3,
+      "community_name": "simbio-scroll.js",
+      "norm_label": "museo-scroll.js"
+    },
+    {
+      "label": "crearAnim()",
+      "file_type": "code",
+      "source_file": "js/museo-scroll.js",
+      "source_location": "L112",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "js_museo_scroll_crearanim",
+      "community": 3,
+      "community_name": "simbio-scroll.js",
+      "norm_label": "crearanim()"
+    },
+    {
+      "label": "museo.js",
+      "file_type": "code",
+      "source_file": "js/museo.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "js_museo",
+      "community": 53,
+      "community_name": "museo.js",
+      "norm_label": "museo.js"
+    },
+    {
+      "label": "mostrar()",
+      "file_type": "code",
+      "source_file": "js/museo.js",
+      "source_location": "L49",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "js_museo_mostrar",
+      "community": 53,
+      "community_name": "museo.js",
+      "norm_label": "mostrar()"
+    },
+    {
+      "label": "arrancarSolo()",
+      "file_type": "code",
+      "source_file": "js/museo.js",
+      "source_location": "L67",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "js_museo_arrancarsolo",
+      "community": 53,
+      "community_name": "museo.js",
+      "norm_label": "arrancarsolo()"
+    },
+    {
+      "label": "detener()",
+      "file_type": "code",
+      "source_file": "js/museo.js",
+      "source_location": "L74",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "js_museo_detener",
+      "community": 53,
+      "community_name": "museo.js",
+      "norm_label": "detener()"
+    },
+    {
+      "label": "aMano()",
+      "file_type": "code",
+      "source_file": "js/museo.js",
+      "source_location": "L80",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "js_museo_amano",
+      "community": 53,
+      "community_name": "museo.js",
+      "norm_label": "amano()"
     },
     {
       "label": "simbio-scroll.js",
@@ -933,7 +1027,7 @@
       "label": "irA()",
       "file_type": "code",
       "source_file": "js/transiciones.js",
-      "source_location": "L106",
+      "source_location": "L112",
       "_callable": true,
       "_origin": "ast",
       "id": "js_transiciones_ira",
@@ -1113,6 +1207,17 @@
       "norm_label": "convertirpng()"
     },
     {
+      "label": "optimizar-estaticas-museo.ps1",
+      "file_type": "code",
+      "source_file": "tools/optimizar-estaticas-museo.ps1",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tools_optimizar_estaticas_museo",
+      "community": 55,
+      "community_name": "optimizar-estaticas-museo.ps1",
+      "norm_label": "optimizar-estaticas-museo.ps1"
+    },
+    {
       "label": "optimizar-fotos.ps1",
       "file_type": "code",
       "source_file": "tools/optimizar-fotos.ps1",
@@ -1122,6 +1227,17 @@
       "community": 21,
       "community_name": "optimizar-fotos.ps1",
       "norm_label": "optimizar-fotos.ps1"
+    },
+    {
+      "label": "optimizar-frames-museo.ps1",
+      "file_type": "code",
+      "source_file": "tools/optimizar-frames-museo.ps1",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tools_optimizar_frames_museo",
+      "community": 56,
+      "community_name": "optimizar-frames-museo.ps1",
+      "norm_label": "optimizar-frames-museo.ps1"
     },
     {
       "label": "optimizar-frames.ps1",
@@ -1265,6 +1381,28 @@
       "community": 22,
       "community_name": "recortar-transparencia.ps1",
       "norm_label": "recortar-transparencia.ps1"
+    },
+    {
+      "label": "respaldo-github.ps1",
+      "file_type": "code",
+      "source_file": "tools/respaldo-github.ps1",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tools_respaldo_github",
+      "community": 54,
+      "community_name": "respaldo-github.ps1",
+      "norm_label": "respaldo-github.ps1"
+    },
+    {
+      "label": "Anotar()",
+      "file_type": "code",
+      "source_file": "tools/respaldo-github.ps1",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "tools_respaldo_github_anotar",
+      "community": 54,
+      "community_name": "respaldo-github.ps1",
+      "norm_label": "anotar()"
     },
     {
       "label": "video-a-frames.ps1",
@@ -3795,6 +3933,94 @@
       "community": 1,
       "community_name": "ARCHIVO / MI CAJ\u00d3N \u2014 bit\u00e1cora del proyecto",
       "norm_label": "24. la caja mas grande en el telefono, y \"cargando\" (20/08/2026)"
+    },
+    {
+      "label": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3114",
+      "_origin": "ast",
+      "id": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "33. mobiliario de museo: de cero a pagina entera (22/08/2026)"
+    },
+    {
+      "label": "LOS FRAMES PESABAN 654 MB",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3120",
+      "_origin": "ast",
+      "id": "notas_decisiones_los_frames_pesaban_654_mb",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "los frames pesaban 654 mb"
+    },
+    {
+      "label": "VAN SOBRE NEGRO, NO SOBRE CREMA",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3142",
+      "_origin": "ast",
+      "id": "notas_decisiones_van_sobre_negro_no_sobre_crema",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "van sobre negro, no sobre crema"
+    },
+    {
+      "label": "EL MAPEO POR TRAMOS: LO \u00daNICO QUE NO EXIST\u00cdA",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3155",
+      "_origin": "ast",
+      "id": "notas_decisiones_el_mapeo_por_tramos_lo_\u00fanico_que_no_exist\u00eda",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "el mapeo por tramos: lo unico que no existia"
+    },
+    {
+      "label": "LA FASE SIN T\u00cdTULO",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3167",
+      "_origin": "ast",
+      "id": "notas_decisiones_la_fase_sin_t\u00edtulo",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "la fase sin titulo"
+    },
+    {
+      "label": "DOS COSAS QUE EL SPEC DEC\u00cdA MAL Y SE VERIFICARON CONTRA EL MATERIAL",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3175",
+      "_origin": "ast",
+      "id": "notas_decisiones_dos_cosas_que_el_spec_dec\u00eda_mal_y_se_verificaron_contra_el_material",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "dos cosas que el spec decia mal y se verificaron contra el material"
+    },
+    {
+      "label": "EL JS TAMBI\u00c9N TIENE LA REGLA DE \"TODAS LAS P\u00c1GINAS, LA MISMA LISTA\"",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3189",
+      "_origin": "ast",
+      "id": "notas_decisiones_el_js_tambi\u00e9n_tiene_la_regla_de_todas_las_p\u00e1ginas_la_misma_lista",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "el js tambien tiene la regla de \"todas las paginas, la misma lista\""
+    },
+    {
+      "label": "PENDIENTES DE ESTA P\u00c1GINA",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3201",
+      "_origin": "ast",
+      "id": "notas_decisiones_pendientes_de_esta_p\u00e1gina",
+      "community": 52,
+      "community_name": "33. Mobiliario de Museo: de cero a p\u00e1gina entera (22/08/2026)",
+      "norm_label": "pendientes de esta pagina"
     }
   ],
   "links": [
@@ -3813,7 +4039,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "js/archivo.js",
-      "source_location": "L366",
+      "source_location": "L407",
       "weight": 1.0,
       "_origin": "ast",
       "source": "js_archivo",
@@ -3829,6 +4055,17 @@
       "_origin": "ast",
       "source": "js_archivo",
       "target": "js_archivo_initdesenfoque",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/archivo.js",
+      "source_location": "L383",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_archivo",
+      "target": "js_archivo_initentrada",
       "confidence_score": 1.0
     },
     {
@@ -3858,7 +4095,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "js/archivo.js",
-      "source_location": "L368",
+      "source_location": "L413",
       "weight": 1.0,
       "_origin": "ast",
       "source": "js_archivo_init",
@@ -3870,7 +4107,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "js/archivo.js",
-      "source_location": "L369",
+      "source_location": "L414",
       "weight": 1.0,
       "_origin": "ast",
       "source": "js_archivo_init",
@@ -3894,11 +4131,23 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "js/archivo.js",
-      "source_location": "L367",
+      "source_location": "L412",
       "weight": 1.0,
       "_origin": "ast",
       "source": "js_archivo_init",
       "target": "js_archivo_initmedida",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/archivo.js",
+      "source_location": "L415",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_archivo_init",
+      "target": "js_archivo_initentrada",
       "confidence_score": 1.0
     },
     {
@@ -4556,6 +4805,133 @@
       "_origin": "ast",
       "source": "js_muestras",
       "target": "js_muestras_armarmuestra",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo-scroll.js",
+      "source_location": "L112",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_scroll",
+      "target": "js_museo_scroll_crearanim",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "js/museo-scroll.js",
+      "source_location": "L357",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_scroll_crearanim",
+      "target": "js_simbio_scroll_alscrollear"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "collection",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "js/museo-scroll.js",
+      "source_location": "L365",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_scroll_crearanim",
+      "target": "js_simbio_scroll_precargar"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo",
+      "target": "js_museo_amano",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo",
+      "target": "js_museo_arrancarsolo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo",
+      "target": "js_museo_detener",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo",
+      "target": "js_museo_mostrar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_amano",
+      "target": "js_museo_mostrar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L71",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_arrancarsolo",
+      "target": "js_museo_mostrar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_arrancarsolo",
+      "target": "js_museo_detener",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/museo.js",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_museo_amano",
+      "target": "js_museo_detener",
       "confidence_score": 1.0
     },
     {
@@ -5426,7 +5802,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "js/transiciones.js",
-      "source_location": "L106",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "js_transiciones",
@@ -6031,6 +6407,17 @@
       "_origin": "ast",
       "source": "tools_optimizar_tipines_posterdevideo",
       "target": "tools_optimizar_tipines_peso",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/respaldo-github.ps1",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "tools_respaldo_github",
+      "target": "tools_respaldo_github_anotar",
       "confidence_score": 1.0
     },
     {
@@ -7164,6 +7551,17 @@
       "_origin": "ast",
       "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
       "target": "notas_decisiones_32_tipines_la_composici\u00f3n_de_la_miniserie_y_el_bot\u00f3n_que_no_se_ve\u00eda_22_08_2026",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3114",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
+      "target": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
       "confidence_score": 1.0
     },
     {
@@ -8408,8 +8806,85 @@
       "source": "notas_decisiones_32_tipines_la_composici\u00f3n_de_la_miniserie_y_el_bot\u00f3n_que_no_se_ve\u00eda_22_08_2026",
       "target": "notas_decisiones_la_se\u00f1al_arranca_en_la_columna_2",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3175",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_dos_cosas_que_el_spec_dec\u00eda_mal_y_se_verificaron_contra_el_material",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3189",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_el_js_tambi\u00e9n_tiene_la_regla_de_todas_las_p\u00e1ginas_la_misma_lista",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3155",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_el_mapeo_por_tramos_lo_\u00fanico_que_no_exist\u00eda",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3167",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_la_fase_sin_t\u00edtulo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3120",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_los_frames_pesaban_654_mb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3201",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_pendientes_de_esta_p\u00e1gina",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3142",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_33_mobiliario_de_museo_de_cero_a_p\u00e1gina_entera_22_08_2026",
+      "target": "notas_decisiones_van_sobre_negro_no_sobre_crema",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "39d8db936e96b1e33bbb23ce70ace1454b0e40b0"
+  "built_at_commit": "62422316b777e77c4362e6ec36dc27032fccec65"
 }

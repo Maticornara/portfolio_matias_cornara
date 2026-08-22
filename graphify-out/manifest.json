@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "js/transiciones.js": {
-    "mtime": 1787375906.0115716,
-    "ast_hash": "d9323709da0556e2230e66078d37bca6",
+    "mtime": 1787437514.4102051,
+    "ast_hash": "53894f12bd82a4de2ee845872e25aa1f",
     "semantic_hash": ""
   },
   "sandbox/sandbox.js": {
@@ -170,18 +170,18 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787417014.2938356,
-    "ast_hash": "d8ce32e271b5b18817ef1a1afc81662c",
+    "mtime": 1787437562.7341998,
+    "ast_hash": "ea46dde14044f26dfb3d6a6e57ca4d9a",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787417088.9084291,
-    "ast_hash": "3ba8bf05fc467286d04b2241c75b592d",
+    "mtime": 1787437660.0042887,
+    "ast_hash": "5342cc484609761982168cc689faca45",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
-    "mtime": 1787417014.3091822,
-    "ast_hash": "22e87fc40ccdd4c7fac76d674a587598",
+    "mtime": 1787437562.711178,
+    "ast_hash": "04d7e0603a40ddc05e621adebebf5249",
     "semantic_hash": ""
   },
   "proyectos/cero-al-infinito.html": {
@@ -200,13 +200,13 @@
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787417014.3272922,
-    "ast_hash": "548e10c521b78d991876a8c6b0ffffd7",
+    "mtime": 1787437562.709576,
+    "ast_hash": "f5f85ba3783f4842dd5c47c3d00a05c5",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
-    "mtime": 1787376596.569069,
-    "ast_hash": "f32f13b7fef23fd5e8a5349a7028f210",
+    "mtime": 1787437589.2862177,
+    "ast_hash": "9b928fea887faaeca494684dd38cf623",
     "semantic_hash": ""
   },
   "proyectos/saprobio.html": {
@@ -215,8 +215,8 @@
     "semantic_hash": ""
   },
   "proyectos/simbio.html": {
-    "mtime": 1787417014.3408868,
-    "ast_hash": "b9d887f8c5cd488e9883cd50a78d6b22",
+    "mtime": 1787437562.7080567,
+    "ast_hash": "4401ad3fd604fb971bcc5a7c874c82d8",
     "semantic_hash": ""
   },
   "sandbox/index.html": {
@@ -7300,8 +7300,8 @@
     "semantic_hash": ""
   },
   "js/archivo.js": {
-    "mtime": 1787356926.310173,
-    "ast_hash": "91b682430c21e70ef73de237508dc4bf",
+    "mtime": 1787437408.7417295,
+    "ast_hash": "d3919869be04579ccdbfe02ec6e690c0",
     "semantic_hash": ""
   },
   "js/mas-54.js": {
@@ -7962,16 +7962,6 @@
   "assets/mobiliario museo/COMUNICACION/DETALLES/COMUNICACION PIEZA ROSCA.105.png": {
     "mtime": 1702176262.4053037,
     "ast_hash": "eddc039c5a2569421b539a7f54bb7f9e",
-    "semantic_hash": ""
-  },
-  "assets/mobiliario museo/COMUNICACION/DETALLES/PANALES DETALLAS.106.png": {
-    "mtime": 1702171927.319811,
-    "ast_hash": "4c1249eead67ea1b2c5c2c8a28687950",
-    "semantic_hash": ""
-  },
-  "assets/mobiliario museo/COMUNICACION/DETALLES/PANALES DETALLAS.108.png": {
-    "mtime": 1702180217.9907675,
-    "ast_hash": "3ff152c60cc9bf1b51ae556666eed9de",
     "semantic_hash": ""
   },
   "assets/mobiliario museo/COMUNICACION/FRAMES_COMUNICACION_WEB/COMUNICACION_00000.png": {
@@ -13062,6 +13052,5221 @@
   "assets/amigos tipines/web/stl.png": {
     "mtime": 1787376955.5375273,
     "ast_hash": "a1aa102dc64acea3f60d2231aa66a22c",
+    "semantic_hash": ""
+  },
+  "js/museo-scroll.js": {
+    "mtime": 1787437203.316681,
+    "ast_hash": "27f5595eb7f18a94314ae9ee52ac0a3c",
+    "semantic_hash": ""
+  },
+  "js/museo.js": {
+    "mtime": 1787437273.375922,
+    "ast_hash": "6db7d2ceb0a562858a27526112339472",
+    "semantic_hash": ""
+  },
+  "tools/optimizar-estaticas-museo.ps1": {
+    "mtime": 1787436040.7221496,
+    "ast_hash": "1ef4d5f00875b0852f83de150dd22343",
+    "semantic_hash": ""
+  },
+  "tools/optimizar-frames-museo.ps1": {
+    "mtime": 1787434145.1319065,
+    "ast_hash": "69ebe025866b3472a991ccc88e1f4504",
+    "semantic_hash": ""
+  },
+  "tools/respaldo-github.ps1": {
+    "mtime": 1787437409.5474918,
+    "ast_hash": "8e5bf27a78f86f2077b2f945f2416a3f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/COMUNICACION/DETALLES/PANALES DETALLA}ES.png": {
+    "mtime": 1787431121.3357594,
+    "ast_hash": "faff003c1b456410a293925800b7a962",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/COMUNICACION/DETALLES/detalle panel.png": {
+    "mtime": 1786683169.9025352,
+    "ast_hash": "9d7525afc67c5bf98de3a4db06eb964a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/COMUNICACION/DETALLES/detalle tomate.png": {
+    "mtime": 1786683169.9083066,
+    "ast_hash": "15bdd9089df5f5b19c06e7779d3abdee",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/COMUNICACION/DETALLES/explotada_modulos.png": {
+    "mtime": 1786683169.9222488,
+    "ast_hash": "1a6d934d3cc5d9c22edefd5b64660310",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/CONTEXTO INVESTIGACI\u00d3N/MUSEO_ADENTRO.jpg": {
+    "mtime": 1787421347.7220154,
+    "ast_hash": "fc6d66f33d20ff4de4fd22ef3119f696",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/CONTEXTO INVESTIGACI\u00d3N/MUSEO_FACHADA.jpg": {
+    "mtime": 1787421299.4062772,
+    "ast_hash": "f190aefa2aa4142e1a37301eb774e054",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/CONTEXTO INVESTIGACI\u00d3N/PARTES_FINAL.png": {
+    "mtime": 1787432608.463954,
+    "ast_hash": "c184e2a2bcf67acb04f5e60d0b8b2225",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/CONTEXTO INVESTIGACI\u00d3N/POSTURAS.png": {
+    "mtime": 1787431606.210996,
+    "ast_hash": "d7839d7425e7fb69fa9d07bcabcac3bc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/MOCKUPS/COMUNIACION.png": {
+    "mtime": 1787429052.8282382,
+    "ast_hash": "1b8f674c4e3bb9a6333acbbfeefcd7c6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/MOCKUPS/DESCANSO + COMUNICACION.png": {
+    "mtime": 1787429038.2532065,
+    "ast_hash": "06443b3c8a66dd54724769aa54bb23c9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario museo/MOCKUPS/EXPOSICION.png": {
+    "mtime": 1787429479.3647358,
+    "ast_hash": "71ae757cf9871096e12b26b7437775e6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/detalle-comunicacion-ele.png": {
+    "mtime": 1787435997.6978898,
+    "ast_hash": "6b9b90d91796917b2b9b91e3480bb179",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/detalle-comunicacion-rosca.png": {
+    "mtime": 1787435997.8326612,
+    "ast_hash": "ecab3b113fbff99b0007818c5d2a08cf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/detalle-expo-abanico.png": {
+    "mtime": 1787435997.3723466,
+    "ast_hash": "6c7656c6b38769bf929c46d697b39398",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/detalle-expo-varilla.png": {
+    "mtime": 1787435997.53221,
+    "ast_hash": "9ce339702ecd695a6bfe08a3ca1a6e3b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0000.jpg": {
+    "mtime": 1787434204.377506,
+    "ast_hash": "7afdc48a11b110a72878559d5d052112",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0001.jpg": {
+    "mtime": 1787434204.4496794,
+    "ast_hash": "aa678c1f022c351728e845b735239323",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0002.jpg": {
+    "mtime": 1787434204.5241878,
+    "ast_hash": "64d72fcf04dcc190ad378cb6cb43d354",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0003.jpg": {
+    "mtime": 1787434204.594859,
+    "ast_hash": "e936336236bffc720c68d474cf60683e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0004.jpg": {
+    "mtime": 1787434204.6704602,
+    "ast_hash": "e25da84dab0c9142e6e5b081fd88d323",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0005.jpg": {
+    "mtime": 1787434204.7420943,
+    "ast_hash": "56d01f12d8f6e246013c2fce7f9a17ee",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0006.jpg": {
+    "mtime": 1787434204.8190033,
+    "ast_hash": "2aee175a5d086b5f012f53f7e81e8ce8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0007.jpg": {
+    "mtime": 1787434204.8937821,
+    "ast_hash": "3a15a21fdfd28d4181a5918b5f5fd6eb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0008.jpg": {
+    "mtime": 1787434204.9675224,
+    "ast_hash": "3fbeb3cb90659f34aed5e3664693b99c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0009.jpg": {
+    "mtime": 1787434205.0401614,
+    "ast_hash": "91a7127e2d19be41bbd4902ddad71b1a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0010.jpg": {
+    "mtime": 1787434205.1184523,
+    "ast_hash": "684b1a442d5acac5abd021bbb45242c0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0011.jpg": {
+    "mtime": 1787434205.195285,
+    "ast_hash": "b1d41059329ae138904a259b155ffa3e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0012.jpg": {
+    "mtime": 1787434205.2871218,
+    "ast_hash": "e96c77807476418ecf536cc2d10a089c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0013.jpg": {
+    "mtime": 1787434205.3681717,
+    "ast_hash": "8f19157bb5fdaa2b0ff90780a3fbdfe0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0014.jpg": {
+    "mtime": 1787434205.454096,
+    "ast_hash": "1c0486487c24d75404e468853c8b6a17",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0015.jpg": {
+    "mtime": 1787434205.5377195,
+    "ast_hash": "c9b05670940fb9153f44e36a174bf069",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0016.jpg": {
+    "mtime": 1787434205.6173182,
+    "ast_hash": "af31d2892b14d0eaafa0c0dfbcdfe46c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0017.jpg": {
+    "mtime": 1787434205.6911714,
+    "ast_hash": "27aafcc2523738deffee41b44d21a4a8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0018.jpg": {
+    "mtime": 1787434205.7624373,
+    "ast_hash": "42b8b3d9d221f3f4d3ae01411db9d2a6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0019.jpg": {
+    "mtime": 1787434205.8384633,
+    "ast_hash": "0be980d809e96009d264c538428afd8c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0020.jpg": {
+    "mtime": 1787434205.9104223,
+    "ast_hash": "1be82e9c1d934dccf79e9ba175e23026",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0021.jpg": {
+    "mtime": 1787434205.9872227,
+    "ast_hash": "362b4bcfca251b876cd888e5799e4bc2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0022.jpg": {
+    "mtime": 1787434206.0596135,
+    "ast_hash": "800de401b1256d94b7523d4191c9e6aa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0023.jpg": {
+    "mtime": 1787434206.140656,
+    "ast_hash": "a967e5bfb173eab54d2739b66d747ab3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0024.jpg": {
+    "mtime": 1787434206.225646,
+    "ast_hash": "fde60bd9f563252d4e99992da264ca43",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0025.jpg": {
+    "mtime": 1787434206.3041172,
+    "ast_hash": "16ce524ffecf3ad1153623c3d91f57ef",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0026.jpg": {
+    "mtime": 1787434206.385826,
+    "ast_hash": "3095c382124e1f68b6c84da5f1b2a526",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0027.jpg": {
+    "mtime": 1787434206.4647033,
+    "ast_hash": "f3b7941db6a715885b497c7dfaece0de",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0028.jpg": {
+    "mtime": 1787434206.5418155,
+    "ast_hash": "c0d9bd6be8db90481bd886a3f60c18b2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0029.jpg": {
+    "mtime": 1787434206.6228323,
+    "ast_hash": "c3c108801f6f2020be0aa65ad36b516d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0030.jpg": {
+    "mtime": 1787434206.7152913,
+    "ast_hash": "52548ffb63e99d6fa877b12eb9fc3d05",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0031.jpg": {
+    "mtime": 1787434206.7958946,
+    "ast_hash": "1bb55e2b2816ed26e2d2a11d92b3b6fd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0032.jpg": {
+    "mtime": 1787434206.8713248,
+    "ast_hash": "214530034d3760e21df5f3f456c1cebc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0033.jpg": {
+    "mtime": 1787434206.955788,
+    "ast_hash": "858431b9ab33004f3ca31691c44cdc2d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0034.jpg": {
+    "mtime": 1787434207.0382009,
+    "ast_hash": "38c0a8f8962626f68e2276f42cc52763",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0035.jpg": {
+    "mtime": 1787434207.1227837,
+    "ast_hash": "9fa7bf96f9df39751849f5525403a440",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0036.jpg": {
+    "mtime": 1787434207.2126677,
+    "ast_hash": "2b90a74d7cbcd6c7c19a776015658993",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0037.jpg": {
+    "mtime": 1787434207.2990544,
+    "ast_hash": "c67563616748dddd2db2af82849d1494",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0038.jpg": {
+    "mtime": 1787434207.3918822,
+    "ast_hash": "9b32f243bcdf52bcc2777926bfab92c5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0039.jpg": {
+    "mtime": 1787434207.4783525,
+    "ast_hash": "2c62534c1572fa45900d02ce920ce295",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0040.jpg": {
+    "mtime": 1787434207.5687337,
+    "ast_hash": "cae37e81807569877e3eb59e76a5e56b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0041.jpg": {
+    "mtime": 1787434207.6470425,
+    "ast_hash": "b567573e771b5a7278ee8447e2823cf0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0042.jpg": {
+    "mtime": 1787434207.730821,
+    "ast_hash": "2623d8f97e605131a3decbd41f8ab273",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0043.jpg": {
+    "mtime": 1787434207.809245,
+    "ast_hash": "f45df4efb7dd9ac5e65168e3c9b81bcf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0044.jpg": {
+    "mtime": 1787434207.898626,
+    "ast_hash": "79c6288ce883350bfc672238312055f8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0045.jpg": {
+    "mtime": 1787434207.9770854,
+    "ast_hash": "28897c0f87f88aeb848a7ddecb5d7c4f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0046.jpg": {
+    "mtime": 1787434208.055023,
+    "ast_hash": "7c5c9197e03bdcc84eb6575b197d1275",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0047.jpg": {
+    "mtime": 1787434208.1377127,
+    "ast_hash": "d019d064ffa26b1bb25ca61cb3d457b0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0048.jpg": {
+    "mtime": 1787434208.2220998,
+    "ast_hash": "9b04e4714ff03a868d92c59ea6d529d5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0049.jpg": {
+    "mtime": 1787434208.2996013,
+    "ast_hash": "da4f0ca65ba6479cc0f4502f3ca34fa7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0050.jpg": {
+    "mtime": 1787434208.38018,
+    "ast_hash": "9fc3efdd207ac4a9fe89b5405cc6866b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0051.jpg": {
+    "mtime": 1787434208.4611835,
+    "ast_hash": "9f425d0840434defdbf38145bd88d94a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0052.jpg": {
+    "mtime": 1787434208.54436,
+    "ast_hash": "2650452fab54bb1c30293a480f89f243",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0053.jpg": {
+    "mtime": 1787434208.631816,
+    "ast_hash": "f2480042f4491f3cf331dce87178b57a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0054.jpg": {
+    "mtime": 1787434208.718711,
+    "ast_hash": "d2a7cebfb583c95b9635da864984b79b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0055.jpg": {
+    "mtime": 1787434208.8077886,
+    "ast_hash": "f10e7edcd2d7c20501e1c3352e1a7f5f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0056.jpg": {
+    "mtime": 1787434208.8925688,
+    "ast_hash": "f0a435bf0077b9ce6f2ef8c1689de503",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0057.jpg": {
+    "mtime": 1787434208.9761896,
+    "ast_hash": "9551a5ca0f2f1617c8c5a114eaa6853f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0058.jpg": {
+    "mtime": 1787434209.0629954,
+    "ast_hash": "e5921b25265286ee9ad5f71fdcd2c776",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0059.jpg": {
+    "mtime": 1787434209.147323,
+    "ast_hash": "684ddb90318f1d25821ea42bf91d5cbb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0060.jpg": {
+    "mtime": 1787434209.22927,
+    "ast_hash": "f260efb8fbac0d1d411d4582fcd1bbb5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0061.jpg": {
+    "mtime": 1787434209.3271663,
+    "ast_hash": "26d1dfcd3f6622bc3d47f04c4e3f6066",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0062.jpg": {
+    "mtime": 1787434209.4197638,
+    "ast_hash": "5d9d537a23bf45778311316f0564a58b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0063.jpg": {
+    "mtime": 1787434209.5204203,
+    "ast_hash": "2c17d9c1d77bec2bd8de63f30549bcaf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0064.jpg": {
+    "mtime": 1787434209.616765,
+    "ast_hash": "ce418b78e20527aa788e16e58216b730",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0065.jpg": {
+    "mtime": 1787434209.7118156,
+    "ast_hash": "d0df5682869cb0deee016177a5d306f8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0066.jpg": {
+    "mtime": 1787434209.798711,
+    "ast_hash": "6038e3a0d3c6c547b38c111b09da94f3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0067.jpg": {
+    "mtime": 1787434209.8994188,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0068.jpg": {
+    "mtime": 1787434209.9960573,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0069.jpg": {
+    "mtime": 1787434210.0829153,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0070.jpg": {
+    "mtime": 1787434210.1671934,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0071.jpg": {
+    "mtime": 1787434210.2632408,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0072.jpg": {
+    "mtime": 1787434210.34502,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0073.jpg": {
+    "mtime": 1787434210.433113,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0074.jpg": {
+    "mtime": 1787434210.5239663,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0075.jpg": {
+    "mtime": 1787434210.6113489,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0076.jpg": {
+    "mtime": 1787434210.688264,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0077.jpg": {
+    "mtime": 1787434210.7698834,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0078.jpg": {
+    "mtime": 1787434210.8468416,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0079.jpg": {
+    "mtime": 1787434210.9277177,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0080.jpg": {
+    "mtime": 1787434211.0049572,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0081.jpg": {
+    "mtime": 1787434211.0925472,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0082.jpg": {
+    "mtime": 1787434211.1708472,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0083.jpg": {
+    "mtime": 1787434211.2581291,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0084.jpg": {
+    "mtime": 1787434211.3561275,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0085.jpg": {
+    "mtime": 1787434211.443317,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0086.jpg": {
+    "mtime": 1787434211.5339289,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0087.jpg": {
+    "mtime": 1787434211.6184976,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0088.jpg": {
+    "mtime": 1787434211.6987767,
+    "ast_hash": "d148a39a95c13c528357ce3a15bab430",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0089.jpg": {
+    "mtime": 1787434211.7773404,
+    "ast_hash": "5dd1106c893ca47de7768fdbb478b855",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0090.jpg": {
+    "mtime": 1787434211.8544948,
+    "ast_hash": "b5a761628375d4ad62ab710c886735b6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0091.jpg": {
+    "mtime": 1787434211.9400704,
+    "ast_hash": "443872065316c6306d76c2494884986c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0092.jpg": {
+    "mtime": 1787434212.0155058,
+    "ast_hash": "cf3e9c9cceef7b678ca819d06e843898",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0093.jpg": {
+    "mtime": 1787434212.0946882,
+    "ast_hash": "db22870f369f7be81d154742a45784cd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0094.jpg": {
+    "mtime": 1787434212.17553,
+    "ast_hash": "8d689d0651c7c365c398505ee2b90b1a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0095.jpg": {
+    "mtime": 1787434212.2545435,
+    "ast_hash": "dc48dca1de897dc6fa3c4f4739e1220e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0096.jpg": {
+    "mtime": 1787434212.3342917,
+    "ast_hash": "4557c40408b1d8f745f520542af39616",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0097.jpg": {
+    "mtime": 1787434212.412424,
+    "ast_hash": "e74f1c88d0def984635006bf9963cff4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0098.jpg": {
+    "mtime": 1787434212.49123,
+    "ast_hash": "6cf48f3e47739bf3a517764c9080f038",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0099.jpg": {
+    "mtime": 1787434212.5709574,
+    "ast_hash": "5c4742b4ed0e45898edeb1c13ff348c1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0100.jpg": {
+    "mtime": 1787434212.6471298,
+    "ast_hash": "fff0a66487403879bd27fbb4c44d1e9f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0101.jpg": {
+    "mtime": 1787434212.7242258,
+    "ast_hash": "1f8fe1ac3f3cfbac83d075f4524478f8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0102.jpg": {
+    "mtime": 1787434212.8077464,
+    "ast_hash": "742a4bdff0fb114b6ea6c7b27eec430f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0103.jpg": {
+    "mtime": 1787434212.9071243,
+    "ast_hash": "37d2c5a9776bacf39e6c18b762666d26",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0104.jpg": {
+    "mtime": 1787434212.990402,
+    "ast_hash": "eebdf226119ef07e9052f5f985cf57a8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0105.jpg": {
+    "mtime": 1787434213.0773916,
+    "ast_hash": "dd8bab879fd05937b86c99f0227ff21a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0106.jpg": {
+    "mtime": 1787434213.164505,
+    "ast_hash": "8cefd068326a7df10b536030c20a0021",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0107.jpg": {
+    "mtime": 1787434213.242988,
+    "ast_hash": "f7b5427bfc06ad2b1fb9807a3308f4be",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0108.jpg": {
+    "mtime": 1787434213.3224442,
+    "ast_hash": "3d5b413c7fad3539d2f6390c573c96be",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0109.jpg": {
+    "mtime": 1787434213.4026093,
+    "ast_hash": "ac489e57f21087385e720d94a9b9da10",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0110.jpg": {
+    "mtime": 1787434213.4845648,
+    "ast_hash": "ee39ae34c4b7280614aa2354e582ac40",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0111.jpg": {
+    "mtime": 1787434213.5609415,
+    "ast_hash": "d6c33508a9f10ccce66097ec9611f37f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0112.jpg": {
+    "mtime": 1787434213.6474566,
+    "ast_hash": "bdcf6247efeb6dca71dfb5e9dd294a77",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0113.jpg": {
+    "mtime": 1787434213.7220309,
+    "ast_hash": "90e07a260ef519cce91e5c033aa0791f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0114.jpg": {
+    "mtime": 1787434213.805769,
+    "ast_hash": "5d5930de16476fa47157aff13a7b6bc7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0115.jpg": {
+    "mtime": 1787434213.885311,
+    "ast_hash": "88d559ee5a63e0758eab3e4221bd23f0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0116.jpg": {
+    "mtime": 1787434213.961128,
+    "ast_hash": "4b5cae289ee289c594dab2307b46b9b5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0117.jpg": {
+    "mtime": 1787434214.0439887,
+    "ast_hash": "d68de8517a296b357062417b8dff2a9f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0118.jpg": {
+    "mtime": 1787434214.1275642,
+    "ast_hash": "29f21ba0568c217bb053dd787fe599c7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0119.jpg": {
+    "mtime": 1787434214.2067125,
+    "ast_hash": "5daa90f856ba470c2dd7708497b4f3b5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0120.jpg": {
+    "mtime": 1787434214.2859302,
+    "ast_hash": "b8decfc6973956b5df0774bc421faee1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0121.jpg": {
+    "mtime": 1787434214.3643591,
+    "ast_hash": "14de5c5a2aa42590056fbee82c0ee96b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0122.jpg": {
+    "mtime": 1787434214.4460578,
+    "ast_hash": "dc5c2184d5c98189ad6cfdb89527c06a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0123.jpg": {
+    "mtime": 1787434214.526288,
+    "ast_hash": "8e0752272f2367a9d8bdb0f10580c248",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0124.jpg": {
+    "mtime": 1787434214.6117337,
+    "ast_hash": "01b8fbfcd51eca1f65ae869103fea0b6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0125.jpg": {
+    "mtime": 1787434214.6904657,
+    "ast_hash": "89034579c42ec4805695b8f771522308",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0126.jpg": {
+    "mtime": 1787434214.7783582,
+    "ast_hash": "ddce4b9f0854b8266f5020e875d4fbce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0127.jpg": {
+    "mtime": 1787434214.8572235,
+    "ast_hash": "b605302396403d6ef74ddc969815754e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0128.jpg": {
+    "mtime": 1787434214.9372644,
+    "ast_hash": "617e35646d58788374e80c01d4e593fe",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0129.jpg": {
+    "mtime": 1787434215.0188856,
+    "ast_hash": "4d3fe1adc80fd1d25cbd24a4a4e37a2d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0130.jpg": {
+    "mtime": 1787434215.1061182,
+    "ast_hash": "09aa6fb879e7f03ff0e30a0e143c7116",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0131.jpg": {
+    "mtime": 1787434215.1906204,
+    "ast_hash": "a4705a4693a6b6d5dd07c7e14d153749",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0132.jpg": {
+    "mtime": 1787434215.2802894,
+    "ast_hash": "a5859fe5a146b1042ad25c2bf81599ee",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0133.jpg": {
+    "mtime": 1787434215.3593116,
+    "ast_hash": "fcaa2ca9503c662477804add4b8505ab",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0134.jpg": {
+    "mtime": 1787434215.4499798,
+    "ast_hash": "3b10ffd838f78251388c95743faa4390",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0135.jpg": {
+    "mtime": 1787434215.528709,
+    "ast_hash": "a5cf35c20916ec72aba4874453509d36",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0136.jpg": {
+    "mtime": 1787434215.6121588,
+    "ast_hash": "43826ac2fe6ebbec76d6623fcbde5c67",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0137.jpg": {
+    "mtime": 1787434215.69279,
+    "ast_hash": "7a35ebe165ee84d55f95c0d76f5123d8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0138.jpg": {
+    "mtime": 1787434215.7774394,
+    "ast_hash": "ea21ebb852b209f4f7ec03c1ebceeaa7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0139.jpg": {
+    "mtime": 1787434215.8673525,
+    "ast_hash": "7608c0db1334f7e46eda12cbc4c4acfe",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0140.jpg": {
+    "mtime": 1787434215.9534101,
+    "ast_hash": "4d788bc753b8172c788f5d92dfb476c1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0141.jpg": {
+    "mtime": 1787434216.0346224,
+    "ast_hash": "ae45fea9274c894b5798a3c1260a6b37",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0142.jpg": {
+    "mtime": 1787434216.1172032,
+    "ast_hash": "9bce66837ba61b6aef9c18101bdc94ba",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0143.jpg": {
+    "mtime": 1787434216.2109954,
+    "ast_hash": "fec204a91c2f9ce82cd6ecb8f3065bca",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0144.jpg": {
+    "mtime": 1787434216.2942426,
+    "ast_hash": "bc2641abb1b61d37bf6a7bd1a44a3675",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0145.jpg": {
+    "mtime": 1787434216.3779857,
+    "ast_hash": "e49af4ec98f3bfdccbfb4f4c33eb8a3a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0146.jpg": {
+    "mtime": 1787434216.4622622,
+    "ast_hash": "3a618c20660c0b54d5174bb1400ec647",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0147.jpg": {
+    "mtime": 1787434216.5469136,
+    "ast_hash": "dc2c3138c8705510e3f64da206f8dd48",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0148.jpg": {
+    "mtime": 1787434216.640844,
+    "ast_hash": "463a085c722a747489d69d6f067da084",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0149.jpg": {
+    "mtime": 1787434216.7282352,
+    "ast_hash": "43e6accb804d614d50fab1d210c3a972",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0150.jpg": {
+    "mtime": 1787434216.811185,
+    "ast_hash": "981c73d6648f66990d27c28bfdcff357",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0151.jpg": {
+    "mtime": 1787434216.8976443,
+    "ast_hash": "7c7855b90eb556475739379120e27e70",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0152.jpg": {
+    "mtime": 1787434216.9831133,
+    "ast_hash": "4123ac4b38f7fbcae3b76c4618ccb213",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0153.jpg": {
+    "mtime": 1787434217.0732887,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0154.jpg": {
+    "mtime": 1787434217.1628175,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0155.jpg": {
+    "mtime": 1787434217.2539096,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0156.jpg": {
+    "mtime": 1787434217.3400545,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0157.jpg": {
+    "mtime": 1787434217.457961,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0158.jpg": {
+    "mtime": 1787434217.5577857,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0159.jpg": {
+    "mtime": 1787434217.6566281,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0160.jpg": {
+    "mtime": 1787434217.75353,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0161.jpg": {
+    "mtime": 1787434217.8435404,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0162.jpg": {
+    "mtime": 1787434217.9345946,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0163.jpg": {
+    "mtime": 1787434218.0216897,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0164.jpg": {
+    "mtime": 1787434218.1066153,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0165.jpg": {
+    "mtime": 1787434218.188996,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0166.jpg": {
+    "mtime": 1787434218.2766273,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0167.jpg": {
+    "mtime": 1787434218.3667672,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0168.jpg": {
+    "mtime": 1787434218.4596264,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0169.jpg": {
+    "mtime": 1787434218.5488696,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0170.jpg": {
+    "mtime": 1787434218.6349268,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0171.jpg": {
+    "mtime": 1787434218.7234485,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0172.jpg": {
+    "mtime": 1787434218.8181403,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0173.jpg": {
+    "mtime": 1787434218.9027388,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0174.jpg": {
+    "mtime": 1787434218.987196,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0175.jpg": {
+    "mtime": 1787434219.074898,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0176.jpg": {
+    "mtime": 1787434219.1668508,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0177.jpg": {
+    "mtime": 1787434219.2545304,
+    "ast_hash": "d5130cae02f0c6a852187dc50105db1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0178.jpg": {
+    "mtime": 1787434219.339532,
+    "ast_hash": "a1f32816ed20fe3ff4a284e6dec1181b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0179.jpg": {
+    "mtime": 1787434219.4279535,
+    "ast_hash": "27cff0144b24aeb4d983ab4aa4527ab4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0180.jpg": {
+    "mtime": 1787434219.5245688,
+    "ast_hash": "74e389e370350f114710f2ff2dfd441b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0181.jpg": {
+    "mtime": 1787434219.6160297,
+    "ast_hash": "40944bbe8c215399a7ebce8f997d38f6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0182.jpg": {
+    "mtime": 1787434219.7044826,
+    "ast_hash": "241911172d48077110bb5cf307d103d2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0183.jpg": {
+    "mtime": 1787434219.792373,
+    "ast_hash": "35e69ba74ffec24da9968a5196180136",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0184.jpg": {
+    "mtime": 1787434219.8830953,
+    "ast_hash": "be7f23773e999431cec5e11e26ebf619",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0185.jpg": {
+    "mtime": 1787434219.9683857,
+    "ast_hash": "060f0b3e5b819219ca7bdfe167ab8c6a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0186.jpg": {
+    "mtime": 1787434220.0616813,
+    "ast_hash": "687dfe3cc25e8029aca92268b6ea3425",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0187.jpg": {
+    "mtime": 1787434220.1507814,
+    "ast_hash": "cf36c912a1de8f0eba18f80a9817b033",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0188.jpg": {
+    "mtime": 1787434220.2358136,
+    "ast_hash": "d6d262ba358c1c51cad37e6be531e3f3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0189.jpg": {
+    "mtime": 1787434220.3223956,
+    "ast_hash": "6c29c6d422f45b8405919b1bd1653986",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0190.jpg": {
+    "mtime": 1787434220.4087896,
+    "ast_hash": "ce522e902c05c16f8a777464795e66e4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0191.jpg": {
+    "mtime": 1787434220.49931,
+    "ast_hash": "d5f7a21fd8bb2300847e768ec26c3565",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0192.jpg": {
+    "mtime": 1787434220.5841646,
+    "ast_hash": "b098611d5a38cfc8f369af6943f698a0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0193.jpg": {
+    "mtime": 1787434220.682944,
+    "ast_hash": "2b48e65171e9499b53ee757fea0f06e1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0194.jpg": {
+    "mtime": 1787434220.7759895,
+    "ast_hash": "f33cabc525cf21282519ec6d078cb793",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0195.jpg": {
+    "mtime": 1787434220.8588662,
+    "ast_hash": "3e6a9a7e387619c22b150d1214efc5b3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0196.jpg": {
+    "mtime": 1787434220.9478629,
+    "ast_hash": "67ed8e14216c6f8db11cf53598c55b87",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0197.jpg": {
+    "mtime": 1787434221.033275,
+    "ast_hash": "7771b586da219891c153409ef8204e7e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0198.jpg": {
+    "mtime": 1787434221.122159,
+    "ast_hash": "1cfef1a574bc0f1ba7d93de17702e131",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0199.jpg": {
+    "mtime": 1787434221.2141778,
+    "ast_hash": "05dd4e49b3345b855cd6715c6ae3a38b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0200.jpg": {
+    "mtime": 1787434221.3055966,
+    "ast_hash": "a8eb79fcc6dc461da335ada4dcc31019",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0201.jpg": {
+    "mtime": 1787434221.3957877,
+    "ast_hash": "d62e3d7b2cbfd93aac79ab8344a3a70d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0202.jpg": {
+    "mtime": 1787434221.483029,
+    "ast_hash": "62a3581afa9fbf897622d4917641f296",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0203.jpg": {
+    "mtime": 1787434221.5664673,
+    "ast_hash": "e0f74b03a4e88410459ee8be571fc734",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0204.jpg": {
+    "mtime": 1787434221.6518188,
+    "ast_hash": "29f6ffcaf6f0b685e90111ea0909663e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0205.jpg": {
+    "mtime": 1787434221.7398355,
+    "ast_hash": "b6d04db34357334659e48bc69b2952e2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0206.jpg": {
+    "mtime": 1787434221.8256626,
+    "ast_hash": "74ebb88b5eb372b98b5e232610e60474",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0207.jpg": {
+    "mtime": 1787434221.9118464,
+    "ast_hash": "78493163a2f4f3a8d4a1bacc1fb424af",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0208.jpg": {
+    "mtime": 1787434221.9973948,
+    "ast_hash": "ce08795456ff218afb450110e3ed852b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0209.jpg": {
+    "mtime": 1787434222.0840116,
+    "ast_hash": "b38f1b09ad6257a6bca6064c7ea25368",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0210.jpg": {
+    "mtime": 1787434222.1744957,
+    "ast_hash": "a736365203b78ed003f009737069a65e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0211.jpg": {
+    "mtime": 1787434222.2620473,
+    "ast_hash": "ace1ad9831fa4d21910a92af6f6680d9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0212.jpg": {
+    "mtime": 1787434222.3452718,
+    "ast_hash": "813578e60cc85810cd2167ce74e8fab6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0213.jpg": {
+    "mtime": 1787434222.4283433,
+    "ast_hash": "48a117a1f1a42c5cfbeca26996fee270",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0214.jpg": {
+    "mtime": 1787434222.5133088,
+    "ast_hash": "ec8ba60eea0069874138688e94be2e0c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0215.jpg": {
+    "mtime": 1787434222.6020298,
+    "ast_hash": "2198f58e80919ae052d3ae80b406111e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0216.jpg": {
+    "mtime": 1787434222.691162,
+    "ast_hash": "6e18409d062fb40193047249d28c0333",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0217.jpg": {
+    "mtime": 1787434222.778466,
+    "ast_hash": "fe5b923905248e54fd322950fa72411e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0218.jpg": {
+    "mtime": 1787434222.8673482,
+    "ast_hash": "141094a5965f57207b1cfbf5a6387984",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0219.jpg": {
+    "mtime": 1787434222.9562502,
+    "ast_hash": "3e57626864669a532e2e1a4167a0e241",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0220.jpg": {
+    "mtime": 1787434223.0450342,
+    "ast_hash": "0fe0c54f02bb9e9fa665d0b7190c0aa0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0221.jpg": {
+    "mtime": 1787434223.134135,
+    "ast_hash": "b7641f6b391b2fb45833d0399c254aa6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0222.jpg": {
+    "mtime": 1787434223.222862,
+    "ast_hash": "2a16e2d846f7e51e5bba75971d706097",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0223.jpg": {
+    "mtime": 1787434223.3047206,
+    "ast_hash": "e4ce6846dc2ea1409f810ec3e4973f4b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0224.jpg": {
+    "mtime": 1787434223.3934524,
+    "ast_hash": "7c89b0eed5474734e63dd5042520b59c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0225.jpg": {
+    "mtime": 1787434223.4796612,
+    "ast_hash": "7c89b0eed5474734e63dd5042520b59c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0226.jpg": {
+    "mtime": 1787434223.5632331,
+    "ast_hash": "7c89b0eed5474734e63dd5042520b59c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0227.jpg": {
+    "mtime": 1787434223.6612587,
+    "ast_hash": "7c89b0eed5474734e63dd5042520b59c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0228.jpg": {
+    "mtime": 1787434223.7445955,
+    "ast_hash": "7c89b0eed5474734e63dd5042520b59c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0229.jpg": {
+    "mtime": 1787434223.8340135,
+    "ast_hash": "72ecd3ee5eab766af6474c2ac6819ebd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0230.jpg": {
+    "mtime": 1787434223.920536,
+    "ast_hash": "fd50630c4ca47baa9440015210fd7ecf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0231.jpg": {
+    "mtime": 1787434224.0062761,
+    "ast_hash": "5cc315613b7b7f511081b0a04f05a672",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0232.jpg": {
+    "mtime": 1787434224.09514,
+    "ast_hash": "c4eafa4e4e9ed883642ccaa0e7ad72d4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0233.jpg": {
+    "mtime": 1787434224.1830902,
+    "ast_hash": "dd62d6e5b048b50170d74d1a013d9106",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0234.jpg": {
+    "mtime": 1787434224.2760682,
+    "ast_hash": "2ff5a6cfe89a7d0564358254e2d00926",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0235.jpg": {
+    "mtime": 1787434224.3748815,
+    "ast_hash": "c99094441fbe4cac41a6fa57eaf43c37",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0236.jpg": {
+    "mtime": 1787434224.4601195,
+    "ast_hash": "e63d7fda2e58d1a8c75b8f0350e6f472",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0237.jpg": {
+    "mtime": 1787434224.5429351,
+    "ast_hash": "47016508129c89817d441ee8ad2b58f9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0238.jpg": {
+    "mtime": 1787434224.6261835,
+    "ast_hash": "33d3c02cce75e6915878b84e35829867",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0239.jpg": {
+    "mtime": 1787434224.7132163,
+    "ast_hash": "8ae457260df74376e53ee5f6dfa183d8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0240.jpg": {
+    "mtime": 1787434224.800523,
+    "ast_hash": "54bc7217f27d213bdfaa99b91d516505",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0241.jpg": {
+    "mtime": 1787434224.890414,
+    "ast_hash": "df92dacea651bc849753acac029ab08a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0242.jpg": {
+    "mtime": 1787434224.9800563,
+    "ast_hash": "89f0455eed1f5feda9a95c5733e7b32a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0243.jpg": {
+    "mtime": 1787434225.0686831,
+    "ast_hash": "e35239460f4292845a9f5fcbf61ed7b7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0244.jpg": {
+    "mtime": 1787434225.1546035,
+    "ast_hash": "938898b1c8b6b54b04a3fff3be9d312f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0245.jpg": {
+    "mtime": 1787434225.2455723,
+    "ast_hash": "27963b6e378faf59cf806f5b006da173",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0246.jpg": {
+    "mtime": 1787434225.3330142,
+    "ast_hash": "7bd55364ef88a59ac0d1be5a4550f15c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0247.jpg": {
+    "mtime": 1787434225.4290154,
+    "ast_hash": "0d3d6cb86a5266ab5e1abfac327fcf0d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0248.jpg": {
+    "mtime": 1787434225.5151806,
+    "ast_hash": "62346ac4f2bda31f8b48f1f79a6b04aa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0249.jpg": {
+    "mtime": 1787434225.6022134,
+    "ast_hash": "25baf0adfe0eed5d9125260c7317a182",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0250.jpg": {
+    "mtime": 1787434225.6890392,
+    "ast_hash": "749dab9608f69ffabc6f7e16e3cd0f25",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0251.jpg": {
+    "mtime": 1787434225.7788548,
+    "ast_hash": "215d825b1d6eeb46a5b2215004313855",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0252.jpg": {
+    "mtime": 1787434225.865675,
+    "ast_hash": "59a0c901feb62b38558ea3a56b41a664",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0253.jpg": {
+    "mtime": 1787434225.958172,
+    "ast_hash": "84549c6fb43b72f28377d10361337444",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0254.jpg": {
+    "mtime": 1787434226.044517,
+    "ast_hash": "fdd531cf900d750d6f37e8798b673e11",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0255.jpg": {
+    "mtime": 1787434226.1335876,
+    "ast_hash": "4790760bac1b83fbdb7a5ee340d6472e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0256.jpg": {
+    "mtime": 1787434226.2258844,
+    "ast_hash": "cb9b6baddc45c84429ff71c15a04dbbe",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0257.jpg": {
+    "mtime": 1787434226.310109,
+    "ast_hash": "f2907bc548d04123d5b022f25353481c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0258.jpg": {
+    "mtime": 1787434226.4016068,
+    "ast_hash": "9bdff66b3c3943ef03a312e262d82e8a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0259.jpg": {
+    "mtime": 1787434226.494265,
+    "ast_hash": "39cf9df65121cda7a41a11f2cc83be6a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0260.jpg": {
+    "mtime": 1787434226.5833075,
+    "ast_hash": "82a5e09faa75c241a16e437af840804d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0261.jpg": {
+    "mtime": 1787434226.6689713,
+    "ast_hash": "38f528b572f6cb3b0c733a3095079fd2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0262.jpg": {
+    "mtime": 1787434226.799693,
+    "ast_hash": "46353eb57811a55545adcf6578e7465b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0263.jpg": {
+    "mtime": 1787434226.903263,
+    "ast_hash": "1f9343e8927cd0d54250d92910c4c7f8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0264.jpg": {
+    "mtime": 1787434226.9956567,
+    "ast_hash": "be57f47d765418d9cc5b5dc6d8e65217",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0265.jpg": {
+    "mtime": 1787434227.081451,
+    "ast_hash": "ebb28c83f6fb40f2915f36389c6bebdb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0266.jpg": {
+    "mtime": 1787434227.1636245,
+    "ast_hash": "903c09cf038ed16bea25bd755b5b0ea7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0267.jpg": {
+    "mtime": 1787434227.2653148,
+    "ast_hash": "86a55645f92c586a8d5cdd72f10debe6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0268.jpg": {
+    "mtime": 1787434227.3534791,
+    "ast_hash": "a635d06f5c820e334b610a5209072e81",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0269.jpg": {
+    "mtime": 1787434227.439807,
+    "ast_hash": "18588d710cf130562f27ea99a5757107",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0270.jpg": {
+    "mtime": 1787434227.532976,
+    "ast_hash": "d9ec56fbe5c54e3d14fee8ec285fbf62",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0271.jpg": {
+    "mtime": 1787434227.6289759,
+    "ast_hash": "5b17b742b99e2636e742b58e43e6054c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0272.jpg": {
+    "mtime": 1787434227.715045,
+    "ast_hash": "b77448725fdf5e490e1d85b2b2d8dc8d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0273.jpg": {
+    "mtime": 1787434227.8005097,
+    "ast_hash": "ba31c18b0f1a341e1ce36fc07076ec58",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0274.jpg": {
+    "mtime": 1787434227.8970368,
+    "ast_hash": "ea6f336a9a18de61c2afde6006336aef",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0275.jpg": {
+    "mtime": 1787434227.9831984,
+    "ast_hash": "90c1b7566bc9af5d2224f278e8134ae1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0276.jpg": {
+    "mtime": 1787434228.0694187,
+    "ast_hash": "395e2a138d227b1c2f3dc5717aff75ac",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0277.jpg": {
+    "mtime": 1787434228.1517508,
+    "ast_hash": "677585e0d8c785b440e6c48ae2adef7c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0278.jpg": {
+    "mtime": 1787434228.2393672,
+    "ast_hash": "87846aab7c5fccbf58a334d78a0ac9ab",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0279.jpg": {
+    "mtime": 1787434228.32239,
+    "ast_hash": "735eeb367d09083638dc5984da885eff",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0280.jpg": {
+    "mtime": 1787434228.4078696,
+    "ast_hash": "06120d95f21f96e7e6725d05d81969ca",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0281.jpg": {
+    "mtime": 1787434228.4990373,
+    "ast_hash": "0d984e7e6acc91ce46c5b514779bbc6b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0282.jpg": {
+    "mtime": 1787434228.583635,
+    "ast_hash": "3ac385027ef3a34a8ced27f5a1ddff8a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0283.jpg": {
+    "mtime": 1787434228.6646004,
+    "ast_hash": "7bef88f0a897bea48b5ebd5f04532e63",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0284.jpg": {
+    "mtime": 1787434228.7454405,
+    "ast_hash": "aa51e8e3cc3f66fcd77d96ac36fcd1cc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0285.jpg": {
+    "mtime": 1787434228.8312726,
+    "ast_hash": "b434aa72641ae1d3f1bee2052ab9612a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0286.jpg": {
+    "mtime": 1787434228.9083548,
+    "ast_hash": "eaa1176c3f77b43e98c878e21d7dbcdc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0287.jpg": {
+    "mtime": 1787434228.9944634,
+    "ast_hash": "9f0341bb9396e631bcb106c7aedfccba",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0288.jpg": {
+    "mtime": 1787434229.0761223,
+    "ast_hash": "82fabb63584cef93b75f46b1c0654375",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0289.jpg": {
+    "mtime": 1787434229.1629064,
+    "ast_hash": "2ddf29f51cf16d057cb591147d4a1939",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0290.jpg": {
+    "mtime": 1787434229.2410078,
+    "ast_hash": "dbefa3e6b0b8b3caef1ba54b7cc74789",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0291.jpg": {
+    "mtime": 1787434229.328985,
+    "ast_hash": "8ffff10224f986782b4083d9f7ad018a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0292.jpg": {
+    "mtime": 1787434229.4084194,
+    "ast_hash": "a7d3b1a4be3f9e6dfb8919d230ed3730",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0293.jpg": {
+    "mtime": 1787434229.4915254,
+    "ast_hash": "30017ef430f9e2435d7af641e2b787d5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0294.jpg": {
+    "mtime": 1787434229.5787818,
+    "ast_hash": "450b72d91bd933fef7ec742e89909d39",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0295.jpg": {
+    "mtime": 1787434229.659354,
+    "ast_hash": "28d49953586326254394d8d16ec059c0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0296.jpg": {
+    "mtime": 1787434229.747321,
+    "ast_hash": "9841975955e6b8e1b2c6c237222784aa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0297.jpg": {
+    "mtime": 1787434229.8261106,
+    "ast_hash": "12fcb617db17dfc6bd09e285399e8736",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0298.jpg": {
+    "mtime": 1787434229.9104855,
+    "ast_hash": "652435f44cce671ebcc98b82644d1a9a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0299.jpg": {
+    "mtime": 1787434229.999102,
+    "ast_hash": "1c2a2715487a9271c54d14e4585c9346",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0300.jpg": {
+    "mtime": 1787434230.0768895,
+    "ast_hash": "a5813078516a415ec4925a3626d37844",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0301.jpg": {
+    "mtime": 1787434230.1614892,
+    "ast_hash": "26aed22a7e955dffc57e7814392d5606",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0302.jpg": {
+    "mtime": 1787434230.2438126,
+    "ast_hash": "921d31abff204d6c8a7ef8477163ef90",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0303.jpg": {
+    "mtime": 1787434230.3282783,
+    "ast_hash": "32757099d955e86835ffceaf9ff4bf1e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0304.jpg": {
+    "mtime": 1787434230.4089391,
+    "ast_hash": "d67a624cbf0b6b611955b8c963cbf542",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0305.jpg": {
+    "mtime": 1787434230.4861565,
+    "ast_hash": "ee908ef387e8e7c87aa20f21e652d0d6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0306.jpg": {
+    "mtime": 1787434230.5670273,
+    "ast_hash": "e8b06af6b0625c883fcef5dfbee12399",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0307.jpg": {
+    "mtime": 1787434230.6484745,
+    "ast_hash": "889b89370fb65730efbdc941ef467e33",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0308.jpg": {
+    "mtime": 1787434230.7250335,
+    "ast_hash": "1ffbea89c2ff50810d4b5ceb84098f75",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0309.jpg": {
+    "mtime": 1787434230.804376,
+    "ast_hash": "cebdfebd621472a1610040431e8e99ae",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0310.jpg": {
+    "mtime": 1787434230.880657,
+    "ast_hash": "050bc10456cdb0792a7fceea3707fa11",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0311.jpg": {
+    "mtime": 1787434230.9603472,
+    "ast_hash": "f8dfe956dc4f04a653052d5322333453",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0312.jpg": {
+    "mtime": 1787434231.0405939,
+    "ast_hash": "d8ee82754af0402d8c62e3cfc35969bb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0313.jpg": {
+    "mtime": 1787434231.12162,
+    "ast_hash": "ad305cc3a09a1e4fb0de7f1e83cf9385",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0314.jpg": {
+    "mtime": 1787434231.2013273,
+    "ast_hash": "c4f86dc00e0b0d3c019e7a7ca8b48432",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0315.jpg": {
+    "mtime": 1787434231.28283,
+    "ast_hash": "c00c52f940702ab673a23646d24705fe",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0316.jpg": {
+    "mtime": 1787434231.361376,
+    "ast_hash": "a69e07252bbd240aabaead8c429d0964",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0317.jpg": {
+    "mtime": 1787434231.434155,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0318.jpg": {
+    "mtime": 1787434231.5139065,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0319.jpg": {
+    "mtime": 1787434231.590285,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0320.jpg": {
+    "mtime": 1787434231.6810987,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0321.jpg": {
+    "mtime": 1787434231.755616,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0322.jpg": {
+    "mtime": 1787434231.8396883,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0323.jpg": {
+    "mtime": 1787434231.920866,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0324.jpg": {
+    "mtime": 1787434232.0102828,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0325.jpg": {
+    "mtime": 1787434232.0889072,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0326.jpg": {
+    "mtime": 1787434232.1730056,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0327.jpg": {
+    "mtime": 1787434232.248622,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0328.jpg": {
+    "mtime": 1787434232.3215134,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0329.jpg": {
+    "mtime": 1787434232.406367,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0330.jpg": {
+    "mtime": 1787434232.4840083,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0331.jpg": {
+    "mtime": 1787434232.5762162,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0332.jpg": {
+    "mtime": 1787434232.6598241,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0333.jpg": {
+    "mtime": 1787434232.7388837,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0334.jpg": {
+    "mtime": 1787434232.8167884,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0335.jpg": {
+    "mtime": 1787434232.8995438,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0336.jpg": {
+    "mtime": 1787434232.9804509,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0337.jpg": {
+    "mtime": 1787434233.058375,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0338.jpg": {
+    "mtime": 1787434233.1399455,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0339.jpg": {
+    "mtime": 1787434233.2224965,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0340.jpg": {
+    "mtime": 1787434233.298919,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0341.jpg": {
+    "mtime": 1787434233.3742673,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0342.jpg": {
+    "mtime": 1787434233.4565723,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0343.jpg": {
+    "mtime": 1787434233.5343735,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0344.jpg": {
+    "mtime": 1787434233.611394,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0345.jpg": {
+    "mtime": 1787434233.698189,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0346.jpg": {
+    "mtime": 1787434233.778742,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0347.jpg": {
+    "mtime": 1787434233.856138,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0348.jpg": {
+    "mtime": 1787434233.9361687,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0349.jpg": {
+    "mtime": 1787434234.0164402,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0350.jpg": {
+    "mtime": 1787434234.0945287,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0351.jpg": {
+    "mtime": 1787434234.1688762,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0352.jpg": {
+    "mtime": 1787434234.2492557,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0353.jpg": {
+    "mtime": 1787434234.328854,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0354.jpg": {
+    "mtime": 1787434234.4155061,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0355.jpg": {
+    "mtime": 1787434234.492443,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0356.jpg": {
+    "mtime": 1787434234.5775015,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0357.jpg": {
+    "mtime": 1787434234.6571856,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0358.jpg": {
+    "mtime": 1787434234.7352102,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0359.jpg": {
+    "mtime": 1787434234.81298,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0360.jpg": {
+    "mtime": 1787434234.8951437,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0361.jpg": {
+    "mtime": 1787434234.978222,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0362.jpg": {
+    "mtime": 1787434235.0613005,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0363.jpg": {
+    "mtime": 1787434235.1372347,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0364.jpg": {
+    "mtime": 1787434235.2154243,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0365.jpg": {
+    "mtime": 1787434235.2994764,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0366.jpg": {
+    "mtime": 1787434235.3857274,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0367.jpg": {
+    "mtime": 1787434235.4676826,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0368.jpg": {
+    "mtime": 1787434235.5562532,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0369.jpg": {
+    "mtime": 1787434235.637788,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0370.jpg": {
+    "mtime": 1787434235.7234557,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0371.jpg": {
+    "mtime": 1787434235.8025506,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0372.jpg": {
+    "mtime": 1787434235.882109,
+    "ast_hash": "30bff6c497368b6bb5a66062f0611461",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-comunicacion/0373.jpg": {
+    "mtime": 1787434235.9570918,
+    "ast_hash": "e52976ad68ea4e3f96fc86d5149df7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0000.jpg": {
+    "mtime": 1787434154.7703688,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0001.jpg": {
+    "mtime": 1787434154.8429463,
+    "ast_hash": "a1791043b696d8611852adb8d758d97a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0002.jpg": {
+    "mtime": 1787434154.9164836,
+    "ast_hash": "b4bade9e06cd1a591eb1eb6a90bc2356",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0003.jpg": {
+    "mtime": 1787434154.9880488,
+    "ast_hash": "34c8f3917cf03e508e8b7b6a661b9956",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0004.jpg": {
+    "mtime": 1787434155.0542603,
+    "ast_hash": "dbfb020645ecac6fc3e24234990046dc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0005.jpg": {
+    "mtime": 1787434155.1203823,
+    "ast_hash": "89324d4dc3dc99ed026a8da06d83a200",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0006.jpg": {
+    "mtime": 1787434155.1872742,
+    "ast_hash": "4f78cae08d9070800691b7c04beba3e0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0007.jpg": {
+    "mtime": 1787434155.2534835,
+    "ast_hash": "a43bea53e238422af67c56a1e1ddd9fb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0008.jpg": {
+    "mtime": 1787434155.320666,
+    "ast_hash": "ad21f87be00fc9e33201664926903baf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0009.jpg": {
+    "mtime": 1787434155.3890994,
+    "ast_hash": "e6a0a2772ccb68a60f07788f8a2f40a1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0010.jpg": {
+    "mtime": 1787434155.4587839,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0011.jpg": {
+    "mtime": 1787434155.524575,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0012.jpg": {
+    "mtime": 1787434155.5999749,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0013.jpg": {
+    "mtime": 1787434155.6700335,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0014.jpg": {
+    "mtime": 1787434155.7368824,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0015.jpg": {
+    "mtime": 1787434155.802224,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0016.jpg": {
+    "mtime": 1787434155.872269,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0017.jpg": {
+    "mtime": 1787434155.9374871,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0018.jpg": {
+    "mtime": 1787434156.0078778,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0019.jpg": {
+    "mtime": 1787434156.0737772,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0020.jpg": {
+    "mtime": 1787434156.1477401,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0021.jpg": {
+    "mtime": 1787434156.2127993,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0022.jpg": {
+    "mtime": 1787434156.279857,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0023.jpg": {
+    "mtime": 1787434156.3456569,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0024.jpg": {
+    "mtime": 1787434156.4191165,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0025.jpg": {
+    "mtime": 1787434156.4904308,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0026.jpg": {
+    "mtime": 1787434156.5680814,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0027.jpg": {
+    "mtime": 1787434156.6345274,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0028.jpg": {
+    "mtime": 1787434156.732241,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0029.jpg": {
+    "mtime": 1787434156.8145986,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0030.jpg": {
+    "mtime": 1787434156.9048758,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0031.jpg": {
+    "mtime": 1787434156.9708965,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0032.jpg": {
+    "mtime": 1787434157.0494728,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0033.jpg": {
+    "mtime": 1787434157.115652,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0034.jpg": {
+    "mtime": 1787434157.1832325,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0035.jpg": {
+    "mtime": 1787434157.2472565,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0036.jpg": {
+    "mtime": 1787434157.3115516,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0037.jpg": {
+    "mtime": 1787434157.3773086,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0038.jpg": {
+    "mtime": 1787434157.4436593,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0039.jpg": {
+    "mtime": 1787434157.5116708,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0040.jpg": {
+    "mtime": 1787434157.5782127,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0041.jpg": {
+    "mtime": 1787434157.647786,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0042.jpg": {
+    "mtime": 1787434157.7123134,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0043.jpg": {
+    "mtime": 1787434157.7789497,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0044.jpg": {
+    "mtime": 1787434157.8452148,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0045.jpg": {
+    "mtime": 1787434157.9091423,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0046.jpg": {
+    "mtime": 1787434157.9778185,
+    "ast_hash": "bf02a98f87deee89968bf81324cf5429",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0047.jpg": {
+    "mtime": 1787434158.0430834,
+    "ast_hash": "f86222348f1839b7a74c2cf9f0827a3d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0048.jpg": {
+    "mtime": 1787434158.109014,
+    "ast_hash": "ce9ea592d6c2f43b0b0b9127d86cc792",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0049.jpg": {
+    "mtime": 1787434158.1754887,
+    "ast_hash": "c2e24a2e6152be12e5d45ea090a491eb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0050.jpg": {
+    "mtime": 1787434158.2440639,
+    "ast_hash": "c3ebaeb89bc86efbaf7d5e13743dc8a2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0051.jpg": {
+    "mtime": 1787434158.3107765,
+    "ast_hash": "f6532f7da6f1f9e5b9bf0974e496ed2b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0052.jpg": {
+    "mtime": 1787434158.3823278,
+    "ast_hash": "2aba976e5de2b1df37e57cced0d05e2e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0053.jpg": {
+    "mtime": 1787434158.449459,
+    "ast_hash": "657e3f2344bf27eb3b3230a57c9ecf7b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0054.jpg": {
+    "mtime": 1787434158.5180502,
+    "ast_hash": "abd66a090c833c39003314447ba61e35",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0055.jpg": {
+    "mtime": 1787434158.5856154,
+    "ast_hash": "1198fdd1e84d061570717198df0b37cd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0056.jpg": {
+    "mtime": 1787434158.6622362,
+    "ast_hash": "710c85c56bdc9ea854426c04092c8075",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0057.jpg": {
+    "mtime": 1787434158.728879,
+    "ast_hash": "1c66460bf3504e0aa10ab92ca24b019e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0058.jpg": {
+    "mtime": 1787434158.7985556,
+    "ast_hash": "bdfbb6084dfdfbde19a695f7940ee76c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0059.jpg": {
+    "mtime": 1787434158.8653295,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0060.jpg": {
+    "mtime": 1787434158.9328537,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0061.jpg": {
+    "mtime": 1787434159.0036411,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0062.jpg": {
+    "mtime": 1787434159.0698078,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0063.jpg": {
+    "mtime": 1787434159.136028,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0064.jpg": {
+    "mtime": 1787434159.2011726,
+    "ast_hash": "5d36ba09ab35c253e0e7709053fb85ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0065.jpg": {
+    "mtime": 1787434159.268448,
+    "ast_hash": "c995eda5a01fcdfbbfc238badb34ca6f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0066.jpg": {
+    "mtime": 1787434159.3350496,
+    "ast_hash": "06ad46a081d3a83118a209826eb0facc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0067.jpg": {
+    "mtime": 1787434159.4013672,
+    "ast_hash": "0bd93e588df62c6e492331851485f848",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0068.jpg": {
+    "mtime": 1787434159.4802701,
+    "ast_hash": "2ee05b7594cb0c99c96ae99c8bb77138",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0069.jpg": {
+    "mtime": 1787434159.5549967,
+    "ast_hash": "fe0ab5f36694a6d4fa12410928c3b8ab",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0070.jpg": {
+    "mtime": 1787434159.6292808,
+    "ast_hash": "e2ff3090b72d3777f0ad7d46393afad6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0071.jpg": {
+    "mtime": 1787434159.708298,
+    "ast_hash": "7c48981e9371aef5f9cbaa644213050f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0072.jpg": {
+    "mtime": 1787434159.781538,
+    "ast_hash": "49bb51c60a1b78c5206e373cde2d2476",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0073.jpg": {
+    "mtime": 1787434159.852805,
+    "ast_hash": "03320853d4a5a9bdfc86ff7666a2d934",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0074.jpg": {
+    "mtime": 1787434159.9224975,
+    "ast_hash": "1f01e6702ca80136bc0bf0d339c00a95",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0075.jpg": {
+    "mtime": 1787434159.9907053,
+    "ast_hash": "413932072e72f9a16aa501a69227a699",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0076.jpg": {
+    "mtime": 1787434160.0646167,
+    "ast_hash": "02fb2e159bfd4321d556cb25e46ff48b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0077.jpg": {
+    "mtime": 1787434160.132808,
+    "ast_hash": "4a929314e78ab5c04f8a97808e6ba0d1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0078.jpg": {
+    "mtime": 1787434160.2128649,
+    "ast_hash": "3686a493472882b6fe789622740b05d1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0079.jpg": {
+    "mtime": 1787434160.281471,
+    "ast_hash": "c4a93a9b402f338f1984491c81726ba2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0080.jpg": {
+    "mtime": 1787434160.3531475,
+    "ast_hash": "9e9e0c8d955209f69ac48aaa00268b15",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0081.jpg": {
+    "mtime": 1787434160.42248,
+    "ast_hash": "d319b1444e43f78b641ed1fdbf8e736b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0082.jpg": {
+    "mtime": 1787434160.4897084,
+    "ast_hash": "34a7edbff7ce1e581bfc4e9d92e942f2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0083.jpg": {
+    "mtime": 1787434160.556487,
+    "ast_hash": "2ea48f92c85d07cc95281e21a511f5a1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0084.jpg": {
+    "mtime": 1787434160.6258564,
+    "ast_hash": "0a658657fbae73c20ea8dec36123bbe4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0085.jpg": {
+    "mtime": 1787434160.7092907,
+    "ast_hash": "03f287b7a1bb4c1cf2a2be4b4a4efa9d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0086.jpg": {
+    "mtime": 1787434160.77975,
+    "ast_hash": "751b3afd7ac2d38e7848ab4fec2dfd28",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0087.jpg": {
+    "mtime": 1787434160.8503997,
+    "ast_hash": "ca9ac7e52b43f3a904b32adc842b16d3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0088.jpg": {
+    "mtime": 1787434160.919022,
+    "ast_hash": "3d20823e4f6c9609d392082e9bf245ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0089.jpg": {
+    "mtime": 1787434160.9905648,
+    "ast_hash": "52f5c272830a2f14b282d52e87580adb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0090.jpg": {
+    "mtime": 1787434161.0671313,
+    "ast_hash": "23590e7035cc553b58b952a93df51b5f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0091.jpg": {
+    "mtime": 1787434161.140219,
+    "ast_hash": "60d774cc3d3bd03611bccde8b3f9f7d6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0092.jpg": {
+    "mtime": 1787434161.2198892,
+    "ast_hash": "619433aae06679b26d8736d642327265",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0093.jpg": {
+    "mtime": 1787434161.2974951,
+    "ast_hash": "70e9406417d3cdb39271fa24281f9e2d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0094.jpg": {
+    "mtime": 1787434161.3788707,
+    "ast_hash": "e6ae33bbbcdee9b5d04ae0b716fd202e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0095.jpg": {
+    "mtime": 1787434161.4547682,
+    "ast_hash": "ef25e892986a7bb36a8065f0b8114827",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0096.jpg": {
+    "mtime": 1787434161.5285,
+    "ast_hash": "31e33ff80544e3c05718bd158c7d1ce5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0097.jpg": {
+    "mtime": 1787434161.600495,
+    "ast_hash": "95b5c6bf85a43c6b2245c8c25413db76",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0098.jpg": {
+    "mtime": 1787434161.6720407,
+    "ast_hash": "b922bebd2f3b37dd72e4d63f571e3a41",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0099.jpg": {
+    "mtime": 1787434161.7461698,
+    "ast_hash": "5c02abf7d7a28e15b56adf38995f0141",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0100.jpg": {
+    "mtime": 1787434161.823185,
+    "ast_hash": "ef15780807440d5ab06b8f7c58e718da",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0101.jpg": {
+    "mtime": 1787434161.891459,
+    "ast_hash": "1981ae6c22e2707366e0ffa6cda86c97",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0102.jpg": {
+    "mtime": 1787434161.963028,
+    "ast_hash": "2075c02c23376d3333f28485c059c008",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0103.jpg": {
+    "mtime": 1787434162.040633,
+    "ast_hash": "bfa305672a8a98aac6ad212d6fb72b40",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0104.jpg": {
+    "mtime": 1787434162.1094544,
+    "ast_hash": "af8b62cefee0df964edf4ee9e2dc3959",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0105.jpg": {
+    "mtime": 1787434162.1782925,
+    "ast_hash": "bb96db5959d3eeadbe31a3a92146dd84",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0106.jpg": {
+    "mtime": 1787434162.2484944,
+    "ast_hash": "1190bc46d9d435af07bd14bdddb74354",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0107.jpg": {
+    "mtime": 1787434162.3167243,
+    "ast_hash": "541c2d742c65ca4036aa60d599871416",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0108.jpg": {
+    "mtime": 1787434162.3943357,
+    "ast_hash": "adb55d5c12fc0d478d0ef032c2d1b861",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0109.jpg": {
+    "mtime": 1787434162.4722128,
+    "ast_hash": "350414ce07cfc5398afccfa1795baf56",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0110.jpg": {
+    "mtime": 1787434162.544829,
+    "ast_hash": "5e6bf4c6e3b02534139707ce29cf8072",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0111.jpg": {
+    "mtime": 1787434162.6132436,
+    "ast_hash": "d2fa408c4e7b057159e9c55f95b53527",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0112.jpg": {
+    "mtime": 1787434162.6854577,
+    "ast_hash": "14e68c1af0d7440bca4f9bababae8337",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0113.jpg": {
+    "mtime": 1787434162.755455,
+    "ast_hash": "956e4a95884fad6fdb29b8ff6d8dee8c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0114.jpg": {
+    "mtime": 1787434162.8283916,
+    "ast_hash": "6ec355acb7d032b737c63cf363ba729b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0115.jpg": {
+    "mtime": 1787434162.900521,
+    "ast_hash": "0a6323464a22041818ff862fcc0e97e7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0116.jpg": {
+    "mtime": 1787434162.972824,
+    "ast_hash": "0f746d76c23e18d1481cfeabdd0285af",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0117.jpg": {
+    "mtime": 1787434163.0466037,
+    "ast_hash": "adb405f6dec4a2978e3ac3584b389a3c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0118.jpg": {
+    "mtime": 1787434163.116711,
+    "ast_hash": "cca181ef60a083f633415a482b3844d0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0119.jpg": {
+    "mtime": 1787434163.1878967,
+    "ast_hash": "dfbde92217a47067b26d3803a6981703",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0120.jpg": {
+    "mtime": 1787434163.2597363,
+    "ast_hash": "4e0bc9612ed6b1320b249b7c36e62b54",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0121.jpg": {
+    "mtime": 1787434163.3320305,
+    "ast_hash": "422437bf3833a63fdc0cab745f20057b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0122.jpg": {
+    "mtime": 1787434163.405295,
+    "ast_hash": "b97a3231fd2af6b6695702dbe12ddbbf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0123.jpg": {
+    "mtime": 1787434163.4733453,
+    "ast_hash": "db4b9572f38e2429da2bde47e2680f0a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0124.jpg": {
+    "mtime": 1787434163.5438843,
+    "ast_hash": "8cef44690a7189afbcc8b0d42558297a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0125.jpg": {
+    "mtime": 1787434163.6165094,
+    "ast_hash": "7c044f507ea7f72e76d54d51986fe854",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0126.jpg": {
+    "mtime": 1787434163.6887002,
+    "ast_hash": "b6d0d8d9cf7e19f6423086b35d3af0a8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0127.jpg": {
+    "mtime": 1787434163.7624545,
+    "ast_hash": "2f1593a710342bc63a8e13480db286f4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0128.jpg": {
+    "mtime": 1787434163.850078,
+    "ast_hash": "9802090b06d9ea90a0b295f902f250d4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0129.jpg": {
+    "mtime": 1787434163.9186304,
+    "ast_hash": "2b99a1b2f5d6f45cc4308526d23b569a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0130.jpg": {
+    "mtime": 1787434163.9925995,
+    "ast_hash": "671039b442481c1154274973a7b778e1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0131.jpg": {
+    "mtime": 1787434164.0606701,
+    "ast_hash": "ae5884b3bdb8c7ee801e07ae7fed1c83",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0132.jpg": {
+    "mtime": 1787434164.1344275,
+    "ast_hash": "4f2aa46b307f46fd40b69dc07fbf06e4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0133.jpg": {
+    "mtime": 1787434164.206506,
+    "ast_hash": "dd11078cfc249add7c553aad45e434e4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0134.jpg": {
+    "mtime": 1787434164.2764394,
+    "ast_hash": "7d51350c411c2c1e0bd7f70c60d136c3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0135.jpg": {
+    "mtime": 1787434164.343995,
+    "ast_hash": "9d763b1efded4cbeeb246444614dc9a6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0136.jpg": {
+    "mtime": 1787434164.416714,
+    "ast_hash": "d2fdd585065ee5193db27aa4f79a7da2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0137.jpg": {
+    "mtime": 1787434164.4845397,
+    "ast_hash": "354bff657b5c9468351056d33d2f6e84",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0138.jpg": {
+    "mtime": 1787434164.5605633,
+    "ast_hash": "1a03e8434060f1d57d47279281f7f621",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0139.jpg": {
+    "mtime": 1787434164.6379101,
+    "ast_hash": "06277abfd993d48e5551914fd4d49df1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0140.jpg": {
+    "mtime": 1787434164.715696,
+    "ast_hash": "f5a7f8662fb27dfca8b78a9e3906cfc3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0141.jpg": {
+    "mtime": 1787434164.7860234,
+    "ast_hash": "fcd05ddeb9634f22579feb8a9c2c1ef3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0142.jpg": {
+    "mtime": 1787434164.868173,
+    "ast_hash": "9bf0819980efb593b19c118f309a1652",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0143.jpg": {
+    "mtime": 1787434164.937634,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0144.jpg": {
+    "mtime": 1787434165.0072205,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0145.jpg": {
+    "mtime": 1787434165.0781164,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0146.jpg": {
+    "mtime": 1787434165.1531956,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0147.jpg": {
+    "mtime": 1787434165.2266815,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0148.jpg": {
+    "mtime": 1787434165.3025026,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0149.jpg": {
+    "mtime": 1787434165.3777027,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0150.jpg": {
+    "mtime": 1787434165.4496791,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0151.jpg": {
+    "mtime": 1787434165.5258033,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0152.jpg": {
+    "mtime": 1787434165.6005173,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0153.jpg": {
+    "mtime": 1787434165.6900046,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0154.jpg": {
+    "mtime": 1787434165.764129,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0155.jpg": {
+    "mtime": 1787434165.8379571,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0156.jpg": {
+    "mtime": 1787434165.9149158,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0157.jpg": {
+    "mtime": 1787434165.987044,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0158.jpg": {
+    "mtime": 1787434166.060294,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0159.jpg": {
+    "mtime": 1787434166.1347096,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0160.jpg": {
+    "mtime": 1787434166.2050588,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0161.jpg": {
+    "mtime": 1787434166.276398,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0162.jpg": {
+    "mtime": 1787434166.3421998,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0163.jpg": {
+    "mtime": 1787434166.4161634,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0164.jpg": {
+    "mtime": 1787434166.4859724,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0165.jpg": {
+    "mtime": 1787434166.5616715,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0166.jpg": {
+    "mtime": 1787434166.63305,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0167.jpg": {
+    "mtime": 1787434166.7086263,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0168.jpg": {
+    "mtime": 1787434166.7791178,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0169.jpg": {
+    "mtime": 1787434166.8576052,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0170.jpg": {
+    "mtime": 1787434166.9360273,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0171.jpg": {
+    "mtime": 1787434167.0181208,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0172.jpg": {
+    "mtime": 1787434167.090194,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0173.jpg": {
+    "mtime": 1787434167.172339,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0174.jpg": {
+    "mtime": 1787434167.2486172,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0175.jpg": {
+    "mtime": 1787434167.3300076,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0176.jpg": {
+    "mtime": 1787434167.4028049,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0177.jpg": {
+    "mtime": 1787434167.4728136,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0178.jpg": {
+    "mtime": 1787434167.5446868,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0179.jpg": {
+    "mtime": 1787434167.6175184,
+    "ast_hash": "492f01d8db8c7dbcc489077f2230dace",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0180.jpg": {
+    "mtime": 1787434167.6930592,
+    "ast_hash": "adc076fd90f7e6757f640c37a3be8280",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0181.jpg": {
+    "mtime": 1787434167.7682333,
+    "ast_hash": "39c04a93fab12b591e750adfeb38635a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0182.jpg": {
+    "mtime": 1787434167.8396306,
+    "ast_hash": "cc38ffc49559a2d34bd0a8786e25538f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0183.jpg": {
+    "mtime": 1787434167.9200177,
+    "ast_hash": "3ba57d2c937992986b276deb4c5699c7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0184.jpg": {
+    "mtime": 1787434167.9928222,
+    "ast_hash": "cb2cd8709eb80afb8b18db021c2350cb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0185.jpg": {
+    "mtime": 1787434168.0702555,
+    "ast_hash": "7a3656d1c8247ce3223c375332597eed",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0186.jpg": {
+    "mtime": 1787434168.141049,
+    "ast_hash": "3ec862f3feedb443f80ea2c9219139fb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0187.jpg": {
+    "mtime": 1787434168.2161348,
+    "ast_hash": "95b7c532426c6c853b9405e815ddc3dc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0188.jpg": {
+    "mtime": 1787434168.2848575,
+    "ast_hash": "470047beb227c7963fde954f2701aa4b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0189.jpg": {
+    "mtime": 1787434168.353985,
+    "ast_hash": "16097ad750ef53706bfa06a0294bd562",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0190.jpg": {
+    "mtime": 1787434168.4253552,
+    "ast_hash": "4e24a11628f945da873870952a82e477",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0191.jpg": {
+    "mtime": 1787434168.4998324,
+    "ast_hash": "f1647005b7f952d6724785f98a51c591",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0192.jpg": {
+    "mtime": 1787434168.569246,
+    "ast_hash": "ed335a64a214be1db2e2f3364e888fe8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0193.jpg": {
+    "mtime": 1787434168.641786,
+    "ast_hash": "648aec043323e6304437965bcde5ce58",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0194.jpg": {
+    "mtime": 1787434168.7117083,
+    "ast_hash": "f9bf0fe0c8877e56ca02afcdf2a42b8a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0195.jpg": {
+    "mtime": 1787434168.781013,
+    "ast_hash": "b5fb676167e6fb6c7c237cd58f38e118",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0196.jpg": {
+    "mtime": 1787434168.8495073,
+    "ast_hash": "46400951a0214879dc0c5e9fc2eab863",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0197.jpg": {
+    "mtime": 1787434168.9406834,
+    "ast_hash": "7abe601cca70ee0af274ab9da4ffbe9f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0198.jpg": {
+    "mtime": 1787434169.0085564,
+    "ast_hash": "8cb474d58ebe3718d53de127242d1086",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0199.jpg": {
+    "mtime": 1787434169.0784407,
+    "ast_hash": "339169018e103428bb7f0d80f3de94bd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0200.jpg": {
+    "mtime": 1787434169.1481664,
+    "ast_hash": "0fb2a65a25501bdbb5c221b3c705e0f6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0201.jpg": {
+    "mtime": 1787434169.2195225,
+    "ast_hash": "1168f6a0f0432e45688d5a4acf69c847",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0202.jpg": {
+    "mtime": 1787434169.2876115,
+    "ast_hash": "5ad5d83b4472cb50f4ce8bebc9283fa3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0203.jpg": {
+    "mtime": 1787434169.3603084,
+    "ast_hash": "a1462abc3b4fb5406349b12bf7cdad28",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0204.jpg": {
+    "mtime": 1787434169.4359508,
+    "ast_hash": "4b58997b54018293ff520151f8403364",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0205.jpg": {
+    "mtime": 1787434169.5143888,
+    "ast_hash": "a45a523763c3d8b53cee45972c7de1ec",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0206.jpg": {
+    "mtime": 1787434169.5897665,
+    "ast_hash": "d1a1618dfda8935680c6a963c00ac25b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0207.jpg": {
+    "mtime": 1787434169.660689,
+    "ast_hash": "586b8d160e0978b7e676c4d67b568985",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0208.jpg": {
+    "mtime": 1787434169.732867,
+    "ast_hash": "3d0263bf2c490b901e1a58dd6d0fd287",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0209.jpg": {
+    "mtime": 1787434169.8074136,
+    "ast_hash": "f0ae654f941690a925e0173cfde0b915",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0210.jpg": {
+    "mtime": 1787434169.8826401,
+    "ast_hash": "b5c21e1559ecda80f0cd44bde5738673",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0211.jpg": {
+    "mtime": 1787434169.9620156,
+    "ast_hash": "9a3003ee2cfdae42b09fc6ac69650611",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0212.jpg": {
+    "mtime": 1787434170.0441194,
+    "ast_hash": "3d80400a890c4d696098fcebc2d62114",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0213.jpg": {
+    "mtime": 1787434170.1168494,
+    "ast_hash": "99362fd5fd07940e14bbfeb6324b4730",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0214.jpg": {
+    "mtime": 1787434170.2030807,
+    "ast_hash": "170b15194f46a299487a7d5102b2ab8a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0215.jpg": {
+    "mtime": 1787434170.2741227,
+    "ast_hash": "b1a594cdbc7d19c74d144d0e2238c871",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0216.jpg": {
+    "mtime": 1787434170.3436353,
+    "ast_hash": "73fd3a882d07a977e2a912d9c3d1ffca",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0217.jpg": {
+    "mtime": 1787434170.4163272,
+    "ast_hash": "d337159495dbb679d840bccc8b58929d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0218.jpg": {
+    "mtime": 1787434170.4984283,
+    "ast_hash": "19ad0288d266d40a8b4be160c26c925a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0219.jpg": {
+    "mtime": 1787434170.5691006,
+    "ast_hash": "5df04e2090b7118401296adf412122bb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0220.jpg": {
+    "mtime": 1787434170.6418633,
+    "ast_hash": "334e9fdb4cf3d11c7d4b30990538295b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0221.jpg": {
+    "mtime": 1787434170.7133057,
+    "ast_hash": "00e8e1abc71fc4f1564c6b3140db00ad",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0222.jpg": {
+    "mtime": 1787434170.7827632,
+    "ast_hash": "fbb526219dffa811a30c10c082bce91b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0223.jpg": {
+    "mtime": 1787434170.8500042,
+    "ast_hash": "833b4d2b2c53b76c10b6d113438c846b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0224.jpg": {
+    "mtime": 1787434170.9301178,
+    "ast_hash": "8b5c9ac1058d7ad48e1598bba8cadca4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0225.jpg": {
+    "mtime": 1787434170.999727,
+    "ast_hash": "a398a91b0f364677340a81779776c154",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0226.jpg": {
+    "mtime": 1787434171.0791514,
+    "ast_hash": "4183b7f43f94658331002b042723ce94",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0227.jpg": {
+    "mtime": 1787434171.1487887,
+    "ast_hash": "4da0a4b34d1f9b36aca0c24af06d067f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0228.jpg": {
+    "mtime": 1787434171.224544,
+    "ast_hash": "da4b15be926eb94983b055cd5b9cfa81",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0229.jpg": {
+    "mtime": 1787434171.2931633,
+    "ast_hash": "74bce1f376abda157104588fc46bf4d7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0230.jpg": {
+    "mtime": 1787434171.3649142,
+    "ast_hash": "5d1c5c538b258b00b4e53492d284895c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0231.jpg": {
+    "mtime": 1787434171.4359307,
+    "ast_hash": "ba3bbcbb02269302519c21176fb49e60",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0232.jpg": {
+    "mtime": 1787434171.5077732,
+    "ast_hash": "e4f9b244f6b21624233e0e8e142fc034",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0233.jpg": {
+    "mtime": 1787434171.5860598,
+    "ast_hash": "f95f884f09cdb2cffc04d32635cbcd80",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0234.jpg": {
+    "mtime": 1787434171.6663878,
+    "ast_hash": "e61f843381640cf429ce3c6d91de2afa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0235.jpg": {
+    "mtime": 1787434171.7375922,
+    "ast_hash": "03ab8dc0baa529e2798675e77448c75b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0236.jpg": {
+    "mtime": 1787434171.8053825,
+    "ast_hash": "09795ac3b37926603655f49aaf722e44",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0237.jpg": {
+    "mtime": 1787434171.8751042,
+    "ast_hash": "be760b18b7349fb70559c08fc983b961",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0238.jpg": {
+    "mtime": 1787434171.9435613,
+    "ast_hash": "1e25b5ed4c3fdbf9a280334e8e9f5356",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0239.jpg": {
+    "mtime": 1787434172.0240438,
+    "ast_hash": "05f57b3465dffaed6b71672119b54501",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0240.jpg": {
+    "mtime": 1787434172.0976212,
+    "ast_hash": "4a70fd652db7bfe7d1ef2d0a31593e46",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0241.jpg": {
+    "mtime": 1787434172.1769724,
+    "ast_hash": "0b1fc123e0c1e11bbeb730a348e02bad",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0242.jpg": {
+    "mtime": 1787434172.249411,
+    "ast_hash": "e55e99a9e77e81274b524e6ea0ee53e3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0243.jpg": {
+    "mtime": 1787434172.32533,
+    "ast_hash": "adacd920e4e99d82c97c93abc1c0a5fe",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0244.jpg": {
+    "mtime": 1787434172.39674,
+    "ast_hash": "71db9554f7c261aedf05a1b797e15267",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0245.jpg": {
+    "mtime": 1787434172.4704142,
+    "ast_hash": "d7d5dd5ca94f5ff319c0765469383bcd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0246.jpg": {
+    "mtime": 1787434172.539363,
+    "ast_hash": "fa610d925c1544e9a11ccf4ee635d6ec",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0247.jpg": {
+    "mtime": 1787434172.6102276,
+    "ast_hash": "7a39c195600bdbfbf3c0484863920839",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0248.jpg": {
+    "mtime": 1787434172.6820507,
+    "ast_hash": "24ffc5b7529d31106c07e6529033d637",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0249.jpg": {
+    "mtime": 1787434172.7559977,
+    "ast_hash": "386ddd2b16ed03fc0341a95c013e233e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0250.jpg": {
+    "mtime": 1787434172.8286338,
+    "ast_hash": "aaec739179b1c4d0a6f7a8c614afb19b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0251.jpg": {
+    "mtime": 1787434172.9068937,
+    "ast_hash": "1d00628b9c7ff17fbbfcfe24acb3e783",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0252.jpg": {
+    "mtime": 1787434172.9777265,
+    "ast_hash": "44deb82dde878684112a77c63b077a53",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0253.jpg": {
+    "mtime": 1787434173.0555031,
+    "ast_hash": "dbfa6123ed76a32c0d84682cdc22c7b6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0254.jpg": {
+    "mtime": 1787434173.1309302,
+    "ast_hash": "cefab4193ad6cc4d99fe0482bba5464c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0255.jpg": {
+    "mtime": 1787434173.2058787,
+    "ast_hash": "1bc3e137caff19d3fb362ef2d931b7b4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0256.jpg": {
+    "mtime": 1787434173.2811482,
+    "ast_hash": "a551eacbea4f3271084826168e62c877",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0257.jpg": {
+    "mtime": 1787434173.3545513,
+    "ast_hash": "9498fa3a67526d8af221981ab8d62d9a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0258.jpg": {
+    "mtime": 1787434173.4309227,
+    "ast_hash": "ca326f3dd7e6f83353ae091581cd0858",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0259.jpg": {
+    "mtime": 1787434173.5065348,
+    "ast_hash": "daeda6f9c329b46dd8bd55e98bce7e76",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0260.jpg": {
+    "mtime": 1787434173.580326,
+    "ast_hash": "519cc65daa349838e7114ce275a8dd78",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0261.jpg": {
+    "mtime": 1787434173.658609,
+    "ast_hash": "74c6c92efc8d2ac38d785c7cb76934ee",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0262.jpg": {
+    "mtime": 1787434173.7388754,
+    "ast_hash": "809053d896800bab5ece8d65690f0a12",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0263.jpg": {
+    "mtime": 1787434173.8072143,
+    "ast_hash": "d4465375c9e84acd52970916ccbb72e3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0264.jpg": {
+    "mtime": 1787434173.8754098,
+    "ast_hash": "8319b1bacdc1e916aa7cdfbbafbbfc11",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0265.jpg": {
+    "mtime": 1787434173.9454777,
+    "ast_hash": "d3210b15147d6ee501a2a7e6795e18e3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0266.jpg": {
+    "mtime": 1787434174.0138254,
+    "ast_hash": "f2181b0590f25ac13df7bf0274b94de2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0267.jpg": {
+    "mtime": 1787434174.089057,
+    "ast_hash": "115795bcb944592c59303168bb37c111",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0268.jpg": {
+    "mtime": 1787434174.1591654,
+    "ast_hash": "f5fd39c6d56e4737483d43111c748472",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0269.jpg": {
+    "mtime": 1787434174.2310028,
+    "ast_hash": "b59c6b30b7ee4d8a49e77e82554495f3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0270.jpg": {
+    "mtime": 1787434174.2982423,
+    "ast_hash": "b77407a2273b201adaaab7bd19ff01d8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0271.jpg": {
+    "mtime": 1787434174.3662326,
+    "ast_hash": "9c67ddca7c2fb136db5b238606094d0d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0272.jpg": {
+    "mtime": 1787434174.437571,
+    "ast_hash": "778db763d556dbb44cdf6034ac92598a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0273.jpg": {
+    "mtime": 1787434174.5053294,
+    "ast_hash": "9465b470096fa5149e041515490bdda6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0274.jpg": {
+    "mtime": 1787434174.5738976,
+    "ast_hash": "425bb45399d49a5bdf01b4ea4accc7e2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0275.jpg": {
+    "mtime": 1787434174.645796,
+    "ast_hash": "a04bf7242eb15b6fe15871faa5214cd8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0276.jpg": {
+    "mtime": 1787434174.7202284,
+    "ast_hash": "9e8e9d59f913919815b7c19c01f4dc8e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0277.jpg": {
+    "mtime": 1787434174.7887561,
+    "ast_hash": "c1dcc0e38f210da59c1f1442661ee580",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0278.jpg": {
+    "mtime": 1787434174.856972,
+    "ast_hash": "c1534273e252f334074719077855c775",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0279.jpg": {
+    "mtime": 1787434174.9267566,
+    "ast_hash": "7ad5a95b618e3c45f89fb10385cad27a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0280.jpg": {
+    "mtime": 1787434175.00016,
+    "ast_hash": "c822f7eab12fe7628fe1b010d1e030cf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0281.jpg": {
+    "mtime": 1787434175.072294,
+    "ast_hash": "0933a4b58b290a19972235219867bc90",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0282.jpg": {
+    "mtime": 1787434175.149003,
+    "ast_hash": "45b1297ec57070cdb6c663cb8d599da2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0283.jpg": {
+    "mtime": 1787434175.2198162,
+    "ast_hash": "65a0678cbc039e5ebfa2a45d4ad4878c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0284.jpg": {
+    "mtime": 1787434175.2884808,
+    "ast_hash": "e15203552be57a83c84d407c34916906",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0285.jpg": {
+    "mtime": 1787434175.3601954,
+    "ast_hash": "22f5cb2d008b5e5ef65ec3b36e4b96e6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0286.jpg": {
+    "mtime": 1787434175.4329834,
+    "ast_hash": "b6166d571bda87c630942435044369c1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0287.jpg": {
+    "mtime": 1787434175.5037568,
+    "ast_hash": "0f46fac3e410cf4434b0dcfa7b8de01c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0288.jpg": {
+    "mtime": 1787434175.5746512,
+    "ast_hash": "47fe15fce1aa3e68937778f4769ad6ec",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0289.jpg": {
+    "mtime": 1787434175.64342,
+    "ast_hash": "ef0aa44f28248f12b306363f711e2f2e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0290.jpg": {
+    "mtime": 1787434175.7224247,
+    "ast_hash": "215a90cc5dd123ad166086d01ab9fdb2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0291.jpg": {
+    "mtime": 1787434175.799735,
+    "ast_hash": "4a12f4c49a3392b37e8fce4083ff71fb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0292.jpg": {
+    "mtime": 1787434175.8782847,
+    "ast_hash": "12b6496ed10d4e6c921f29faeed45c0c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0293.jpg": {
+    "mtime": 1787434175.9504604,
+    "ast_hash": "45ecdb5f7168743fd8991d83107dca01",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0294.jpg": {
+    "mtime": 1787434176.0199142,
+    "ast_hash": "90004f681a1c653f7e858467fb9101be",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0295.jpg": {
+    "mtime": 1787434176.0966856,
+    "ast_hash": "05774594597f792b3230de41f0371747",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-descanso/0296.jpg": {
+    "mtime": 1787434176.171852,
+    "ast_hash": "a64e2d40e33e5a04d2d625d8c76c98a3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0000.jpg": {
+    "mtime": 1787434176.290592,
+    "ast_hash": "193876013b6cb56c7d6548a308a95620",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0001.jpg": {
+    "mtime": 1787434176.3729942,
+    "ast_hash": "8e35e359b84e6d9db07268cea32a8e5d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0002.jpg": {
+    "mtime": 1787434176.4580615,
+    "ast_hash": "b87990570ad0a3a68dff15e5f19ef8dd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0003.jpg": {
+    "mtime": 1787434176.5385032,
+    "ast_hash": "2b39f1bfed5c2e3d89e5615014376a46",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0004.jpg": {
+    "mtime": 1787434176.6175497,
+    "ast_hash": "a3cdbd543ebea2351ecab77ca9546e32",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0005.jpg": {
+    "mtime": 1787434176.6998484,
+    "ast_hash": "e1e2e06e9c98db6c8d23f251b03827cd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0006.jpg": {
+    "mtime": 1787434176.7839775,
+    "ast_hash": "8c85f9e6d9f5bcf499aa1fff9505bdaa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0007.jpg": {
+    "mtime": 1787434176.8632119,
+    "ast_hash": "dbc0daf15ac8423d813470e7a63f973d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0008.jpg": {
+    "mtime": 1787434176.9448028,
+    "ast_hash": "b68ff76ac8cbaaf0a8861e0a53a3bf0a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0009.jpg": {
+    "mtime": 1787434177.0298655,
+    "ast_hash": "2bffe454764d1a62c6246fda12889629",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0010.jpg": {
+    "mtime": 1787434177.1229823,
+    "ast_hash": "94e5a56332aa110f06fe31408d5daeb4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0011.jpg": {
+    "mtime": 1787434177.2019973,
+    "ast_hash": "10aa2f9f58a6ae28e554a54a496ae8e3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0012.jpg": {
+    "mtime": 1787434177.2829072,
+    "ast_hash": "821df89599c5f146d6caa4580b8fb614",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0013.jpg": {
+    "mtime": 1787434177.3645875,
+    "ast_hash": "bf8b38aa0313e560e04dc6f2cafcc8f2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0014.jpg": {
+    "mtime": 1787434177.4467857,
+    "ast_hash": "b5aec9b27edafc7b80aa6f86cc3a5510",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0015.jpg": {
+    "mtime": 1787434177.5289671,
+    "ast_hash": "8572adf9001f355463474042aceccb41",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0016.jpg": {
+    "mtime": 1787434177.610203,
+    "ast_hash": "8cb543d018c87b8eeb09e5c51484c24f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0017.jpg": {
+    "mtime": 1787434177.6925023,
+    "ast_hash": "26479c3b651f5f561c109bcfc731df3f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0018.jpg": {
+    "mtime": 1787434177.7726781,
+    "ast_hash": "1d27d665fb95bf2da560304d690f4b59",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0019.jpg": {
+    "mtime": 1787434177.8526516,
+    "ast_hash": "7844ccfe9ec60deeffb8bfd578c7abf0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0020.jpg": {
+    "mtime": 1787434177.9344707,
+    "ast_hash": "5b3ffef04359ef376d4976d6f021851d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0021.jpg": {
+    "mtime": 1787434178.0211089,
+    "ast_hash": "785515cc45dbb07f29e63933db031151",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0022.jpg": {
+    "mtime": 1787434178.1014414,
+    "ast_hash": "23743c556f95cd20b8210a4aee976e1a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0023.jpg": {
+    "mtime": 1787434178.1856582,
+    "ast_hash": "37ad823b88b7afe213315b0b9a25f1a7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0024.jpg": {
+    "mtime": 1787434178.2660196,
+    "ast_hash": "9013abef0e13d16439cadd9f0b26b390",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0025.jpg": {
+    "mtime": 1787434178.3496952,
+    "ast_hash": "e731496985aa066976898f6c530ca043",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0026.jpg": {
+    "mtime": 1787434178.4437888,
+    "ast_hash": "58859db397da8f67a239f7fe14f9aef5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0027.jpg": {
+    "mtime": 1787434178.5262382,
+    "ast_hash": "6d3b4d69a0b1e7953b35abee651bbbbb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0028.jpg": {
+    "mtime": 1787434178.6116674,
+    "ast_hash": "c52f3fd193d0abb45de7ac235b05aaa6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0029.jpg": {
+    "mtime": 1787434178.6910982,
+    "ast_hash": "d2a43af50cc4c87269663251f12653eb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0030.jpg": {
+    "mtime": 1787434178.7694306,
+    "ast_hash": "35e71607a33626afb388ff4a9f6d5db3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0031.jpg": {
+    "mtime": 1787434178.8530612,
+    "ast_hash": "940c7a4c554a1fd6ad729e24971bb22a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0032.jpg": {
+    "mtime": 1787434178.9377315,
+    "ast_hash": "e1cea4fd80c62734b34c5f872d17e009",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0033.jpg": {
+    "mtime": 1787434179.0174685,
+    "ast_hash": "623da231672b3c3bcb9cc41efd5b7711",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0034.jpg": {
+    "mtime": 1787434179.100231,
+    "ast_hash": "22f9d0e62f1b4c58323911760c4a3b8f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0035.jpg": {
+    "mtime": 1787434179.182769,
+    "ast_hash": "7e09196117e3265063affb45e515ab30",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0036.jpg": {
+    "mtime": 1787434179.26456,
+    "ast_hash": "a126a6ff107ff3d0ab1068da7274b7f5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0037.jpg": {
+    "mtime": 1787434179.3476653,
+    "ast_hash": "a3051ec42a8b3b0031fd5780719a8634",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0038.jpg": {
+    "mtime": 1787434179.4334087,
+    "ast_hash": "b62a40cd4bac427e1afcc930b9b3970e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0039.jpg": {
+    "mtime": 1787434179.5150492,
+    "ast_hash": "a3abce2d29abcc7b7aa9dbc37ae1a816",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0040.jpg": {
+    "mtime": 1787434179.6021883,
+    "ast_hash": "3f8e3418610d6498dea5897b7371d017",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0041.jpg": {
+    "mtime": 1787434179.6894624,
+    "ast_hash": "de49ccb24710429522f2aaa95b27e4be",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0042.jpg": {
+    "mtime": 1787434179.7732222,
+    "ast_hash": "eec4b706631c12e28ee82a308fee587f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0043.jpg": {
+    "mtime": 1787434179.8611045,
+    "ast_hash": "d8b38ef839751fce11758d7da6e61438",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0044.jpg": {
+    "mtime": 1787434179.9472353,
+    "ast_hash": "2995f274299354d470ff4c08a460c0d4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0045.jpg": {
+    "mtime": 1787434180.0325096,
+    "ast_hash": "437ef5ead87d96e74f8e397db8b93efd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0046.jpg": {
+    "mtime": 1787434180.117869,
+    "ast_hash": "38e86169482c1fe05fe1d571fb7fa8aa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0047.jpg": {
+    "mtime": 1787434180.2090638,
+    "ast_hash": "4b1699a6a9f4b294d56e295a50649521",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0048.jpg": {
+    "mtime": 1787434180.2953665,
+    "ast_hash": "b72f3321added8d1ca667ddc874010ae",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0049.jpg": {
+    "mtime": 1787434180.3831363,
+    "ast_hash": "0f024dfc80bc5c992340edaf48a9e763",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0050.jpg": {
+    "mtime": 1787434180.4733608,
+    "ast_hash": "8f4db92153f4fb37a3d668882be28d7a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0051.jpg": {
+    "mtime": 1787434180.5605137,
+    "ast_hash": "74f2de9a0f2e4d509eb42a934a7ad3c6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0052.jpg": {
+    "mtime": 1787434180.6465194,
+    "ast_hash": "7c0e545e3da137350c44594fe73f14a2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0053.jpg": {
+    "mtime": 1787434180.7293293,
+    "ast_hash": "f53195d76a89faa0900578553e3a90e8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0054.jpg": {
+    "mtime": 1787434180.818134,
+    "ast_hash": "c4fb9e3f6be3396ed87472d222c22538",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0055.jpg": {
+    "mtime": 1787434180.9021192,
+    "ast_hash": "665a85d20f48a5fbc848393406edfc2a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0056.jpg": {
+    "mtime": 1787434180.9839444,
+    "ast_hash": "de2e610db3075f51f1a3bb2eb0e5c003",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0057.jpg": {
+    "mtime": 1787434181.065905,
+    "ast_hash": "0f09e8afe5978066b6f6f864ddee9bd9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0058.jpg": {
+    "mtime": 1787434181.151014,
+    "ast_hash": "eba7163faabd7d840cc0deb6f2c422ae",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0059.jpg": {
+    "mtime": 1787434181.2307718,
+    "ast_hash": "cee4d74b70c532962f537da6a4f876d8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0060.jpg": {
+    "mtime": 1787434181.3135166,
+    "ast_hash": "536297aadfa1b9756084fdd97507aad4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0061.jpg": {
+    "mtime": 1787434181.3947756,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0062.jpg": {
+    "mtime": 1787434181.4749656,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0063.jpg": {
+    "mtime": 1787434181.5610497,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0064.jpg": {
+    "mtime": 1787434181.6472561,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0065.jpg": {
+    "mtime": 1787434181.7328682,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0066.jpg": {
+    "mtime": 1787434181.8165221,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0067.jpg": {
+    "mtime": 1787434181.8998408,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0068.jpg": {
+    "mtime": 1787434181.9826167,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0069.jpg": {
+    "mtime": 1787434182.0699217,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0070.jpg": {
+    "mtime": 1787434182.15918,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0071.jpg": {
+    "mtime": 1787434182.2494285,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0072.jpg": {
+    "mtime": 1787434182.337255,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0073.jpg": {
+    "mtime": 1787434182.4208727,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0074.jpg": {
+    "mtime": 1787434182.502049,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0075.jpg": {
+    "mtime": 1787434182.5848455,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0076.jpg": {
+    "mtime": 1787434182.6692946,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0077.jpg": {
+    "mtime": 1787434182.756557,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0078.jpg": {
+    "mtime": 1787434182.848204,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0079.jpg": {
+    "mtime": 1787434182.9301088,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0080.jpg": {
+    "mtime": 1787434183.013156,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0081.jpg": {
+    "mtime": 1787434183.0974271,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0082.jpg": {
+    "mtime": 1787434183.1835916,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0083.jpg": {
+    "mtime": 1787434183.2701228,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0084.jpg": {
+    "mtime": 1787434183.3534224,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0085.jpg": {
+    "mtime": 1787434183.441983,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0086.jpg": {
+    "mtime": 1787434183.5214663,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0087.jpg": {
+    "mtime": 1787434183.6137872,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0088.jpg": {
+    "mtime": 1787434183.6932483,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0089.jpg": {
+    "mtime": 1787434183.7759717,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0090.jpg": {
+    "mtime": 1787434183.8580933,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0091.jpg": {
+    "mtime": 1787434183.9398117,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0092.jpg": {
+    "mtime": 1787434184.0223413,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0093.jpg": {
+    "mtime": 1787434184.1144848,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0094.jpg": {
+    "mtime": 1787434184.1975448,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0095.jpg": {
+    "mtime": 1787434184.298093,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0096.jpg": {
+    "mtime": 1787434184.3840344,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0097.jpg": {
+    "mtime": 1787434184.470184,
+    "ast_hash": "0ca70cca09b87c12737f241918ed3657",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0098.jpg": {
+    "mtime": 1787434184.5510356,
+    "ast_hash": "8da5c7a566f81950e2b003cb713f6952",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0099.jpg": {
+    "mtime": 1787434184.6356125,
+    "ast_hash": "da6294ed9c9093657639772cc65c0d20",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0100.jpg": {
+    "mtime": 1787434184.7174246,
+    "ast_hash": "64c9bd9c1396e72d30c8590e408075a3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0101.jpg": {
+    "mtime": 1787434184.8055856,
+    "ast_hash": "48c48cf8cfaa5daaabe8635fe420b320",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0102.jpg": {
+    "mtime": 1787434184.8937795,
+    "ast_hash": "9da4fbcc147ef827ac0e1ffc9fcc1e81",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0103.jpg": {
+    "mtime": 1787434184.9831994,
+    "ast_hash": "8a4cf562c088c421125f920dc99dcf40",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0104.jpg": {
+    "mtime": 1787434185.071221,
+    "ast_hash": "0dffdb530599d38dc46956cb0b014827",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0105.jpg": {
+    "mtime": 1787434185.1603878,
+    "ast_hash": "457239ea10bcc2bc40eed34e5d857aa9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0106.jpg": {
+    "mtime": 1787434185.2462845,
+    "ast_hash": "3ee03edad1064482e067c55764286296",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0107.jpg": {
+    "mtime": 1787434185.3406992,
+    "ast_hash": "de9a91c795590bcdc53a609178816c1b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0108.jpg": {
+    "mtime": 1787434185.421976,
+    "ast_hash": "fd1c7834fad150f8e54a6e891c750651",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0109.jpg": {
+    "mtime": 1787434185.509252,
+    "ast_hash": "c396ee880f80cc7daa5e807071e31266",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0110.jpg": {
+    "mtime": 1787434185.5947986,
+    "ast_hash": "706a7e359c75db8b8df2327f4fe40cb5",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0111.jpg": {
+    "mtime": 1787434185.676993,
+    "ast_hash": "90b68d7383a5d50d1d5561dc3110f229",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0112.jpg": {
+    "mtime": 1787434185.7602596,
+    "ast_hash": "9661ce192f2b2e0d97c791e95645fd8e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0113.jpg": {
+    "mtime": 1787434185.844237,
+    "ast_hash": "7612a8e7f8239fd4f37a0b0ec60392ae",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0114.jpg": {
+    "mtime": 1787434185.9249156,
+    "ast_hash": "edd35c8d1213fb13fc9a5558ed2c0a31",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0115.jpg": {
+    "mtime": 1787434186.0059192,
+    "ast_hash": "6cf7449e271c500fb9adeb52babd9bd0",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0116.jpg": {
+    "mtime": 1787434186.0905719,
+    "ast_hash": "ae2d51f224ce16dd4fc35755f0338db4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0117.jpg": {
+    "mtime": 1787434186.1784277,
+    "ast_hash": "437060d77d13a1084b9d1bc527340dfb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0118.jpg": {
+    "mtime": 1787434186.260782,
+    "ast_hash": "d0612e017391d391c9802fd8a2ce4daa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0119.jpg": {
+    "mtime": 1787434186.3409407,
+    "ast_hash": "d4070d28cbc304c60c9dd631bef99340",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0120.jpg": {
+    "mtime": 1787434186.428445,
+    "ast_hash": "129ab8e1780a66e28f42a4bf5512cdf2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0121.jpg": {
+    "mtime": 1787434186.5141654,
+    "ast_hash": "8c17caba7e923dc4e49a2a61ed6cea6a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0122.jpg": {
+    "mtime": 1787434186.593271,
+    "ast_hash": "334c27b2b183e1ab79125536fd772c93",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0123.jpg": {
+    "mtime": 1787434186.685771,
+    "ast_hash": "742c3e938ab74976e862b5dd85e055bf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0124.jpg": {
+    "mtime": 1787434186.7636762,
+    "ast_hash": "b732a0df9f11e1a19bf49fd8da32d76a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0125.jpg": {
+    "mtime": 1787434186.8440986,
+    "ast_hash": "9905463ff6a2a9f4f9767a71948d1a9e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0126.jpg": {
+    "mtime": 1787434186.9244478,
+    "ast_hash": "87f15a3c7e905a38db164fe8bc01b368",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0127.jpg": {
+    "mtime": 1787434187.0091546,
+    "ast_hash": "2afa98831e427b9ade8c7bdb3903fe89",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0128.jpg": {
+    "mtime": 1787434187.0927963,
+    "ast_hash": "27136b77c5828ced3dc3eb32fe591a6a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0129.jpg": {
+    "mtime": 1787434187.17292,
+    "ast_hash": "c0ebff06547dc5958e720c0806616740",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0130.jpg": {
+    "mtime": 1787434187.2510898,
+    "ast_hash": "e049df6e753fa2b54087b3f090c05642",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0131.jpg": {
+    "mtime": 1787434187.3352277,
+    "ast_hash": "6979d8354001240e7581ceef7c3aa09d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0132.jpg": {
+    "mtime": 1787434187.4120493,
+    "ast_hash": "04a16711fd75c9d85e44593ea132b78b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0133.jpg": {
+    "mtime": 1787434187.4946837,
+    "ast_hash": "48fa781c040cb85582f9b2ab6116cb03",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0134.jpg": {
+    "mtime": 1787434187.5756574,
+    "ast_hash": "b8f7ee2ae266e51f9b36d8649f9b9fca",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0135.jpg": {
+    "mtime": 1787434187.6770766,
+    "ast_hash": "ad6036a68588ecdeb5587b132ac10b34",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0136.jpg": {
+    "mtime": 1787434187.7584794,
+    "ast_hash": "806afd2bffc74c6ce121fe7673d8a41e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0137.jpg": {
+    "mtime": 1787434187.8389063,
+    "ast_hash": "2b14af6ab942c770adff647023da169c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0138.jpg": {
+    "mtime": 1787434187.9211397,
+    "ast_hash": "6616279bae50fbf230a24d8fe761e02e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0139.jpg": {
+    "mtime": 1787434188.0041008,
+    "ast_hash": "70918d181cc84ad592bd5c7c171a7236",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0140.jpg": {
+    "mtime": 1787434188.0829008,
+    "ast_hash": "a956c1b4f3ecdfff9391ae09891b7c36",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0141.jpg": {
+    "mtime": 1787434188.1630175,
+    "ast_hash": "370e0a55673c61aa02eaf60cadda6c34",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0142.jpg": {
+    "mtime": 1787434188.2464418,
+    "ast_hash": "95f62c9b3db5007739d3f0a75905cf29",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0143.jpg": {
+    "mtime": 1787434188.3293703,
+    "ast_hash": "7b7ea6ad2589c4635d0e2c290da4e537",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0144.jpg": {
+    "mtime": 1787434188.4147246,
+    "ast_hash": "3308676d6f3277803f65f09022b2fbcc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0145.jpg": {
+    "mtime": 1787434188.5082319,
+    "ast_hash": "4153711bcf2749472a13570aed7dc0fe",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0146.jpg": {
+    "mtime": 1787434188.5947883,
+    "ast_hash": "ad5a054e9e59f98639ddd10650185131",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0147.jpg": {
+    "mtime": 1787434188.6731126,
+    "ast_hash": "1cb9fb0ee0e903c4188c0e0daddd589f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0148.jpg": {
+    "mtime": 1787434188.75263,
+    "ast_hash": "7ae30e551e3e26b747dcca60014704b3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0149.jpg": {
+    "mtime": 1787434188.8326175,
+    "ast_hash": "62100c5f56d31b80cc17148cb7a47a37",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0150.jpg": {
+    "mtime": 1787434188.9171796,
+    "ast_hash": "b74df4da37b4765dc49d41adc85f2b39",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0151.jpg": {
+    "mtime": 1787434188.9978008,
+    "ast_hash": "ba309a64fb5951bf1e66794ecada99e9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0152.jpg": {
+    "mtime": 1787434189.0767133,
+    "ast_hash": "c8a393ca4ae3449e3c743385d6760942",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0153.jpg": {
+    "mtime": 1787434189.157612,
+    "ast_hash": "44723699d1a9b4800584fbde31266b0d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0154.jpg": {
+    "mtime": 1787434189.2465723,
+    "ast_hash": "6132c33e34074dbea42e835854bd2154",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0155.jpg": {
+    "mtime": 1787434189.3244045,
+    "ast_hash": "8ca503cebe6f315e13c0784b60510b98",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0156.jpg": {
+    "mtime": 1787434189.4010487,
+    "ast_hash": "6804ae82947957844790161c493d1e81",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0157.jpg": {
+    "mtime": 1787434189.4771194,
+    "ast_hash": "9393d87d6ed8b8ab7753519abe65448f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0158.jpg": {
+    "mtime": 1787434189.560161,
+    "ast_hash": "94e11648ecffba90d7b23a3a23dacba8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0159.jpg": {
+    "mtime": 1787434189.6444669,
+    "ast_hash": "4201524d7711fbabe0849767d011d3eb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0160.jpg": {
+    "mtime": 1787434189.723882,
+    "ast_hash": "b68de4b0ba44849fc3b53cf66f3c9308",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0161.jpg": {
+    "mtime": 1787434189.8036158,
+    "ast_hash": "066cf28957bdf22fc8c348817cc40efc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0162.jpg": {
+    "mtime": 1787434189.8886733,
+    "ast_hash": "29f6759dd82f94b40ac48a60220592de",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0163.jpg": {
+    "mtime": 1787434189.968103,
+    "ast_hash": "5272890f89e7f0c17289ac17fa9f1704",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0164.jpg": {
+    "mtime": 1787434190.0485137,
+    "ast_hash": "51e61d90b62dc888082e6d0893743db2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0165.jpg": {
+    "mtime": 1787434190.1291978,
+    "ast_hash": "f843a86b40f27cbab9695d4ef030a189",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0166.jpg": {
+    "mtime": 1787434190.2147768,
+    "ast_hash": "5faa965b2b5798fa977c2806385b0c89",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0167.jpg": {
+    "mtime": 1787434190.2904189,
+    "ast_hash": "c00e95cdbe802f7a4aaa0aa0fcf75dfa",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0168.jpg": {
+    "mtime": 1787434190.37607,
+    "ast_hash": "b56d09b05d2c8cf95f9d42d4fde5f348",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0169.jpg": {
+    "mtime": 1787434190.4592721,
+    "ast_hash": "8e1ead66cd8eb91341d2c999e19e4a3f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0170.jpg": {
+    "mtime": 1787434190.5547392,
+    "ast_hash": "9f8a088aff068a05de7f7dbc6e991904",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0171.jpg": {
+    "mtime": 1787434190.637987,
+    "ast_hash": "fc3351de2330bab8ee1b946900526be8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0172.jpg": {
+    "mtime": 1787434190.7200963,
+    "ast_hash": "b43f28f4db88f43ccd0a4dcf1749c5dc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0173.jpg": {
+    "mtime": 1787434190.7960975,
+    "ast_hash": "fbe531d3899c6e7caeb73f091af5c4bd",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0174.jpg": {
+    "mtime": 1787434190.8845572,
+    "ast_hash": "c9cfd84bb225b912516bf33c5aa22929",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0175.jpg": {
+    "mtime": 1787434190.963909,
+    "ast_hash": "2bcba34d171c4b2c5a208a2f47d40683",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0176.jpg": {
+    "mtime": 1787434191.0449917,
+    "ast_hash": "08571382860a66d071b986b4d63d7fd2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0177.jpg": {
+    "mtime": 1787434191.1247518,
+    "ast_hash": "5b4d710268dfc1cfa35cfce91d66c9ec",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0178.jpg": {
+    "mtime": 1787434191.207343,
+    "ast_hash": "966d5b9bbea98c41794fa5ae9aca5146",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0179.jpg": {
+    "mtime": 1787434191.2892263,
+    "ast_hash": "51ffceba8c8610af23bb917647f889f9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0180.jpg": {
+    "mtime": 1787434191.3823547,
+    "ast_hash": "ec5c12fa833630f44f56f89d588b39d4",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0181.jpg": {
+    "mtime": 1787434191.465656,
+    "ast_hash": "5b9c6e78022cfcf5dd6f4f27737e736a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0182.jpg": {
+    "mtime": 1787434191.5499952,
+    "ast_hash": "2dce9bd86bef8f4156257c0dd480591f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0183.jpg": {
+    "mtime": 1787434191.6275616,
+    "ast_hash": "d8a8dd25352c6e9efa3e02d16a6ac5a3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0184.jpg": {
+    "mtime": 1787434191.7077558,
+    "ast_hash": "d6295e0c198471736429e3c0c83d3ada",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0185.jpg": {
+    "mtime": 1787434191.7875133,
+    "ast_hash": "8b106268348b89225fad4e0e27ac6be6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0186.jpg": {
+    "mtime": 1787434191.870135,
+    "ast_hash": "fe47571307a74a7148741e1208819754",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0187.jpg": {
+    "mtime": 1787434191.9477515,
+    "ast_hash": "4b73b2f5735ad39511e5d5c59bd24028",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0188.jpg": {
+    "mtime": 1787434192.033871,
+    "ast_hash": "477b48c7d022b7856d957ca24acf2dde",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0189.jpg": {
+    "mtime": 1787434192.1159885,
+    "ast_hash": "70b59659c9ec15b0b3615cd4107bde62",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0190.jpg": {
+    "mtime": 1787434192.1968367,
+    "ast_hash": "7281af4ecac15955677a09779d50a815",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0191.jpg": {
+    "mtime": 1787434192.274052,
+    "ast_hash": "1339fcb596c50652e0753e14f5eb1a2f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0192.jpg": {
+    "mtime": 1787434192.3549602,
+    "ast_hash": "b761e7ff9ea295f72ba32f6edf30edee",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0193.jpg": {
+    "mtime": 1787434192.4338093,
+    "ast_hash": "022ffc9faaf0ff9c68c3561960ad3888",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0194.jpg": {
+    "mtime": 1787434192.5185337,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0195.jpg": {
+    "mtime": 1787434192.6029282,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0196.jpg": {
+    "mtime": 1787434192.6907237,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0197.jpg": {
+    "mtime": 1787434192.7737498,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0198.jpg": {
+    "mtime": 1787434192.8539855,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0199.jpg": {
+    "mtime": 1787434192.9340794,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0200.jpg": {
+    "mtime": 1787434193.0154827,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0201.jpg": {
+    "mtime": 1787434193.0966132,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0202.jpg": {
+    "mtime": 1787434193.1766858,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0203.jpg": {
+    "mtime": 1787434193.2558506,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0204.jpg": {
+    "mtime": 1787434193.3398433,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0205.jpg": {
+    "mtime": 1787434193.4182892,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0206.jpg": {
+    "mtime": 1787434193.504383,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0207.jpg": {
+    "mtime": 1787434193.5841942,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0208.jpg": {
+    "mtime": 1787434193.6628413,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0209.jpg": {
+    "mtime": 1787434193.7459762,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0210.jpg": {
+    "mtime": 1787434193.82758,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0211.jpg": {
+    "mtime": 1787434193.9117916,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0212.jpg": {
+    "mtime": 1787434193.990801,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0213.jpg": {
+    "mtime": 1787434194.0763245,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0214.jpg": {
+    "mtime": 1787434194.1589994,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0215.jpg": {
+    "mtime": 1787434194.2427378,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0216.jpg": {
+    "mtime": 1787434194.325523,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0217.jpg": {
+    "mtime": 1787434194.4061646,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0218.jpg": {
+    "mtime": 1787434194.4860177,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0219.jpg": {
+    "mtime": 1787434194.5735116,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0220.jpg": {
+    "mtime": 1787434194.6577022,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0221.jpg": {
+    "mtime": 1787434194.74121,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0222.jpg": {
+    "mtime": 1787434194.8299966,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0223.jpg": {
+    "mtime": 1787434194.9286754,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0224.jpg": {
+    "mtime": 1787434195.0101612,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0225.jpg": {
+    "mtime": 1787434195.091458,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0226.jpg": {
+    "mtime": 1787434195.1709335,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0227.jpg": {
+    "mtime": 1787434195.2519636,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0228.jpg": {
+    "mtime": 1787434195.339445,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0229.jpg": {
+    "mtime": 1787434195.4239933,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0230.jpg": {
+    "mtime": 1787434195.5165267,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0231.jpg": {
+    "mtime": 1787434195.599827,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0232.jpg": {
+    "mtime": 1787434195.6945956,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0233.jpg": {
+    "mtime": 1787434195.7761557,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0234.jpg": {
+    "mtime": 1787434195.8573678,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0235.jpg": {
+    "mtime": 1787434195.948823,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0236.jpg": {
+    "mtime": 1787434196.0342908,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0237.jpg": {
+    "mtime": 1787434196.1136785,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0238.jpg": {
+    "mtime": 1787434196.2021453,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0239.jpg": {
+    "mtime": 1787434196.2793987,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0240.jpg": {
+    "mtime": 1787434196.3652349,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0241.jpg": {
+    "mtime": 1787434196.4431608,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0242.jpg": {
+    "mtime": 1787434196.5310242,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0243.jpg": {
+    "mtime": 1787434196.6111517,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0244.jpg": {
+    "mtime": 1787434196.6989667,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0245.jpg": {
+    "mtime": 1787434196.7804382,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0246.jpg": {
+    "mtime": 1787434196.8712714,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0247.jpg": {
+    "mtime": 1787434196.9534051,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0248.jpg": {
+    "mtime": 1787434197.0343146,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0249.jpg": {
+    "mtime": 1787434197.1204464,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0250.jpg": {
+    "mtime": 1787434197.1981373,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0251.jpg": {
+    "mtime": 1787434197.2782006,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0252.jpg": {
+    "mtime": 1787434197.3729923,
+    "ast_hash": "b7196fe7e3125b32634c40fbc9b2ae86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0253.jpg": {
+    "mtime": 1787434197.4604926,
+    "ast_hash": "483fadfc64d29b22c8117b10ea12f1af",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0254.jpg": {
+    "mtime": 1787434197.5444593,
+    "ast_hash": "92243e0be6e6448b3a9b6d39ac221543",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0255.jpg": {
+    "mtime": 1787434197.6314301,
+    "ast_hash": "51840f818d2d8e62a5a6105588c249c6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0256.jpg": {
+    "mtime": 1787434197.722224,
+    "ast_hash": "3dd49b9d4814e16c7bb9f8ceb9f2af86",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0257.jpg": {
+    "mtime": 1787434197.806847,
+    "ast_hash": "112b4c93c2fcf497cf6793e5344e7aa7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0258.jpg": {
+    "mtime": 1787434197.897058,
+    "ast_hash": "52269fb020b866f09247cdaf934b2d20",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0259.jpg": {
+    "mtime": 1787434197.979528,
+    "ast_hash": "2db93cc3bcad6c3cddc1f9db2cc77d09",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0260.jpg": {
+    "mtime": 1787434198.05941,
+    "ast_hash": "6eefb72281bd43f4f38c27f271f02af7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0261.jpg": {
+    "mtime": 1787434198.1407883,
+    "ast_hash": "1fb86883168feacd7b90e0dca4896a12",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0262.jpg": {
+    "mtime": 1787434198.2232742,
+    "ast_hash": "af4a3cf3ad2db75d223dc0f70ec3e18c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0263.jpg": {
+    "mtime": 1787434198.306306,
+    "ast_hash": "9af8d9b374f4e1c6a9bf3bd3dc18a756",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0264.jpg": {
+    "mtime": 1787434198.306306,
+    "ast_hash": "9af8d9b374f4e1c6a9bf3bd3dc18a756",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0265.jpg": {
+    "mtime": 1787434198.306306,
+    "ast_hash": "9af8d9b374f4e1c6a9bf3bd3dc18a756",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0266.jpg": {
+    "mtime": 1787434198.3918633,
+    "ast_hash": "0bac82e576db2996043c849563c8a689",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0267.jpg": {
+    "mtime": 1787434198.4720685,
+    "ast_hash": "39c3afd88ed73ed0b3ec6a934bea290f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0268.jpg": {
+    "mtime": 1787434198.5547788,
+    "ast_hash": "5e75c7b10bab8029a84f27390c13619d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0269.jpg": {
+    "mtime": 1787434198.6498134,
+    "ast_hash": "0febb0af1cba0bbaf940603466d5b0ef",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0270.jpg": {
+    "mtime": 1787434198.732802,
+    "ast_hash": "e72f3b225ac25ed2d55b15ca5c57941c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0271.jpg": {
+    "mtime": 1787434198.812792,
+    "ast_hash": "ba2f3cfd1abf86996f9fed1b40230d20",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0272.jpg": {
+    "mtime": 1787434198.890715,
+    "ast_hash": "1c9800939a511ea8e1201e70708f2419",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0273.jpg": {
+    "mtime": 1787434198.9755652,
+    "ast_hash": "a37f37ada490db29c50dde09d73c3ec9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0274.jpg": {
+    "mtime": 1787434199.0579402,
+    "ast_hash": "a1effb2274642ff85e142e5e720a050a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0275.jpg": {
+    "mtime": 1787434199.1490035,
+    "ast_hash": "ecaeb2030bb4d1e75db55cad41882cab",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0276.jpg": {
+    "mtime": 1787434199.225263,
+    "ast_hash": "43de9fbee484f534a1791dd66656676c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0277.jpg": {
+    "mtime": 1787434199.3098834,
+    "ast_hash": "24c8999f37518c56b3c31426628a3811",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0278.jpg": {
+    "mtime": 1787434199.39018,
+    "ast_hash": "e352d2f7920750c8331f6bbfbc2ab037",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0279.jpg": {
+    "mtime": 1787434199.4690244,
+    "ast_hash": "4c404f55f0e41c7c9aab4fb81e0e28cb",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0280.jpg": {
+    "mtime": 1787434199.544885,
+    "ast_hash": "e49a23649e2c74e2a0dd3b5b5e2171b9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0281.jpg": {
+    "mtime": 1787434199.6234963,
+    "ast_hash": "16aeef256d37194467ccaa6bdec16695",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0282.jpg": {
+    "mtime": 1787434199.702306,
+    "ast_hash": "c67d7b16d65b632681d633dace9c2a14",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0283.jpg": {
+    "mtime": 1787434199.788696,
+    "ast_hash": "64a3cdbc6aaabf7e15b44875a1405cdf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0284.jpg": {
+    "mtime": 1787434199.8657181,
+    "ast_hash": "5242965c8e9cfe3dfae10b760b1ae4e9",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0285.jpg": {
+    "mtime": 1787434199.9473853,
+    "ast_hash": "e36fdc96075f9ac787e97ad74da14dcf",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0286.jpg": {
+    "mtime": 1787434200.0229566,
+    "ast_hash": "09aa16b512e30a879233c0e048e91479",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0287.jpg": {
+    "mtime": 1787434200.1023862,
+    "ast_hash": "d39d49f55b5f2e27bd2cb882c268f69e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0288.jpg": {
+    "mtime": 1787434200.1784928,
+    "ast_hash": "c11395f5b5f22ae3575adca1d41c2de3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0289.jpg": {
+    "mtime": 1787434200.260284,
+    "ast_hash": "1cf9a4bcc17f05b0a62b48be7cc6fb59",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0290.jpg": {
+    "mtime": 1787434200.3360672,
+    "ast_hash": "a1ae42328c84c971b6e9a9f1ecbcf75d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0291.jpg": {
+    "mtime": 1787434200.4184062,
+    "ast_hash": "80637d6f0cb18dea03684a743d8b4f6e",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0292.jpg": {
+    "mtime": 1787434200.4963028,
+    "ast_hash": "c18c48b73d9510bffb423c189827d188",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0293.jpg": {
+    "mtime": 1787434200.576878,
+    "ast_hash": "32c55d390dcac8206a422cb78954c975",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0294.jpg": {
+    "mtime": 1787434200.6559477,
+    "ast_hash": "7b0e69e7ddc2b948f317c0b72aa3a9d7",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0295.jpg": {
+    "mtime": 1787434200.7354794,
+    "ast_hash": "a7cdff08232afa71a277841a3cac2c70",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0296.jpg": {
+    "mtime": 1787434200.8162696,
+    "ast_hash": "5b85257e6cfe5498ba3558c236bb95cc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0297.jpg": {
+    "mtime": 1787434200.8954825,
+    "ast_hash": "359ffa3a05675ecd052904d05bcb2a70",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0298.jpg": {
+    "mtime": 1787434200.9780705,
+    "ast_hash": "3cd1a8755b1794f9fa0b880e1b21b9b6",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0299.jpg": {
+    "mtime": 1787434201.0671897,
+    "ast_hash": "d33507925e0d7fe61de7e45e942bc074",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0300.jpg": {
+    "mtime": 1787434201.151326,
+    "ast_hash": "6bef719d598b4be41ad7b3c1db796319",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0301.jpg": {
+    "mtime": 1787434201.2336676,
+    "ast_hash": "d4588f339496d040be9a247389c361b3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0302.jpg": {
+    "mtime": 1787434201.315302,
+    "ast_hash": "9797b66c359206321aa7c783299af2dc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0303.jpg": {
+    "mtime": 1787434201.412081,
+    "ast_hash": "98a2693125bcda872833a4ff438a011b",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0304.jpg": {
+    "mtime": 1787434201.4934254,
+    "ast_hash": "678de2601add7764e9e12011b7eb8444",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0305.jpg": {
+    "mtime": 1787434201.5788789,
+    "ast_hash": "1d1d002afad8f61ada56a2ac0d0970c3",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0306.jpg": {
+    "mtime": 1787434201.6676302,
+    "ast_hash": "c10ec62b96a8e404964e04ee625812af",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0307.jpg": {
+    "mtime": 1787434201.7607775,
+    "ast_hash": "3bcf40f24d6f9e98b4e27f1824ba1d46",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0308.jpg": {
+    "mtime": 1787434201.8406243,
+    "ast_hash": "632b88308136a282de647ea17ba79ade",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0309.jpg": {
+    "mtime": 1787434201.9234328,
+    "ast_hash": "f94c3d5505555488a38de540ffe1a31f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0310.jpg": {
+    "mtime": 1787434202.0042417,
+    "ast_hash": "37c5e558adb27dbc7a4b938144fde8ce",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0311.jpg": {
+    "mtime": 1787434202.0870388,
+    "ast_hash": "a4ba1c25fc00eba27da60973ccbc26bc",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0312.jpg": {
+    "mtime": 1787434202.1675148,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0313.jpg": {
+    "mtime": 1787434202.251629,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0314.jpg": {
+    "mtime": 1787434202.3359725,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0315.jpg": {
+    "mtime": 1787434202.4174435,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0316.jpg": {
+    "mtime": 1787434202.503159,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0317.jpg": {
+    "mtime": 1787434202.5893369,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0318.jpg": {
+    "mtime": 1787434202.6670036,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0319.jpg": {
+    "mtime": 1787434202.7497096,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0320.jpg": {
+    "mtime": 1787434202.8432305,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0321.jpg": {
+    "mtime": 1787434202.9307427,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0322.jpg": {
+    "mtime": 1787434203.0165253,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0323.jpg": {
+    "mtime": 1787434203.0989738,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0324.jpg": {
+    "mtime": 1787434203.1802297,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0325.jpg": {
+    "mtime": 1787434203.2627544,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0326.jpg": {
+    "mtime": 1787434203.3407147,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0327.jpg": {
+    "mtime": 1787434203.4232328,
+    "ast_hash": "073031b0a24dcc7d3a05262371de1435",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0328.jpg": {
+    "mtime": 1787434203.5065384,
+    "ast_hash": "81ea89125b55eabac219786cbffd8b7d",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0329.jpg": {
+    "mtime": 1787434203.5954833,
+    "ast_hash": "da9db17bc1c6346236ed2d57e85fbaa8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0330.jpg": {
+    "mtime": 1787434203.6787152,
+    "ast_hash": "6fe56ea441f9b461b4cf566ac15f3cd8",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0331.jpg": {
+    "mtime": 1787434203.763721,
+    "ast_hash": "2a9adc4e43283aa45aadb5d0b160dd98",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0332.jpg": {
+    "mtime": 1787434203.8518653,
+    "ast_hash": "2e0a1f7c337acdb7ffa73aa274076eb2",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0333.jpg": {
+    "mtime": 1787434203.9376304,
+    "ast_hash": "5c84d779ae33dcc54787be633e4beb22",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0334.jpg": {
+    "mtime": 1787434204.0222363,
+    "ast_hash": "824df6e9a2289cfb1d385e07d660d663",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0335.jpg": {
+    "mtime": 1787434204.1052196,
+    "ast_hash": "df90280bde9b9fcae8602bf3b4949246",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0336.jpg": {
+    "mtime": 1787434204.18627,
+    "ast_hash": "3492bdd5980bd84021072f09b05ef21f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/frames-exposicion/0337.jpg": {
+    "mtime": 1787434204.2685077,
+    "ast_hash": "34e1b670df88604fc5ece70ff41ff09f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/mockup-comunicacion.jpg": {
+    "mtime": 1787435998.3201714,
+    "ast_hash": "d037016b1dc578c756ff7da192627a26",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/mockup-descanso-comunicacion.jpg": {
+    "mtime": 1787435998.4679983,
+    "ast_hash": "984f173c3e6340386d830c1fb25e799f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/mockup-exposicion.jpg": {
+    "mtime": 1787435998.616957,
+    "ast_hash": "5dad05d44579fdabbdda54584c4e1eb1",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/museo-adentro.jpg": {
+    "mtime": 1787435998.045995,
+    "ast_hash": "eaaf594ea6f527d1b3032250784b79ab",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/museo-fachada.jpg": {
+    "mtime": 1787435998.0285437,
+    "ast_hash": "bee502b34fc95ff2c456f0e85202841f",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/panel-riel.png": {
+    "mtime": 1787431121.3357594,
+    "ast_hash": "faff003c1b456410a293925800b7a962",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/partes-final.jpg": {
+    "mtime": 1787435998.1778228,
+    "ast_hash": "6807cfe6ff318926142003ad22991794",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/plano-explotada.png": {
+    "mtime": 1786683169.9222488,
+    "ast_hash": "1a6d934d3cc5d9c22edefd5b64660310",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/plano-panel.png": {
+    "mtime": 1786683169.9025352,
+    "ast_hash": "9d7525afc67c5bf98de3a4db06eb964a",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/plano-tomate.png": {
+    "mtime": 1786683169.9083066,
+    "ast_hash": "15bdd9089df5f5b19c06e7779d3abdee",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/portada-comunicacion.png": {
+    "mtime": 1787435997.1856084,
+    "ast_hash": "0a139f5a8078c2078b29e9e99e65e729",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/portada-descanso.png": {
+    "mtime": 1787295876.858304,
+    "ast_hash": "b966e45276f368a0e7f706f8a6f4fe2c",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/portada-exposicion.png": {
+    "mtime": 1787295783.5231893,
+    "ast_hash": "5c1043e42c1d6f80018797dd5bf9f410",
+    "semantic_hash": ""
+  },
+  "assets/mobiliario-museo/posturas.png": {
+    "mtime": 1787431606.210996,
+    "ast_hash": "d7839d7425e7fb69fa9d07bcabcac3bc",
     "semantic_hash": ""
   }
 }
