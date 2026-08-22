@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simbio — Mi Cajón</title>
+  <title>Simbio — Archivo</title>
   <meta name="description" content="Simbio: juego de construcción inspirado en el liquen. Diseño industrial y biomímesis, 2023.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,10 +17,38 @@
        pesos, en vez de uno por peso. -->
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..700&display=swap" rel="stylesheet">
 
+  <!-- TODAS LAS PÁGINAS CARGAN LA MISMA LISTA DE CSS, EN EL MISMO ORDEN.
+       No es desprolijidad, es lo que evita el bug de los estilos fantasma.
+
+       Swup navega sin recargar: reemplaza #swup y la nav, pero el <head> es
+       SIEMPRE el de la página por la que entraste al sitio. Si una página no
+       trae el CSS de otra, al navegar a esa otra la ves sin estilos. Y como
+       refrescar sí rehace el <head>, con F5 se arregla sola — por eso parece
+       un fantasma y no un error.
+
+       Medido: entrando directo a un proyecto y haciendo clic en Home, el
+       título de la portada salía a 114.8px negro en vez de 35.2px verde,
+       porque archivo.css nunca había estado en el head. Pasaba desde las
+       tres páginas de proyecto.
+
+       Cargarlas todas es inofensivo: se probó inyectando archivo.css en las
+       otras tres páginas y de 604 elementos no cambió ninguno — los nombres
+       están apellidados por página (.portada-hero__*, .simbio-*, .s54*,
+       .stip*), así que no se pisan.
+
+       EL ORDEN TAMBIÉN TIENE QUE SER EL MISMO en las cuatro: si cambia,
+       cambia la cascada según por dónde entraste, que es el mismo bug con
+       otra cara. Y los ?v= tienen que coincidir entre páginas, si no una
+       sirve una versión vieja de la otra.
+
+       SI AGREGÁS UNA PÁGINA NUEVA: su CSS va acá y en las otras tres. -->
   <link rel="stylesheet" href="../css/variables.css?v=6">
   <link rel="stylesheet" href="../css/base.css?v=11">
-  <link rel="stylesheet" href="../css/layout.css?v=9">
-  <link rel="stylesheet" href="../css/simbio.css?v=116">
+  <link rel="stylesheet" href="../css/layout.css?v=12">
+  <link rel="stylesheet" href="../css/archivo.css?v=26">
+  <link rel="stylesheet" href="../css/simbio.css?v=119">
+  <link rel="stylesheet" href="../css/mas-54.css?v=22">
+  <link rel="stylesheet" href="../css/tipines.css?v=11">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -42,17 +70,37 @@
 <body class="zona zona--crema pag-simbio" data-cursor="anillo">
 
 <nav class="site-nav grilla">
-  <a class="pastilla" href="../index.html">Home</a>
+  <!-- EL BOTÓN DE HAMBURGUESA. Va PRIMERO para que en el teléfono quede en la
+       fila de arriba, contra el borde derecho. En desktop lleva display:none,
+       así que no le ocupa una columna a la grilla de la nav.
+       Las tres rayas son <span> vacíos: el dibujo lo hace el CSS, y así se
+       pueden animar por separado para volverse una X. aria-hidden porque para
+       un lector de pantalla el botón ya se llama solo con su aria-label. -->
+  <button class="site-nav__hamburguesa" type="button"
+          aria-expanded="false" aria-label="Abrir el menú">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
+  <a class="pastilla" href="../index.html" translate="no" data-es="Home" data-en="Home">Home</a>
   <!-- MISMO ORDEN QUE LA PORTADA: Home / Sobre mí / Trabajos.
        Acá estaban dados vuelta los dos del medio, y como la nav se reemplaza
        al navegar, los botones se cambiaban de lugar al entrar al proyecto. -->
-  <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
-  <a class="pastilla is-activa" href="../index.html#trabajos">Trabajos</a>
+  <a class="pastilla" href="../index.html#sobre" translate="no" data-es="Sobre mí" data-en="About">Sobre mí</a>
+  <a class="pastilla is-activa" href="../index.html#trabajos" translate="no" data-es="Trabajos" data-en="Work">Trabajos</a>
   <div class="site-nav__fin">
-    <a class="pastilla" href="../index.html#contacto">Contacto</a>
-    <div class="nav-idioma">
-      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
-      <button type="button" class="pastilla" aria-pressed="false">EN</button>
+    <a class="pastilla" href="../index.html#contacto" translate="no" data-es="Contacto" data-en="Contact">Contacto</a>
+    <!-- EL PAR ES/EN. data-idioma es lo que los engancha (js/traduccion.js).
+         translate="no" en los dos: si no, Google traduce las etiquetas del
+         propio botón de idioma y "ES" pasa a ser "IS". La clase is-activa la
+         maneja el JS, no está fija acá — se recuerda entre visitas. -->
+    <div class="nav-idioma" translate="no">
+      <button type="button" class="pastilla is-activa"
+              data-idioma="es" aria-pressed="true"
+              aria-label="Ver el sitio en español">ES</button>
+      <button type="button" class="pastilla"
+              data-idioma="en" aria-pressed="false"
+              aria-label="View this site in English">EN</button>
     </div>
   </div>
 </nav>
@@ -93,7 +141,7 @@
         </svg>
       </a>
 
-      <h1 class="proyecto__titulo">Simbio</h1>
+      <h1 class="proyecto__titulo" translate="no">Simbio</h1>
 
       <div class="proyecto__meta">
         <p class="etiqueta">Diseño industrial</p>
@@ -461,7 +509,7 @@
 
 <footer class="zona zona--crema">
   <div class="site-footer grilla">
-    <p class="etiqueta"><a href="../index.html">Mi Cajón — Matías Cornara</a></p>
+    <p class="etiqueta" translate="no"><a href="../index.html">Archivo — Matías Cornara</a></p>
     <p class="etiqueta creditos-pie">
       LAB 3 · TP 3 — Prof. Camila Offenhenden, Iván Rosler,
       Natalia Hojman y Andrés Jalif<br>
@@ -473,9 +521,10 @@
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Faltaba en esta página, y por eso el scroll no era suave. -->
 <script src="../js/smooth-scroll.js?v=6" defer></script>
-<script src="../js/transiciones.js?v=6" defer></script>
-<script src="../js/main.js?v=23" defer></script>
-<script src="../js/simbio-scroll.js?v=20" defer></script>
-<script src="../js/muestras.js?v=10" defer></script>
+<script src="../js/transiciones.js?v=7" defer></script>
+<script src="../js/main.js?v=24" defer></script>
+<script src="../js/traduccion.js?v=4" defer></script>
+<script src="../js/simbio-scroll.js?v=16" defer></script>
+<script src="../js/muestras.js?v=13" defer></script>
 </body>
 </html>

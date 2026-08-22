@@ -74,6 +74,9 @@
     }
 
     if (typeof window.initComunes === "function") window.initComunes();
+    // La página nueva entra en español (es el HTML tal cual). Si el visitante
+    // había elegido inglés, initTraduccion vuelve a pedir la traducción.
+    if (typeof window.initTraduccion === "function") window.initTraduccion();
     if (typeof window.initArchivoEsquina === "function") window.initArchivoEsquina();
     if (typeof window.initSimbioScroll === "function") window.initSimbioScroll();
     if (typeof window.initMuestras === "function") window.initMuestras();

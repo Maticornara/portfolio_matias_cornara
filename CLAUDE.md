@@ -44,6 +44,7 @@ JS y no subís ese número, el navegador sirve la versión vieja. Pasó varias v
 | `js/muestras.js` | 2 | Las 3 animaciones de pieza (`armarMuestra()`) |
 | `js/smooth-scroll.js` | 1 | Lenis + puente con GSAP/ScrollTrigger. **Carga primero.** |
 | `js/transiciones.js` | 1 | Swup + re-init de módulos al cambiar de página |
+| `js/traduccion.js` | — | El par ES/EN. Google Translate + las 4 palabras de la nav a mano |
 | `tools/*.ps1` | — | Pipelines de assets (frames, fotos, recorte de alfa) |
 
 ## Arquitectura
@@ -106,6 +107,22 @@ simbio.css hay además un **manual de unidades** (px, rem, vw, svh, ch, fr) y
 cómo mover/alinear cosas; está repetido arriba de mas-54.css y de tipines.css a
 propósito, para no mandar a nadie a otro archivo por una explicación.
 Si agregás algo ajustable, ponelo como variable con su comentario.
+
+## Una regla que no se ve en el código
+
+**Swup nunca reemplaza el `<head>`.** Reemplaza `#swup` y `.site-nav`, nada
+más. El `<head>` queda para siempre el de la página por la que entraste al
+sitio. De ahí salen dos cosas:
+
+- **Si un problema de estilos se arregla al refrescar, está en el `<head>`.** Es
+  lo único que un refresh rehace y una navegación no.
+- **Las cuatro páginas modernas cargan la MISMA lista de CSS, en el MISMO orden
+  y con los mismos `?v=`.** Si agregás una página, su CSS va en las cuatro. No
+  es desprolijidad: sin eso, entrar por un proyecto y volver al Home dibuja la
+  portada sin `archivo.css`.
+
+Lo mismo para el JS: **si un `init` cuelga algo del `<body>` tiene que poder
+correr dos veces**, porque eso queda fuera de `#swup` y Swup no lo limpia nunca.
 
 ## Diagnóstico
 

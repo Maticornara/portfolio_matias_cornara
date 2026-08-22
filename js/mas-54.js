@@ -34,6 +34,72 @@
 
 
   /* ------------------------------------------------------------------------
+     "¿SE ESTÁ VIENDO DE VERDAD?" — el ayudante que usan todos los videos
+     --------------------------------------------------------------------------
+     ACÁ ESTUVO EL BUG DEL SONIDO QUE SEGUÍA SONANDO (22/08/2026), y es una
+     trampa clásica de IntersectionObserver que conviene tener anotada:
+
+         `entry.isIntersecting` NO significa "se cumplió el threshold".
+         Significa "el elemento toca el viewport aunque sea por un pixel".
+
+     El `threshold` solo decide CUÁNDO se dispara el callback, no qué valor
+     tiene isIntersecting cuando se dispara. Con `threshold: 0.25` el callback
+     salta al cruzar el 25%, pero en ese momento isIntersecting sigue siendo
+     true — así que un `visible = e.isIntersecting` se mantiene en true hasta
+     que el elemento se va ENTERO de la pantalla.
+
+     En la sección de historias eso se notaba: la sección tiene 112 px de aire
+     arriba y abajo, más el rótulo y el control de sonido. Con los tres videos
+     ya bien afuera de la pantalla, la sección seguía tocando el viewport por
+     su padding de abajo, isIntersecting seguía true, y el audio seguía
+     sonando mientras mirabas otra parte de la página.
+
+     La forma correcta es mirar `intersectionRatio` contra un umbral. Y hay que
+     pedir varios thresholds, porque si no el callback no se dispara en los
+     valores intermedios y el ratio llega tarde.
+
+     El segundo término del OR es para los elementos MÁS ALTOS que la ventana:
+     ahí el ratio nunca puede llegar a 0,6, así que se pregunta al revés —
+     cuánto de la PANTALLA está ocupando el elemento.
+     ------------------------------------------------------------------------ */
+
+  // Los cinco valores que se le piden al observador. Sin esto el callback solo
+  // se dispara al entrar y al salir del todo, y el ratio queda desactualizado.
+  const ESCALONES = [0, 0.15, 0.35, 0.6, 0.85, 1];
+
+  // Cuánto tiene que verse para considerar que se está mirando.
+  const UMBRAL_VISIBLE = 0.6;
+
+  /* CUÁNTO HAY QUE QUEDARSE PARA QUE ARRANQUE EL SONIDO.
+     --------------------------------------------------------------------------
+     ACÁ ESTABA EL RUIDO FANTASMA DE VERDAD (22/08/2026), y no era ni Swup ni el
+     cambio de pestaña: era ATRAVESAR la sección.
+
+     Con la regla de "se ve → suena", pasar de largo scrolleando alcanzaba para
+     dispararlo. Medido cruzando la sección en 1,5 s: `PLAY h1 mudo=false` en
+     y=9248 y `pause` en y=8423 — o sea 825 px de scroll con audio saliendo de
+     una sección que ya te habías pasado. Y como depende solo de la altura del
+     scroll, se disparaba cada vez que la barra pasaba por ahí, aunque fueras
+     de camino a otra parte.
+
+     La regla correcta no es "se ve", es "TE QUEDASTE MIRÁNDOLO". Entrar en
+     pantalla arranca un reloj; si te fuiste antes de que suene, no suena. Es
+     el mismo criterio del `dwell` de las fichas del índice: sostener un gesto
+     es una intención, cruzarlo no.
+
+     Frenar, en cambio, es INMEDIATO: nadie quiere esperar medio segundo a que
+     se calle algo que ya no está mirando. */
+  const ESPERA_SONIDO = 450;
+
+  function seVeDeVerdad(e) {
+    return e.intersectionRatio >= UMBRAL_VISIBLE ||
+           e.intersectionRect.height >= window.innerHeight * UMBRAL_VISIBLE;
+  }
+
+
+
+
+  /* ------------------------------------------------------------------------
      1. PIEZAS QUE SE TURNAN
      --------------------------------------------------------------------------
      Un contenedor con [data-alterna] y adentro varios [data-alterna-item].
@@ -90,8 +156,8 @@
          Un setInterval corriendo con la sección fuera de pantalla gasta
          batería y, si la pieza es un video, lo deja decodificando de gusto. */
       new IntersectionObserver((entradas) => {
-        entradas.forEach((e) => (e.isIntersecting ? arrancar() : parar()));
-      }, { threshold: 0.1 }).observe(grupo);
+        entradas.forEach((e) => (seVeDeVerdad(e) ? arrancar() : parar()));
+      }, { threshold: ESCALONES }).observe(grupo);
     });
   }
 
@@ -150,8 +216,8 @@
       const parar = () => { clearInterval(reloj); reloj = null; };
 
       new IntersectionObserver((entradas) => {
-        entradas.forEach((e) => (e.isIntersecting ? arrancar() : parar()));
-      }, { threshold: 0.15 }).observe(carrusel);
+        entradas.forEach((e) => (seVeDeVerdad(e) ? arrancar() : parar()));
+      }, { threshold: ESCALONES }).observe(carrusel);
     });
   }
 
@@ -356,24 +422,29 @@
      --------------------------------------------------------------------------
      Se turnan: corre UNA y las otras dos quedan congeladas en su primer cuadro.
      Cuando la que está corriendo termina, arranca la siguiente. Al llegar a la
-     tercera vuelve a la primera.
+     tercera vuelve a la primera. Tocar cualquiera la hace la activa.
 
      "Congelada en el primer cuadro" es literal: `pause()` + `currentTime = 0`.
      No hace falta ningún poster ni ninguna imagen aparte — el propio video
      pintado en su segundo cero ES el primer cuadro.
 
+     CÓMO SE DISTINGUE LA QUE CORRE: por el MOVIMIENTO y por la barrita verde
+     que avanza abajo. NO por el color. Estuvo un rato bajándoles la opacidad y
+     la saturación a las que esperan, y eso les reescribía el color a unas
+     piezas que son diseño gráfico terminado. La página no toca el material.
+
      POR QUÉ ARRANCA MUDA AUNQUE TENGA SONIDO.
      Ningún navegador deja que un video con audio empiece solo: si no está
      `muted`, `play()` se rechaza y no arranca NADA. Así que la rotación empieza
-     muda y el botón la desmutea. Ese click es el permiso que el navegador
-     estaba esperando, y a partir de ahí todas suenan, también las que siguen.
-     No es una limitación de este código: es política del navegador y no se
-     puede saltear.
+     muda y el control de sonido la desmutea. Ese click es el permiso que el
+     navegador estaba esperando, y a partir de ahí todas suenan, también las que
+     siguen. No es una limitación de este código: es política del navegador y no
+     se puede saltear.
 
      SE AVANZA CON EL EVENTO `ended`, NO CON UN TEMPORIZADOR. Las tres duran
      distinto (7,4 · 11,2 · 11,1 s) y un setInterval las cortaría al medio o
      dejaría huecos. `ended` avisa exactamente cuando terminó. Por eso los
-     <video> NO llevan `loop`: con loop no termina nunca y el evento no llega.
+     <video> NO llevan `loop`: con loop no terminan nunca y el evento no llega.
      ------------------------------------------------------------------------ */
 
   function initHistorias() {
@@ -383,6 +454,8 @@
     const videos = [...seccion.querySelectorAll("[data-historia]")];
     if (!videos.length) return;
 
+    const fila = seccion.querySelector(".historias54__fila");
+    const marcos = videos.map((v) => v.closest(".historias54__marco") || v);
     const boton = seccion.querySelector("[data-historias-sonido]");
     const texto = seccion.querySelector("[data-historias-texto]");
 
@@ -408,30 +481,53 @@
       try { v.currentTime = 0; } catch (e) { /* todavía sin metadatos */ }
     }
 
-    /* Enciende la historia i y congela las otras dos. La clase .is-activa es
-       solo para el CSS (la que corre se ve entera, las otras se apagan un
-       poco): el estado de verdad es cuál está reproduciendo. */
+    /* EN EL TELÉFONO la fila es un carrusel horizontal, así que al cambiar de
+       historia hay que arrastrarlo hasta la que se activó — si no, la rueda
+       sigue girando fuera de la vista.
+       `scrollWidth > clientWidth` es la forma de preguntar "¿esto scrollea?"
+       sin consultar el ancho de la ventana ni duplicar el breakpoint del CSS:
+       si el CSS algún día cambia el punto de quiebre, esto lo sigue solo. */
+    function traerALaVista(marco) {
+      if (!fila || fila.scrollWidth <= fila.clientWidth) return;
+      const centro = marco.offsetLeft - (fila.clientWidth - marco.offsetWidth) / 2;
+      fila.scrollTo({ left: centro, behavior: "smooth" });
+    }
+
+    /* Enciende la historia i y congela las otras dos. La clase .is-activa va en
+       el MARCO y no en el video: es la que muestra la barrita de avance. */
     function activar(i) {
       actual = i;
       videos.forEach((v, n) => {
-        v.classList.toggle("is-activa", n === i);
-        if (n !== i) congelar(v);
+        marcos[n].classList.toggle("is-activa", n === i);
+        if (n !== i) {
+          congelar(v);
+          marcos[n].style.setProperty("--historia-avance", "0%");
+        }
       });
 
       const v = videos[i];
       v.muted = !conSonido;
       v.currentTime = 0;
       if (visible) reproducir(v);
+      traerALaVista(marcos[i]);
     }
 
-    // Al terminar una, sigue la próxima. El listener va en las tres desde el
-    // principio: es más simple que ponerlo y sacarlo en cada cambio.
     videos.forEach((v, n) => {
+      // Al terminar una, sigue la próxima.
       v.addEventListener("ended", () => {
         // Solo manda la que está activa: si otra dispara `ended` por lo que
         // sea, no tiene que mover la rueda.
         if (n !== actual) return;
         activar((n + 1) % videos.length);
+      });
+
+      // LA BARRITA DE AVANCE. Se escribe en una variable CSS y no en el ancho
+      // del elemento: así el color y la forma quedan en el CSS, con el resto
+      // del diseño.
+      v.addEventListener("timeupdate", () => {
+        if (n !== actual || !v.duration) return;
+        const pct = (v.currentTime / v.duration) * 100;
+        marcos[n].style.setProperty("--historia-avance", pct.toFixed(1) + "%");
       });
 
       // Tocar una historia la hace la activa. Es lo que uno intenta apenas ve
@@ -444,25 +540,68 @@
 
     activar(0);
 
-    /* La rotación solo corre mientras la sección se ve. Si se va de pantalla se
-       congela donde está; al volver, sigue la que estaba activa. */
-    new IntersectionObserver((entradas) => {
-      entradas.forEach((e) => {
-        visible = e.isIntersecting;
+    /* LA ROTACIÓN SOLO CORRE MIENTRAS LAS HISTORIAS SE VEN DE VERDAD.
+       Dos cosas importan acá, y las dos estaban mal antes:
+
+       1. SE OBSERVA LA FILA DE VIDEOS, no la sección. La sección incluye 112 px
+          de aire arriba y abajo, más el rótulo y el control de sonido: seguía
+          tocando la pantalla con los tres videos ya bien afuera.
+       2. SE MIRA EL RATIO, no isIntersecting — ver la nota grande de
+          seVeDeVerdad() más arriba. Ese era el motivo de que el audio siguiera
+          sonando mientras mirabas otra parte de la página. */
+    // El reloj de permanencia. Mientras está pendiente, todavía no suena nada.
+    let relojEntrada = null;
+
+    function mirar(seVe) {
+      visible = seVe;
+      clearTimeout(relojEntrada);
+
+      if (!seVe) {
+        // Irse corta el sonido en el acto, sin esperar nada.
+        videos.forEach((v) => v.pause());
+        return;
+      }
+
+      // Entrar NO arranca el video: arranca el reloj. Si el scroll sigue de
+      // largo, mirar(false) lo cancela y no suena nunca.
+      relojEntrada = setTimeout(() => {
         if (visible) reproducir(videos[actual]);
-        else videos.forEach((v) => v.pause());
-      });
-    }, { threshold: 0.25 }).observe(seccion);
+      }, ESPERA_SONIDO);
+    }
+
+    new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => mirar(seVeDeVerdad(e)));
+    }, { threshold: ESCALONES }).observe(fila || seccion);
+
+    /* Y SI TE VAS A OTRA PESTAÑA, TAMBIÉN SE FRENAN.
+       El navegador deja seguir sonando el audio de una pestaña en segundo
+       plano: es el otro caso de "suena algo que no estoy mirando", y el
+       observador no lo cubre, porque para él la fila sigue estando en pantalla. */
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) videos.forEach((v) => v.pause());
+      else if (visible) reproducir(videos[actual]);
+    });
+
+    /* Al irse de la página. Con Swup el <main> se reemplaza y estos videos
+       quedan sueltos fuera del documento — y un elemento desprendido puede
+       seguir reproduciendo audio. `pagehide` cubre además la navegación
+       normal y el botón de atrás. */
+    window.addEventListener("pagehide", () => videos.forEach((v) => v.pause()));
+    if (window.swup && window.swup.hooks) {
+      window.swup.hooks.on("visit:start", () => videos.forEach((v) => v.pause()));
+    }
 
     if (!boton) return;
 
-    // aria-pressed es el ÚNICO estado del botón: lo lee el lector de pantalla y
-    // lo lee el CSS para dibujar el icono.
+    /* EL CONTROL DE SONIDO.
+       aria-pressed es el ÚNICO estado: lo lee el lector de pantalla y lo lee el
+       CSS para dibujar el parlante y mover las barritas. El texto que cambia es
+       el nombre accesible (va en un .visually-hidden), no una etiqueta a la
+       vista — el estado se ve, no se lee. */
     function aplicarSonido(nuevo) {
       conSonido = nuevo;
       boton.setAttribute("aria-pressed", String(nuevo));
-      // Solo la activa suena. Las congeladas van mudas siempre: si no, al
-      // volver a arrancar sonarían dos a la vez por un instante.
+      // Solo la activa suena. Las congeladas van mudas siempre.
       videos.forEach((v, n) => { v.muted = !(nuevo && n === actual); });
       if (texto) texto.textContent = nuevo ? "Silenciar" : "Activar sonido";
     }
@@ -476,8 +615,8 @@
       /* Sacarle el `muted` a un video que está corriendo hace que el navegador
          vuelva a evaluar su política de reproducción, y si decide que no
          corresponde LO PAUSA. Si eso pasara y no hiciéramos nada, quedaría la
-         historia congelada con el botón diciendo "Silenciar": el botón estaría
-         mintiendo. Así que si se niega, se vuelve a mudo y se la deja
+         historia congelada con el control mostrando las barras en movimiento:
+         estaría mintiendo. Así que si se niega, se vuelve a mudo y se la deja
          corriendo. Preferimos sin sonido antes que trabada. */
       const intento = videos[actual].play();
       if (intento) {
@@ -512,6 +651,9 @@
 
     const ojo = new IntersectionObserver((entradas) => {
       entradas.forEach((e) => {
+        // Acá SÍ va isIntersecting y no seVeDeVerdad(): esto dispara UNA sola
+        // vez y no vuelve atrás, así que lo que se quiere es que arranque
+        // apenas asoma. No hay nada que frenar después.
         if (!e.isIntersecting) return;
         grilla.classList.add("is-in");
         ojo.disconnect();
@@ -545,12 +687,15 @@
       return;
     }
 
+    // Mismo criterio que las historias: el ratio y no isIntersecting. Estos van
+    // mudos, asi que no se escuchan de mas, pero un video fuera de pantalla se
+    // sigue decodificando igual, y en esta pagina son varios.
     const ojo = new IntersectionObserver((entradas) => {
       entradas.forEach((e) => {
-        if (e.isIntersecting) reproducir(e.target);
+        if (seVeDeVerdad(e)) reproducir(e.target);
         else e.target.pause();
       });
-    }, { threshold: 0.25 });
+    }, { threshold: ESCALONES });
 
     videos.forEach((v) => ojo.observe(v));
   }
@@ -566,17 +711,121 @@
      Antes los controles los agregaba este init al hacer play, y hasta ese
      momento no había con qué navegar el video. Y volver a tapar el video cada
      vez que se pausaba era pelearse con el que está mirando.
+
+     SE PAUSA SOLO AL SALIR DE PANTALLA. ACÁ ESTABA EL "RUIDO FANTASMA".
+     El teaser dura 1:45 y tiene voz. Si lo arrancabas y seguías scrolleando,
+     se quedaba sonando con el video fuera de pantalla: te acompañaba el resto
+     de la página sin que se viera de dónde salía. Medido: a 1800, 4000 y hasta
+     3000 px de distancia seguía reproduciendo con `visible=0px`.
+
+     Era el único video con audio sin control de visibilidad — las historias ya
+     lo tenían, así que la sospecha caía siempre sobre ellas y no era ahí.
+
+     LA REGLA NO ES LA MISMA QUE LA DE LAS HISTORIAS, y la diferencia importa.
+     Las historias son un loop de ambiente: se prenden y se apagan según lo que
+     estés mirando. El teaser lo arrancaste VOS. Así que:
+
+       · se pausa cuando se va de pantalla, pero se anota que lo pausamos
+         nosotros;
+       · al volver a verse, sigue SOLO si fuimos nosotros los que lo frenamos;
+       · si lo pausaste vos con los controles, al volver sigue pausado. Que la
+         página te reanude un video que frenaste a mano es de las cosas más
+         molestas que puede hacer.
+
+     LOS DOS UMBRALES SON DISTINTOS A PROPÓSITO (histéresis). Con un solo valor,
+     dejar el video justo en el límite lo hace prender y apagar en cada píxel de
+     scroll. Se frena recién cuando está prácticamente afuera (5%) y se reanuda
+     cuando ya volvió de verdad (60%).
      ------------------------------------------------------------------------ */
+
+  // Cuánto tiene que quedar a la vista para frenarlo, y cuánto para reanudarlo.
+  const TEASER_PAUSA = 0.05;
+  const TEASER_SIGUE = 0.6;
 
   function initTeaser() {
     const tapa = document.querySelector("[data-teaser-play]");
     const video = document.querySelector("[data-teaser-video]");
     if (!tapa || !video) return;
 
+    // true = lo frenamos nosotros porque se fue de pantalla, no el visitante.
+    let pausadoPorNosotros = false;
+
+    /* Distingue el pause que disparamos NOSOTROS del que hace el visitante.
+
+       OJO CON EL ORDEN, QUE ACÁ YA FALLÓ UNA VEZ: el evento `pause` es
+       ASÍNCRONO. No se dispara adentro de la llamada a video.pause(), sino
+       después, en otra vuelta del bucle de eventos. El primer intento bajaba
+       la bandera enseguida:
+
+           estaSaliendo = true;
+           video.pause();
+           estaSaliendo = false;   // ← acá todavía no llegó el evento
+
+       y cuando el evento por fin llegaba, la bandera ya estaba en false, así
+       que el listener creía que había pausado el visitante y borraba la marca.
+       Resultado medido: al volver a la sección el teaser se quedaba pausado en
+       vez de seguir.
+
+       La bandera la baja EL PROPIO LISTENER, que es el único que sabe cuándo
+       llegó el evento. */
+    let estaSaliendo = false;
+
+    // El reloj de permanencia para volver a arrancarlo.
+    let relojVuelta = null;
+
+    // Frena el video dejando anotado que fuimos nosotros.
+    function frenar() {
+      // Cancelar el reloj SIEMPRE, aunque el video ya esté pausado: si no, un
+      // scroll que entra y sale rápido deja el timer corriendo y el teaser
+      // arranca solo medio segundo después, ya fuera de pantalla.
+      clearTimeout(relojVuelta);
+      if (video.paused) return;
+      estaSaliendo = true;
+      pausadoPorNosotros = true;
+      video.pause();
+    }
+
     tapa.addEventListener("click", () => {
       reproducir(video);
       tapa.classList.add("is-fuera");
     });
+
+    // Si el visitante toca pausa con los controles nativos, deja de ser
+    // "nuestro": al volver a la sección no se reanuda solo.
+    video.addEventListener("pause", () => {
+      if (estaSaliendo) { estaSaliendo = false; return; }  // lo frenamos nosotros
+      pausadoPorNosotros = false;                          // lo frenó el visitante
+    });
+
+    new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => {
+        if (e.intersectionRatio <= TEASER_PAUSA) {
+          frenar();
+        } else if (e.intersectionRatio >= TEASER_SIGUE && pausadoPorNosotros) {
+          // Misma espera que las historias: volver a cruzar el teaser no lo
+          // reanuda, hay que quedarse. Si te vas antes, el reloj se cancela
+          // arriba, en la rama de frenar().
+          clearTimeout(relojVuelta);
+          relojVuelta = setTimeout(() => {
+            pausadoPorNosotros = false;
+            reproducir(video);
+          }, ESPERA_SONIDO);
+        }
+      });
+    }, { threshold: ESCALONES }).observe(video);
+
+    // Cambiar de pestaña es irse de la página igual que scrollear: si suena, se
+    // frena. Misma regla — vuelve solo si lo habíamos frenado nosotros.
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) frenar();
+    });
+
+    // Irse de la página con Swup: el <main> se reemplaza y este <video> queda
+    // suelto. Un elemento fuera del DOM puede seguir sonando.
+    if (window.swup && window.swup.hooks) {
+      window.swup.hooks.on("visit:start", () => video.pause());
+    }
+    window.addEventListener("pagehide", () => video.pause());
   }
 
 

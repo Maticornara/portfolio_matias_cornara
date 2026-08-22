@@ -159,6 +159,70 @@ function ConvertirVideoLoop($entrada, $salida, $anchoMax, $crf, $fps) {
 }
 
 # ------------------------------------------------------------------------------
+# VIDEO CON CUADROS INTERMEDIOS INVENTADOS
+# ------------------------------------------------------------------------------
+# ESTA ES LA FUNCION RARA DEL ARCHIVO Y CONVIENE ENTENDER POR QUE EXISTE.
+#
+# El plano de la cascada se veia a los tirones en la pagina y NO era un problema
+# de peso ni de decodificacion: medido con getVideoPlaybackQuality() del propio
+# navegador, se perdian CERO cuadros. El problema esta en el material.
+#
+# MEDIDO SOBRE EL ORIGINAL: 212 cuadros, de los cuales solo 147 son distintos
+# del anterior. O sea que 65 cuadros (el 31%) son copias del de al lado: el clip
+# es material de ~17 fps reales metido en un contenedor de 25. Es lo que sale de
+# generar video con IA y despues subirlo de frame rate duplicando cuadros. Se ve
+# como un tironeo irregular, y ninguna opcion de compresion lo arregla, porque
+# los cuadros que faltan no existen en ningun lado.
+#
+# QUE HACE ESTA FUNCION, en dos pasos:
+#   mpdecimate      tira los cuadros repetidos y deja los 147 que son distintos.
+#   minterpolate    INVENTA los cuadros del medio, calculando hacia donde se
+#                   movio cada parte de la imagen entre un cuadro y el
+#                   siguiente. Sale a 30 fps parejos.
+#
+# EL RESULTADO, medido igual que la entrada: 243 cuadros, de los cuales 202 son
+# distintos. Se paso de 31% de repetidos a 17%, y sobre todo el reparto quedo
+# PAREJO, que es lo que el ojo lee como movimiento continuo.
+#
+# CUANDO NO USARLA: minterpolate deforma la imagen si el movimiento es muy
+# rapido o si hay cosas que aparecen y desaparecen (un corte de plano, humo,
+# agua salpicando). En este clip se revisaron cuadros inventados en tres
+# momentos distintos y estan limpios, pero es material de plastilina con bordes
+# duros y movimiento simple. Para otro video hay que MIRARLO antes de dar por
+# bueno el resultado.
+#
+# La duracion baja de 8,48 s a 8,10 s porque mpdecimate se come los repetidos
+# del final. En un loop decorativo no se nota; si alguna vez importa, hay que
+# agregar un -t con la duracion exacta.
+#
+# Es LENTO: unos minutos para 8 segundos. Por eso el script es idempotente.
+# ------------------------------------------------------------------------------
+function ConvertirVideoInterpolado($entrada, $salida, $anchoMax, $crf, $fps) {
+  if (-not (Test-Path $entrada)) {
+    Write-Host "  falta: $(Split-Path -Leaf $entrada)" -ForegroundColor Yellow
+    return
+  }
+  if (-not (HayQueHacerlo $entrada $salida)) {
+    Write-Host "  ya esta: $(Split-Path -Leaf $salida) ($(Peso $salida))" -ForegroundColor DarkGray
+    return
+  }
+    # OJO: NADA DE RAYAS LARGAS NI COMILLAS TIPOGRAFICAS ADENTRO DE UN STRING
+  # DE POWERSHELL. Este archivo es UTF-8 SIN BOM y PowerShell 5.1 lo lee como
+  # cp1252: los tres bytes de una raya larga se decodifican como 'a', 'EUR' y
+  # una COMILLA TIPOGRAFICA de cierre, y PowerShell acepta esa comilla como
+  # delimitador de string. Resultado: el string queda abierto, se come la llave
+  # de cierre de la funcion y el script no parsea. En los comentarios (#) no
+  # pasa nada; adentro de comillas, si.
+  Write-Host "  interpolando $(Split-Path -Leaf $entrada) - esto tarda unos minutos..." -ForegroundColor DarkGray
+  & ffmpeg -y -v error -stats -i $entrada `
+    -vf "scale='min($anchoMax,iw)':-2,mpdecimate,minterpolate=fps=$($fps):mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1" `
+    -c:v libx264 -crf $crf -preset medium -pix_fmt yuv420p `
+    -g $fps -keyint_min $fps -sc_threshold 0 `
+    -movflags +faststart -an $salida
+  Write-Host "  $(Split-Path -Leaf $salida)  $(Peso $entrada) -> $(Peso $salida)" -ForegroundColor Green
+}
+
+# ------------------------------------------------------------------------------
 # LA SEÑAL: un recorte corto, saturado, mudo y en loop.
 # $segundos = cuanto dura el recorte, contado desde el principio.
 # ------------------------------------------------------------------------------
@@ -234,6 +298,47 @@ function ConvertirImagenAlfa($entrada, $salida, $anchoMax) {
 }
 
 
+# ------------------------------------------------------------------------------
+# IMAGEN CON ALFA, RECORTADA AL CONTENIDO
+# ------------------------------------------------------------------------------
+# Igual que ConvertirImagenAlfa pero le saca el margen transparente que rodea al
+# dibujo, ANTES de escalar.
+#
+# POR QUE HACE FALTA. Las dos fotos de los juguetes vienen recortadas contra
+# transparencia, pero con MUCHO aire alrededor: en JUGUETES.png las figuras
+# ocupan 961x706 de un archivo de 1599x899 — el 40% del ancho es nada. En la
+# pagina las dos se turnan adentro de una caja de alto fijo, asi que ese aire se
+# come el tamano y las figuras se ven chiquitas en el medio de un rectangulo
+# vacio.
+#
+# Y HAY UN SEGUNDO MOTIVO, que es el que de verdad importa: las dos imagenes se
+# ALTERNAN en el mismo lugar. Si cada una trae distinta cantidad de aire, las
+# figuras cambian de tamano y de posicion al pasar de una a la otra, y el cambio
+# se lee como un salto en vez de como la misma pieza pintandose. Recortadas al
+# contenido, las seis figuras quedan a la misma escala.
+#
+# LOS NUMEROS DEL CROP NO SON A OJO. Se saco el canal alfa de cada archivo y se
+# buscó, pixel por pixel, la primera y la ultima fila y columna con algo opaco
+# (alfa > 24, para no contar el borde suave del recorte):
+#   JUGUETES.png  contenido 961x706 arrancando en (332,138)  de 1599x899
+#   STL.png       contenido 527x302 arrancando en  (84,32)   de 673x348
+# SI CAMBIAN LOS ARCHIVOS HAY QUE VOLVER A MEDIR: un crop viejo sobre una imagen
+# nueva corta figuras por la mitad.
+# ------------------------------------------------------------------------------
+function ConvertirImagenAlfaRecortada($entrada, $salida, $crop, $anchoMax) {
+  if (-not (Test-Path $entrada)) {
+    Write-Host "  falta: $(Split-Path -Leaf $entrada)" -ForegroundColor Yellow
+    return
+  }
+  if (-not (HayQueHacerlo $entrada $salida)) {
+    Write-Host "  ya esta: $(Split-Path -Leaf $salida) ($(Peso $salida))" -ForegroundColor DarkGray
+    return
+  }
+  & ffmpeg -y -v error -i $entrada -vf "crop=$crop,scale='min($anchoMax,iw)':-1" -c:v png -pred mixed -compression_level 100 $salida
+  Write-Host "  $(Split-Path -Leaf $salida)  $(Peso $entrada) -> $(Peso $salida)" -ForegroundColor Green
+}
+
+
 $img = Join-Path $origen "imagenes"
 $pag = Join-Path $origen "paginas"
 
@@ -251,8 +356,8 @@ Write-Host "VIDEOS" -ForegroundColor Cyan
 # El -g de ConvertirVideoLoop mete un keyframe cada segundo: sin eso, el salto
 # del final al principio del loop tiene que decodificar hasta el keyframe
 # anterior y se nota un enganche en cada vuelta.
-ConvertirVideoLoop (Join-Path $img "HERO3.mov") (Join-Path $destino "hero-3.mp4") 960 30 24
-PosterDeVideo      (Join-Path $img "HERO3.mov") (Join-Path $destino "hero-3.jpg") 960 1
+ConvertirVideoInterpolado (Join-Path $img "HERO3.mov") (Join-Path $destino "hero-3.mp4") 960 30 30
+PosterDeVideo             (Join-Path $img "HERO3.mov") (Join-Path $destino "hero-3.jpg") 960 1
 
 # LA SEÑAL DE TIPINESTV — la carta de ajuste de plastilina.
 # Mati la pidio "a forma de GIF": autoplay, en loop, muda y sin controles. Sale
@@ -303,8 +408,8 @@ ConvertirImagenAlfa (Join-Path $img "JUEGO_SPRITE_SODAS.png")      (Join-Path $d
 # seccion. En JPEG una saldria con un rectangulo blanco y la otra con uno
 # negro, que es peor todavia que un solo fondo equivocado.
 $jug = Join-Path $origen "JUGUETES"
-ConvertirImagenAlfa (Join-Path $jug "JUGUETES.png") (Join-Path $destino "juguetes.png") 1400
-ConvertirImagenAlfa (Join-Path $jug "STL.png")      (Join-Path $destino "stl.png")        673
+ConvertirImagenAlfaRecortada (Join-Path $jug "JUGUETES.png") (Join-Path $destino "juguetes.png") "961:706:332:138" 1000
+ConvertirImagenAlfaRecortada (Join-Path $jug "STL.png")      (Join-Path $destino "stl.png")      "527:302:84:32"    600
 
 Write-Host ""
 Write-Host "EL LIBRO" -ForegroundColor Cyan

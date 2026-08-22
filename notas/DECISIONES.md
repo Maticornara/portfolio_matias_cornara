@@ -1982,3 +1982,1035 @@ es una pieza centrada sobre la franja negra, con el mismo tratamiento que el
 teaser: **900x505 dentro de una sección negra de 1425 de ancho.** La franja
 alrededor es la que le da el aire de proyección; el video no tiene que ser
 gigante para leerse. La perilla es `--casa-ancho`.
+
+## 26. Los estilos fantasma, y el menú de teléfono (21/08/2026)
+
+### EL FANTASMA: SWUP NUNCA TOCA EL `<head>`
+
+Mati lo describió como "archivos o disposiciones fantasma que cuando refresca
+se van". Esa última parte era la pista entera: **si refrescar lo arregla, el
+problema no está en el contenido, está en el `<head>`** — es lo único que un
+refresh rehace y una navegación de Swup no.
+
+Swup reemplaza `#swup` y (desde el punto 24) la nav. El `<head>` queda **para
+siempre el de la página por la que entraste al sitio**. Y las páginas de
+proyecto cargaban solo su propio CSS. Entonces:
+
+1. Entrás directo a `/proyectos/simbio.html` → su head trae variables, base,
+   layout y simbio. **No trae `archivo.css`.**
+2. Clic en Home → Swup mete el contenido de la portada en un documento cuyo
+   head nunca tuvo `archivo.css`.
+3. La portada se dibuja **sin su hoja de estilos entera**.
+
+**Medido:** el título de la portada salía a **114.8px negro** en vez de
+**35.2px verde**. Pasaba desde las tres páginas de proyecto, no desde una.
+
+Lo raro es que el comentario de `index.html` ya explicaba este bug y lo
+resolvía… **en un solo sentido**: index cargaba el CSS de todos los proyectos
+"para cuando la tarjeta linkee". Nadie hizo el camino de vuelta.
+
+**El arreglo: las cuatro páginas cargan la misma lista de CSS, en el mismo
+orden y con los mismos `?v=`.** El orden importa tanto como la lista: si cambia,
+cambia la cascada según por dónde entraste, que es el mismo bug con otra cara.
+
+Antes de hacerlo se verificó que no se pisaran: se inyectó `archivo.css` en las
+otras tres páginas y se comparó el estilo calculado de **cada** elemento.
+**604 elementos, 0 cambios.** Los nombres están apellidados por página
+(`.portada-hero__*`, `.simbio-*`, `.s54*`, `.stip*`), así que conviven.
+
+**SI AGREGÁS UNA PÁGINA NUEVA, SU CSS VA EN LAS CUATRO.** Es la regla que deja
+este bug cerrado. La alternativa "de manual" sería el head-plugin de Swup, que
+intercambia el `<head>` de verdad; se descartó por no sumar otra dependencia de
+CDN a un sitio sin build step, y porque cargar todo es gratis (son cuatro
+archivos chicos, cacheados, y ya se probó que no colisionan).
+
+**DE PASO, DOS FUGAS DE LA MISMA FAMILIA** — nodos que el JS cuelga del `<body>`
+y que, por estar fuera de `#swup`, Swup no limpia nunca:
+
+- `initReglaGrilla` no tenía guarda: con `?grid` cada navegación dejaba **otra**
+  regla encima de la anterior.
+- `initLupa` arma un cierre nuevo por página, así que la capa `.lupa` de la
+  página anterior quedaba colgada del documento para siempre — invisible, pero
+  ahí, comiéndose clics.
+
+Las dos ahora barren lo viejo antes de crear lo nuevo. **La regla general: si un
+init cuelga algo del `<body>`, tiene que poder correr dos veces.**
+
+### CÓMO SE ENCONTRÓ (importa, porque el primer intento falló)
+
+El primer censo del DOM salió **limpio**: 1 `#swup`, 1 nav, 13 hijos del body,
+cero ids duplicados, en siete navegaciones con ida, vuelta y botón de atrás. Eso
+descartó la hipótesis obvia (nodos duplicados) y fue lo que obligó a mirar el
+`<head>`. **Un censo que da limpio no es una pérdida de tiempo: es lo que te
+saca de la hipótesis equivocada.**
+
+Y el bug **no se reproducía** navegando desde `index.html`, que es por donde uno
+prueba siempre. Solo aparece **entrando directo a un proyecto**. Al reproducirlo
+hay que desactivar la caché del navegador (`Network.setCacheDisabled`): el `?v=`
+versiona el CSS, **no el HTML**, y Chrome servía los `.html` viejos.
+
+### EL MENÚ HAMBURGUESA
+
+Debajo de 620px los cuatro botones se apilaban y la barra fija se comía **91px
+medidos** todo el tiempo. Ahora: barra baja con un botón redondo de 44px (el
+mínimo para tocar cómodo) a la derecha. **Cerrada mide 68px.**
+
+**NO ES UN CAJÓN QUE ENTRA DESDE UN COSTADO: es la misma barra que crece.** Se
+anima `max-height` y nada más. Por eso no hace falta ni un panel aparte en el
+HTML, ni una capa oscura, ni bloquear el scroll. Los `<span>` de las rayas se
+vuelven una X con dos rotaciones.
+
+Tres cosas que no son obvias y hay que respetar si se toca:
+
+1. **El botón va PRIMERO en el HTML** (para caer arriba a la derecha en el
+   teléfono) y lleva `display: none` en desktop. Eso es lo que hace que **no le
+   ocupe una columna** a la grilla de la nav: un elemento con `display: none` no
+   es un ítem de grilla. Verificado: en desktop el primer botón sigue cayendo en
+   308, el mismo borde de columna que el contenido de la página.
+2. **Los enlaces escondidos llevan `visibility: hidden`, no solo `opacity: 0`.**
+   Con opacity sola se pueden tabular botones que no se ven.
+3. **La guarda de `initHamburguesa` va en el NODO (`dataset.listo`), no en una
+   variable de módulo.** Swup reemplaza la nav, así que el `<button>` es otro
+   nodo en cada navegación y hay que volver a engancharlo — al revés que
+   `initNavEsquiva`, cuyos listeners viven en `window` y se ponen una sola vez.
+   Las dos guardas parecen lo mismo y resuelven problemas opuestos.
+
+Detalles: con el menú abierto la barra **no se esconde** al scrollear (se iría
+con el menú puesto y volvería abierta). Elegir una opción cierra —hace falta
+para los anclas de la misma página, donde no hay navegación que traiga una nav
+nueva—. Escape cierra y devuelve el foco al botón. Y **abierta el fondo pasa a
+98% opaco con una línea abajo**: con el 88% de la barra los botones quedaban
+flotando sobre el dibujo de la caja, sin un borde que dijera dónde termina el
+menú. Cerrada es una barra y deja ver la página; abierta es un panel.
+
+Probado a 390px: abre a 216px con los 6 botones visibles, cierra por botón, por
+Escape y al elegir una opción; el ancla de la misma página cierra el menú y
+además cae a 48px del tope; y después de navegar a +54 el botón de la nav nueva
+funciona igual.
+
+
+---
+
+## 27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)
+
+Repaso sección por sección sobre la primera versión. Casi todo eran textos y
+tamaños; lo que llevó trabajo de verdad fueron tres cosas: el visor del libro,
+la banda de la miniserie y el orden de la página.
+
+### EL ORDEN CAMBIÓ: EL PROCESO SE FUE AL ANTEÚLTIMO LUGAR
+
+Estaba en el medio, entre la tele y los juguetes. Ahora va después del juego y
+antes del cierre. El motivo es de lectura y vale para cualquier página de
+proyecto: **primero se ven las piezas terminadas, después se explica cómo se
+hicieron.** En el medio, el proceso cortaba el recorrido para explicar algo de
+lo que todavía faltaba la mitad.
+
+Orden nuevo: hero · intro al libro · el libro · la miniserie · la tele ·
+los juguetes · el mini-juego · **el proceso** · el cierre.
+
+### EL VISOR: POR QUÉ NO SIRVIÓ LA LUPA QUE YA EXISTÍA
+
+"Ver en grande" usaba `initLupa` de `main.js`, que es la de los líquenes de
+Simbio y las láminas de +54. **Abre la imagen adentro de un marco de polaroid**
+—borde blanco y más aire abajo— y eso para una lámina impresa está perfecto,
+porque el marco dice "esto es una foto". Para un pliego apaisado de un
+busca-personajes, el marco se come el ancho y la imagen termina **más chica que
+el propio librito de la página**. Mati lo describió exacto: "se visualiza como
+post-it".
+
+El visor nuevo (`armarVisor`, en `js/tipines.js`) no tiene marco: el pliego
+ocupa lo que puede de la ventana sobre negro liso, y se puede acercar hasta
+2,6x haciendo click, con arrastre para moverse. **Medido: el pliego abre a
+1187x840 en una ventana de 1600x1000**, o sea prácticamente el tamaño original
+del archivo.
+
+Tres decisiones del visor que no son obvias:
+
+- **Comparte el estado con el libro.** Es el mismo `actual`: lo que se ve en
+  grande es siempre el pliego abierto, y si pasás de página adentro del visor,
+  al cerrar el libro quedó ahí. Por eso `armarVisor` se llama DESDE
+  `initLibro` y no es un módulo aparte.
+- **Vive fuera de `#swup`** y sus listeners se enganchan UNA sola vez, con la
+  marca `data-visor-armado`. El libro que está en pantalla se le pasa en
+  `visor.__libro` y los handlers lo leen recién al dispararse. Sin eso, cada
+  navegación de Swup sumaba una copia de cada listener.
+- **Con el visor abierto, el teclado del libro se calla.** Los dos escuchan las
+  flechas; sin el `if (visor.estaAbierto()) return`, cada flecha avanzaba DOS
+  pliegos.
+
+### LA LÍNEA CLARA EN EL LOMO DEL LIBRO
+
+Con las sombras arregladas apareció, por debajo, un bug que estaba tapado: **una
+línea clara por el medio del pliego**, que era el fondo de la sección asomando.
+
+Las dos mitades quedan borde contra borde exactamente en el 50%, y ninguna cae
+sobre un pixel entero: el ancho del libro sale de un `svh`, así que casi siempre
+es fraccionario. El navegador redondea cada hoja para su lado y entre las dos
+falta medio pixel.
+
+El arreglo es un pixel de solape, y **el orden en la lista de transforms es todo
+el truco**:
+
+```css
+.hoja.is-pasada {
+  transform: translateX(var(--libro-solape, 1px)) rotateY(-180deg) translateZ(...);
+}
+```
+
+El `translateX` va PRIMERO en la lista, o sea que se aplica AL FINAL, ya en el
+espacio del padre: corre la hoja aterrizada un pixel hacia el lomo. Escrito
+DESPUÉS del `rotateY` se aplicaría antes de girar, o sea hacia el lado
+contrario, y el hueco se haría más grande.
+
+### LAS SOMBRAS DEL LIBRO: LAS TENÍAN LAS 16 HOJAS
+
+`box-shadow` estaba en `.hoja`, o sea en las dieciséis. Como están apiladas una
+sobre otra, **las 16 sombras se sumaban en un halo oscuro y sucio alrededor del
+libro**. En un libro de verdad la única superficie que proyecta sombra es la de
+afuera de cada pila: la hoja abierta a la derecha y la última pasada a la
+izquierda. Ahora la sombra cuelga de `.hoja.is-arriba`, que `initLibro` le pone
+solo a esas dos. **Medido: 2 hojas con sombra de 16.**
+
+El pliegue del lomo iba a `.22` de negro disolviéndose recién al 45% del ancho
+de la página: eso no era un pliegue, era una franja oscura por el medio del
+dibujo, justo donde el libro tiene más cosas escondidas. Ahora arranca en `.10`
+y termina al 18%.
+
+### EL VIDEO DEL HERO SE TRABABA — ERAN TRES COSAS SUMADAS
+
+1. `preload="none"`: empezaba a reproducirse mientras todavía se estaba bajando.
+   Pasó a `auto`; pesa 763 KB, se puede pedir de entrada.
+2. Estaba a 1280 y 25 fps (casi 900 kbps) para verse a menos de media pantalla.
+   Bajó a 960 y 24 fps.
+3. **Un keyframe por segundo** (`-g`, en `ConvertirVideoLoop`). Un loop de
+   `<video>` vuelve al cuadro 0 de golpe; si el keyframe más cercano quedó
+   lejos, el decodificador tiene que reconstruir desde ahí y se ve un enganche
+   en CADA vuelta.
+
+### LA MINISERIE: DE UN RECTÁNGULO DE TEXTO A UNA PANTALLA
+
+Eran dos bloques de texto grandes, uno al lado del otro y del mismo largo.
+"Rarísimo", y con razón: dos columnas de palabras del mismo peso no se leen como
+una sección, se leen como un rectángulo de texto.
+
+Ahora la sección mide **100svh completos** —el apagón se siente como un cambio
+de sala— con la carta de ajuste de plastilina (`senal.mp4`) en la mitad
+izquierda y un solo texto en la derecha.
+
+**LA SEÑAL SALE EN MP4 Y NO EN GIF**, aunque el pedido fue "a forma de GIF". El
+comportamiento de gif lo dan los atributos del `<video>`: `autoplay + loop +
+muted + playsinline` (y `muted` no es opcional — sin eso ningún navegador deja
+que un video arranque solo). Los mismos 4 segundos en un `.gif` de verdad pesan
+varios MB, porque el formato tiene paleta de 256 colores y no comprime entre
+cuadros; en MP4 son **810 KB** y sin bandas. El recorte a 4 segundos y la
+saturación (+30%) los hace el script de assets, no el CSS.
+
+### LA TELE EN PANTALLA COMPLETA
+
+El `<video>` está en `position: absolute` y medido en PORCENTAJES del marco de
+la tele. Al pedir pantalla completa, el navegador lo saca de la página pero **no
+le borra esos estilos**: seguía dibujándose del tamaño del hueco de la tele,
+arrinconado sobre un fondo negro gigante, con la barra de controles fuera de
+donde uno la va a buscar. De ahí que "no se pudiera navegar".
+
+Se arregla con tres reglas `:fullscreen`, y **van repetidas con los prefijos, no
+en una lista separada por comas**: si el navegador no entiende UNO de los
+selectores de la lista, descarta la regla entera.
+
+### LOS TAMAÑOS: DOS CASOS DEL MISMO ERROR
+
+**Los juguetes** se repartían por ANCHO en columnas. Los dos archivos tienen
+proporciones muy distintas (el STL es 673x348, casi el doble de ancho que alto;
+las figuras son 1599x899), así que a igual ancho el STL terminaba con **un
+tercio del alto** de las figuras: una miniatura perdida abajo a la izquierda con
+un agujero enorme encima. Lo que el ojo compara entre dos fotos apoyadas en el
+mismo piso es el ALTO, así que ahora se manda por ahí (`--stl-alto` y
+`--figuras-alto`), con `align-items: end` para que compartan la línea de piso.
+
+**Los sprites** eran lo mismo al revés: tres hojas de formas distintas
+(874x582, 467x423, 339x272) a ancho de columna, cada una con un alto distinto,
+ninguna alineada con las otras y todas enormes. Ahora la fila tiene un alto
+fijo (`--sprite-alto`) con `object-fit: contain`, así que las tres comparten
+borde de arriba y de abajo y los tres pies de foto caen en el mismo renglón.
+
+### LA FICHA DEL PROCESO, MÁS APRETADA
+
+Iba de punta a punta: siete renglones de 11 px estirados sobre 1300 px, con la
+herramienta tan lejos de la acción que había que barrer la fila con el ojo para
+juntarlas. Se leía como una planilla. Ahora va adentro del bloque de texto
+(columnas 2-3) y cada fila apila la acción y la herramienta en la misma
+columna, con el número a la izquierda y la marca de IA / a mano a la derecha.
+Es, literalmente, el layout que ya tenía en el teléfono — que se leía mejor que
+el de escritorio.
+
+### LO DEMÁS
+
+- Hero: los textos arrancan ARRIBA, alineados con el borde de arriba del paneo.
+  Con la bajada de dos párrafos, centrado dejaba el título flotando a media
+  altura sin nada con qué alinearse.
+- Textos nuevos de Mati en el hero, la intro al libro y TippinesTV.
+- Se sacó el rótulo "HOJEALO" del libro: un libro dibujado con su tapa y dos
+  flechas debajo no necesita que le avisen qué hacer.
+- Se le sacó la flechita de link externo al botón JUGAR. Decía JUGAR y al lado
+  tenía un ícono, o sea dos mensajes para una sola cosa.
+
+### CÓMO SE VERIFICÓ
+
+- **El visor**: abre a 1187x840 con el pliego correcto; el zoom aplica
+  `scale(2.6)` con el desplazamiento acotado; pasar de página adentro sincroniza
+  el contador del libro ("Pliego 05 / 15" en los dos); cierra con la X y con
+  Escape.
+- **Las sombras**: 2 hojas de 16.
+- **La miniserie**: la sección mide 1000 px con una ventana de 1000, o sea
+  100svh exactos, y la señal está reproduciéndose.
+- **El orden de las secciones**, leído del DOM: hero, El libro, libro,
+  La miniserie, tele, Los juguetes, El mini-juego, El proceso, cierre.
+- **Sin desborde horizontal** a 390 px, y cero errores de JS. El único 404 de
+  toda la página es `favicon.ico`, que falta en todo el sitio.
+
+### QUEDA PENDIENTE
+
+1. **La bajada del hero** tiene una repetición del propio texto: "Un universo de
+   plastilina… Habitan un mundo hecho de plastilina". Está puesta tal cual la
+   pasó Mati; si la quiere limpia, es sacar la segunda.
+2. **La ficha del proceso** se apretó, pero el pedido fue "no me convence tanto
+   como está" y eso puede querer decir otra cosa. Si el problema es el formato y
+   no el tamaño, la alternativa es una tira horizontal de siete pasos con la
+   flecha de vuelta dibujada por debajo.
+3. **La apertura está copiada tres veces** (simbio.css, mas-54.css, tipines.css).
+   Con tres páginas ya se ganó la mudanza a layout.css.
+
+---
+
+## 22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)
+
+### EL CONTROL DE VOLUMEN — ESTÁNDAR PARA TODO EL PORTFOLIO
+
+**Donde haya que prender o apagar sonido va este control y no otro.** Sin texto:
+
+| Señal | Sonido activado | Sonido desactivado |
+|---|---|---|
+| Parlante | con ONDAS | con la CRUZ de mute |
+| Barritas de ecualizador | se MUEVEN | quietas y bajas |
+
+**Por qué sin texto.** Un botón que dice "SILENCIAR" obliga a preguntarse si eso
+es el estado actual o lo que va a pasar si lo tocás — la ambigüedad clásica del
+toggle escrito con un verbo. Unas barras que se mueven no tienen esa duda: se
+entienden de reojo, sin leer, y no dependen del idioma. El texto queda como
+**nombre accesible** en un `.visually-hidden` adentro del botón.
+
+Está en `css/mas-54.css`, sección **"EL CONTROL DE SONIDO — EL ESTÁNDAR DEL
+SITIO"**, escrito genérico (`.control-sonido`, sin apellido de sección) para
+poder copiarlo tal cual. **Cuando una segunda página necesite volumen, ese
+bloque se muda a `layout.css` sin cambiarle nada.**
+
+**Todo el estado cuelga de `aria-pressed`** — el mismo atributo que lee el lector
+de pantalla es el que usa el CSS para dibujar las dos señales. Un solo dato,
+imposible de desincronizar. Nunca una variable de JS en paralelo.
+
+Los retrasos de las cinco barras son valores **fijos y elegidos uno por uno**, no
+al azar: al azar dos barras caen en fase y el conjunto se lee como un error en
+vez de como un ecualizador. Con `prefers-reduced-motion` no saltan, pero el
+estado se sigue leyendo — prendido son barras ALTAS y quietas, apagado BAJAS y
+quietas, más el parlante, que no depende de ninguna animación.
+
+### LAS HISTORIAS NO CAMBIAN DE COLOR
+
+Estuvieron un rato con las que esperan bajadas de **opacidad y saturación** para
+marcar cuál corría. Estaba mal, y no solo porque se veía raro: **les reescribía
+el color a unas piezas que son diseño gráfico terminado.** La regla de esta
+página es que la página no toca el material — vale para el recorte, para la
+inclinación y también para el color.
+
+Ahora las tres se ven siempre a full. La que corre se distingue por:
+
+1. **el movimiento** — que es la señal más fuerte que hay, y es gratis;
+2. **una barrita verde abajo** que avanza con el video (`timeupdate` → una
+   variable CSS). El verde es el acento del sistema, no un color nuevo.
+
+Medido: las tres quedan en `opacity: 1` y `filter: none`.
+
+### EL TAMAÑO SALE DEL ALTO DE LA VENTANA, NO DEL ANCHO DE LA GRILLA
+
+Son 9:16. Dándoles un tercio de la grilla (unos 412 px) el alto se iba a **733 px**
+y se cortaban abajo de la pantalla. Ahora la fila se limita a lo que entra a lo
+alto y queda centrada:
+
+```
+max-width: calc(var(--historia-alto) * 9 / 16 * 3 + var(--grid-gap) * 2)
+```
+
+Con `--historia-alto: 58svh` las tres entran enteras de una sola vez. Es la
+perilla para verlas más chicas o con más aire.
+
+### EN EL TELÉFONO ES UN CARRUSEL, PERO LAS OTRAS DOS SIGUEN A LA VISTA
+
+`overflow-x: auto` + `scroll-snap`, con cada historia al **58%** del ancho: quedan
+21% de cada lado, que alcanza para reconocer qué hay al costado sin que la del
+medio deje de mandar. El aire de los costados sale de la misma cuenta
+(`padding-inline: calc((100% - var(--historia-movil)) / 2)`), así que se toca un
+solo número. Sin ese padding la primera y la última no pueden llegar a centrarse.
+
+El JS arrastra el carrusel a la que se activa sola. Para saber si hay que
+arrastrar pregunta `scrollWidth > clientWidth` y **no** el ancho de la ventana:
+así no duplica el breakpoint del CSS y lo sigue solo si cambia.
+
+### LOS NEGROS, A LA PALETA
+
+El teaser tenía `#000` crudo y la sección de la casa un `background: var(--negro)`
+plano escrito a mano, que **pisaba el `--grad-negro` de `.zona--negro`** y quedaba
+chato al lado de las otras secciones oscuras. Ahora el teaser usa `var(--negro)`
+y la casa no declara fondo: lo saca de su zona, como corresponde. Ninguna
+superficie del sistema es 100% plana.
+
+## 28. El par ES/EN: traducción automática de Google (22/08/2026)
+
+Los botones ES/EN estaban puestos "como forma, todavía sin función" desde el
+principio. Ahora funcionan, con el widget de Google Translate.
+
+**LO PRIMERO, PORQUE CONDICIONA TODO:** Google **discontinuó** el Website
+Translator en 2019. El script sigue vivo y traduciendo, pero es un servicio sin
+soporte que puede cortarse sin aviso. Si un día los botones dejan de hacer nada,
+empezá por ahí y no por `js/traduccion.js`. Todo el módulo está escrito para
+fallar en silencio: si el script no carga, la página se queda en español.
+
+### LAS TRES COSAS QUE COSTARON, TODAS MEDIDAS
+
+**1. EL WIDGET NO TIENE API. Y EL PRIMER PEDIDO SE PIERDE.**
+No existe un "traducí a inglés". Lo único que se puede hacer es que Google
+inyecta un `<select>` escondido (`.goog-te-combo`) y uno le pone un valor y le
+dispara un `change` a mano.
+
+Lo que no dice ningún tutorial: **el primer disparo no hace nada**. El select
+aparece en menos de un segundo, pero su manejador todavía no está enganchado.
+Y no se recupera solo — se muestreó cada segundo durante **9 segundos** y seguía
+en español. El mismo disparo repetido después traduce en menos de un segundo.
+
+Por eso `cambiarA()` **insiste**: reintenta hasta ver el resultado, no hasta que
+el select exista. La señal de que funcionó es la clase `translated-ltr` que
+Google le pone al `<html>`; es lo único observable desde afuera.
+
+**2. VOLVER AL ESPAÑOL NECESITA RECARGAR.** Se probaron las tres formas:
+
+| | |
+|---|---|
+| `value="" ` + change | sigue en inglés |
+| borrar la cookie + `value=""` + change | sigue en inglés |
+| **borrar la cookie + recargar** | **vuelve al español ✓** |
+
+Google guarda el idioma en una cookie `googtrans` y la lee al arrancar; mientras
+esa cookie exista, cualquier carga sale traducida. Así que ES borra la cookie y
+recarga. **Es la única vez que el sitio recarga de verdad en vez de navegar con
+Swup.** Ir a inglés no recarga: eso sí se hace en caliente.
+La cookie se borra en varias rutas a propósito — Google la escribe a veces en
+`/` y a veces en la carpeta de la página, y si queda una viva la traducción
+vuelve sola.
+
+**3. GOOGLE INYECTA INTERFAZ PROPIA Y HAY QUE TAPARLA.** Una barra arriba de
+todo, y de yapa le pone `top: 40px` al `<body>` **con estilo en línea**. Eso
+empuja la página entera y deja la nav fija flotando 40px más abajo del borde. El
+`body { top: 0 !important }` de layout.css es lo único que gana contra un estilo
+en línea. Buscá **"GOOGLE TRANSLATE"** ahí.
+
+### LO QUE NO SE TRADUCE, Y POR QUÉ
+
+**Los nombres propios llevan `translate="no"`**: Archivo, Simbio, +54, Amigos
+Tipines, Matías Cornara, Universidad Torcuato Di Tella. Sin eso "Archivo" se
+convierte en "File" y "Mi Cajón" en "My Drawer" — peor que no traducir.
+
+**Y LA NAV LLEVA SU INGLÉS ESCRITO A MANO** (`data-es` / `data-en` +
+`translate="no"`). Es la única excepción al "todo lo traduce Google", y tiene un
+motivo concreto: la traducción automática es mala justo donde son palabras
+sueltas sin contexto, y la nav es exactamente eso — y es lo primero que se ve.
+**Medido: Google convertía "Trabajos" en "JOBS"**, o sea puestos de trabajo,
+cuando acá quiere decir obra. En un portfolio eso no es un matiz, está mal.
+Quedó: Home / About / Work / Contact.
+
+Si mañana Google traduce mal otra cosa corta, el arreglo es el mismo:
+`translate="no"` + `data-es` + `data-en`, y `palabrasDeLaNav()` lo levanta solo.
+
+### DETALLES QUE IMPORTAN
+
+- **El script de Google se carga recién al tocar el botón**, no de entrada: es un
+  pedido a un tercero y la mayoría de las visitas nunca lo va a usar.
+- **La elección se recuerda** en localStorage, envuelto en try/catch (en incógnito
+  tira excepción).
+- **Después de navegar con Swup hay que retraducir**: la página nueva entra en
+  español, que es el HTML tal cual. `initTraduccion` está enchufado en el
+  `page:view` de transiciones.js.
+- **La guarda va en el nodo** (`dataset.listo`), no en una variable de módulo:
+  Swup reemplaza la nav y esos botones son otros nodos. Misma razón que
+  `initHamburguesa`.
+
+Probado de punta a punta: arranque limpio en español → EN traduce → navegar a
+otra página con Swup mantiene el inglés → ES vuelve al español → refrescar
+respeta lo elegido, en los dos idiomas. Y el menú hamburguesa en 390px muestra
+Home / About / Work / Contact con EN marcado.
+
+**De paso:** se sacaron los últimos "Mi Cajón" visibles (el `<title>` y el pie de
+simbio.html). El nombre público es **Archivo**.
+
+---
+
+## 23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)
+
+Las historias seguían reproduciéndose —con sonido— mientras se miraba otra
+parte de la página. **La causa es una trampa clásica de IntersectionObserver y
+vale la pena tenerla anotada, porque el código parecía correcto:**
+
+> `entry.isIntersecting` **NO** significa "se cumplió el threshold".
+> Significa "el elemento toca el viewport aunque sea por un pixel".
+
+El `threshold` decide **cuándo se dispara el callback**, no qué valor tiene
+`isIntersecting` cuando se dispara. Con `threshold: 0.25` el callback salta al
+cruzar el 25%, pero en ese instante `isIntersecting` sigue siendo `true`. O sea
+que un `visible = e.isIntersecting` se queda en `true` **hasta que el elemento
+se va entero de la pantalla**.
+
+Se sumaban dos cosas:
+
+1. **Se observaba la SECCIÓN y no los videos.** La sección tiene 112 px de aire
+   arriba y abajo, más el rótulo y el control de sonido: seguía tocando la
+   pantalla con los tres videos ya bien afuera.
+2. **Se miraba `isIntersecting`** en vez del ratio.
+
+### LA FORMA CORRECTA
+
+```js
+const ESCALONES = [0, 0.15, 0.35, 0.6, 0.85, 1];
+const UMBRAL_VISIBLE = 0.6;
+
+function seVeDeVerdad(e) {
+  return e.intersectionRatio >= UMBRAL_VISIBLE ||
+         e.intersectionRect.height >= window.innerHeight * UMBRAL_VISIBLE;
+}
+```
+
+- **Hay que pedir VARIOS thresholds.** Con uno solo el callback no se dispara en
+  los valores intermedios y el ratio queda desactualizado.
+- **El segundo término del OR es para elementos MÁS ALTOS que la ventana**: ahí
+  el ratio nunca puede llegar a 0,6, así que se pregunta al revés — cuánto de la
+  PANTALLA está ocupando el elemento.
+
+Se aplicó a los cuatro observadores de reproducción de `mas-54.js` (historias,
+videos sueltos, piezas que se turnan y carrusel). **El de `initFotosCasa` sigue
+usando `isIntersecting` a propósito**: dispara una sola vez y no vuelve atrás,
+así que ahí lo que se quiere es que arranque apenas asoma.
+
+### LOS OTROS DOS CASOS DE "SUENA ALGO QUE NO ESTOY MIRANDO"
+
+El observador no los cubre, porque para él el elemento sigue en pantalla:
+
+- **Pestaña en segundo plano.** El navegador deja seguir sonando el audio.
+  Se agrega un `visibilitychange` que pausa con `document.hidden`.
+- **Irse de la página.** Con Swup el `<main>` se reemplaza y los videos quedan
+  sueltos fuera del documento — y **un elemento desprendido puede seguir
+  reproduciendo audio**. Se pausa en `pagehide` (que cubre también la navegación
+  normal y el botón de atrás) y en el hook `visit:start` de Swup si existe.
+
+### MEDIDO, EN TRES VENTANAS
+
+| Fila visible | 1440x900 | 1440x620 | 390x844 |
+|---|---|---|---|
+| 100% | suena | suena | suena |
+| 70-80% | suena | suena | — |
+| 49-51% | **frenado** | **frenado** | **frenado** |
+| 0% | frenado | frenado | frenado |
+| volver a subir | retoma | retoma | retoma |
+| pestaña oculta | **frenado** | **frenado** | **frenado** |
+
+
+---
+
+## 29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)
+
+Ronda de correcciones. Lo que llevó trabajo esta vez fueron los diagnósticos:
+cuatro de los seis problemas resultaron ser otra cosa de lo que parecían.
+
+### EL VIDEO DEL HERO: NO ERA EL PESO, ERA EL MATERIAL
+
+Se había achicado dos veces y seguía a los tirones. Antes de tocarlo una tercera,
+se midió con `getVideoPlaybackQuality()`, que es el contador del propio
+navegador. **Cero cuadros perdidos**, en cuatro configuraciones distintas (con y
+sin `will-change` en el riel, con y sin Lenis, con el video adentro y afuera del
+riel transformado). O sea: el navegador dibujaba todos los cuadros que le daban.
+
+El problema estaba en el archivo, y se ve contando cuántos cuadros son distintos
+del anterior (`mpdecimate`):
+
+```
+HERO3.mov   212 cuadros   ->   solo 147 distintos
+```
+
+**65 cuadros, el 31%, son copias del de al lado.** El clip es material de ~17 fps
+reales metido en un contenedor de 25: es lo que sale de generar video con IA y
+después subirle el frame rate duplicando cuadros. Ninguna opción de compresión lo
+arregla, porque los cuadros que faltan no existen.
+
+**Qué se hizo**: `mpdecimate` para tirar los repetidos y `minterpolate` para
+INVENTAR los del medio, calculando hacia dónde se movió cada parte de la imagen.
+Sale a 30 fps parejos. Medido igual que la entrada: **243 cuadros, 202 distintos
+— del 31% de repetidos al 17%, y sobre todo repartidos parejo**, que es lo que el
+ojo lee como movimiento continuo. Está en `ConvertirVideoInterpolado`, en
+`tools/optimizar-tipines.ps1`, con la advertencia de cuándo NO usarla
+(minterpolate deforma si hay movimiento muy rápido o cosas que aparecen y
+desaparecen; en este clip se revisaron tres cuadros inventados y están limpios).
+
+**La otra mitad del "se traba" era de código**: `initPaneo` pausaba el video al
+salir de turno y lo retomaba al volver. El clip dura 8 s y el turno 4,6, así que
+cada vuelta retomaba desde otro punto, y encima el primer cuadro después de un
+`play()` tarda en salir. Ahora corre mientras el hero esté en pantalla, sea o no
+la pieza visible: un video mudo de 960x540 no cuesta nada tenerlo corriendo.
+
+### EL VISOR DEL LIBRO DEJÓ DE FUNCIONAR — Y NO DIO NINGÚN ERROR
+
+"Ver en grande" no hacía nada. El botón existía, el JS corría, no había ni una
+línea roja en consola.
+
+**Lo que pasó**: el `<div class="visor">` estaba escrito en
+`proyectos/amigos-tipines.html`. Cuando esa página se regeneró desde la plantilla
+que comparten las cuatro páginas modernas, el bloque se perdió. El
+`querySelector("[data-visor]")` devolvió `null`, la función salió con un `return`
+y listo — el silencio perfecto.
+
+**El arreglo no es volver a pegar el HTML**: el visor ahora lo ARMA el JS
+(`crearVisor()`) y lo cuelga del `<body>`. Así no puede desincronizarse de la
+plantilla. Es la regla que ya estaba escrita para el JS —"si un init cuelga algo
+del `<body>` tiene que poder correr dos veces"— con una segunda mitad:
+**si algo vive fuera de `#swup`, que lo cree el JS, no el HTML.**
+
+### LAS SOMBRAS DEL LIBRO, TERCERA VERSIÓN Y ÚLTIMA
+
+Iban en las 16 hojas (halo sucio, porque se suman), después solo en las dos de
+afuera de cada pila. Seguía mal: eran DOS sombras, una por mitad, y donde se
+tocaban en el lomo se juntaban y oscurecían. Se leía como dos manchas, no como un
+objeto apoyado.
+
+Ahora es **UNA sola sombra que cuelga del escenario** (`.libro__escena::before`),
+no de las hojas. Su forma es la del libro tal como está: el pliego entero abierto,
+media A3 cerrado, y anima entre las dos al abrir. Con `spread` negativo (-14px)
+para que la sombra se meta DEBAJO del papel en vez de asomar por los costados,
+que es la diferencia entre "objeto apoyado en una mesa" y "halo alrededor".
+Medido: 0 hojas con `box-shadow` de 16.
+
+### "UNA SECCIÓN, UNA PANTALLA" — Y EL AIRE MEDIDO EN svh
+
+Todas las secciones pasaron a `min-height: 100svh` con el contenido centrado.
+`min-height` y no `height`: la sección que tiene más contenido que la pantalla
+crece, la que tiene menos se estira. Por eso tampoco hace falta apagarlo en el
+teléfono.
+
+Pero con eso solo, **cuatro de nueve secciones se pasaban de largo en una
+notebook de 1440x780**, que es de las pantallas más comunes que hay. El culpable
+era el aire: `--s-9` son 112 px por lado, o sea 224 px fijos — el 22% de un
+monitor de 1000 px, pero el 29% de una notebook de 780.
+
+Se pasó a `padding-block: clamp(var(--s-7), 9svh, var(--s-9))`, y lo mismo para
+la tele y la captura del juego, que estaban frenadas solo por ANCHO en px.
+Medido a 1440x780, antes → después:
+
+| | antes | después |
+|---|---|---|
+| el libro | 811 px | 780 |
+| la miniserie | 901 px | 797 |
+| los juguetes | 838 px | 780 |
+| el mini-juego | 891 px | 780 |
+
+Queda pasándose **el proceso** (1100 px), y está bien que se pase: son dos
+párrafos más siete filas, y meterlo a la fuerza en 780 px significaría achicar la
+tipografía. Para eso es `min-height`.
+
+### EL BUG DEL `1fr` QUE NO ES `1fr`
+
+Los juguetes se salían de la sección por abajo y el pie de foto terminaba 100 px
+afuera. La caja medía 420 px y la imagen adentro, 674.
+
+**`grid-template-rows: 1fr auto` en realidad significa `minmax(auto, 1fr)`**, y
+ese `auto` es un mínimo que no deja que la fila sea más chica que el contenido.
+La imagen mide 673x348 y entraba a 1300 px de ancho, así que su alto natural son
+674 px: la fila se estiraba a 674 dentro de una caja de 420. Con
+`minmax(0, 1fr)` la fila puede achicarse y el `object-fit: contain` hace lo suyo.
+Medido: imagen de 674 → 387 px, pie de foto de +1100 → +813 en una sección de
+1000.
+
+Es de los errores más caros de CSS Grid porque no se ve como un error de grilla:
+se ve como una imagen que "no respeta el tamaño".
+
+### LOS DOS BLOQUES QUE NUNCA SE ALINEABAN
+
+Los sprites y los juguetes tenían el mismo problema con dos caras.
+
+**Los sprites**: tres columnas de `1fr`, o sea tres cajas de la misma forma, pero
+las tres hojas tienen proporciones distintas (874x582, 467x423, 339x272). Con
+`object-fit: contain`, cada una se acomodaba con distinto sobrante arriba y abajo
+y nunca coincidían. Con `grid-template-columns: auto auto auto` y el ALTO fijo en
+la imagen, la caja de cada una la decide la imagen: las tres miden exactamente lo
+mismo de alto, así que arrancan y terminan en la misma línea sin excepción.
+
+**Los juguetes** pasaron a turnarse en el MISMO lugar en vez de ir una al lado de
+la otra. Son las mismas tres figuras en la misma pose: puestas una al lado de la
+otra el ojo tiene que ir y venir, puestas en el mismo lugar el cambio de gris a
+pintado pasa solo. Es `initAlterna`, copiado de mas-54.js.
+
+Y para que el cambio no se lea como un salto hubo que **recortarles el margen
+transparente**. Medido sobre el canal alfa: en `JUGUETES.png` las figuras ocupan
+961x706 de un archivo de 1599x899 — el 40% del ancho es nada. Con distinta
+cantidad de aire, las figuras cambiaban de tamaño y de posición al alternar.
+Recortadas al contenido (`ConvertirImagenAlfaRecortada`, con los números medidos
+y anotados), las seis quedan a la misma escala.
+
+### UN BUG DE POWERSHELL QUE VALE ANOTAR
+
+El script de assets dejó de parsear con `MissingEndCurlyBrace`, apuntando a una
+llave que estaba puesta. La causa real: **una raya larga (—) adentro de un string
+de PowerShell**.
+
+Los `.ps1` de este repo son UTF-8 SIN BOM, y PowerShell 5.1 los lee como cp1252.
+Los tres bytes de la raya larga (`E2 80 94`) se decodifican como `â`, `€` y una
+COMILLA TIPOGRÁFICA de cierre — y PowerShell acepta esa comilla como delimitador
+de string. El string quedaba abierto, se comía la llave de cierre de la función,
+y el error aparecía 40 líneas más abajo.
+
+**En los comentarios (`#`) no pasa nada. Adentro de comillas, sí.** Queda anotado
+en el propio archivo, arriba de la línea que lo causó.
+
+### LO DEMÁS
+
+- La miniserie: la señal arriba y el texto abajo en dos columnas, los dos en las
+  columnas 3-4 y a ras. Con `column-count: 2` y no con una grilla de dos celdas,
+  porque los dos párrafos son de largos muy distintos y así el navegador los
+  reparte parejo.
+- Bajada del hero a la mitad de largo.
+- El botón JUGAR, sin la flechita de link externo.
+
+### CÓMO SE VERIFICÓ
+
+- **Cuadros del video**: `getVideoPlaybackQuality()` en cuatro configuraciones,
+  y `mpdecimate` sobre la entrada y la salida.
+- **Alturas**: las nueve secciones medidas en tres pantallas (1600x1000,
+  1440x780, 390x844). Todas en una pantalla salvo el proceso, y el mini-juego en
+  teléfono.
+- **El visor**: abre, hace zoom, sincroniza el contador del libro, cierra con la
+  X y con Escape.
+- **Las sombras**: 0 hojas de 16.
+- **La alternancia**: leída del DOM, `stl.png` → `juguetes.png`.
+- Sin desborde horizontal a 390 px, cero errores de JS, y la navegación por Swup
+  desde la portada sigue armando el libro sin recargar.
+
+### QUEDA PENDIENTE
+
+1. **La tele en pantalla completa**: el arreglo (`:fullscreen` con los tres
+   prefijos) está puesto, pero NO se pudo probar. Ningún navegador deja entrar a
+   pantalla completa sin un click humano, así que no entra en las pruebas
+   automáticas. Hay que probarlo a mano.
+2. **La ficha del proceso**: se apretó, pero el pedido fue "no me convence" y eso
+   puede querer decir otra cosa. Si el problema es el formato y no el tamaño, la
+   alternativa es una tira horizontal de siete pasos con la flecha de vuelta
+   dibujada por debajo.
+3. **La apertura sigue copiada tres veces** (simbio.css, mas-54.css,
+   tipines.css). Ya se ganó la mudanza a layout.css.
+
+---
+
+## 30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)
+
+Mati reportó que a veces seguía sonando algo mientras miraba otra parte de la
+página. La sospecha caía sobre las historias, porque son lo último que se tocó y
+lo que tiene el botón de sonido. **No era ahí.**
+
+### CÓMO SE ENCONTRÓ
+
+Midiendo, no leyendo. Un probe que scrollea a distintos lugares y pregunta, para
+CADA `<video>` del documento, si está sonando y cuántos píxeles suyos se ven:
+
+```
+sonando: [ "teaser.mp4  visible=0px" ]
+```
+
+Las historias pausaban bien en las cuatro pruebas (abajo, arriba, al tope, y
+navegando con Swup). El teaser seguía reproduciendo a 1800, 4000 y 3000 px de
+distancia, siempre con `visible=0px`.
+
+**Era el único video con audio que no tenía control de visibilidad.** Las
+historias sí lo tenían desde el arreglo anterior, y eso hizo que la sospecha
+apuntara al lugar equivocado. Dura 1:45 y tiene voz: lo arrancabas, seguías
+scrolleando, y te acompañaba el resto de la página sin que se viera de dónde
+salía.
+
+### LA REGLA DEL TEASER NO ES LA DE LAS HISTORIAS
+
+Las historias son un loop de ambiente: se prenden y se apagan según lo que estés
+mirando, sin memoria. **El teaser lo arrancó el visitante**, así que:
+
+- se pausa cuando se va de pantalla, pero queda anotado que lo pausamos nosotros;
+- al volver a verse, sigue **solo si fuimos nosotros** los que lo frenamos;
+- si lo pausó el visitante con los controles, al volver sigue pausado. Que la
+  página te reanude un video que frenaste a mano es de las cosas más molestas
+  que puede hacer.
+
+**Dos umbrales distintos (histéresis):** frena al 5% visible, reanuda al 60%.
+Con un solo valor, dejar el video justo en el límite lo prende y lo apaga en
+cada píxel de scroll.
+
+### EL BUG ADENTRO DEL ARREGLO: `pause` ES ASÍNCRONO
+
+El primer intento no reanudaba nada. El motivo es una trampa que conviene tener
+anotada porque vale para cualquier evento de `<video>`:
+
+**El evento `pause` NO se dispara adentro de la llamada a `video.pause()`.** Se
+dispara después, en otra vuelta del bucle de eventos. El código era:
+
+```js
+estaSaliendo = true;
+video.pause();
+estaSaliendo = false;   // ← acá todavía no llegó el evento
+```
+
+Cuando el evento por fin llegaba, la bandera ya estaba en `false`, así que el
+listener creía que había pausado el visitante y borraba la marca. Medido: al
+volver a la sección, el teaser se quedaba pausado en vez de seguir.
+
+**La bandera la tiene que bajar el propio listener**, que es el único que sabe
+cuándo llegó el evento.
+
+### LA REGLA GENERAL PARA TODO EL SITIO
+
+**Todo `<video>` con audio necesita control de visibilidad.** No alcanza con que
+lo tenga el que estás mirando: alcanza con que UNO no lo tenga para que aparezca
+el ruido fantasma. Hoy en +54 son dos —las historias y el teaser— y los dos lo
+tienen, cada uno con su regla.
+
+Y los tres cierres que hay que cubrir siempre, no solo el scroll:
+`visibilitychange` (cambiar de pestaña), el hook `visit:start` de Swup (irse de
+la página sin recargar, que deja el elemento suelto pero sonando) y `pagehide`.
+
+
+---
+
+## 31. Tipines: tres cosas rotas y por qué (22/08/2026)
+
+Ronda de correcciones sobre la página de Amigos Tipines. Las tres tenían la
+misma pinta desde afuera —"se rompió"— y ninguna era el mismo tipo de error.
+
+### 1. EL PASE DE PÁGINA "MAL ARTICULADO Y CON DESTIEMPO"
+
+**Las dos listas de `transform` de una transición tienen que tener las MISMAS
+funciones, en el mismo orden.** No es prolijidad: es la diferencia entre que la
+hoja gire o que se deforme.
+
+```css
+.hoja            { transform: rotateY(0deg) translateZ(…); }             /* 2 */
+.hoja.is-pasada  { transform: translateX(…) rotateY(-180deg) translateZ(…); } /* 3 */
+```
+
+Cuando los dos extremos comparten la lista, el navegador interpola **función
+por función**: el `rotateY` va de 0 a -180 y listo. Cuando NO la comparten, no
+puede, así que aplasta cada extremo a una **matriz de 4x4** e interpola eso. La
+interpolación de matrices no sabe que adentro hay media vuelta: le sale un
+camino que pasa por el medio achatando la hoja, con las dos mitades del pliego
+desfasadas. Eso es exactamente lo que se veía.
+
+El arreglo es un `translateX(0)` en el estado quieto. No mueve nada — está para
+que las dos listas coincidan.
+
+**Cómo se verifica sin mirar:** contar las funciones de transform de las dos
+reglas, leídas del CSSOM. Tienen que dar igual. Antes 2 y 3; ahora 3 y 3.
+
+### 2. EL "VER EN GRANDE" NO TENÍA LA ANIMACIÓN DEL LIBRO
+
+Y no podía tenerla: el visor mostraba un `<img>` con el pliego abierto, y pasar
+de página ahí adentro era cambiarle el `src`. En grande dejabas de tener un
+libro y pasabas a tener un carrusel de fotos, justo en el momento en que más se
+lo mira.
+
+**EL VISOR YA NO DIBUJA NADA PROPIO: SE MUDA EL LIBRO ADENTRO.** Al abrir, el
+`.libro__caja` entero —sus 16 hojas, su giro 3D y sus controles— se mueve del
+`<main>` a la ventana del visor; al cerrar, vuelve a su lugar. Es el MISMO nodo:
+mismo JS, mismo estado, mismo giro. Lo único que cambia es `--libro-alto` /
+`--libro-tope` y el fondo negro detrás.
+
+Efecto secundario y gratis: **el estado se conserva solo en los dos sentidos**.
+Abrís en grande en el pliego 7 y arranca en el 7; hojeás hasta el 11, cerrás, y
+la página queda en el 11. No hay nada que sincronizar porque no hay dos libros.
+
+Para volver se deja un **comentario vacío** en el DOM haciendo de mojón. Un
+comentario y no un `<div>`: no ocupa lugar, no hereda estilos y no puede
+aparecer por error. Si el mojón ya no está en el documento (Swup reemplazó
+`#swup` con el visor abierto), el libro se descarta y lo rearma el `initLibro`
+de la página nueva.
+
+**Se cayeron dos cosas al mudarlo, las dos por el mismo motivo:**
+
+- `visor.pintar()` ya no existe. Redibujar el libro ES redibujar el visor.
+- El listener de teclado del visor ya no toca las flechas, solo Escape. Las
+  flechas las maneja el libro, que estando en el visor está en pantalla. Si las
+  manejaran los dos, cada flecha pasaría DOS pliegos.
+
+**Y una trampa de layout que costó una medición.** Adentro del visor el libro
+abría a **114 px de alto** en una pantalla de 1000. El motivo: en la página
+`.libro__caja` va con `grid-column: 1/-1`, o sea estirada; en el hueco del visor
+la centra `place-items: center`, y **centrar significa no estirar** — la caja
+pasa a medir `fit-content`. Como el ancho de `.libro__escena` es `min(100%, …)`,
+ese `100%` se mide contra la caja, que se mide contra su contenido: la cuenta se
+muerde la cola y colapsa. Con `width: 100%` en la caja, 780 px.
+
+### 3. EL TEXTO DE LA MINISERIE DESBORDABA LA SECCIÓN
+
+`break-inside: avoid` sobre los párrafos, y era justo lo contrario de lo que
+hacía falta. Le prohíbe a un párrafo partirse entre las dos columnas, así que el
+primero (largo) se metía ENTERO en la columna 1 y el segundo (corto) en la 2: la
+izquierda desbordaba la sección hacia abajo y la derecha quedaba medio vacía.
+El reparto parejo que se buscaba con `column-count` no llegaba a ocurrir nunca.
+
+Sin la regla, los dos párrafos fluyen como un solo bloque. **Medido después:
+204 y 102 px de alto, sin desborde, sección de 1000 en viewport de 1000.**
+
+### 4. EL MINI-JUEGO: LAS CUATRO PIEZAS AHORA SE TURNAN
+
+Estaban todas a la vez —la captura arriba y las tres hojas de sprites en fila
+abajo— y la fila se leía desacomodada por más que el CSS estuviera bien. **No
+era un problema de CSS.** Las cuatro imágenes tienen formas que no se parecen
+(951x478 la captura, y 874x582, 467x423 y 339x272 las hojas) y además distinta
+cantidad de aire transparente adentro. Puestas juntas no hay alto ni ancho que
+las haga leerse como una serie; se probó alinearlas por alto con columnas
+`auto` y no alcanzó.
+
+Turnándose en un marco de proporción fija (`initAlterna`, cada 4 s), cada una
+entra entera, al tamaño que le da la suya y siempre en el mismo lugar. Es el
+mismo mecanismo que los juguetes.
+
+### QUEDA PENDIENTE
+
+1. **El zoom del visor se perdió** al mudar el libro adentro. La versión vieja
+   dejaba acercar hasta 2,6x y arrastrar; ahora el libro es más grande (78svh
+   contra 66svh en la página) pero no se acerca más. Para un busca-personajes
+   el zoom vale, y no está resuelto: el click ya lo usa la hoja para pasar de
+   página, así que habría que meterlo por rueda del mouse o por un botón.
+2. La bajada del hero sigue sin confirmar, y las fotos de los juguetes siguen
+   siendo las dos que hay (ver la entrada 25).
+
+## 23. Simbio en mobile (20/08/2026)
+
+Todo el bloque nuevo está **al final de `css/simbio.css`**, buscá **"MOBILE"**.
+Dos cortes, los mismos que usa `base.css`: **960px** (la grilla del sitio baja a
+2 columnas) y **620px** (baja a 1). No inventar otros anchos: si cada archivo
+corta en un número distinto aparecen estados intermedios que nadie probó.
+
+**LA IDEA**: la página de escritorio está armada con piezas que se cruzan a
+propósito —la portada sube media pantalla para meterse al lado del título, el
+objeto de cada pieza se pasa de su columna, el video se mide por su alto—. Todo
+eso funciona porque sobra ancho. En un teléfono no sobra nada, así que el bloque
+mobile desarma esos cruces uno por uno.
+
+**LOS TRES CHOQUES QUE APARECIERON AL MEDIRLO** (no a ojo: con la página
+corriendo y midiendo cada rectángulo):
+
+1. **El liquen: texto y polaroids caían en la MISMA celda.** Los dos llevan
+   `grid-row: 1`, que es lo que en escritorio los pone lado a lado. Al apilar a
+   una columna esa fila 1 sigue siendo la misma para los dos y uno queda
+   dibujado encima del otro. Se arregla con `grid-row: auto`.
+   **Regla general: si dos cosas comparten `grid-row` explícito, al apilarlas
+   hay que soltarlo.**
+
+2. **El ensamble se salía 15px por la derecha.** Estaba con `width: 100vw`, y
+   100vw NO es el ancho visible: incluye la barra de scroll. Con `width: auto` y
+   los márgenes negativos, la caja llega justo a los bordes.
+
+3. **Las gráficas seguían corridas.** Les puse `--dx: 0px` y no pasó nada: cada
+   una trae su `--dx` en el atributo `style` del HTML, y lo inline le gana a
+   cualquier archivo CSS. La solución no es pelear con la variable sino anular
+   lo que la usa (`transform: none`), porque el transform sí está declarado en
+   el CSS. Misma trampa que las tapas de carpeta, que ahí se resolvió con
+   `!important` porque lo inline era la propiedad y no la variable.
+
+**LA PIEZA SE VEÍA DE 80px.** El render trae mucho aire alrededor y, contenido
+en un cuadro 16:9 de 342px de ancho, la pieza del árbol quedaba ilegible.
+Agrandar el cuadro no servía: el dibujo entra "contenido", así que lo que manda
+es el ancho. Se resolvió con **dos cambios acoplados**:
+  - el cuadro pasa a ser **vertical (4/5)** en el teléfono, que es lo que le da
+    alto a la pieza para crecer;
+  - `zoomMobile` en `js/muestras.js` agranda el dibujo hasta llenar ese alto.
+Los valores del zoom **salen de una cuenta, no del ojo** (está escrita en el
+archivo): con la pieza centrada en cx/cy, su mitad más larga decide el tope.
+Quedó en ~83% del tope, por margen. Lo que se sale del cuadro es siempre aire
+del render, nunca pieza. **Si cambiás la proporción del cuadro, hay que
+recalcular esos números.**
+
+**EL PESO: 23 MB → 7,7 MB.** Los 375 frames del ensamble en datos móviles eran
+una barbaridad. `SALTO` en `js/simbio-scroll.js` pasa a **3 en el teléfono**:
+125 cuadros. Medido con la página corriendo a 375px: 125 pedidos, 7,7 MB, y el
+recorrido sigue andando (progreso 0.60, fase 03/04, escenario pegado en top=0).
+Con 400vh de recorrido son ~42 cuadros por pantalla scrolleada: se lee continuo.
+
+**CÓMO SE VERIFICÓ — Y UNA TRAMPA DE LA HERRAMIENTA.**
+**Chrome headless no baja de 489px de ancho** por más que se le pida 390: las
+capturas a 390 son un RECORTE de un render de 489, así que muestran cosas
+cortadas que en el teléfono real entran bien. Perdí una vuelta con eso.
+La forma correcta de medir un teléfono es **meter la página en un iframe de
+390px** dentro de una ventana grande: ahí el viewport interno es real (375px con
+la barra). Medido así: **0 elementos fuera de pantalla y 0 superposiciones**, con
+las carpetas abiertas y cerradas.
+
+En escritorio quedan dos superposiciones que son **a propósito** y no hay que
+"arreglar": la foto de portada cruza por detrás del bloque de apertura (por eso
+lleva `pointer-events: none`) y dos polaroids del liquen se pisan apenas, que es
+el collage.
+
+---
+
+### 30-bis. El que de verdad molestaba: ATRAVESAR la sección
+
+Arreglado el teaser, Mati siguió escuchando el fantasma, y dio el dato que lo
+resolvió: *"si las historias se disparan cuando el scroll está al 40%, cuando
+estoy en otra sección a la misma altura se disparan"*. O sea: **dependía de la
+altura del scroll, no de estar mirando.**
+
+Se descartaron primero, midiendo, tres sospechas razonables y equivocadas:
+
+| Sospecha | Resultado |
+|---|---|
+| Elementos huérfanos sonando después de navegar con Swup | 0 reproduciendo. Limpio |
+| El listener de `visibilitychange` viejo reviviéndolos al volver a la pestaña | silencio en las cuatro pruebas |
+| Otra página con audio propio | ningún otro asset del sitio tiene pista de audio |
+
+**El bug era la regla misma: "se ve → suena".** Pasar de largo scrolleando
+alcanza para cumplirla. Medido cruzando la sección en 1,5 s:
+
+```
+PLAY  h1 @y=9248 mudo=false
+pause h1 @y=8423
+```
+
+825 px de scroll con audio saliendo de una sección que ya te pasaste. Y como
+sólo depende de la altura, se dispara **cada vez que la barra pasa por ahí**,
+aunque vayas de camino a otra parte — que es exactamente lo que él describía.
+
+**LA REGLA CORRECTA NO ES "SE VE", ES "TE QUEDASTE MIRÁNDOLO".** Entrar en
+pantalla arranca un reloj de 450 ms (`ESPERA_SONIDO`); si te fuiste antes, no
+suena nunca. Es el mismo criterio del `dwell` de las fichas del índice:
+sostener un gesto es una intención, cruzarlo no.
+
+**Frenar, en cambio, es inmediato.** Nadie quiere esperar medio segundo a que se
+calle algo que ya no está mirando. La espera es asimétrica a propósito.
+
+Va también en el teaser al reanudarse, con un detalle: el reloj se cancela
+SIEMPRE al salir, aunque el video ya esté pausado. Si no, un scroll que entra y
+sale rápido deja el timer corriendo y el video arranca solo medio segundo
+después, ya fuera de pantalla.
+
+Medido después del arreglo: cruzar la sección → **cero eventos**. Quedarse →
+arranca normal, rota, y el botón de sonido sigue andando.
+
+### LA REGLA GENERAL, CORREGIDA
+
+Para cualquier `<video>` con audio del sitio, no alcanza con pausarlo al salir.
+Son cuatro cosas:
+
+1. **Arrancar sólo si el visitante se queda** (reloj de permanencia), no apenas
+   entra en pantalla.
+2. **Pausar al salir**, inmediato y mirando `intersectionRatio`, no
+   `isIntersecting`.
+3. **Pausar al cambiar de pestaña** (`visibilitychange`).
+4. **Pausar al irse de la página** (`visit:start` de Swup y `pagehide`), porque
+   un elemento fuera del DOM puede seguir sonando.
+

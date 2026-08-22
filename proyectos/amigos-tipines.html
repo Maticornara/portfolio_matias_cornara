@@ -18,10 +18,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&display=swap" rel="stylesheet">
 
   <!-- Ojo con las rutas: estamos dentro de /proyectos/, por eso el ../ -->
+  <!-- TODAS LAS PÁGINAS CARGAN LA MISMA LISTA DE CSS, EN EL MISMO ORDEN.
+       No es desprolijidad, es lo que evita el bug de los estilos fantasma.
+
+       Swup navega sin recargar: reemplaza #swup y la nav, pero el <head> es
+       SIEMPRE el de la página por la que entraste al sitio. Si una página no
+       trae el CSS de otra, al navegar a esa otra la ves sin estilos. Y como
+       refrescar sí rehace el <head>, con F5 se arregla sola — por eso parece
+       un fantasma y no un error.
+
+       Medido: entrando directo a un proyecto y haciendo clic en Home, el
+       título de la portada salía a 114.8px negro en vez de 35.2px verde,
+       porque archivo.css nunca había estado en el head. Pasaba desde las
+       tres páginas de proyecto.
+
+       Cargarlas todas es inofensivo: se probó inyectando archivo.css en las
+       otras tres páginas y de 604 elementos no cambió ninguno — los nombres
+       están apellidados por página (.portada-hero__*, .simbio-*, .s54*,
+       .stip*), así que no se pisan.
+
+       EL ORDEN TAMBIÉN TIENE QUE SER EL MISMO en las cuatro: si cambia,
+       cambia la cascada según por dónde entraste, que es el mismo bug con
+       otra cara. Y los ?v= tienen que coincidir entre páginas, si no una
+       sirve una versión vieja de la otra.
+
+       SI AGREGÁS UNA PÁGINA NUEVA: su CSS va acá y en las otras tres. -->
   <link rel="stylesheet" href="../css/variables.css?v=6">
   <link rel="stylesheet" href="../css/base.css?v=11">
-  <link rel="stylesheet" href="../css/layout.css?v=9">
-  <link rel="stylesheet" href="../css/tipines.css?v=3">
+  <link rel="stylesheet" href="../css/layout.css?v=12">
+  <link rel="stylesheet" href="../css/archivo.css?v=26">
+  <link rel="stylesheet" href="../css/simbio.css?v=119">
+  <link rel="stylesheet" href="../css/mas-54.css?v=22">
+  <link rel="stylesheet" href="../css/tipines.css?v=11">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -44,14 +72,34 @@
      apuntan a las secciones que EXISTEN en index.html: #sobre, #trabajos,
      #contacto. -->
 <nav class="site-nav grilla">
-  <a class="pastilla" href="../index.html">Home</a>
-  <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
-  <a class="pastilla is-activa" href="../index.html#trabajos">Trabajos</a>
+  <!-- EL BOTÓN DE HAMBURGUESA. Va PRIMERO para que en el teléfono quede en la
+       fila de arriba, contra el borde derecho. En desktop lleva display:none,
+       así que no le ocupa una columna a la grilla de la nav.
+       Las tres rayas son <span> vacíos: el dibujo lo hace el CSS, y así se
+       pueden animar por separado para volverse una X. aria-hidden porque para
+       un lector de pantalla el botón ya se llama solo con su aria-label. -->
+  <button class="site-nav__hamburguesa" type="button"
+          aria-expanded="false" aria-label="Abrir el menú">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
+  <a class="pastilla" href="../index.html" translate="no" data-es="Home" data-en="Home">Home</a>
+  <a class="pastilla" href="../index.html#sobre" translate="no" data-es="Sobre mí" data-en="About">Sobre mí</a>
+  <a class="pastilla is-activa" href="../index.html#trabajos" translate="no" data-es="Trabajos" data-en="Work">Trabajos</a>
   <div class="site-nav__fin">
-    <a class="pastilla" href="../index.html#contacto">Contacto</a>
-    <div class="nav-idioma">
-      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
-      <button type="button" class="pastilla" aria-pressed="false">EN</button>
+    <a class="pastilla" href="../index.html#contacto" translate="no" data-es="Contacto" data-en="Contact">Contacto</a>
+    <!-- EL PAR ES/EN. data-idioma es lo que los engancha (js/traduccion.js).
+         translate="no" en los dos: si no, Google traduce las etiquetas del
+         propio botón de idioma y "ES" pasa a ser "IS". La clase is-activa la
+         maneja el JS, no está fija acá — se recuerda entre visitas. -->
+    <div class="nav-idioma" translate="no">
+      <button type="button" class="pastilla is-activa"
+              data-idioma="es" aria-pressed="true"
+              aria-label="Ver el sitio en español">ES</button>
+      <button type="button" class="pastilla"
+              data-idioma="en" aria-pressed="false"
+              aria-label="View this site in English">EN</button>
     </div>
   </div>
 </nav>
@@ -94,7 +142,7 @@
           </svg>
         </a>
 
-        <h1 class="proyecto__titulo">Amigos<br>Tipines</h1>
+        <h1 class="proyecto__titulo" translate="no">Amigos<br>Tipines</h1>
 
         <div class="proyecto__meta">
           <p class="etiqueta">Transmedia</p>
@@ -105,16 +153,13 @@
         <div class="proyecto__bajada">
           <p>
             Un universo de plastilina protagonizado por tres amigos con
-            personalidades bien marcadas: Peppi, Matti y Gatti. Habitan un
-            mundo hecho de plastilina, con una paleta de colores propia y un
-            humor caótico y energético, bien argentino.
+            personalidades bien marcadas: Peppi, Matti y Gatti. Paleta propia
+            y un humor caótico y energético, bien argentino.
           </p>
           <p>
-            Las piezas objetivo del proyecto fueron un libro de «busca y
-            encuentra» ambientado en este universo y una pieza audiovisual que
-            da inicio a una miniserie animada, ambas generadas íntegramente
-            con inteligencia artificial. A partir de esas dos piezas se
-            desprendió mucho más.
+            Las piezas objetivo fueron un libro de «busca y encuentra» y el
+            opening de una miniserie animada, las dos generadas íntegramente
+            con inteligencia artificial. De ahí se desprendió todo lo demás.
           </p>
         </div>
       </aside>
@@ -391,18 +436,25 @@
         </p>
       </div>
 
-      <div class="juguetes">
-        <figure class="juguetes__pieza juguetes__pieza--stl reveal">
+      <!-- LAS DOS IMÁGENES SE TURNAN EN EL MISMO LUGAR, no van una al lado de
+           la otra. Es el mismo mecanismo del logo y la paleta de +54
+           (initAlterna), y acá tiene un motivo puntual: son las MISMAS tres
+           figuras, en la misma pose y en el mismo encuadre. Puestas una al
+           lado de la otra, el ojo tiene que ir y venir para comparar; puestas
+           en el mismo lugar, el cambio de gris a pintado pasa solo, sin que
+           haya que rotularlo.
+           data-alterna = cada cuánto cambia, en milisegundos. -->
+      <div class="juguetes" data-alterna="3000"
+           aria-label="Las tres figuras, del modelo 3D en gris a las impresas y pintadas a mano">
+        <figure class="juguete" data-alterna-item>
           <img src="../assets/amigos%20tipines/web/stl.png"
-               alt="Los tres personajes modelados en 3D, en gris, sin pintar"
-               loading="lazy">
+               alt="Los tres personajes modelados en 3D, en gris, sin pintar">
           <figcaption class="etiqueta">El modelo · STL</figcaption>
         </figure>
 
-        <figure class="juguetes__pieza juguetes__pieza--figuras reveal">
+        <figure class="juguete" data-alterna-item>
           <img src="../assets/amigos%20tipines/web/juguetes.png"
-               alt="Las tres figuras impresas en 3D y pintadas a mano, paradas sobre sus bases"
-               loading="lazy">
+               alt="Las tres figuras impresas en 3D y pintadas a mano, paradas sobre sus bases">
           <figcaption class="etiqueta">Impresas y pintadas a mano</figcaption>
         </figure>
       </div>
@@ -452,32 +504,48 @@
         </a>
       </div>
 
-      <figure class="juego__captura reveal">
-        <img src="../assets/amigos%20tipines/web/juego.png"
-             alt="Una pantalla del juego: uno de los personajes corriendo sobre plataformas de plastilina, con tres vidas arriba a la izquierda"
-             loading="lazy">
-      </figure>
+      <!-- LAS CUATRO PIEZAS SE TURNAN EN EL MISMO MARCO, cada 4 segundos.
+           --------------------------------------------------------------------
+           Antes estaban todas a la vez: la captura del juego arriba y las tres
+           hojas de sprites en fila abajo. No funcionaba, y el motivo es que las
+           cuatro tienen formas muy distintas (951x478 la captura, y después
+           874x582, 467x423 y 339x272). Puestas juntas no hay alto ni ancho que
+           las alinee: o se recortan, o quedan de tamaños que no se parecen, y
+           la fila se lee desacomodada por más que el CSS esté bien.
 
-      <!-- LAS TRES HOJAS, TODAS DEL MISMO ALTO. Cada archivo tiene su propia
-           forma (874x582, 467x423 y 339x272), así que a tamaño libre quedaban
-           desalineadas arriba y abajo, y encima enormes. Con un alto fijo y
-           object-fit: contain las tres arrancan y terminan en la misma línea. -->
-      <div class="sprites">
-        <figure class="sprite reveal">
+           Turnándose en un marco de proporción fija, cada una entra ENTERA y
+           al tamaño que le da la suya. Y de paso se lee como lo que es: cuatro
+           momentos de la misma producción, no cuatro archivos apilados.
+
+           Es el mismo mecanismo que los juguetes de más arriba (initAlterna).
+           data-alterna = cada cuánto cambia, en milisegundos. -->
+      <div class="juego__piezas" data-alterna="4000"
+           aria-label="La pantalla del juego y las tres hojas de sprites, turnándose">
+
+        <figure class="juego__pieza" data-alterna-item>
+          <img src="../assets/amigos%20tipines/web/juego.png"
+               alt="Una pantalla del juego: uno de los personajes corriendo sobre plataformas de plastilina, con tres vidas arriba a la izquierda">
+          <figcaption class="etiqueta">El juego · TipiVisión</figcaption>
+        </figure>
+
+        <figure class="juego__pieza" data-alterna-item>
           <img src="../assets/amigos%20tipines/web/sprite-personajes.png"
                alt="Hoja de sprites: los tres personajes, siete cuadros de corrida cada uno" loading="lazy">
           <figcaption class="etiqueta">Corrida · 3 personajes × 7 cuadros</figcaption>
         </figure>
-        <figure class="sprite reveal">
+
+        <figure class="juego__pieza" data-alterna-item>
           <img src="../assets/amigos%20tipines/web/sprite-jefe.png"
                alt="Hoja de sprites del jefe Soda: un sifón que dispara y termina reventando" loading="lazy">
           <figcaption class="etiqueta">Jefe Soda · disparo y derrota</figcaption>
         </figure>
-        <figure class="sprite reveal">
+
+        <figure class="juego__pieza" data-alterna-item>
           <img src="../assets/amigos%20tipines/web/sprite-sodas.png"
                alt="Hoja de sprites de los mini-guardias: sifones chicos en ocho posiciones" loading="lazy">
           <figcaption class="etiqueta">Mini-guardias · 8 posiciones</figcaption>
         </figure>
+
       </div>
 
     </div>
@@ -493,7 +561,7 @@
        circuito que las produjo a todas. Puesto en el medio, cortaba el
        recorrido para explicar algo de lo que todavía faltaba la mitad.
 
-       LA FICHA VA EN LAS COLUMNAS 2-4, ADENTRO DEL BLOQUE DE TEXTO, y no de
+       LA FICHA VA ADENTRO DEL BLOQUE DE TEXTO (columnas 2-3), y no de
        punta a punta como estaba antes. De punta a punta eran siete renglones
        de 11 px estirados a 1300 px con un agujero en el medio: se leía como
        una tabla de Excel, no como una ficha. Cada fila ahora apila la acción y
@@ -610,42 +678,14 @@
 
 </main>
 
-<!-- ==========================================================================
-     EL VISOR DEL LIBRO
-     --------------------------------------------------------------------------
-     La pantalla completa del "Ver en grande". Vive FUERA de #swup a propósito:
-     es una capa que tapa todo, no contenido de la página, y así Swup no la
-     reemplaza a mitad de una navegación.
-     Arranca vacío y con [hidden]; initVisor le pone la imagen al abrirlo.
-     ========================================================================== -->
-<div class="visor" data-visor hidden>
-  <!-- El fondo es un <button> y no un <div> con onclick: cerrar tocando
-       afuera es una acción, y así funciona con teclado sin agregar nada. -->
-  <button class="visor__fondo" type="button" data-visor-cerrar
-          aria-label="Cerrar el visor"></button>
-
-  <div class="visor__lienzo" data-visor-lienzo>
-    <img data-visor-img alt="">
-  </div>
-
-  <button class="visor__nav visor__nav--prev" type="button" data-visor-prev
-          aria-label="Pliego anterior">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 L7 12 L15 20"/></svg>
-  </button>
-  <button class="visor__nav visor__nav--next" type="button" data-visor-next
-          aria-label="Pliego siguiente">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 L17 12 L9 20"/></svg>
-  </button>
-
-  <button class="visor__cerrar" type="button" data-visor-cerrar aria-label="Cerrar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
-         stroke-linecap="round" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18"/></svg>
-  </button>
-
-  <p class="visor__pie etiqueta" data-visor-pie></p>
-</div>
+<!-- EL VISOR DEL LIBRO no esta escrito aca: lo arma initVisor() en
+     js/tipines.js y lo cuelga del <body>.
+     ES A PROPOSITO. Es una capa de pantalla completa, no contenido de la
+     pagina, y estuvo escrita en el HTML hasta que se rompio: al regenerarse
+     esta pagina desde la plantilla de las otras tres, el bloque se perdio y
+     "Ver en grande" quedo sin hacer nada, sin ningun error en consola que lo
+     delatara. Armandolo desde el JS no puede desincronizarse del template.
+     Ver "EL VISOR" en css/tipines.css para los estilos. -->
 
 <footer class="zona zona--crema-2">
   <div class="site-footer grilla">
@@ -662,8 +702,9 @@
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Tiene que estar en TODAS las páginas. -->
 <script src="../js/smooth-scroll.js?v=6" defer></script>
-<script src="../js/transiciones.js?v=6" defer></script>
-<script src="../js/main.js?v=23" defer></script>
-<script src="../js/tipines.js?v=2" defer></script>
+<script src="../js/transiciones.js?v=7" defer></script>
+<script src="../js/main.js?v=24" defer></script>
+<script src="../js/traduccion.js?v=4" defer></script>
+<script src="../js/tipines.js?v=5" defer></script>
 </body>
 </html>

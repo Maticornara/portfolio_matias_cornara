@@ -15,24 +15,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&display=swap" rel="stylesheet">
 
+  <!-- TODAS LAS PÁGINAS CARGAN LA MISMA LISTA DE CSS, EN EL MISMO ORDEN.
+       No es desprolijidad, es lo que evita el bug de los estilos fantasma.
+
+       Swup navega sin recargar: reemplaza #swup y la nav, pero el <head> es
+       SIEMPRE el de la página por la que entraste al sitio. Si una página no
+       trae el CSS de otra, al navegar a esa otra la ves sin estilos. Y como
+       refrescar sí rehace el <head>, con F5 se arregla sola — por eso parece
+       un fantasma y no un error.
+
+       Medido: entrando directo a un proyecto y haciendo clic en Home, el
+       título de la portada salía a 114.8px negro en vez de 35.2px verde,
+       porque archivo.css nunca había estado en el head. Pasaba desde las
+       tres páginas de proyecto.
+
+       Cargarlas todas es inofensivo: se probó inyectando archivo.css en las
+       otras tres páginas y de 604 elementos no cambió ninguno — los nombres
+       están apellidados por página (.portada-hero__*, .simbio-*, .s54*,
+       .stip*), así que no se pisan.
+
+       EL ORDEN TAMBIÉN TIENE QUE SER EL MISMO en las cuatro: si cambia,
+       cambia la cascada según por dónde entraste, que es el mismo bug con
+       otra cara. Y los ?v= tienen que coincidir entre páginas, si no una
+       sirve una versión vieja de la otra.
+
+       SI AGREGÁS UNA PÁGINA NUEVA: su CSS va acá y en las otras tres. -->
   <link rel="stylesheet" href="css/variables.css?v=6">
   <link rel="stylesheet" href="css/base.css?v=11">
-  <link rel="stylesheet" href="css/layout.css?v=9">
-  <!-- Todo lo que se ve en ESTA página: hero, CV, herramientas, contacto,
-       título de transición y grid de proyectos. -->
+  <link rel="stylesheet" href="css/layout.css?v=12">
   <link rel="stylesheet" href="css/archivo.css?v=26">
-
-  <!-- El CSS de las páginas de proyecto se carga TAMBIÉN acá, aunque esta
-       página no lo use.
-       Motivo: Swup navega sin recargar y solo reemplaza el contenido de
-       #swup — el <head> queda como estaba. La tarjeta de +54 ya linkea a
-       proyectos/mas-54.html, y sin esto esa página aparecería sin estilos
-       hasta hacer un refresh. Simbio va por lo mismo, para cuando su tarjeta
-       también linkee. Es inofensivo: sus selectores no existen acá, porque
-       todo cuelga de .pag-simbio y .pag-54. -->
-  <link rel="stylesheet" href="css/simbio.css?v=116">
-  <link rel="stylesheet" href="css/mas-54.css?v=20">
-  <link rel="stylesheet" href="css/tipines.css?v=2">
+  <link rel="stylesheet" href="css/simbio.css?v=119">
+  <link rel="stylesheet" href="css/mas-54.css?v=22">
+  <link rel="stylesheet" href="css/tipines.css?v=11">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -56,19 +70,39 @@
      escribís.
      ========================================================================== -->
 <nav class="site-nav grilla">
-  <a class="pastilla is-activa" href="index.html">Home</a>
-  <a class="pastilla" href="#sobre">Sobre mí</a>
-  <a class="pastilla" href="#trabajos">Trabajos</a>
+  <!-- EL BOTÓN DE HAMBURGUESA. Va PRIMERO para que en el teléfono quede en la
+       fila de arriba, contra el borde derecho. En desktop lleva display:none,
+       así que no le ocupa una columna a la grilla de la nav.
+       Las tres rayas son <span> vacíos: el dibujo lo hace el CSS, y así se
+       pueden animar por separado para volverse una X. aria-hidden porque para
+       un lector de pantalla el botón ya se llama solo con su aria-label. -->
+  <button class="site-nav__hamburguesa" type="button"
+          aria-expanded="false" aria-label="Abrir el menú">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
+  <a class="pastilla is-activa" href="index.html" translate="no" data-es="Home" data-en="Home">Home</a>
+  <a class="pastilla" href="#sobre" translate="no" data-es="Sobre mí" data-en="About">Sobre mí</a>
+  <a class="pastilla" href="#trabajos" translate="no" data-es="Trabajos" data-en="Work">Trabajos</a>
   <div class="site-nav__fin">
-    <a class="pastilla" href="#contacto">Contacto</a>
+    <a class="pastilla" href="#contacto" translate="no" data-es="Contacto" data-en="Contact">Contacto</a>
     <!-- El cambio de idioma está puesto como forma, todavía sin función.
          Son <button> y no <a href="#">: un href vacío es un ancla al tope del
          documento, así que hacer clic en ES te disparaba la página para
          arriba. Un botón sin handler no hace nada, que es lo que queremos
          hasta que exista la versión en inglés. -->
-    <div class="nav-idioma">
-      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
-      <button type="button" class="pastilla" aria-pressed="false">EN</button>
+    <!-- EL PAR ES/EN. data-idioma es lo que los engancha (js/traduccion.js).
+         translate="no" en los dos: si no, Google traduce las etiquetas del
+         propio botón de idioma y "ES" pasa a ser "IS". La clase is-activa la
+         maneja el JS, no está fija acá — se recuerda entre visitas. -->
+    <div class="nav-idioma" translate="no">
+      <button type="button" class="pastilla is-activa"
+              data-idioma="es" aria-pressed="true"
+              aria-label="Ver el sitio en español">ES</button>
+      <button type="button" class="pastilla"
+              data-idioma="en" aria-pressed="false"
+              aria-label="View this site in English">EN</button>
     </div>
   </div>
 </nav>
@@ -332,7 +366,7 @@
            texto se queda quieto, apoyado en la grilla como todo lo demás.
            ================================================================ -->
       <div class="portada-hero__texto">
-        <h1 class="portada-hero__nombre">Matías Cornara</h1>
+        <h1 class="portada-hero__nombre" translate="no">Matías Cornara</h1>
         <p class="portada-hero__frase">El rincón donde guardo mis cosas</p>
 
         <!-- EL MOUSE. Es un link de verdad, no un adorno: baja a la primera
@@ -366,7 +400,7 @@
 
       <div class="tramo__cuerpo">
         <p class="cv__lead">
-          Licenciado en Diseño (<b>Universidad Torcuato Di Tella</b>), con
+          Licenciado en Diseño (<b translate="no">Universidad Torcuato Di Tella</b>), con
           especializaciones en Innovación Estratégica y Desarrollos
           Digitales. Criado en Villa La Angostura, hoy vivo en Buenos Aires.
         </p>
@@ -552,7 +586,7 @@
             </div>
           </div>
           <div class="ficha__pie">
-            <h3 class="ficha__titulo">Simbio</h3>
+            <h3 class="ficha__titulo" translate="no">Simbio</h3>
             <ul class="ficha__meta" role="list">
               <li class="etiqueta">Diseño industrial</li>
               <li class="etiqueta">Biomímesis</li>
@@ -624,7 +658,7 @@
             </div>
           </div>
           <div class="ficha__pie">
-            <h3 class="ficha__titulo">+54</h3>
+            <h3 class="ficha__titulo" translate="no">+54</h3>
             <ul class="ficha__meta" role="list">
               <li class="etiqueta">Curaduría</li>
               <li class="etiqueta">Identidad visual</li>
@@ -668,7 +702,7 @@
             </div>
           </div>
           <div class="ficha__pie">
-            <h3 class="ficha__titulo">Amigos Tipines</h3>
+            <h3 class="ficha__titulo" translate="no">Amigos Tipines</h3>
             <ul class="ficha__meta" role="list">
               <li class="etiqueta">Transmedia</li>
               <li class="etiqueta">IA generativa</li>
@@ -719,7 +753,7 @@
      sección de otra ahora es el aire, no un cambio de fondo ni una guarda. -->
 <footer class="zona zona--crema">
   <div class="site-footer grilla">
-    <p class="etiqueta">Archivo — Matías Cornara</p>
+    <p class="etiqueta" translate="no">Archivo — Matías Cornara</p>
     <p class="etiqueta">2026</p>
   </div>
 </footer>
@@ -729,15 +763,16 @@
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
 <script src="js/smooth-scroll.js?v=6" defer></script>
-<script src="js/transiciones.js?v=6" defer></script>
-<script src="js/main.js?v=23" defer></script>
+<script src="js/transiciones.js?v=7" defer></script>
+<script src="js/main.js?v=24" defer></script>
+<script src="js/traduccion.js?v=4" defer></script>
 <script src="js/archivo.js?v=11" defer></script>
-<script src="js/simbio-scroll.js?v=20" defer></script>
-<script src="js/muestras.js?v=10" defer></script>
+<script src="js/simbio-scroll.js?v=16" defer></script>
+<script src="js/muestras.js?v=13" defer></script>
 <!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
      ejecutar al cambiar de página, así que los de +54 y Tipines tienen que
      estar cargados desde acá. Salen sin hacer nada si no encuentran su HTML. -->
-<script src="js/mas-54.js?v=7" defer></script>
-<script src="js/tipines.js?v=1" defer></script>
+<script src="js/mas-54.js?v=12" defer></script>
+<script src="js/tipines.js?v=5" defer></script>
 </body>
 </html>

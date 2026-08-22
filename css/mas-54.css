@@ -600,97 +600,226 @@
 /* ==========================================================================
    7. LAS TRES HISTORIAS
    --------------------------------------------------------------------------
-   Las tres a la vez, en fila y ENTERAS: ni recortadas ni con franjas al
-   costado.
+   Corre UNA y las otras dos quedan congeladas en su primer cuadro.
 
-   LA CLAVE ES QUE LA CAJA TENGA LA PROPORCIÓN DEL VIDEO. Los tres son 9:16.
-   Al principio la caja tenía un alto fijo en svh y el video iba con
-   object-fit: contain, y como la caja quedaba más ancha que 9:16 aparecían
-   dos barras negras a los costados de cada historia — un passe-partout que
-   nadie pidió. Con aspect-ratio: 9/16 la caja mide exactamente lo que mide el
-   video: no sobra nada que rellenar y no falta nada que recortar.
+   LO QUE DISTINGUE A LA QUE CORRE ES EL MOVIMIENTO Y LA BARRA DE ABAJO, NO EL
+   COLOR. Estuvo un rato con las que esperan bajadas de opacidad y de
+   saturación, y estaba mal por dos motivos: se veía raro, y sobre todo
+   ALTERABA LA PALETA DE LAS PIEZAS. Estas historias son diseño gráfico
+   terminado con su propio color; desaturarlas es reescribirles el color a
+   otro. La regla de esta página es que la página no toca el material.
 
-   El alto sale del ancho, así que las tres crecen juntas con la ventana y
-   siempre quedan iguales entre sí.
+   Así que las tres se ven siempre a full. La que corre se reconoce porque se
+   mueve —que es la señal más fuerte que hay— y porque abajo tiene una barrita
+   verde que avanza con el video. El verde es el acento del sistema, no un
+   color nuevo.
+
+   EL TAMAÑO SALE DEL ALTO DE LA VENTANA, no del ancho de la grilla. Son 9:16:
+   dándoles un tercio de la grilla (unos 412 px) el alto se iba a 733 y se
+   cortaban abajo de la pantalla. Ahora la fila se limita a lo que entra a lo
+   alto y queda centrada, así que se ven las tres enteras de una sola vez.
    ========================================================================== */
 
 .historias54 .grilla { row-gap: var(--s-5); }
 
+/* PERILLAS — LAS HISTORIAS */
 .historias54__fila {
+  /* --historia-alto  cuánto de la ventana ocupan. El ancho sale del alto por
+                      la proporción 9:16, y de ahí sale el ancho de la fila.
+                      Bajalo si querés verlas más chicas o con más aire. */
+  --historia-alto: 58svh;
+
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
+
+  /* El ancho de la fila = tres videos + dos huecos. Escrito así, el alto de
+     cada uno termina siendo exactamente --historia-alto. */
+  max-width: calc(var(--historia-alto) * 9 / 16 * 3 + var(--grid-gap) * 2);
+  margin-inline: auto;
+  width: 100%;
 }
 
-/* LA QUE CORRE Y LAS QUE ESPERAN.
-   Solo una se reproduce; las otras dos quedan congeladas en su primer cuadro.
-   Para que se lea CUÁL es la que está corriendo, las que esperan se apagan un
-   poco: bajan de opacidad y pierden saturación. No se ocultan ni se tapan —
-   siguen a la vista, invitando a tocarlas, que es lo que las hace activas.
+.historias54__marco { position: relative; }
 
-   El cursor de mano es la otra mitad del mensaje: dice que se pueden tocar. */
 .historias54__video {
-  cursor: pointer;
-  opacity: .45;
-  filter: saturate(.55);
-  transition: opacity var(--dur-3) var(--ease), filter var(--dur-3) var(--ease);
-
   display: block;
   width: 100%;
-  /* La proporción REAL de los archivos (1080x1920). Si algún día entra una
-     historia con otra medida, este es el número a cambiar. */
+  /* La proporción REAL de los archivos (1080x1920). Con la caja en la misma
+     proporción, cover no recorta nada. */
   aspect-ratio: 9 / 16;
   height: auto;
-  /* Con la caja en la misma proporción, cover no recorta nada: es solo el
-     seguro contra una diferencia de un píxel por redondeo. */
   object-fit: cover;
+
+  /* El cursor de mano dice que se pueden tocar para saltar a esa. */
+  cursor: pointer;
 }
 
-.historias54__video.is-activa,
-.historias54__video:hover {
-  opacity: 1;
-  filter: none;
+/* LA BARRA DE AVANCE de la que está corriendo. Va DEBAJO del video y no
+   encima: encima taparía parte de la pieza. El ancho lo escribe
+   initHistorias en --historia-avance.
+   Solo se ve en la activa: en las que esperan no hay nada que avanzar. */
+.historias54__pista {
+  height: 2px;
+  margin-top: 6px;
+  background: var(--zona-linea);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease);
+}
+.historias54__marco.is-activa .historias54__pista { opacity: 1; }
+
+.historias54__pista i {
+  display: block;
+  height: 100%;
+  width: var(--historia-avance, 0%);
+  background: var(--verde);
 }
 
-/* EL BOTÓN DE SONIDO. Uno solo para las tres: son una pieza, no tres. Cae en
-   la última columna, alineado a la derecha, a la altura del rótulo. */
-.historias54__sonido {
+@media (max-width: 700px) {
+  /* EN EL TELÉFONO ES UN CARRUSEL HORIZONTAL, y las tres siguen a la vista.
+     Cada historia ocupa el 66% del ancho, así que las vecinas asoman por los
+     costados: se entiende que hay más de una y para qué lado están, que es lo
+     que un carrusel tiene que decir antes de que lo toques.
+
+     scroll-snap deja cada una centrada al soltar el dedo, y además el JS
+     arrastra el carrusel a la que se activa sola. */
+  .historias54__fila {
+    /* --historia-movil  cuánto de la pantalla ocupa la historia centrada.
+                         Cuanto MÁS CHICO, más se ven las dos vecinas. A 58%
+                         quedan 21% de cada lado, que alcanza para reconocer
+                         qué hay al lado sin que la del medio deje de mandar.
+                         El aire de los costados sale de la misma cuenta, así
+                         que se toca un solo número. */
+    --historia-movil: 58%;
+
+    display: flex;
+    max-width: none;
+    gap: var(--s-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+
+    /* El aire de los costados es lo que permite que la PRIMERA y la ÚLTIMA
+       también puedan quedar centradas: sin esto, el scroll se termina antes de
+       llegar a centrarlas y quedan pegadas a un borde. */
+    padding-inline: calc((100% - var(--historia-movil)) / 2);
+    scroll-padding-inline: calc((100% - var(--historia-movil)) / 2);
+
+    /* Sin barra de scroll a la vista: el gesto ya lo indican las piezas que
+       asoman por los costados. */
+    scrollbar-width: none;
+  }
+  .historias54__fila::-webkit-scrollbar { display: none; }
+
+  .historias54__marco {
+    flex: 0 0 var(--historia-movil);
+    scroll-snap-align: center;
+  }
+}
+
+
+/* ==========================================================================
+   7-bis. EL CONTROL DE SONIDO — EL ESTÁNDAR DEL SITIO
+   --------------------------------------------------------------------------
+   ESTE ES EL CONTROL DE VOLUMEN DE TODO EL PORTFOLIO. Donde haya que prender
+   o apagar sonido va este y no otro. Está escrito genérico (.control-sonido,
+   sin apellido de sección) justamente para poder copiarlo tal cual.
+
+   CUANDO UNA SEGUNDA PÁGINA LO USE, ESTE BLOQUE SE MUDA A layout.css SIN
+   CAMBIARLE NADA — vive acá solamente porque hoy es la única página con audio.
+
+   CÓMO SE LEE EL ESTADO. No hay texto: son dos señales redundantes.
+     · el parlante  → ONDAS si hay sonido, CRUZ si no
+     · las barritas → SE MUEVEN si hay sonido, quietas y bajas si no
+
+   Que el movimiento sea la señal principal es la decisión de fondo: se
+   entiende de reojo, sin leer, y no depende del idioma. Un botón que dice
+   "SILENCIAR" obliga a preguntarse si eso es el estado actual o lo que va a
+   pasar si lo tocás; unas barras quietas no tienen esa ambigüedad.
+
+   TODO CUELGA DE aria-pressed, que es el mismo atributo que lee el lector de
+   pantalla. Un solo estado, imposible de desincronizar. El nombre accesible
+   va en un .visually-hidden adentro del botón.
+   ========================================================================== */
+
+.control-sonido {
+  /* PERILLAS — EL CONTROL DE SONIDO */
+  --sonido-barra-ancho: 2px;
+  --sonido-barra-alto: 14px;  /* el alto máximo al que llegan moviéndose */
+  --sonido-ciclo: 900ms;      /* qué tan rápido se mueven */
+
   grid-column: -2;
   justify-self: end;
   align-self: start;
+
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
-  padding: 6px 16px 6px 10px;
+  padding: 7px 16px;
   border: var(--borde) solid var(--zona-linea);
   border-radius: 999px;
   color: var(--zona-texto-2);
-  transition: background var(--dur-1) var(--ease),
-              border-color var(--dur-1) var(--ease),
+  transition: border-color var(--dur-1) var(--ease),
               color var(--dur-1) var(--ease);
 }
-.historias54__sonido:hover {
-  background: var(--verde);
-  border-color: var(--verde-oscuro);
-  color: #fff;
-}
-.historias54__sonido .etiqueta { color: inherit; }
-.historias54__icono svg { width: 20px; height: 20px; display: block; }
+.control-sonido:hover { border-color: var(--verde); color: var(--verde); }
 
-/* Las dos mitades del icono: la crucecita de mudo y el arco de sonido. Se ve
-   una o la otra según aria-pressed, que es el mismo dato que usa el lector de
-   pantalla — un solo estado, no dos que se pueden desincronizar. */
-.historias54__on { opacity: 0; }
-.historias54__sonido[aria-pressed="true"] .historias54__mute { opacity: 0; }
-.historias54__sonido[aria-pressed="true"] .historias54__on { opacity: 1; }
+.control-sonido__parlante svg { width: 19px; height: 19px; display: block; }
+
+/* Las dos mitades del parlante. Se ve una o la otra según aria-pressed — el
+   mismo dato que usa el lector de pantalla, no una copia. */
+.control-sonido__ondas { opacity: 0; }
+.control-sonido[aria-pressed="true"] .control-sonido__cruz  { opacity: 0; }
+.control-sonido[aria-pressed="true"] .control-sonido__ondas { opacity: 1; }
+
+/* EL ECUALIZADOR. Las barras se alinean abajo para que crezcan hacia arriba,
+   como un ecualizador de verdad. */
+.control-sonido__barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: var(--sonido-barra-alto);
+}
+.control-sonido__barras i {
+  display: block;
+  width: var(--sonido-barra-ancho);
+  border-radius: 1px;
+  background: currentColor;
+
+  /* APAGADO: todas iguales, bajas y quietas. La quietud ES el mensaje. */
+  height: 3px;
+  transition: height var(--dur-2) var(--ease);
+}
+
+/* PRENDIDO: cada barra hace su propio ciclo. Los retrasos son valores FIJOS y
+   distintos entre sí, elegidos uno por uno — no al azar: al azar dos barras
+   caen en fase y el conjunto se lee como un error, no como un ecualizador. */
+.control-sonido[aria-pressed="true"] .control-sonido__barras i {
+  animation: ecualizador var(--sonido-ciclo) ease-in-out infinite;
+}
+.control-sonido[aria-pressed="true"] .control-sonido__barras i:nth-child(1) { animation-delay: 0ms; }
+.control-sonido[aria-pressed="true"] .control-sonido__barras i:nth-child(2) { animation-delay: 210ms; }
+.control-sonido[aria-pressed="true"] .control-sonido__barras i:nth-child(3) { animation-delay: 90ms; }
+.control-sonido[aria-pressed="true"] .control-sonido__barras i:nth-child(4) { animation-delay: 330ms; }
+.control-sonido[aria-pressed="true"] .control-sonido__barras i:nth-child(5) { animation-delay: 150ms; }
+
+@keyframes ecualizador {
+  0%, 100% { height: 3px; }
+  50%      { height: var(--sonido-barra-alto); }
+}
+
+/* Con movimiento reducido las barras no saltan, pero el estado se sigue
+   leyendo: prendido son barras ALTAS y quietas, apagado son barras BAJAS y
+   quietas — más el parlante, que no depende de ninguna animación. */
+@media (prefers-reduced-motion: reduce) {
+  .control-sonido[aria-pressed="true"] .control-sonido__barras i {
+    animation: none;
+    height: var(--sonido-barra-alto);
+  }
+}
 
 @media (max-width: 960px) {
-  /* Dos por fila y no una: en una sola columna cada historia mide el ancho
-     entero de la pantalla y, siendo 9:16, se come casi dos pantallas de alto
-     ella sola. */
-  .historias54__fila { grid-template-columns: repeat(2, 1fr); }
-  .historias54__sonido { grid-column: 1 / -1; justify-self: start; }
+  .control-sonido { grid-column: 1 / -1; justify-self: start; }
 }
 
 
@@ -715,14 +844,18 @@
   justify-self: center;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: #000;
+  /* El negro de la paleta (--negro, #0B0B0B) y NO #000 crudo. Es la misma
+     regla que rige toda la página: ningún color escrito a mano, todos salen
+     de variables.css. El negro puro además se ve como un agujero al lado del
+     negro del sistema, que tiene una pizca de calidez. */
+  background: var(--negro);
   box-shadow: var(--shadow-lg);
 }
 .teaser54__marco video {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: #000;
+  background: var(--negro);
 }
 
 /* LA TAPA. Cubre casi todo el video: el área de click es la imagen, no un
@@ -846,9 +979,14 @@
 
   width: 100%;
   padding-block: var(--s-8);
-  background: var(--negro);
   display: grid;
   place-items: center;
+
+  /* SIN background propio: la sección lleva .zona--negro y de ahí saca el
+     --grad-negro del sistema, igual que cualquier otra zona oscura del sitio.
+     Estuvo un rato con un  plano escrito acá, y eso
+     pisaba el degradé de la zona: quedaba un negro chato, distinto del de las
+     demás secciones negras. Ninguna superficie del sistema es 100% plana. */
 }
 
 .casa54__pantalla video {

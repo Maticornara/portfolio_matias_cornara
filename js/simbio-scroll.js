@@ -42,11 +42,24 @@ window.initSimbioScroll = function () {
   const CARPETA = "../assets/simbio/frames-web/";
   const rutaDeFrame = (n) => CARPETA + String(n).padStart(4, "0") + ".jpg";
 
-  // Salto entre frames. 1 = se usan los 375. 2 = uno de cada dos (188).
-  // Es la perilla para bajar el consumo de memoria si en algún equipo se
-  // pone pesado: el movimiento sigue siendo fluido porque el scroll ya
-  // interpola visualmente.
-  const SALTO = 1;
+  /* SALTO ENTRE FRAMES — Y POR QUÉ EN EL TELÉFONO ES 3.
+     1 = se usan los 375 cuadros. 2 = uno de cada dos (188). 3 = uno de cada
+     tres (125).
+
+     EL PROBLEMA EN MOBILE ES EL PESO, NO LA FLUIDEZ: los 375 JPG son unos
+     23 MB. Eso en datos móviles es una barbaridad para una animación, y
+     además son 375 imágenes vivas en la memoria de un teléfono.
+     Con salto de 3 bajan a 125 cuadros (~8 MB) y el recorrido de scroll en
+     mobile son 400vh, o sea unas 3 pantallas: quedan ~42 cuadros por pantalla
+     scrolleada, más que suficiente para que se lea como movimiento continuo.
+
+     Se decide UNA vez, al arrancar: si girás el teléfono no se recarga la
+     secuencia (sería tirar a la basura lo ya descargado por un cambio que no
+     lo necesita).
+
+     Está atado al mismo corte de 620px que usa el CSS. Si cambiás uno,
+     cambiá el otro. */
+  const SALTO = window.matchMedia("(max-width: 620px)").matches ? 3 : 1;
 
   // Cuántas imágenes se piden a la vez durante la precarga.
   // Ni de a una (lentísimo) ni las 375 juntas (el navegador se satura y

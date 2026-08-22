@@ -3,7 +3,8 @@
    Los comportamientos de la página de Amigos Tipines.
 
      initPaneo()   las tres piezas del hero, corriéndose de a una
-     initLibro()   el libro hojeable: 16 hojas con giro 3D sobre el lomo
+     initAlterna() piezas que se turnan en el mismo lugar (los juguetes)
+     initLibro()   el libro hojeable de 16 hojas + el visor de pantalla completa
      initTele()    la tapa de play de la miniserie
 
    Todos salen sin hacer nada si no encuentran su HTML, así que el archivo se
@@ -28,6 +29,8 @@
     if (intento) intento.catch(() => {});
   }
 
+  const acotar = (v, min, max) => Math.max(min, Math.min(max, v));
+
 
   /* ------------------------------------------------------------------------
      1. EL PANEO DEL HERO
@@ -45,12 +48,11 @@
      diseño.
 
      LA TERCERA PIEZA ES UN VIDEO y lo maneja este mismo init, no el
-     IntersectionObserver genérico de los otros proyectos. El motivo: la
-     ventana del paneo tiene overflow hidden, pero un observer mira el
-     viewport, no el recorte del padre. O sea que el video "se ve" para el
-     observer incluso cuando está corrido afuera de la ventana, y quedaba
-     reproduciéndose sin que nadie lo estuviera mirando. Acá corre solo cuando
-     es la pieza activa Y el hero está en pantalla.
+     [data-video-visible] genérico de +54. Ese usa un IntersectionObserver, y
+     un observer mira el VIEWPORT, no el `overflow: hidden` del padre: para el
+     observer el video "se ve" incluso cuando el riel ya lo corrió afuera de la
+     ventana. Acá el video arranca y para con el HERO entero, que es lo que de
+     verdad se ve o no se ve.
      ------------------------------------------------------------------------ */
 
   function initPaneo() {
@@ -67,12 +69,22 @@
       // El paso es el ancho de la VENTANA del paneo, no el del riel: el riel
       // mide N veces eso. Se lee en cada paso y no una sola vez, para que siga
       // andando si cambia el tamaño de la ventana.
+      //
+      // EL VIDEO CORRE MIENTRAS EL HERO ESTÉ EN PANTALLA, sea o no la pieza
+      // que se está viendo. Antes se pausaba al salir de turno y se retomaba
+      // al volver, y ESO era la mitad del "se traba": el clip dura 8 s y el
+      // turno 4,6, así que cada vez que volvía retomaba desde otro punto y
+      // encima el primer cuadro después de un play() tarda en salir. Un video
+      // mudo de 960x540 no cuesta nada tenerlo corriendo — medido: cero
+      // cuadros perdidos.
       function mostrar(i) {
         riel.style.setProperty("--paneo-x", (-i * paneo.clientWidth) + "px");
+      }
 
-        piezas.forEach((pieza, j) => {
+      function videos(encender) {
+        piezas.forEach((pieza) => {
           if (pieza.tagName !== "VIDEO") return;
-          if (j === i && enPantalla) reproducir(pieza);
+          if (encender) reproducir(pieza);
           else pieza.pause();
         });
       }
@@ -85,7 +97,7 @@
 
       const arrancar = () => {
         enPantalla = true;
-        mostrar(actual);                 // por si la pieza activa es el video
+        videos(true);
         if (reloj || sinMovimiento) return;
         reloj = setInterval(() => {
           actual = (actual + 1) % piezas.length;
@@ -97,7 +109,7 @@
         enPantalla = false;
         clearInterval(reloj);
         reloj = null;
-        piezas.forEach((p) => { if (p.tagName === "VIDEO") p.pause(); });
+        videos(false);
       };
 
       new IntersectionObserver((entradas) => {
@@ -156,7 +168,7 @@
       const btnPrev  = caja.querySelector("[data-libro-prev]");
       const btnNext  = caja.querySelector("[data-libro-next]");
       const salida   = caja.querySelector("[data-libro-contador]");
-      const lupa     = caja.querySelector("[data-libro-lupa]");
+      const btnLupa  = caja.querySelector("[data-libro-lupa]");
 
       const TOTAL = pliegos + 1;   // 15 pliegos → 16 hojas
       let actual = 0;              // cuántas hojas están pasadas: 0..TOTAL
@@ -167,9 +179,18 @@
 
       const archivoPliego = (n) => ruta + String(n).padStart(2, "0") + ".jpg";
 
-      // Qué imagen y qué mitad le toca a cada cara. Devuelve null cuando la
-      // cara no existe (no pasa nunca con esta cuenta, pero deja el armado a
-      // prueba de que alguien cambie el número de pliegos).
+      // Qué archivo corresponde al estado N, para el visor y para el contador.
+      const archivoDe = (n) =>
+        n === 0     ? ruta + "tapa.jpg" :
+        n === TOTAL ? ruta + "contratapa.jpg" :
+        archivoPliego(n);
+
+      const nombreDe = (n) =>
+        n === 0     ? "Tapa" :
+        n === TOTAL ? "Contratapa" :
+        "Pliego " + String(n).padStart(2, "0") + " / " + pliegos;
+
+      // Qué imagen y qué mitad le toca a cada cara. Ver el reparto de arriba.
       function cara(hoja, lado) {
         if (lado === "frente") {
           if (hoja === 0) return { src: ruta + "tapa.jpg", mitad: "entera",
@@ -220,8 +241,13 @@
       function pintar() {
         hojas.forEach((hoja, i) => {
           const pasada = i < actual;
+          // Las dos hojas de afuera de cada pila: la abierta a la derecha y la
+          // última pasada a la izquierda. Son las únicas que llevan sombra y
+          // pliegue — ver la nota de .hoja.is-arriba en el CSS.
+          const arriba = i === actual || i === actual - 1;
 
           hoja.classList.toggle("is-pasada", pasada);
+          hoja.classList.toggle("is-arriba", arriba);
 
           // El apilado: las pasadas se acumulan a la izquierda en el orden en
           // que se pasaron (z bajo y creciente); las que faltan se apilan a la
@@ -229,7 +255,6 @@
           hoja.style.zIndex = pasada ? String(i) : String(TOTAL * 2 - i);
 
           // Solo las dos hojas de arriba reciben clicks y foco.
-          const arriba = i === actual || i === actual - 1;
           hoja.setAttribute("aria-hidden", String(!arriba));
 
           // Carga perezosa: solo las que están a menos de LIBRO_MARGEN.
@@ -248,31 +273,18 @@
 
         if (btnPrev) btnPrev.disabled = actual === 0;
         if (btnNext) btnNext.disabled = actual === TOTAL;
-
-        if (salida) {
-          salida.textContent =
-            actual === 0     ? "Tapa" :
-            actual === TOTAL ? "Contratapa" :
-            "Pliego " + String(actual).padStart(2, "0") + " / " + pliegos;
-        }
-
-        // La lupa apunta siempre al pliego que se está viendo. initLupa
-        // (main.js) lee este atributo recién al hacer click, así que
-        // reescribirlo acá alcanza.
-        if (lupa) {
-          lupa.dataset.lupa =
-            actual === 0     ? ruta + "tapa.jpg" :
-            actual === TOTAL ? ruta + "contratapa.jpg" :
-            archivoPliego(actual);
-        }
+        if (salida)  salida.textContent = nombreDe(actual);
       }
 
       function ir(destino) {
         // clamp: nunca fuera del rango de estados
-        const nuevo = Math.max(0, Math.min(TOTAL, destino));
+        const nuevo = acotar(destino, 0, TOTAL);
         if (nuevo === actual) return;
         actual = nuevo;
         pintar();
+        // Y NADA MÁS. Antes acá había un visor.pintar() para redibujar la
+        // imagen grande, y ya no existe: el visor no tiene copia del libro, se
+        // lleva ESTE nodo adentro. Redibujar el libro ES redibujar el visor.
       }
 
       if (btnNext) btnNext.addEventListener("click", () => ir(actual + 1));
@@ -283,6 +295,10 @@
       document.addEventListener("keydown", (e) => {
         if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
         if (!caja.isConnected) return;
+        // Con el visor abierto ESTE listener sigue siendo el bueno: adentro
+        // del visor está este mismo libro, y el visor ya no toca las flechas
+        // (solo Escape). Antes había un `return` acá porque el visor tenía su
+        // propio teclado y cada flecha pasaba DOS pliegos.
 
         const r = caja.getBoundingClientRect();
         const visible = r.top < window.innerHeight * 0.85 && r.bottom > 0;
@@ -292,13 +308,270 @@
         ir(actual + (e.key === "ArrowRight" ? 1 : -1));
       });
 
+      // El visor comparte el estado con el libro: lo que se ve en grande es
+      // siempre el pliego abierto, y al cerrar, el libro queda donde lo
+      // dejaste. Por eso se arma acá adentro y no como un módulo aparte.
+      const visor = armarVisor({
+        // caja: el nodo entero. El visor no dibuja una copia del libro — se
+        // lleva ESTE y después lo devuelve. Ver armarVisor.
+        caja:     caja,
+        estado:   () => actual,
+        total:    () => TOTAL,
+        archivo:  archivoDe,
+        nombre:   nombreDe,
+        ir:       ir,
+      });
+
+      if (btnLupa && visor) {
+        btnLupa.addEventListener("click", () => visor.abrir());
+      }
+
       pintar();
     });
   }
 
 
   /* ------------------------------------------------------------------------
-     3. LA TELE
+     3. EL VISOR — el "ver en grande" del libro
+     --------------------------------------------------------------------------
+     POR QUÉ NO SE USA LA LUPA DE main.js, QUE YA EXISTE.
+     initLupa abre la imagen dentro de un marco de polaroid: borde blanco y más
+     aire abajo. Para las tres láminas del manual de +54 está perfecto — son
+     fotos impresas y el marco lo dice. Para un pliego apaisado de un
+     busca-personajes el marco se come el ancho y la imagen termina MÁS CHICA
+     que el propio librito de la página. Se veía como un post-it.
+
+     Acá el pliego manda: ocupa lo que puede de la ventana, el fondo es negro
+     liso, y se puede acercar. Que se pueda acercar no es un lujo — es un
+     busca-personajes: hay que poder mirar de cerca un objeto del tamaño de una
+     moneda dentro de un pliego lleno de cosas.
+
+     EL VISOR ES UNO SOLO Y VIVE FUERA DE #swup. Los listeners se enganchan una
+     vez sola (la marca es el data-visor-armado); el libro que está en pantalla
+     se le pasa en visor.__libro, y los handlers lo leen recién al dispararse.
+     Sin eso, cada navegación de Swup sumaba una copia de cada listener.
+     ------------------------------------------------------------------------ */
+
+  // El HTML del visor. Está acá y no en la página por una razón concreta: la
+  // primera versión lo tenía escrito en amigos-tipines.html, y cuando esa
+  // página se regeneró desde la plantilla de las otras tres, el bloque se
+  // perdió. Resultado: "Ver en grande" dejó de hacer NADA, sin un solo error
+  // en consola que lo delatara — el botón existía, el JS corría, y el
+  // querySelector devolvía null en silencio. Armándolo desde acá no puede
+  // desincronizarse de la plantilla.
+  const FLECHA = (d) =>
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>';
+
+  function crearVisor() {
+    const visor = document.createElement("div");
+    visor.className = "visor";
+    visor.setAttribute("data-visor", "");
+    visor.hidden = true;
+    visor.innerHTML =
+      // El fondo es un <button> y no un <div> con onclick: cerrar tocando
+      // afuera es una acción, y así funciona con teclado sin agregar nada.
+      '<button class="visor__fondo" type="button" data-visor-cerrar aria-label="Cerrar el visor"></button>' +
+      '<div class="visor__lienzo" data-visor-lienzo><img data-visor-img alt=""></div>' +
+      '<button class="visor__nav visor__nav--prev" type="button" data-visor-prev aria-label="Pliego anterior">' +
+        FLECHA("M15 4 L7 12 L15 20") + '</button>' +
+      '<button class="visor__nav visor__nav--next" type="button" data-visor-next aria-label="Pliego siguiente">' +
+        FLECHA("M9 4 L17 12 L9 20") + '</button>' +
+      '<button class="visor__cerrar" type="button" data-visor-cerrar aria-label="Cerrar">' +
+        FLECHA("M6 6 L18 18 M18 6 L6 18") + '</button>' +
+      '<p class="visor__pie etiqueta" data-visor-pie></p>';
+    document.body.appendChild(visor);
+    return visor;
+  }
+
+  /* ------------------------------------------------------------------------
+     3-bis. EL VISOR: EL LIBRO EN PANTALLA COMPLETA
+     --------------------------------------------------------------------------
+     EL VISOR NO DIBUJA NADA PROPIO. Se MUDA el libro adentro.
+
+     La primera versión mostraba un <img> con el pliego abierto y lo dejaba
+     acercar y arrastrar. El problema no era el zoom: era que pasar de página
+     ahí adentro era cambiarle el src a una imagen, o sea ninguna animación.
+     En grande dejabas de tener un libro y pasabas a tener un carrusel de
+     fotos, justo en el momento en que más se lo mira.
+
+     Ahora, al abrir, el .libro__caja entero —sus 16 hojas, su giro 3D y sus
+     controles— se mueve del <main> a la ventana del visor, y al cerrar vuelve
+     a su lugar. Es el MISMO nodo: mismo JS, mismo estado, mismo giro. Lo único
+     que cambia es --libro-alto / --libro-tope (css/tipines.css) y el fondo
+     negro que le queda detrás.
+
+     Efecto secundario, y es gratis: el estado se conserva solo en los dos
+     sentidos. Abrís en grande en el pliego 7 y arranca en el 7; hojeás hasta
+     el 11, cerrás, y la página queda en el 11. No hay nada que sincronizar
+     porque no hay dos libros.
+
+     CÓMO SE VUELVE. Antes de mudarlo se deja un comentario vacío en el DOM
+     haciendo de mojón; al cerrar, el libro se reinserta delante de ese mojón.
+     Un comentario y no un <div>: no ocupa lugar, no hereda estilos y no puede
+     aparecer por error en la página.
+     ------------------------------------------------------------------------ */
+
+  function armarVisor(libro) {
+    // Cuelga del <body> y no de #swup, así que sobrevive a las navegaciones de
+    // Swup: se crea una vez y después se reusa.
+    const visor = document.querySelector("[data-visor]") || crearVisor();
+
+    const lienzo = visor.querySelector("[data-visor-lienzo]");
+    if (!lienzo) return null;
+
+    // El <img> de la versión vieja ya no se usa: si quedó en el HTML, se saca,
+    // porque si no ocupa lugar adentro de la ventana y descentra el libro.
+    const imgVieja = visor.querySelector("[data-visor-img]");
+    if (imgVieja) imgVieja.remove();
+
+    visor.__libro = libro;
+
+    const abierto = () => !visor.hidden;
+
+    function abrir() {
+      const l = visor.__libro;
+      if (!l || !l.caja || abierto()) return;
+
+      // El mojón que marca de dónde salió, para poder devolverlo exacto.
+      visor.__mojon = document.createComment(" el libro vive acá ");
+      l.caja.parentNode.insertBefore(visor.__mojon, l.caja);
+      lienzo.appendChild(l.caja);
+
+      visor.hidden = false;
+      // El doble rAF es para que el navegador pinte el estado inicial (opacity
+      // 0) antes de que la clase dispare la transición. Con uno solo, a veces
+      // agrupa los dos cambios y el fundido no se ve.
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => visor.classList.add("is-abierto")));
+
+      if (window.lenis) window.lenis.stop();
+    }
+
+    function devolver() {
+      const l = visor.__libro;
+      const mojon = visor.__mojon;
+      if (!l || !l.caja) return;
+
+      // Si el mojón ya no está en el documento es porque Swup reemplazó #swup
+      // mientras el visor estaba abierto: la página a la que había que
+      // devolverlo no existe más. En ese caso el libro se descarta — el
+      // initLibro de la página nueva arma el suyo.
+      if (mojon && mojon.parentNode) {
+        mojon.parentNode.insertBefore(l.caja, mojon);
+        mojon.remove();
+      } else {
+        l.caja.remove();
+      }
+      visor.__mojon = null;
+    }
+
+    function cerrar() {
+      if (!abierto()) return;
+      visor.classList.remove("is-abierto");
+      if (window.lenis) window.lenis.start();
+
+      // Se devuelve DESPUÉS del fundido: si no, el libro reaparece de golpe en
+      // la página mientras el visor todavía se está yendo, y se ve el salto.
+      setTimeout(() => {
+        devolver();
+        visor.hidden = true;
+      }, 320);
+    }
+
+    // --- Los listeners, una sola vez para toda la vida de la página ---
+    if (!visor.dataset.visorArmado) {
+      visor.dataset.visorArmado = "1";
+
+      visor.querySelectorAll("[data-visor-cerrar]").forEach((b) =>
+        b.addEventListener("click", cerrar));
+
+      // Las flechas del visor están escondidas por CSS (el libro entra con las
+      // suyas), pero se dejan cableadas: si algún día el visor muestra otra
+      // cosa, ya andan.
+      const btnPrev = visor.querySelector("[data-visor-prev]");
+      const btnNext = visor.querySelector("[data-visor-next]");
+      btnPrev && btnPrev.addEventListener("click", () =>
+        visor.__libro.ir(visor.__libro.estado() - 1));
+      btnNext && btnNext.addEventListener("click", () =>
+        visor.__libro.ir(visor.__libro.estado() + 1));
+
+      // Escape cierra. Las flechas NO se manejan acá: el libro ya tiene su
+      // propio listener de teclado y, estando en el visor, está en pantalla.
+      // Si lo hiciéramos también acá, cada flecha pasaría dos páginas.
+      document.addEventListener("keydown", (e) => {
+        if (!abierto()) return;
+        if (e.key === "Escape") cerrar();
+      });
+    }
+
+    return { abrir, cerrar, estaAbierto: abierto };
+  }
+
+
+  /* ------------------------------------------------------------------------
+     4. PIEZAS QUE SE TURNAN EN EL MISMO LUGAR
+     --------------------------------------------------------------------------
+     Un contenedor con [data-alterna] y adentro varios [data-alterna-item]. Se
+     enciende uno por vez, en orden, cada N milisegundos.
+
+     Lo usan los juguetes: el modelo en gris y las figuras pintadas son las
+     MISMAS tres piezas en la misma pose, así que turnarse en el mismo lugar
+     hace la comparación sola. Una al lado de la otra obliga a ir y venir con
+     la mirada.
+
+     El intervalo se declara en el HTML (data-alterna="3000") para que el ritmo
+     se toque desde ahí. El fundido está en el CSS (.is-visible), con el resto
+     del diseño.
+
+     Solo corre mientras el grupo está en pantalla: un temporizador dando
+     vueltas en una sección que nadie está mirando es trabajo al pedo, y encima
+     al volver te encontrás la pieza en cualquier punto del ciclo.
+
+     Es una copia de initAlterna de mas-54.js. Va copiada y no importada porque
+     el sitio no tiene build step, y mas-54.js no se carga en esta página.
+     ------------------------------------------------------------------------ */
+
+  function initAlterna() {
+    document.querySelectorAll("[data-alterna]").forEach((grupo) => {
+      const piezas = [...grupo.querySelectorAll("[data-alterna-item]")];
+      if (!piezas.length) return;
+
+      // Con una sola pieza no hay nada que alternar: se la deja prendida.
+      if (piezas.length < 2) {
+        piezas.forEach((p) => p.classList.add("is-visible"));
+        return;
+      }
+
+      let actual = 0;
+      const pintar = () =>
+        piezas.forEach((p, i) => p.classList.toggle("is-visible", i === actual));
+
+      pintar();
+
+      if (sinMovimiento) return;
+
+      const intervalo = parseInt(grupo.dataset.alterna, 10) || 3000;
+      let reloj = null;
+
+      const arrancar = () => {
+        if (reloj) return;
+        reloj = setInterval(() => {
+          actual = (actual + 1) % piezas.length;
+          pintar();
+        }, intervalo);
+      };
+      const parar = () => { clearInterval(reloj); reloj = null; };
+
+      new IntersectionObserver((entradas) => {
+        entradas.forEach((e) => (e.isIntersecting ? arrancar() : parar()));
+      }, { threshold: 0.2 }).observe(grupo);
+    });
+  }
+
+
+  /* ------------------------------------------------------------------------
+     5. LA TELE
      --------------------------------------------------------------------------
      La tapa se va al primer click y NO vuelve. Los controles nativos ya están
      puestos desde el HTML, así que la barra de tiempo existe desde el primer
@@ -330,6 +603,7 @@
   function initTipines() {
     initPaneo();
     initLibro();
+    initAlterna();
     initTele();
   }
 

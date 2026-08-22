@@ -57,11 +57,45 @@ window.initMuestras = function () {
      otras, así que el zoom vuelve a 1: el cuadro entra completo y no se
      recorta nada. El cx/cy se mantiene, porque eso no recorta — solo centra
      la pieza en vez del centro de la imagen. */
+  /* ZOOM EN MOBILE — POR QUÉ EXISTE Y CÓMO SE CALCULÓ (20/08/2026)
+     En escritorio el cuadro mide más de 1100px de ancho y la pieza se ve
+     grande aunque el render traiga mucho aire alrededor. En un teléfono el
+     mismo cuadro mide 342px: la pieza del árbol quedaba de 80px, ilegible.
+
+     Agrandar el cuadro no sirve: el dibujo entra "contenido", así que lo que
+     manda es el ANCHO disponible, y más alto no agranda nada. La única
+     palanca real es agrandar el dibujo y dejar que el aire sobrante se salga
+     del cuadro. Eso es el zoom.
+
+     EL RIESGO ES RECORTAR LA PIEZA, y ya nos pasó una vez. Por eso cada valor
+     sale de una cuenta y no del ojo. Con la pieza centrada en (cx, cy), su
+     mitad más larga es lo que decide cuánto se puede agrandar:
+
+     VA DE LA MANO CON EL CSS: en el teléfono el cuadro deja de ser 16:9 y
+     pasa a ser VERTICAL (4/5) — ver .pantalla--pieza .muestra__marco en el
+     bloque mobile de simbio.css. Es lo que le da alto a la pieza para poder
+     crecer; con el cuadro apaisado, el árbol (que es alto y angosto) no podía
+     pasar de 1.19 sin cortarse. Si cambia una, hay que cambiar la otra.
+
+     Con el cuadro vertical de 342x428 y el dibujo entrando contenido, estos
+     son los topes y lo que quedó puesto:
+
+       secuencia   pieza ocupa     lo que la frena        tope   puesto
+       árbol       24% w · 84% h   el alto de la pieza    2.65   2.20
+       hongos      49% w · 74% h   el ancho de la pieza   2.04   1.70
+       algas       42% w · 48% h   el ancho de la pieza   2.38   2.00
+
+     El valor puesto es ~83% del tope: margen por si la pieza se desplaza unos
+     píxeles a lo largo de la secuencia (son animaciones, no fotos).
+     Lo que se sale del cuadro es SIEMPRE aire vacío del render, nunca pieza. */
   const MUESTRAS = {
-    "muestra-piezas-hongos": { carpeta: "muestra-piezas-hongos-web", primero: 450, ultimo: 550, zoom: 1, cx: 0.506, cy: 0.449 },
-    "muestra-alga":          { carpeta: "muestra-alga-web",          primero: 350, ultimo: 450, zoom: 1, cx: 0.517, cy: 0.533 },
-    "muestra-pieza-arbol":   { carpeta: "muestra-pieza-arbol-web",   primero: 551, ultimo: 651, zoom: 1, cx: 0.472, cy: 0.479 },
+    "muestra-piezas-hongos": { carpeta: "muestra-piezas-hongos-web", primero: 450, ultimo: 550, zoom: 1, zoomMobile: 1.70, cx: 0.506, cy: 0.449 },
+    "muestra-alga":          { carpeta: "muestra-alga-web",          primero: 350, ultimo: 450, zoom: 1, zoomMobile: 2.00, cx: 0.517, cy: 0.533 },
+    "muestra-pieza-arbol":   { carpeta: "muestra-pieza-arbol-web",   primero: 551, ultimo: 651, zoom: 1, zoomMobile: 2.20, cx: 0.472, cy: 0.479 },
   };
+
+  // El mismo corte que usa el CSS (620px). Si cambia allá, cambia acá.
+  const esTelefono = () => window.matchMedia("(max-width: 620px)").matches;
 
   const FPS = 24;                 // velocidad de reproducción
   const PAUSA_EN_PUNTA = 500;     // ms de espera en cada extremo antes de volver
@@ -134,9 +168,12 @@ window.initMuestras = function () {
 
       // Entra completo en la caja y después se agranda por el zoom del
       // encuadre. Lo que se salga es crema vacío: la pieza nunca se recorta.
+      // El zoom se lee EN CADA DIBUJO y no una vez al arrancar: así, si girás
+      // el teléfono o cambiás el tamaño de la ventana, el encuadre se corrige
+      // solo en el cuadro siguiente.
+      const zoom = (esTelefono() && config.zoomMobile) || config.zoom || 1;
       const escala =
-        Math.min(canvas.width / img.width, canvas.height / img.height) *
-        (config.zoom || 1);
+        Math.min(canvas.width / img.width, canvas.height / img.height) * zoom;
 
       const w = img.width * escala;
       const h = img.height * escala;

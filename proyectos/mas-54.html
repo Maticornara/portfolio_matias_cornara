@@ -19,10 +19,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&display=swap" rel="stylesheet">
 
   <!-- Ojo con las rutas: estamos dentro de /proyectos/, por eso el ../ -->
+  <!-- TODAS LAS PÁGINAS CARGAN LA MISMA LISTA DE CSS, EN EL MISMO ORDEN.
+       No es desprolijidad, es lo que evita el bug de los estilos fantasma.
+
+       Swup navega sin recargar: reemplaza #swup y la nav, pero el <head> es
+       SIEMPRE el de la página por la que entraste al sitio. Si una página no
+       trae el CSS de otra, al navegar a esa otra la ves sin estilos. Y como
+       refrescar sí rehace el <head>, con F5 se arregla sola — por eso parece
+       un fantasma y no un error.
+
+       Medido: entrando directo a un proyecto y haciendo clic en Home, el
+       título de la portada salía a 114.8px negro en vez de 35.2px verde,
+       porque archivo.css nunca había estado en el head. Pasaba desde las
+       tres páginas de proyecto.
+
+       Cargarlas todas es inofensivo: se probó inyectando archivo.css en las
+       otras tres páginas y de 604 elementos no cambió ninguno — los nombres
+       están apellidados por página (.portada-hero__*, .simbio-*, .s54*,
+       .stip*), así que no se pisan.
+
+       EL ORDEN TAMBIÉN TIENE QUE SER EL MISMO en las cuatro: si cambia,
+       cambia la cascada según por dónde entraste, que es el mismo bug con
+       otra cara. Y los ?v= tienen que coincidir entre páginas, si no una
+       sirve una versión vieja de la otra.
+
+       SI AGREGÁS UNA PÁGINA NUEVA: su CSS va acá y en las otras tres. -->
   <link rel="stylesheet" href="../css/variables.css?v=6">
   <link rel="stylesheet" href="../css/base.css?v=11">
-  <link rel="stylesheet" href="../css/layout.css?v=9">
-  <link rel="stylesheet" href="../css/mas-54.css?v=20">
+  <link rel="stylesheet" href="../css/layout.css?v=12">
+  <link rel="stylesheet" href="../css/archivo.css?v=26">
+  <link rel="stylesheet" href="../css/simbio.css?v=119">
+  <link rel="stylesheet" href="../css/mas-54.css?v=22">
+  <link rel="stylesheet" href="../css/tipines.css?v=11">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -47,17 +75,37 @@
      Esos son los ids que existen de verdad — antes acá decía #archivo, que no
      existe en ninguna parte, y el botón no llevaba a ningún lado. -->
 <nav class="site-nav grilla">
-  <a class="pastilla" href="../index.html">Home</a>
-  <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
+  <!-- EL BOTÓN DE HAMBURGUESA. Va PRIMERO para que en el teléfono quede en la
+       fila de arriba, contra el borde derecho. En desktop lleva display:none,
+       así que no le ocupa una columna a la grilla de la nav.
+       Las tres rayas son <span> vacíos: el dibujo lo hace el CSS, y así se
+       pueden animar por separado para volverse una X. aria-hidden porque para
+       un lector de pantalla el botón ya se llama solo con su aria-label. -->
+  <button class="site-nav__hamburguesa" type="button"
+          aria-expanded="false" aria-label="Abrir el menú">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
+  <a class="pastilla" href="../index.html" translate="no" data-es="Home" data-en="Home">Home</a>
+  <a class="pastilla" href="../index.html#sobre" translate="no" data-es="Sobre mí" data-en="About">Sobre mí</a>
   <!-- Decía "Archivo" y apuntaba a #archivo, que NO existe en la portada: sus
        secciones son #sobre, #herramientas, #contacto y #trabajos. El botón se
        clickeaba y no pasaba nada. Es el mismo destino que en simbio.html. -->
-  <a class="pastilla is-activa" href="../index.html#trabajos">Trabajos</a>
+  <a class="pastilla is-activa" href="../index.html#trabajos" translate="no" data-es="Trabajos" data-en="Work">Trabajos</a>
   <div class="site-nav__fin">
-    <a class="pastilla" href="../index.html#contacto">Contacto</a>
-    <div class="nav-idioma">
-      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
-      <button type="button" class="pastilla" aria-pressed="false">EN</button>
+    <a class="pastilla" href="../index.html#contacto" translate="no" data-es="Contacto" data-en="Contact">Contacto</a>
+    <!-- EL PAR ES/EN. data-idioma es lo que los engancha (js/traduccion.js).
+         translate="no" en los dos: si no, Google traduce las etiquetas del
+         propio botón de idioma y "ES" pasa a ser "IS". La clase is-activa la
+         maneja el JS, no está fija acá — se recuerda entre visitas. -->
+    <div class="nav-idioma" translate="no">
+      <button type="button" class="pastilla is-activa"
+              data-idioma="es" aria-pressed="true"
+              aria-label="Ver el sitio en español">ES</button>
+      <button type="button" class="pastilla"
+              data-idioma="en" aria-pressed="false"
+              aria-label="View this site in English">EN</button>
     </div>
   </div>
 </nav>
@@ -95,7 +143,7 @@
           </svg>
         </a>
 
-        <h1 class="proyecto__titulo">+54</h1>
+        <h1 class="proyecto__titulo" translate="no">+54</h1>
 
         <div class="proyecto__meta">
           <p class="etiqueta">Curaduría</p>
@@ -234,35 +282,80 @@
 
       <p class="s54__rotulo etiqueta">Historias</p>
 
-      <!-- Un solo botón para las tres: son una pieza, no tres. -->
-      <button class="historias54__sonido" data-historias-sonido aria-pressed="false">
-        <span class="historias54__icono" aria-hidden="true">
+      <!-- ================================================================
+           EL CONTROL DE SONIDO — el estándar del sitio
+           ----------------------------------------------------------------
+           NO LLEVA TEXTO. Son dos señales, las dos redundantes a propósito:
+
+             1. el parlante, con ONDAS si hay sonido y con una CRUZ si no;
+             2. las barritas de ecualizador, que SE MUEVEN si hay sonido y
+                quedan quietas y bajas si no.
+
+           Que el movimiento sea la señal principal es la parte importante:
+           se entiende de reojo, sin leer, y no depende del idioma. El texto
+           "ACTIVAR SONIDO / SILENCIAR" obligaba a leer para saber si lo que
+           decía era el estado actual o la acción que iba a pasar — la duda
+           clásica de los botones de toggle escritos con un verbo.
+
+           ESTE MISMO CONTROL VA EN CUALQUIER LUGAR DEL SITIO DONDE SE PRENDA
+           O SE APAGUE EL VOLUMEN. Está escrito genérico (.control-sonido, no
+           .historias54__algo) justamente para poder copiarlo tal cual.
+
+           El estado vive en aria-pressed y en ningún otro lado: lo lee el
+           lector de pantalla y lo lee el CSS para dibujar las dos señales.
+           El texto de .visually-hidden es el nombre accesible; cambia junto
+           con el estado (lo hace initHistorias).
+           ================================================================ -->
+      <button class="control-sonido" data-historias-sonido aria-pressed="false">
+        <span class="control-sonido__parlante" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 9v6h4l5 4V5L8 9H4z"/>
-            <path class="historias54__mute" d="M17 9.5l4.5 5M21.5 9.5l-4.5 5"/>
-            <path class="historias54__on" d="M17 8.5a5 5 0 0 1 0 7"/>
+            <g class="control-sonido__cruz">
+              <path d="M17 9.5l5 5M22 9.5l-5 5"/>
+            </g>
+            <g class="control-sonido__ondas">
+              <path d="M16.8 8.6a4.8 4.8 0 0 1 0 6.8"/>
+              <path d="M19.6 6.2a8.4 8.4 0 0 1 0 11.6"/>
+            </g>
           </svg>
         </span>
-        <span class="etiqueta" data-historias-texto>Activar sonido</span>
+
+        <span class="control-sonido__barras" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i>
+        </span>
+
+        <span class="visually-hidden" data-historias-texto>Activar sonido</span>
       </button>
 
+      <!-- Cada historia va envuelta en su marco: el marco es el que lleva la
+           clase .is-activa y la barrita de avance de abajo. El <video> queda
+           limpio, sin nada dibujado encima. -->
       <div class="historias54__fila">
-        <video class="historias54__video" data-historia
-               src="../assets/+54/web/historia-1.mp4"
-               poster="../assets/+54/web/historia-1.jpg"
-               muted playsinline preload="none"
-               aria-label="Historia 1 de la campaña de +54"></video>
-        <video class="historias54__video" data-historia
-               src="../assets/+54/web/historia-2.mp4"
-               poster="../assets/+54/web/historia-2.jpg"
-               muted playsinline preload="none"
-               aria-label="Historia 2 de la campaña de +54"></video>
-        <video class="historias54__video" data-historia
-               src="../assets/+54/web/historia-3.mp4"
-               poster="../assets/+54/web/historia-3.jpg"
-               muted playsinline preload="none"
-               aria-label="Historia 3 de la campaña de +54"></video>
+        <div class="historias54__marco">
+          <video class="historias54__video" data-historia
+                 src="../assets/+54/web/historia-1.mp4"
+                 poster="../assets/+54/web/historia-1.jpg"
+                 muted playsinline preload="none"
+                 aria-label="Historia 1 de la campaña de +54"></video>
+          <div class="historias54__pista" aria-hidden="true"><i></i></div>
+        </div>
+        <div class="historias54__marco">
+          <video class="historias54__video" data-historia
+                 src="../assets/+54/web/historia-2.mp4"
+                 poster="../assets/+54/web/historia-2.jpg"
+                 muted playsinline preload="none"
+                 aria-label="Historia 2 de la campaña de +54"></video>
+          <div class="historias54__pista" aria-hidden="true"><i></i></div>
+        </div>
+        <div class="historias54__marco">
+          <video class="historias54__video" data-historia
+                 src="../assets/+54/web/historia-3.mp4"
+                 poster="../assets/+54/web/historia-3.jpg"
+                 muted playsinline preload="none"
+                 aria-label="Historia 3 de la campaña de +54"></video>
+          <div class="historias54__pista" aria-hidden="true"><i></i></div>
+        </div>
       </div>
 
     </div>
@@ -508,7 +601,7 @@
 
 <footer class="zona zona--crema-2">
   <div class="site-footer grilla">
-    <p class="etiqueta"><a href="../index.html">Archivo — Matías Cornara</a></p>
+    <p class="etiqueta" translate="no"><a href="../index.html">Archivo — Matías Cornara</a></p>
     <p class="etiqueta">
       +54 · con el Museo de Arte Moderno de Buenos Aires<br>
       Matías Cornara · 2026
@@ -521,8 +614,9 @@
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Tiene que estar en TODAS las páginas. -->
 <script src="../js/smooth-scroll.js?v=6" defer></script>
-<script src="../js/transiciones.js?v=6" defer></script>
-<script src="../js/main.js?v=23" defer></script>
-<script src="../js/mas-54.js?v=7" defer></script>
+<script src="../js/transiciones.js?v=7" defer></script>
+<script src="../js/main.js?v=24" defer></script>
+<script src="../js/traduccion.js?v=4" defer></script>
+<script src="../js/mas-54.js?v=12" defer></script>
 </body>
 </html>

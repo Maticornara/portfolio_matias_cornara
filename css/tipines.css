@@ -18,19 +18,25 @@
 
    ORDEN DE LA PÁGINA
      1  HERO           texto en la columna 1, paneo de 3 piezas en las 2-3-4
-     2  INTRO LIBRO    qué es un "busca personajes"
+     2  INTRO LIBRO    qué es un "Buscá y Encontrá"
      3  EL LIBRO       17 páginas hojeables con giro 3D sobre el lomo
-     4  LA MINISERIE   banda negra, solo texto: el apagón
+     4  LA MINISERIE   pantalla entera en negro: la señal y el texto
      5  LA TELE        el video adentro del marco de plastilina
-     6  EL PROCESO     la ficha técnica del circuito de IA + software de mano
-     7  LOS JUGUETES   el método del 2D → 3D → impresión → pintura
-     8  EL MINI-JUEGO  la captura, las hojas de sprites y el link jugable
+     6  LOS JUGUETES   el modelo en gris, chico; las figuras pintadas, grandes
+     7  EL MINI-JUEGO  la captura, las hojas de sprites y el link jugable
+     8  EL PROCESO     la ficha técnica del circuito de IA + software de mano
      9  EL CIERRE      la reflexión final, sola sobre negro
+     +  EL VISOR       la pantalla completa del libro, fuera de <main>
+
+   EL PROCESO VA ANTEÚLTIMO Y NO EN EL MEDIO. Primero se ven las cuatro piezas
+   terminadas —libro, miniserie, juguetes, juego— y recién entonces se explica
+   el circuito que las produjo a todas. En el medio cortaba el recorrido para
+   explicar algo de lo que todavía faltaba la mitad.
 
    EL RITMO DE ZONAS, que es lo que puntúa una página con tanto material:
-     crema · crema · crema-2 · NEGRO · crema-2 · crema · crema-2 · NEGRO · NEGRO
-   Dos apagones: uno corto en el medio (la miniserie) y uno largo al final
-   (el juego y el cierre). El resto es papel.
+     crema · crema · crema-2 · NEGRO · crema-2 · crema-2 · NEGRO · crema · NEGRO
+   Dos apagones grandes: la miniserie (una pantalla entera) y el tramo final
+   del juego. El proceso vuelve al crema porque es documentación, no exhibición.
    ========================================================================== */
 
 /* ==========================================================================
@@ -65,7 +71,8 @@
    REGLA DE ORO
      Cambiá UN número, guardá, refrescá. Si algo se rompe, ya sabés cuál fue.
      Si el navegador ignora el cambio: subile el ?v=N al <link> del HTML, o
-     Ctrl+F5.
+     Ctrl+F5. Y acordate de subirlo en LAS CUATRO páginas, que cargan la misma
+     lista de CSS.
    ========================================================================== */
 
 
@@ -112,11 +119,36 @@
    2. PIEZAS COMPARTIDAS DE LA PÁGINA
    ========================================================================== */
 
-/* Cada parte de la página. El aire vertical es el que separa una idea de la
-   siguiente: es la única puntuación que tiene una página con tan poco texto. */
+/* CADA SECCIÓN OCUPA UNA PANTALLA ENTERA, y su contenido va centrado adentro.
+
+   Es `min-height` y no `height`, y esa es toda la diferencia entre que funcione
+   en cualquier pantalla o que se rompa: una sección que tiene MÁS contenido que
+   la pantalla (el mini-juego, por ejemplo, que lleva copy + captura + tres
+   hojas de sprites) simplemente crece; una que tiene menos se estira hasta la
+   pantalla y centra lo suyo. Con `height` fijo, la primera se cortaría.
+
+   Por eso tampoco hay que apagarlo en el teléfono: en una pantalla angosta las
+   secciones se vuelven más altas que 100svh solas, y la regla deja de tener
+   efecto sin que haya que escribir una media query.
+
+   svh y no vh: en el teléfono, vh mide la ventana SIN la barra del navegador,
+   así que el 100vh se corta cuando la barra está a la vista. svh mide la
+   ventana chica, que es la que siempre se ve. */
 .stip {
-  padding-block: var(--s-9);
+  /* EL AIRE DE ARRIBA Y ABAJO SE MIDE EN svh, no en rem, y esa es la pieza que
+     hace que "una sección = una pantalla" funcione de verdad.
+     Con --s-9 fijo (7rem = 112 px por lado) son 224 px de aire. En un monitor
+     de 1000 px es el 22% y está bien; en una notebook de 780 —que es de las
+     pantallas más comunes que hay— es el 29%, y con eso cuatro secciones se
+     pasaban de largo y quedaban cortadas. Midiéndolo en svh, el aire se achica
+     junto con la pantalla y el contenido entra.
+     MEDIDO a 1440x780, antes y después: el libro pasó de 811 a 741 px, los
+     juguetes de 838 a 762, el mini-juego de 891 a 815. */
+  padding-block: clamp(var(--s-7), 9svh, var(--s-9));
   position: relative;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
 }
 
 /* EL RÓTULO DE SECCIÓN, en la columna 1 y pegado arriba. Va sin numerar: los
@@ -143,15 +175,6 @@
   line-height: 1.45;
   max-width: 46ch;
   text-wrap: pretty;
-}
-
-/* Un escalón más grande, para el texto que abre un capítulo. Solo lo usa la
-   banda de la miniserie. */
-.stip__copy--grande {
-  font-size: var(--t-3);
-  line-height: 1.25;
-  max-width: 22ch;
-  letter-spacing: -0.015em;
 }
 
 /* La frase destacada, en verde: el acento del sistema entra por el texto, que
@@ -185,7 +208,12 @@
   z-index: 2;
   display: grid;
   gap: var(--s-4);
-  align-content: center;
+
+  /* ARRIBA, NO CENTRADO. La bajada de este proyecto son dos párrafos, y
+     centrada verticalmente dejaba el título flotando a media altura sin nada
+     con qué alinearse. Con `start`, la flecha de volver arranca en la misma
+     línea que el borde de arriba del paneo. */
+  align-content: start;
 }
 
 .pag-tipines .volver--pastilla {
@@ -237,7 +265,12 @@
   white-space: nowrap;
 }
 
+/* LA BAJADA. Acá es un <div> con DOS párrafos y no un <p> suelto como en las
+   otras dos páginas: el texto de este proyecto separa el universo (quiénes
+   son) de las piezas (qué se hizo), y esa separación es el contenido. */
 .pag-tipines .proyecto__bajada {
+  display: grid;
+  gap: var(--s-4);
   max-width: 40ch;
   font-size: 0.9375rem;
   line-height: 1.65;
@@ -255,14 +288,20 @@
 /* ==========================================================================
    3. HERO
    --------------------------------------------------------------------------
-   Apertura en la columna 1, paneo de tres piezas en las 2-3-4.
+   Apertura en la columna 1, paneo de tres piezas en las 2-3-4, los dos
+   pegados arriba.
    ========================================================================== */
 
 .hero-tip { padding-block: 0; }
 
 .hero-tip__grilla {
   min-height: 100svh;
+  /* El PAR texto+paneo queda centrado en la pantalla, pero adentro del par los
+     dos arrancan arriba (align-items). Son dos alineaciones distintas y hacen
+     falta las dos: sin la primera el hero queda pegado al techo, sin la
+     segunda el texto flota a media altura. */
   align-content: center;
+  align-items: start;
   padding-block: var(--s-9) var(--s-8);
   row-gap: var(--s-7);
 }
@@ -285,7 +324,6 @@
   --paneo-paso: 760ms;        /* cuánto tarda en correrse a la siguiente */
 
   grid-column: 2 / span 3;
-  align-self: center;
   justify-self: center;
 
   /* La ventana mide UNA pieza: el resto de la fila queda afuera, cortado.
@@ -373,12 +411,12 @@
   display: grid;
   justify-items: center;
   gap: var(--s-6);
-  margin-top: var(--s-7);
 }
 
 /* PERILLAS — EL TAMAÑO DEL LIBRO */
 .libro__escena {
   --libro-alto: 66svh;      /* LA perilla del tamaño: subilo y crece */
+  --libro-tope: 620px;      /* hasta dónde puede crecer. El visor lo sube. */
   --libro-giro: 760ms;      /* cuánto tarda una hoja en darse vuelta */
   --libro-ojo: 2200px;      /* distancia del ojo al libro: más chico = giro
                                más exagerado. Abajo de 1200 se deforma feo,
@@ -387,7 +425,7 @@
   position: relative;
   /* El ancho sale del alto y de la proporción del pliego, no al revés: si se
      midiera por ancho, en una pantalla baja el libro no entraría. */
-  width: min(100%, calc(clamp(300px, var(--libro-alto), 620px) * 1190 / 842));
+  width: min(100%, calc(clamp(300px, var(--libro-alto), var(--libro-tope)) * 1190 / 842));
   aspect-ratio: 1190 / 842;
 
   /* La perspectiva vive acá. Sin esto el giro se ve plano, como una persiana.
@@ -406,19 +444,66 @@
 .libro__caja.is-cerrado         .libro__escena { translate: -25% 0; }
 .libro__caja.is-cerrado-atras   .libro__escena { translate:  25% 0; }
 
+/* PERILLA — EL SOLAPE DEL LOMO.
+   Cuánto se monta la hoja pasada sobre la abierta, en el centro del pliego.
+   NO es un ajuste estético: sin esto se ve una LÍNEA CLARA por el medio del
+   pliego, que es el fondo de la sección asomando.
+   El motivo es que las dos mitades quedan borde contra borde exactamente en el
+   50%, y ninguna de las dos cae sobre un pixel entero: el ancho del libro sale
+   de un svh, así que casi siempre es fraccionario. El navegador redondea cada
+   hoja para su lado y entre las dos falta medio pixel. Con un pixel de solape
+   el hueco no puede existir, y como el solape es de UN pixel sobre 600, la
+   mitad del pliego no se corre de manera visible. */
+.libro__escena { --libro-solape: 1px; }
+
 /* LA MESA: la mitad izquierda, donde aterrizan las hojas pasadas.
    VA SIN NINGUNA MARCA VISIBLE, y eso se probó al revés primero. Con un
    recuadro de línea de pelo, el libro cerrado mostraba la tapa al lado de un
    rectángulo vacío perfectamente dibujado: se leía como una caja que quedó sin
    contenido, o sea como un error de armado. Con el libro abierto el recuadro
    no se ve nunca —lo tapan las hojas pasadas— así que dibujarlo solo servía
-   para arruinar el único momento en que se veía.
-   El elemento igual existe: es el piso sobre el que caen las hojas y el que
-   sostiene el alto de la mitad izquierda. */
+   para arruinar el único momento en que se veía. */
 .libro__mesa {
   position: absolute;
   inset: 0 50% 0 0;
 }
+
+/* UNA SOLA SOMBRA PARA TODO EL LIBRO.
+   --------------------------------------------------------------------------
+   No cuelga de las hojas sino del escenario, así que es UNA, siempre, y su
+   forma es la del libro tal como está en ese momento: el pliego entero cuando
+   está abierto, y solo la mitad de la tapa cuando está cerrado.
+
+   Los `left` y `right` van escritos por separado —y no como `inset`— porque
+   son los dos valores que se animan al abrir y cerrar, y separados se puede
+   poner la transición justo en esos dos.
+
+   Va DEBAJO de las hojas sin necesidad de z-index: un ::before es el primer
+   hijo del elemento, así que se dibuja antes que .libro__hojas, que viene
+   después en el HTML.
+
+   PERILLAS — LA SOMBRA DEL LIBRO */
+.libro__escena::before {
+  --sombra-caida: 22px;    /* cuánto baja */
+  --sombra-blur: 55px;     /* cuánto se difumina. Más = más suave */
+  --sombra-fuerza: .17;    /* opacidad, de 0 a 1 */
+
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* El -14px de spread encoge la sombra antes de difuminarla: así no asoma por
+     los costados del papel y queda apoyada debajo, que es lo que hace que se
+     lea como un objeto sobre una mesa y no como un halo alrededor. */
+  box-shadow: 0 var(--sombra-caida) var(--sombra-blur) -14px
+              rgba(26, 26, 24, var(--sombra-fuerza));
+  transition: left var(--libro-giro) var(--ease),
+              right var(--libro-giro) var(--ease);
+}
+.libro__caja.is-cerrado       .libro__escena::before { left: 50%; }
+.libro__caja.is-cerrado-atras .libro__escena::before { right: 50%; }
 
 /* Las 16 hojas viven en la mitad DERECHA del escenario. */
 .libro__hojas {
@@ -444,21 +529,49 @@
   position: absolute;
   inset: 0;
   transform-origin: left center;
-  transform: rotateY(0deg) translateZ(calc(var(--i, 0) * -0.08px));
+  /* LAS DOS LISTAS DE TRANSFORM —esta y la de .is-pasada— TIENEN QUE TENER LAS
+     MISMAS FUNCIONES, EN EL MISMO ORDEN. No es prolijidad: es la diferencia
+     entre que la hoja gire o que se deforme.
+
+     Cuando los dos extremos de una transición comparten la lista, el navegador
+     interpola función por función: el rotateY va de 0 a -180 y listo. Cuando NO
+     la comparten, no puede, así que aplasta cada extremo a una matriz de 4x4 y
+     interpola ESO. Y la interpolación de matrices no sabe que hay un giro de
+     media vuelta adentro: le sale un camino que pasa por el medio achatando la
+     hoja, con las dos mitades del pliego desfasadas.
+
+     Acá faltaba el translateX (esta lista tenía 2 funciones y la otra 3) y el
+     resultado era exactamente eso: el pase de página "mal articulado y con
+     destiempo". El translateX(0) de acá no mueve nada — está para que las dos
+     listas coincidan. */
+  transform: translateX(0)
+             rotateY(0deg)
+             translateZ(calc(var(--i, 0) * -0.08px));
   transform-style: preserve-3d;
   transition: transform var(--libro-giro) var(--ease);
   cursor: pointer;
-  /* La sombra del canto: le da espesor al bloque de papel. */
-  box-shadow: 0 6px 22px rgba(26, 26, 24, .18);
 }
+
+/* LAS HOJAS NO LLEVAN SOMBRA. NINGUNA. Ver .libro__escena::before.
+   Se probó primero con la sombra en las 16 (halo oscuro y sucio, porque están
+   apiladas y las 16 sombras se suman) y después solo en las dos de afuera —que
+   es lo que pasa en un libro de verdad— pero seguían siendo DOS sombras, una
+   por mitad, y donde se tocaban en el lomo se juntaban y oscurecían. Se veían
+   como dos manchas, no como un objeto apoyado. */
 
 /* .is-pasada la pone initLibro en las hojas que ya se dieron vuelta.
    180 grados EXACTOS y no 168 como en el sandbox: acá la hoja aterrizada no
    es decoración, tiene que apoyar perfectamente sobre la mitad izquierda
    porque ES la mitad izquierda del pliego que se está leyendo. Un grado de
    más y el pliego queda quebrado por el medio. */
+/* El translateX va PRIMERO en la lista, que es lo mismo que decir que se
+   aplica AL FINAL, ya en el espacio del padre: corre la hoja aterrizada un
+   pixel hacia el lomo y tapa el hueco. Escrito después del rotateY se
+   aplicaría antes de girar, o sea hacia el lado contrario. */
 .hoja.is-pasada {
-  transform: rotateY(-180deg) translateZ(calc(var(--i, 0) * -0.08px));
+  transform: translateX(var(--libro-solape, 1px))
+             rotateY(-180deg)
+             translateZ(calc(var(--i, 0) * -0.08px));
 }
 
 /* Las hojas que no se ven no reciben clicks ni foco. */
@@ -509,26 +622,36 @@
 .hoja__mitad--der    { left: -100%; }
 .hoja__mitad--entera { left: 0; width: 100%; }
 
-/* La sombra que barre la hoja durante el giro: nace en el lomo y se disuelve.
-   Es lo que le da volumen al movimiento — sin esto, la hoja se ve como una
-   calcomanía rotando. */
+/* EL PLIEGUE DEL LOMO.
+   Una sombra angosta que nace en el centro del pliego y se disuelve hacia
+   afuera. Es lo que hace que las dos mitades se lean como UN papel doblado y
+   no como dos imágenes pegadas.
+
+   MUY SUAVE A PROPÓSITO: la primera versión iba a .22 de negro y se disolvía
+   recién al 45% del ancho de la página, y eso no era un pliegue — era una
+   franja oscura por el medio del dibujo, justo donde el libro tiene más cosas
+   escondidas. Ahora arranca en .10 y se termina al 18%.
+   Si lo querés más marcado, subí el .10; si lo querés más ancho, subí el 18%. */
 .hoja__cara::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(to right,
-    rgba(26, 26, 24, .22), rgba(26, 26, 24, 0) 45%);
+    rgba(26, 26, 24, .10), rgba(26, 26, 24, 0) 18%);
   opacity: 0;
   transition: opacity var(--libro-giro) var(--ease);
 }
-.hoja.is-pasada .hoja__cara::after { opacity: 1; }
+/* El frente de la hoja abierta y el dorso de la última pasada: los dos lados
+   del pliego que se está mirando. */
+.hoja.is-arriba .hoja__cara::after,
+.hoja.is-pasada .hoja__cara--dorso::after { opacity: 1; }
 
 /* El dorso tiene el degradé al revés: cuando la hoja aterrizó a la izquierda,
    su lomo quedó del lado derecho. */
 .hoja__cara--dorso::after {
   background: linear-gradient(to left,
-    rgba(26, 26, 24, .22), rgba(26, 26, 24, 0) 45%);
+    rgba(26, 26, 24, .10), rgba(26, 26, 24, 0) 18%);
 }
 
 /* --- LOS CONTROLES --- */
@@ -598,32 +721,271 @@
 
 
 /* ==========================================================================
-   5. LA BANDA DE LA MINISERIE
+   5. EL VISOR — el "ver en grande" del libro
    --------------------------------------------------------------------------
-   Corta y sin una sola imagen. Es un apagón entre el papel y la pantalla: si
-   hay algo para mirar, el corte no se siente.
-   ========================================================================== */
+   Una capa que tapa la pantalla entera con el pliego adentro, sin marco de
+   ninguna clase.
 
-.serie-intro { padding-block: var(--s-8); }
+   POR QUÉ NO SE USA LA LUPA DE main.js, que ya existe y ya anda.
+   initLupa abre la imagen dentro de un marco de polaroid: borde blanco y más
+   aire abajo. Para las tres láminas del manual de +54 está perfecto — son
+   fotos impresas y el marco lo dice. Para un pliego apaisado de un
+   busca-personajes, en cambio, el marco se come el ancho y la imagen termina
+   MÁS CHICA que el propio librito de la página. Se veía como un post-it.
 
-.serie-intro__texto {
-  grid-column: 2 / span 3;
+   Acá el pliego manda: ocupa lo que puede de la ventana y el fondo es negro
+   liso. Los controles son cuatro botones sueltos, sin barra ni panel.
+
+   PERILLAS — EL VISOR */
+.visor {
+  --visor-margen-x: 4vw;    /* aire a los costados del pliego */
+  --visor-margen-y: 8svh;   /* aire arriba y abajo */
+  --visor-cerca: 2.6;       /* cuánto agranda un click cuando está lejos */
+
+  position: fixed;
+  inset: 0;
+  /* Arriba de la nav (--z-nav: 50) y del velo de Swup (9998), pero ABAJO del
+     cursor de anillo (--z-cursor: 999), que tiene que seguir dibujándose
+     encima de todo. */
+  z-index: 997;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: var(--s-6);
-  align-items: start;
+  place-items: center;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease);
+}
+/* [hidden] no alcanza contra un display:grid: hay que apagarlo a mano. */
+.visor[hidden] { display: none; }
+.visor.is-abierto { opacity: 1; }
+
+.visor__fondo {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(8, 8, 8, .95);
+  cursor: zoom-out;
 }
 
-@media (max-width: 960px) {
-  .serie-intro__texto {
-    grid-column: 1 / -1;
-    grid-template-columns: 1fr;
-  }
+/* EL HUECO DONDE SE MUDA EL LIBRO.
+   --------------------------------------------------------------------------
+   ACÁ NO HAY UNA IMAGEN. Y esa es la corrección: la primera versión del visor
+   mostraba un <img> con el pliego abierto, y se podía acercar y arrastrar,
+   pero el pase de página era un cambio de src — o sea, ninguna animación. En
+   grande dejabas de tener el libro y pasabas a tener un carrusel de fotos.
+
+   Ahora el visor no dibuja nada propio: al abrirse, initLibro MUEVE acá
+   adentro el .libro__caja de verdad, con sus 16 hojas y sus controles, y al
+   cerrarse lo devuelve a su lugar en la página. Es el mismo libro, el mismo
+   JS y el mismo giro; lo único que cambia es el tamaño (--libro-alto y
+   --libro-tope, acá abajo) y el fondo negro que tiene detrás.
+
+   Consecuencia práctica: el estado se conserva solo en los dos sentidos. Si
+   abrís en grande en el pliego 7, arranca en el 7; si hojeás hasta el 11 y
+   cerrás, la página queda en el 11. No hay nada que sincronizar. */
+.visor__lienzo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(100vw - var(--visor-margen-x) * 2);
+}
+
+/* EL LIBRO, EN GRANDE. Es la única diferencia real con el de la página. */
+.visor .libro__escena {
+  --libro-alto: 78svh;
+  --libro-tope: 1100px;
+}
+/* width: 100% NO ES DECORATIVO, ES LO QUE LE DA TAMAÑO AL LIBRO.
+   En la página, .libro__caja va con grid-column: 1/-1, o sea estirada. Acá el
+   hueco la centra (place-items: center), y centrar significa NO estirar: la
+   caja pasa a medir fit-content. Y como el ancho de .libro__escena es
+   `min(100%, ...)`, ese 100% se mide contra la caja, que a su vez se mide
+   contra su contenido: la cuenta se muerde la cola y colapsa.
+   MEDIDO sin esta línea: el libro abría a 114 px de alto en una pantalla de
+   1000. Con ella, 778. */
+.visor .libro__caja { width: 100%; gap: var(--s-5); margin-top: 0; }
+
+/* Adentro del visor, el botón de lupa no tiene sentido: ya estás en grande.
+   Se va él y no los controles enteros — las flechas y el contador del libro
+   son los que se usan acá, y por eso el visor esconde sus PROPIAS flechas
+   (más abajo): dos juegos de flechas en la misma pantalla es una de más. */
+.visor .libro__lupa { display: none; }
+
+/* El visor no está adentro de ninguna .zona, así que las variables de zona
+   caerían en las claras de :root y los controles del libro quedarían tinta
+   sobre negro. Se le declaran las de zona oscura, las mismas de base.css. */
+.visor {
+  --zona-texto: var(--crema);
+  --zona-texto-2: var(--gris-claro);
+  --zona-linea: rgba(243, 237, 225, 0.22);
+  --zona-acento: var(--verde-claro);
+}
+
+.visor__nav,
+.visor__cerrar {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: var(--borde) solid rgba(255, 255, 255, .28);
+  border-radius: 999px;
+  background: rgba(8, 8, 8, .5);
+  color: #fff;
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              opacity var(--dur-1) var(--ease);
+}
+.visor__nav svg,
+.visor__cerrar svg { width: 17px; height: 17px; }
+.visor__nav:hover:not(:disabled),
+.visor__cerrar:hover { background: var(--verde); border-color: var(--verde); }
+.visor__nav:disabled { opacity: .25; cursor: default; }
+
+/* LAS FLECHAS DEL VISOR NO SE USAN: el libro se mudó adentro con las suyas
+   puestas, y dos juegos de flechas en la misma pantalla es uno de más. Quedan
+   en el HTML —cuestan cero y el día que el visor muestre otra cosa que no sea
+   el libro vuelven con una línea— pero acá no se dibujan. Lo mismo el pie:
+   el contador del libro ya dice en qué pliego estás. */
+.visor__nav,
+.visor__pie { display: none; }
+.visor__cerrar     { top: var(--s-5); right: var(--s-5); }
+
+.visor__pie {
+  position: absolute;
+  bottom: var(--s-5);
+  left: 50%;
+  translate: -50% 0;
+  color: rgba(255, 255, 255, .6);
+  pointer-events: none;
+}
+
+/* En pantalla angosta las flechas se van al pie, al lado del contador: a los
+   costados no hay lugar y encima tapan el pliego. */
+@media (max-width: 720px) {
+  .visor { --visor-margen-x: 2vw; --visor-margen-y: 12svh; }
+  .visor__nav--prev { left: 50%; top: auto; bottom: var(--s-4); translate: -160% 0; }
+  .visor__nav--next { right: 50%; top: auto; bottom: var(--s-4); translate: 160% 0; }
+  .visor__pie { bottom: calc(var(--s-4) + 0.9rem); }
 }
 
 
 /* ==========================================================================
-   6. LA TELE
+   6. LA MINISERIE — una pantalla entera en negro
+   --------------------------------------------------------------------------
+   Es el apagón de la página: hasta acá el proyecto era papel, de acá en
+   adelante es pantalla. Mide 100svh COMPLETOS para que el corte se sienta como
+   un cambio de sala. Antes era una banda baja con dos bloques de texto uno al
+   lado del otro, del mismo largo, y eso no se leía como una sección: se leía
+   como un rectángulo de palabras.
+
+   Ahora la mitad izquierda es la señal —la carta de ajuste de plastilina, en
+   loop— y la derecha es el único texto.
+   ========================================================================== */
+
+.serie { padding-block: 0; }
+
+.serie__grilla {
+  /* MÁS ALTA QUE UNA PANTALLA, y a propósito. Con 100svh justos la banda negra
+     medía exactamente lo que la ventana, así que entraba y salía del cuadro al
+     mismo tiempo que el contenido y no se sentía como un cambio de sala: se
+     sentía como una diapositiva. Con 118svh el negro empieza antes de que
+     llegue el material y sigue después de que se fue, que es lo que hace el
+     apagón. Es la única sección de la página que se pasa de una pantalla.
+     PERILLA: bajalo a 100svh si preferís que entre justo. */
+  min-height: 118svh;
+  align-content: center;
+  /* Mismo criterio que .stip: el aire en svh, para que en una pantalla baja se
+     achique solo en vez de empujar el texto fuera de la vista. */
+  padding-block: clamp(var(--s-7), 11svh, calc(var(--s-9) * 1.5));
+  row-gap: clamp(var(--s-4), 3svh, var(--s-6));
+  /* Tres filas escritas a mano: el rótulo, la señal y el texto. Sin esto, la
+     auto-colocación de CSS Grid mete lo que sigue en el hueco que deja el
+     rótulo, arriba a la derecha. */
+  grid-template-rows: auto auto auto;
+}
+
+.serie .stip__rotulo { grid-row: 1; grid-column: 1; }
+
+/* LA SEÑAL ARRANCA EN LA COLUMNA 2 Y EL TEXTO EN LA 3.
+   --------------------------------------------------------------------------
+   Antes las dos empezaban en la 3 y quedaban perfectamente apiladas, con la
+   mitad izquierda de la pantalla vacía de arriba abajo. Dos bloques del mismo
+   ancho, uno encima del otro, contra un borde: eso no es una composición, es
+   una columna sola corrida a la derecha — y el vacío no se leía como aire,
+   se leía como que faltaba algo.
+
+   Con la señal desbordando UNA columna hacia la izquierda, el bloque deja de
+   ser un rectángulo: la imagen manda por ancho, el texto se apoya adentro de
+   ella, y las columnas 1 y 2 pasan a ser un margen que empieza donde termina
+   el rótulo. Sigue habiendo sala a oscuras; ahora tiene forma. */
+.serie__senal {
+  grid-row: 2;
+  grid-column: 2 / span 3;
+  line-height: 0;
+  /* ALINEADA POR LA DERECHA, no centrada.
+     Su borde derecho coincide con el del texto (fin de la columna 4) y lo que
+     sobra lo desborda hacia la IZQUIERDA, metiéndose en la columna 2. Es lo
+     que hace que los dos bloques se lean como una sola pieza —comparten un
+     borde— y que igual no sean el mismo rectángulo.
+     Centrada, la imagen quedaba despegada de los dos lados y volvía a
+     parecer una foto suelta que casualmente cae cerca del texto.
+
+     El segundo valor del min() es el freno por ALTO, con la proporción 16:9 del
+     archivo: es lo que evita que en una notebook baja la señal empuje el último
+     renglón fuera de la pantalla. En una pantalla normal no llega a activarse y
+     la imagen ocupa las tres columnas. */
+  width: min(100%, calc(48svh * 16 / 9));
+  justify-self: end;
+}
+.serie__senal video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* EL TEXTO EN DOS COLUMNAS, con column-count y no con una grilla: así los dos
+   párrafos fluyen como un solo bloque y el navegador los reparte parejos entre
+   las dos columnas. Con una grilla de dos celdas, el primer párrafo (que es el
+   largo) quedaba en una y el segundo (que es corto) en la otra, y las dos
+   columnas terminaban de alturas muy distintas. */
+.serie__texto {
+  grid-row: 3;
+  grid-column: 3 / span 2;
+  column-count: 2;
+  column-gap: var(--grid-gap);
+}
+/* El tope de 46ch de .stip__copy es para un párrafo suelto a todo lo ancho;
+   adentro de una columna angosta lo único que hace es dejar media columna
+   vacía. Acá manda la columna. */
+.serie__texto .stip__copy {
+  max-width: none;
+  font-size: var(--t-1);
+  line-height: 1.5;
+}
+/* OJO CON break-inside: avoid ACÁ. Estuvo puesto y era justo lo contrario de
+   lo que hace falta: le prohíbe a un párrafo partirse entre las dos columnas,
+   así que el primero (que es largo) se metía ENTERO en la columna 1 y el
+   segundo (que es corto) en la 2. Resultado: la columna izquierda desbordaba
+   la sección hacia abajo y la derecha quedaba medio vacía — el reparto parejo
+   que se buscaba con column-count no llegaba a ocurrir nunca.
+   Sin la regla, los dos párrafos fluyen como un solo bloque y el navegador los
+   corta donde tiene que cortarlos. */
+.serie__texto .stip__copy + .stip__copy { margin-top: var(--s-4); }
+
+@media (max-width: 960px) {
+  .serie .stip__rotulo,
+  .serie__senal,
+  .serie__texto { grid-column: 1 / -1; }
+  .serie__senal { width: 100%; }
+  /* Una sola columna: en un teléfono, dos columnas de texto son dos renglones
+     de tres palabras. */
+  .serie__texto { column-count: 1; }
+}
+
+
+/* ==========================================================================
+   7. LA TELE
    --------------------------------------------------------------------------
    El marco de plastilina es un PNG con el agujero de la pantalla TRANSPARENTE.
    El <video> va DEBAJO y se ve por el hueco; el PNG le tapa los bordes.
@@ -652,9 +1014,14 @@
   --tele-alto:  72.0%;
   --tele-ancho-max: 900px;  /* qué tan grande llega a ser la tele */
 
+  --tele-alto-max: 62svh;   /* freno por ALTO: sin esto, en una pantalla baja
+                               la tele sola se come la sección entera */
+
   grid-column: 1 / -1;
   position: relative;
-  width: min(100%, var(--tele-ancho-max));
+  /* El tercer valor es "cuánto puede medir de ancho para no pasarse de
+     --tele-alto-max", usando la proporción del PNG. */
+  width: min(100%, var(--tele-ancho-max), calc(var(--tele-alto-max) * 1920 / 1080));
   margin-inline: auto;
   /* La forma del PNG entero, marco incluido. */
   aspect-ratio: 1920 / 1080;
@@ -672,6 +1039,33 @@
      no se pierde nada del cuadro. */
   object-fit: cover;
   background: var(--negro);
+}
+
+/* PANTALLA COMPLETA — y esto NO es un detalle cosmético.
+   El <video> está posicionado en absolute y medido en porcentajes del marco de
+   la tele. Al pedir pantalla completa, el navegador lo saca de la página pero
+   NO le borra esos estilos: el video seguía dibujándose del tamaño del hueco
+   de la tele, arrinconado sobre un fondo negro gigante, y la barra de
+   controles quedaba fuera de donde uno la iba a buscar. De ahí que "no se
+   pudiera navegar".
+   Las tres reglas van repetidas con los prefijos porque :fullscreen,
+   :-webkit-full-screen y :-moz-full-screen NO se pueden juntar en una lista
+   separada por comas: si el navegador no entiende UNO de los selectores,
+   descarta la regla entera. */
+.tele__video:fullscreen {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+.tele__video:-webkit-full-screen {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+.tele__video:-moz-full-screen {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
 }
 
 .tele__mueble {
@@ -724,10 +1118,225 @@
 
 
 /* ==========================================================================
-   7. LA FICHA DEL PROCESO
+   8. LOS JUGUETES
+   --------------------------------------------------------------------------
+   Dos imágenes, no una: el modelo en gris y las figuras pintadas. Van juntas
+   porque juntas cuentan el paso — de un archivo STL a un objeto pintado a
+   mano— y ninguna de las dos lo dice sola.
+
+   LOS TAMAÑOS SON DISTINTOS A PROPÓSITO. El STL es la referencia técnica y va
+   chico; las figuras terminadas son la pieza y van grandes. Repartidas mitad y
+   mitad, el render gris —que es lo menos interesante— pesaba lo mismo que el
+   resultado.
+
+   Y LAS DOS APOYADAS EN LA MISMA LÍNEA DE PISO (align-items: end): las seis
+   figuras están paradas sobre sus bases, así que si los dos bloques no
+   comparten el piso, se ven flotando a distinta altura y dejan de leerse como
+   el mismo objeto en dos momentos.
+
+   LAS DOS IMÁGENES SE TURNAN EN EL MISMO LUGAR, no van una al lado de la otra.
+
+   El motivo es que son las MISMAS tres figuras, en la misma pose y en el mismo
+   encuadre: el modelo en gris y el objeto impreso y pintado. Puestas una al
+   lado de la otra, el ojo tiene que ir y venir para comparar, y encima el gris
+   —que es la referencia técnica— ocupa el mismo lugar que el resultado.
+   Puestas en el mismo lugar, el cambio pasa solo y no hay que rotularlo.
+
+   Es el mismo mecanismo del logo y la paleta de +54 (initAlterna), y como allá,
+   el fundido está escrito ACÁ y no en el JS: la duración y la curva se editan
+   con el resto del diseño.
+
+   PERILLAS — LOS JUGUETES */
+.juguetes {
+  --juguetes-alto: clamp(200px, 42svh, 470px);  /* LA perilla del tamaño */
+  --juguetes-fundido: 700ms;                    /* cuánto tarda el cambio */
+
+  grid-column: 1 / -1;
+  position: relative;
+  height: var(--juguetes-alto);
+  margin-top: var(--s-7);
+}
+
+.juguete {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  /* La imagen se lleva todo el alto menos el renglón del pie.
+     minmax(0, 1fr) Y NO 1fr A SECAS. Es la trampa clásica de CSS Grid: `1fr`
+     en realidad significa `minmax(auto, 1fr)`, y ese `auto` es un mínimo que
+     no deja que la fila sea MÁS CHICA que el contenido. La imagen mide 673x348
+     y acá entra a 1300 px de ancho, así que su alto natural son 674 px: la
+     fila se estiraba a 674 dentro de una caja de 420, la figura se salía de la
+     sección por abajo y el pie de foto terminaba 100 px afuera.
+     MEDIDO antes del arreglo: caja 420 px, imagen 674 px, pie a +1100 de una
+     sección de 1000. Con minmax(0, 1fr) la fila puede achicarse y el
+     object-fit: contain hace lo suyo. */
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--s-4);
+  justify-items: center;
+
+  opacity: 0;
+  transition: opacity var(--juguetes-fundido) var(--ease);
+  pointer-events: none;
+}
+/* .is-visible la pone initAlterna. */
+.juguete.is-visible { opacity: 1; }
+
+.juguete img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* contain y no cover: las figuras se ven ENTERAS, y las dos imágenes tienen
+     proporciones parecidas (1,93 y 1,78) así que quedan casi del mismo tamaño
+     en el mismo lugar — que es todo el punto del cambio. */
+  object-fit: contain;
+}
+.juguete figcaption { color: var(--zona-texto-2); }
+
+@media (max-width: 720px) {
+  .juguetes { --juguetes-alto: clamp(180px, 34svh, 300px); }
+}
+
+
+/* ==========================================================================
+   9. EL MINI-JUEGO
+   --------------------------------------------------------------------------
+   Zona negra, y acá el negro no es un recurso de ritmo: las tres hojas de
+   sprites vienen con FONDO TRANSPARENTE y fueron generadas sobre negro. Sobre
+   el crema se les nota el borde sucio de la generación; sobre el negro se
+   apoyan como en la hoja original.
+   ========================================================================== */
+
+/* EL BOTÓN DE JUGAR. Es el único link de salida de toda la página y el juego
+   existe de verdad, así que se ve como un botón y no como una palabra
+   subrayada. Verde lleno: es la única acción de la página.
+   SIN FLECHITA de "se abre en otra pestaña". Decía JUGAR y al lado tenía un
+   ícono de link externo, o sea dos mensajes para una sola cosa; la palabra ya
+   es la acción entera. */
+/* EL BOTÓN DE JUGAR.
+   --------------------------------------------------------------------------
+   Estaba tímido y era un problema de CONTRASTE, no de tamaño solamente.
+   Antes: fondo --verde (#5A6E32) con la etiqueta en blanco, sobre el negro de
+   la sección. Los números:
+
+     el botón contra el fondo negro     3,5 : 1
+     la etiqueta blanca contra el botón 4,4 : 1
+
+   El verde oscuro del sistema está pensado para destacar SOBRE CREMA; sobre
+   negro es casi el mismo valor que el fondo y el botón se hunde.
+
+   Ahora: fondo --verde-claro (#7C9448) con la etiqueta en el negro del sitio.
+
+     el botón contra el fondo negro     5,8 : 1
+     la etiqueta contra el botón        5,8 : 1
+
+   NO ES UN COLOR NUEVO: --verde-claro ya es el acento de las zonas oscuras del
+   sistema (base.css se lo asigna a --zona-acento en .zona--negro). O sea que
+   el botón por fin usa el verde que le corresponde a la zona en la que está.
+
+   Y texto oscuro sobre claro, no claro sobre oscuro: en una sección negra, un
+   rectángulo lleno y claro es lo único que se lee como "esto se toca".
+
+   Lo demás es peso: más alto, más ancho, la etiqueta a 14 px en vez de los
+   11 px del sistema —es un botón, no un rótulo— y aire arriba para que no
+   quede pegado al último renglón del copy. */
+.juego__link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  margin-top: var(--s-3);
+  padding: 15px 34px;
+  border-radius: 999px;
+  background: var(--verde-claro);
+  color: var(--negro);
+  text-decoration: none;
+  transition: background var(--dur-1) var(--ease),
+              translate var(--dur-1) var(--ease),
+              box-shadow var(--dur-1) var(--ease);
+}
+/* Más grande que una .etiqueta del sistema, y con menos tracking: a 11 px con
+   0.14em de separación la palabra se leía como un rótulo al pie de una foto. */
+.juego__link .etiqueta {
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  font-weight: var(--peso-medio);
+}
+.juego__link:hover,
+.juego__link:focus-visible {
+  background: var(--crema);
+  translate: 0 -2px;
+  /* El halo es del MISMO verde del botón, no una sombra negra: sobre un fondo
+     negro una sombra no se ve, y lo que tiene que crecer es la luz. */
+  box-shadow: 0 0 0 6px rgba(124, 148, 72, .22);
+}
+
+/* LAS CUATRO PIEZAS DEL JUEGO, TURNÁNDOSE EN EL MISMO MARCO.
+   --------------------------------------------------------------------------
+   Antes estaban todas a la vez: la captura arriba (.juego__captura) y las tres
+   hojas de sprites en fila abajo (.sprites). Se probó alinearlas por alto, con
+   columnas `auto` y object-fit, y aun así la fila se veía desacomodada. El
+   motivo es que no es un problema de CSS: las cuatro imágenes tienen formas
+   que no se parecen —951x478 la captura, y 874x582, 467x423 y 339x272 las
+   hojas— y además distinta cantidad de aire transparente adentro. Puestas
+   juntas, no hay alto ni ancho que las haga leerse como una serie.
+
+   Turnándose en un marco de proporción fija, cada una entra ENTERA y al tamaño
+   que le da la suya, siempre en el mismo lugar de la página. Y se lee como lo
+   que es: cuatro momentos de la misma producción, no cuatro archivos apilados.
+
+   Sin marco ni fondo: las tres hojas de sprites son PNG con fondo
+   transparente. Ponerles una caja sería dibujarles un papel que no tienen.
+
+   PERILLAS — EL CARRUSEL DEL JUEGO */
+.juego__piezas {
+  --juego-alto: clamp(220px, 46svh, 520px);   /* LA perilla del tamaño */
+  --juego-fundido: 700ms;                     /* cuánto tarda el cambio */
+
+  grid-column: 1 / -1;
+  position: relative;
+  height: var(--juego-alto);
+  margin-top: clamp(var(--s-6), 5svh, var(--s-8));
+}
+
+.juego__pieza {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  /* minmax(0, 1fr) y no 1fr: `1fr` es `minmax(auto, 1fr)`, y ese `auto` no
+     deja que la fila mida menos que el contenido — la imagen empujaría la caja
+     y el pie de foto se iría abajo de la sección. Es la misma trampa que ya
+     había pasado en .juguete; está explicada larga allá arriba. */
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--s-4);
+  justify-items: center;
+  align-content: center;
+
+  opacity: 0;
+  transition: opacity var(--juego-fundido) var(--ease);
+  pointer-events: none;
+}
+/* .is-visible la pone initAlterna. */
+.juego__pieza.is-visible { opacity: 1; }
+
+.juego__pieza img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* contain: cada pieza se ve ENTERA. Con cover, a la captura del juego se le
+     comerían las vidas de arriba y a las hojas les faltarían cuadros. */
+  object-fit: contain;
+}
+.juego__pieza figcaption { color: var(--zona-texto-2); }
+}
+
+
+/* ==========================================================================
+   10. LA FICHA DEL PROCESO
    --------------------------------------------------------------------------
    Siete filas: número, qué se hizo, con qué, y si eso fue IA o software de
-   siempre. La última columna es el contenido de verdad — el proyecto es un
+   siempre. Esa última columna es el contenido de verdad — el proyecto es un
    cruce, y la ficha lo deja ver de un vistazo.
 
    POR QUÉ FILAS Y NO UN DIAGRAMA DE CAJITAS CON FLECHAS. Un diagrama de siete
@@ -735,48 +1344,69 @@
    además obliga a inventar iconos para herramientas que no los tienen. Las
    filas son el idioma que la página ya habla: mayúscula, tracking y línea de
    pelo, igual que todos los rótulos del sitio.
+
+   VA ADENTRO DEL BLOQUE DE TEXTO (columnas 2-3) Y NO DE PUNTA A PUNTA.
+   De punta a punta eran siete renglones de 11 px estirados sobre 1300 px, con
+   la herramienta tan lejos de la acción que había que barrer la fila con el
+   ojo para juntarlas: se leía como una planilla. Apilando la acción y la
+   herramienta en la misma columna, la fila entra de una mirada.
    ========================================================================== */
 
 .proceso {
-  grid-column: 1 / -1;
   position: relative;
-  margin-top: var(--s-7);
+  margin-top: var(--s-4);
   /* El espacio de la izquierda es para el riel de la vuelta atrás. */
-  padding-left: var(--s-7);
+  padding-left: var(--s-6);
 }
 
-.proceso__pasos,
-.juguetes__pasos {
+.proceso__pasos {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* UNA FILA. Las cuatro columnas de la fila NO son las cuatro del sitio: son
-   las de una ficha técnica, con anchos fijos para el número y la marca, y el
-   resto repartido entre qué y con qué. */
+/* UNA FILA. Tres columnas: el número, el par acción + herramienta, y la marca.
+   Las columnas de la fila NO son las cuatro del sitio: son las de una ficha
+   técnica, con anchos fijos en las puntas y el resto para el texto. */
 .paso {
   display: grid;
-  grid-template-columns: 3rem minmax(0, 1.1fr) minmax(0, 1fr) 5.5rem;
-  gap: var(--s-4);
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  column-gap: var(--s-4);
+  row-gap: 2px;
   align-items: baseline;
-  padding-block: var(--s-4);
+  padding-block: var(--s-3);
   border-top: var(--borde) solid var(--zona-linea);
 }
-.proceso__pasos > .paso:last-child,
-.juguetes__pasos > .paso:last-child {
+.proceso__pasos > .paso:last-child {
   border-bottom: var(--borde) solid var(--zona-linea);
 }
 
-.paso__n    { color: var(--zona-texto-2); }
-.paso__que  { font-size: var(--t-1); font-weight: var(--peso-cuerpo); }
-.paso__con  { font-size: var(--t-1); font-weight: var(--peso-liviano); color: var(--zona-texto-2); }
+.paso__n {
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--zona-texto-2);
+}
+.paso__que {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: var(--t-1);
+  font-weight: var(--peso-cuerpo);
+}
+.paso__con {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 0.8125rem;
+  font-weight: var(--peso-liviano);
+  color: var(--zona-texto-2);
+}
 
 /* LA MARCA DE IA / A MANO. Es una pastilla, igual que las de clasificación del
    hero, porque cumple el mismo papel: clasifica, no lleva a ningún lado.
    El verde marca lo generado; lo hecho a mano va en el gris del sistema. NO se
    inventa un segundo color para la oposición: el sitio tiene UN acento. */
 .paso__tipo {
+  grid-column: 3;
+  grid-row: 1 / span 2;
   justify-self: end;
   align-self: center;
   padding: 4px 12px;
@@ -793,15 +1423,15 @@
 /* --- LA VUELTA ATRÁS ---
    El riel punteado con la punta de flecha arriba, pegado al costado izquierdo
    de la ficha. NO es decoración: la ficha, leída sola, afirma que el proceso
-   fue lineal, y el copy que tiene al lado dice exactamente lo contrario.
+   fue lineal, y el copy que tiene arriba dice exactamente lo contrario.
    Punteado y no lleno: es un camino que se recorrió muchas veces, no un paso
    más del circuito. */
 .proceso__vuelta {
   position: absolute;
   left: 0;
-  top: var(--s-5);
-  bottom: var(--s-6);
-  width: 1.25rem;
+  top: var(--s-4);
+  bottom: var(--s-5);
+  width: 1rem;
   border-left: var(--borde-marcado) dashed
                color-mix(in srgb, var(--zona-acento) 55%, transparent);
   color: var(--zona-acento);
@@ -819,123 +1449,13 @@
   color: var(--zona-acento);
 }
 
-@media (max-width: 720px) {
-  .proceso { padding-left: var(--s-6); }
-  /* En angosto la fila se parte en dos renglones: arriba el número y la
-     marca, abajo el qué y el con qué. Cuatro columnas en 360 px de ancho
-     dejan "Runway · Firefly · Veo" en cuatro renglones de una palabra. */
-  .paso {
-    grid-template-columns: 3rem minmax(0, 1fr) auto;
-  }
-  .paso__que { grid-column: 2; }
-  .paso__con { grid-column: 2 / -1; }
-  .paso__tipo { grid-column: 3; grid-row: 1; }
-}
-
 
 /* ==========================================================================
-   8. LOS JUGUETES
-   --------------------------------------------------------------------------
-   FALTAN LAS FOTOS de las figuras impresas (ver la nota en el HTML). Mientras
-   tanto la sección muestra el método en tres filas, con la misma ficha del
-   proceso — que es lo que la sección tiene que contar de todos modos.
-   Cuando lleguen las fotos, .juguetes__fotos ya está escrita en el HTML,
-   comentada, y sus estilos están acá abajo esperando.
-   ========================================================================== */
-
-.juguetes__pasos {
-  grid-column: 1 / -1;
-  margin-top: var(--s-7);
-}
-/* Tres columnas y no cuatro: acá no hay "con qué". El brief pide
-   explícitamente NO nombrar la herramienta que hizo el 2D → 3D. */
-.juguetes__pasos .paso {
-  grid-template-columns: 3rem minmax(0, 1fr) 5.5rem;
-}
-
-.juguetes__fotos {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
-  margin-top: var(--s-7);
-}
-.juguetes__fotos img { width: 100%; height: auto; display: block; }
-@media (max-width: 960px) { .juguetes__fotos { grid-template-columns: 1fr; } }
-
-
-/* ==========================================================================
-   9. EL MINI-JUEGO
-   --------------------------------------------------------------------------
-   Zona negra, y acá el negro no es un recurso de ritmo: las tres hojas de
-   sprites vienen con FONDO TRANSPARENTE y fueron generadas sobre negro. Sobre
-   el crema se les nota el borde sucio de la generación; sobre el negro se
-   apoyan como en la hoja original.
-   ========================================================================== */
-
-/* EL BOTÓN DE JUGAR. Es el único link de salida de toda la página y el juego
-   existe de verdad, así que se ve como un botón y no como una palabra
-   subrayada. Verde lleno: es la única acción de la página. */
-.juego__link {
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  padding: 10px 20px;
-  border-radius: 999px;
-  background: var(--verde);
-  color: #fff;
-  text-decoration: none;
-  transition: background var(--dur-1) var(--ease), translate var(--dur-1) var(--ease);
-}
-.juego__link svg { width: 14px; height: 14px; flex: 0 0 auto; }
-.juego__link:hover {
-  background: var(--verde-claro);
-  translate: 0 -2px;
-}
-
-/* LA CAPTURA. Ancho propio y centrada: el archivo mide 951 px de ancho y
-   estirarlo hasta los 1400 de la grilla lo dejaría borroso. */
-.juego__captura {
-  grid-column: 1 / -1;
-  width: min(100%, 950px);
-  margin: var(--s-8) auto 0;
-}
-.juego__captura img { width: 100%; height: auto; display: block; }
-
-/* LAS HOJAS DE SPRITES. Van en tres columnas de la grilla del sitio y no en
-   un auto-fit: la regla de la casa es que todo se apoye en las MISMAS cuatro
-   columnas, y estas tres se centran ocupando de la 1 a la 4.
-   Sin marco ni fondo: son hojas de sprites, y una hoja de sprites es una
-   imagen con fondo transparente. Ponerle una caja sería dibujarle un papel
-   que no tiene. */
-.sprites {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
-  align-items: end;
-  margin-top: var(--s-8);
-}
-.sprite { margin: 0; display: grid; gap: var(--s-3); }
-.sprite img {
-  width: 100%;
-  height: auto;
-  display: block;
-  /* contain por si alguna hoja futura no tiene la misma forma. */
-  object-fit: contain;
-}
-.sprite figcaption { color: var(--zona-texto-2); }
-
-@media (max-width: 720px) { .sprites { grid-template-columns: 1fr; } }
-
-
-/* ==========================================================================
-   10. EL CIERRE
+   11. EL CIERRE
    --------------------------------------------------------------------------
    Un solo párrafo, grande, con mucho aire y SIN rótulo de sección: no es un
-   capítulo más, es la conclusión de todo lo anterior. Sigue en negro porque
-   el argumento se cierra a oscuras, después del juego.
+   capítulo más, es la conclusión de todo lo anterior. Va en negro porque el
+   argumento se cierra a oscuras, después del juego.
    ========================================================================== */
 
 .cierre { padding-block: var(--s-9) calc(var(--s-9) * 1.4); }

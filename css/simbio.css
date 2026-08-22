@@ -2215,3 +2215,194 @@ body.zona--crema { --zona-fondo: var(--crema); }
   .grupo .pieza:hover,
   .grupo .pieza:active { --alzar: 0px; --escala: 1; transition: none; }
 }
+
+/* ==========================================================================
+   MOBILE — SIMBIO EN PANTALLA CHICA  (20/08/2026)
+   --------------------------------------------------------------------------
+   Este bloque va AL FINAL del archivo a propósito: es lo último que lee el
+   navegador, así que gana sin necesidad de inventar selectores más largos.
+
+   LA IDEA: la página de escritorio está armada con piezas que se cruzan entre
+   sí —la portada sube media pantalla y se mete al lado del título, el objeto
+   de cada pieza se pasa de su columna, el video se mide por su alto—. Todo eso
+   funciona porque sobra ancho. En un teléfono no sobra nada, así que acá se
+   desarma cada uno de esos cruces y todo pasa a apilarse en una sola columna.
+
+   DOS CORTES:
+     · 960px → tablet. La grilla del sitio ya baja a 2 columnas sola
+               (--cols en base.css).
+     · 620px → teléfono. La grilla baja a 1 columna.
+   Los dos números son los mismos que usa base.css. No inventar otros: si cada
+   archivo corta en un ancho distinto, aparecen estados intermedios raros que
+   nadie probó.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   TABLET Y TELÉFONO (todo lo que baja de 960)
+   -------------------------------------------------------------------------- */
+@media (max-width: 960px) {
+
+  /* LAS TAPAS DE CARPETA — el único lugar del proyecto con !important.
+     Su posición está escrita como atributo style en el HTML
+     (style="grid-column: 1 / span 2"), y un atributo inline le gana a
+     cualquier regla de un archivo CSS: es la única forma de pisarlo.
+     Sin esto, la tapa de "Prototipo" pide arrancar en la columna 3 de una
+     grilla que ya solo tiene 2, y se desborda. */
+  .collage-seccion .carpeta__frente { grid-column: 1 / -1 !important; }
+
+  /* Las dos carpetas, una arriba de la otra y más bajas: a lo ancho completo
+     una tapa con la proporción de escritorio ocupaba media pantalla. */
+  .carpeta__frente { min-height: 8rem; }
+
+  /* El aire entre bloques apilados. En escritorio el gap de 7rem separa
+     columnas; apilado, son 7rem de vacío entre una imagen y su texto. */
+  .pantalla { gap: var(--s-6); padding-block: var(--s-7); }
+
+  /* EL ENSAMBLE. El render es 16:9 y en vertical le sobra pantalla por todos
+     lados, así que se le da todo el ancho de la ventana (sin el margen de la
+     grilla) para que la pieza se vea lo más grande posible. */
+  .simbio-stage { height: auto; padding-block: var(--s-8); }
+  .simbio-panel-wrap { width: 100vw; margin-inline: calc(-1 * var(--gutter)); }
+  /* El rótulo de fase deja de estar pegado abajo en absoluto —abajo ahora hay
+     contenido— y pasa a ir debajo del render, en el flujo normal. */
+  .simbio-fase {
+    position: static;
+    grid-column: 1 / -1;
+    margin-top: var(--s-5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TELÉFONO
+   -------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+
+  /* ---- LA PORTADA: SE DESARMA EL CRUCE ----------------------------------
+     En escritorio la foto sube media pantalla (--portada-sube) para meterse
+     en el aire vacío que deja el bloque de apertura, y se sale por los dos
+     costados con márgenes negativos. En una sola columna ese aire no existe:
+     la foto subía por encima del título y de la bajada y los tapaba.
+     Acá vuelve a ser un bloque normal, debajo del texto y dentro del margen. */
+  .pantalla--portada {
+    margin-top: 0;
+    min-height: auto;
+    padding-block: var(--s-6) var(--s-4);
+  }
+  .portada__foto {
+    margin-inline: 0;
+    width: 100%;
+  }
+  .portada__foto img {
+    max-height: 42svh;
+    object-position: center;
+    /* El ajuste fino de escritorio (--portada-foto-x/y) mueve la imagen dentro
+       de una caja que allá sobra de ancho. Acá la caja mide justo, así que
+       cualquier corrida la saca de pantalla. */
+    transform: none;
+  }
+
+  /* ---- EL LIQUEN --------------------------------------------------------
+     Dos polaroids por fila, no tres: a tres, cada una queda de 100px y no se
+     ve nada. Y el ancho fijo de escritorio (--polaroid-ancho) se cambia por
+     100%, porque 8,5rem son 136px y tres de esos no entran en 358. */
+  .liquenes { grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+  .liquenes__suelto { width: 100%; }
+  /* Las tres van en el orden del HTML, sin la fila/columna explícita que las
+     acomodaba en collage: en una grilla de 2 esa posición manda a la tercera
+     a una celda que no existe. */
+  .liquenes__suelto--a,
+  .liquenes__suelto--b,
+  .liquenes__suelto--c { grid-area: auto; }
+
+  /* ---- LAS PIEZAS -------------------------------------------------------
+     El objeto arriba, el texto abajo. El cuadro deja de medirse por su alto
+     (76svh, que en un teléfono es más alto que ancho y se sale por la
+     derecha) y vuelve a medirse por el ancho de la columna. */
+  /* EL CUADRO DE LA PIEZA SE PONE VERTICAL EN EL TELÉFONO.
+     En escritorio es 16:9 y mide más de 1100px de ancho, así que la pieza se
+     ve grande igual. Acá el ancho es de 342px y con 16:9 el cuadro queda de
+     192px de alto: la pieza del árbol, que es alta y angosta, entraba de 80px.
+     Un cuadro vertical le da alto para crecer.
+     VA DE LA MANO CON zoomMobile EN js/muestras.js: el dibujo se agranda para
+     llenar ese alto, y lo que se sale por los costados es aire vacío del
+     render, nunca pieza. Si cambiás esta proporción, hay que recalcular
+     aquellos números (la cuenta está escrita allá). */
+  .pantalla--pieza .muestra__marco {
+    width: 100%;
+    height: auto;
+    max-width: none;
+    aspect-ratio: 4 / 5;
+  }
+  /* El objeto primero y el texto después: en vertical, primero se mira. */
+  .pantalla--pieza .muestra__marco { order: 1; }
+  .pantalla--pieza .muestra__pie   { order: 2; }
+  .pantalla--pieza .muestra { display: flex; flex-direction: column; gap: var(--s-4); }
+
+  /* ---- LA INTRO DE LA TRADUCCIÓN --------------------------------------- */
+  .pantalla__enunciado { max-width: none; }
+
+  /* ---- EL ENSAMBLE ------------------------------------------------------
+     550vh de recorrido para un render que acá se ve chico es mucho scroll.
+     400vh sigue alcanzando para los 375 cuadros y se hace más corto. */
+  .simbio-scroll { height: 400vh; }
+
+  /* ---- LA CARPETA DE PROTOTIPO -----------------------------------------
+     EL TIMELAPSE. En escritorio manda su ALTO y el ancho sale de la
+     proporción, porque el video es vertical (480x848) y así crece sin
+     desbordar. En un teléfono esa cuenta se da vuelta: 88svh de un alto de
+     844 son 743px, y a esa altura el ancho da 420px — más que la pantalla.
+     Acá manda el ancho y el alto sale solo. */
+  .timelapse { width: 100%; }
+  .timelapse video { width: 100%; height: auto; }
+
+  /* LAS GRÁFICAS. Los corrimientos (--dx/--dy) están calculados para el ancho
+     de dos columnas de escritorio; acá los anulo para que no se toquen entre
+     ellas, y quedan dos por fila. */
+  .graficas { gap: var(--s-4) var(--s-3); justify-content: space-between; }
+  .grafica {
+    width: calc(50% - var(--s-3));
+    --dx: 0px;
+    --dy: 0px;
+  }
+
+  /* ---- LA LUPA (ver una foto en grande) --------------------------------- */
+  .lupa__marco { width: 100%; max-width: none; }
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE — LOS TRES ARREGLOS QUE SALIERON DE MEDIRLO  (20/08/2026)
+   Medido con la página corriendo a 489px de ancho, no a ojo.
+   -------------------------------------------------------------------------- */
+@media (max-width: 960px) {
+
+  /* 1. EL LIQUEN: TEXTO Y POLAROIDS CAÍAN EN LA MISMA CELDA.
+        En escritorio los dos llevan `grid-row: 1` — es lo que los pone lado a
+        lado en la misma fila. Al apilar a una columna, esa fila 1 sigue siendo
+        la misma para los dos: el navegador los mete en la MISMA celda y uno
+        queda dibujado encima del otro. Medido: se superponían.
+        `grid-row: auto` los deja caer uno abajo del otro, que es lo que hace
+        un grid cuando no le dicen nada. */
+  .liquenes,
+  .pantalla--liquen .pantalla__texto { grid-row: auto; }
+
+  /* 2. EL ENSAMBLE SE SALÍA 15px POR LA DERECHA.
+        Estaba con `width: 100vw`, y 100vw NO es el ancho visible: incluye la
+        barra de scroll. Con el margen negativo encima, terminaba 15px más
+        ancho que la ventana. Sacando el ancho fijo, la caja mide su columna y
+        los márgenes negativos la estiran hasta los bordes — sin barra de por
+        medio. */
+  .simbio-panel-wrap { width: auto; }
+}
+
+@media (max-width: 620px) {
+
+  /* 3. LAS GRÁFICAS SEGUÍAN CORRIDAS.
+        Les había puesto `--dx: 0px` para enderezarlas, pero cada una trae su
+        `--dx` escrito en el atributo style del HTML, y un valor inline le gana
+        a cualquier archivo CSS. La variable nunca cambiaba.
+        La solución no es pelear con la variable sino anular lo que la usa: el
+        `transform` sí está declarado en el CSS, así que acá se apaga entero.
+        Es la misma trampa de las tapas de carpeta, que se resolvió con
+        !important porque ahí lo inline era la propiedad y no la variable. */
+  .grafica { transform: none; }
+}

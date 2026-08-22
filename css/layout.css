@@ -117,22 +117,170 @@
   color: #fff;
 }
 
-/* EN PANTALLA CHICA LA NAV DEJA DE SER GRILLA.
-   Debajo de 620px la grilla del sitio baja a UNA columna, y como cada botón
-   de la nav es un hijo directo, se apilaban en cuatro filas: la barra fija
-   se comía casi un cuarto de la pantalla en todas las páginas. Acá pasa a
-   ser una fila que envuelve, que es lo que una nav de teléfono tiene que
-   ser. Los botones siguen siendo los mismos, solo cambia cómo se reparten. */
+/* ==========================================================================
+   EN PANTALLA CHICA: MENÚ HAMBURGUESA
+   --------------------------------------------------------------------------
+   Debajo de 620px la grilla del sitio baja a UNA columna y los cuatro botones
+   se apilaban: la barra fija se comía 91px de alto medidos, en todas las
+   páginas y todo el tiempo. Ahora queda una barra baja con un solo botón a la
+   derecha, y los enlaces viven adentro.
+
+   NO ES UN CAJÓN QUE ENTRA DESDE UN COSTADO: es la misma barra que crece.
+   Se anima su alto y nada más. Por eso no hace falta ni un panel aparte en el
+   HTML, ni una capa oscura encima de la página, ni bloquear el scroll. El
+   fondo ya es el crema al 88% con desenfoque, así que lo de atrás no molesta.
+
+   PERILLAS
+   -------- */
+:root {
+  /* Alto de la barra cerrada. Tiene que dar para el botón (44px, que es el
+     mínimo para tocar cómodo con el dedo) más el aire de arriba y abajo. */
+  --nav-movil-cerrada: 4.25rem;
+  /* Hasta dónde puede crecer abierta. Es un techo, no el alto real: el
+     contenido manda. Si algún día hay más botones, subilo. */
+  --nav-movil-abierta: 26rem;
+  /* Aire entre un botón y el siguiente cuando está abierta */
+  --nav-movil-gap: 0.5rem;
+  /* Cuánto tarda en abrirse y cerrarse */
+  --nav-movil-dur: 380ms;
+  /* Diámetro del botón de hamburguesa y grosor de sus rayas */
+  --hamburguesa-tam: 44px;
+  --hamburguesa-raya: 1.5px;
+}
+
+/* El botón solo existe en pantalla chica. En desktop va con display:none, y
+   por eso NO le ocupa una columna a la grilla de la nav. */
+.site-nav__hamburguesa { display: none; }
+
 @media (max-width: 620px) {
   .site-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--nav-movil-gap);
     padding-block: var(--s-3);
+
+    /* El alto es lo único que se anima. overflow: hidden es lo que recorta
+       los enlaces mientras está cerrada. */
+    max-height: var(--nav-movil-cerrada);
+    overflow: hidden;
+    transition: max-height var(--nav-movil-dur) var(--ease),
+                transform 450ms var(--ease);
   }
-  .site-nav__fin { width: auto; margin-left: auto; gap: var(--s-2); }
-  .pastilla { padding-inline: 14px; }
+  /* CERRADA ES UNA BARRA, ABIERTA ES UN PANEL, y se tienen que leer distinto.
+     Con el 88% de la barra los botones de abajo quedaban flotando encima del
+     dibujo de la caja, sin un borde que dijera dónde termina el menú. Abierta
+     el crema se vuelve casi opaco y aparece la línea de abajo: ahí sí se lee
+     como una superficie apoyada sobre la página. */
+  .site-nav.is-abierta {
+    max-height: var(--nav-movil-abierta);
+    background: color-mix(in srgb, var(--crema) 98%, transparent);
+    border-bottom: var(--borde) solid var(--zona-linea);
+  }
+
+  /* En desktop cada hijo arranca donde arranca su columna; acá ocupan el
+     ancho entero, que es lo que se espera de un menú de teléfono. */
+  .site-nav > * { justify-self: stretch; }
+  .site-nav .pastilla { text-align: center; padding-inline: 14px; }
+
+  /* El botón, arriba de todo y contra el borde derecho */
+  .site-nav__hamburguesa {
+    display: grid;
+    justify-self: end;
+    align-content: center;
+    gap: 5px;
+    width: var(--hamburguesa-tam);
+    height: var(--hamburguesa-tam);
+    padding: 0 11px;
+    border: var(--borde) solid var(--zona-linea);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .site-nav__hamburguesa span {
+    display: block;
+    height: var(--hamburguesa-raya);
+    background: var(--zona-texto);
+    border-radius: 2px;
+    /* El movimiento de cada raya: primero se juntan, después giran. Al
+       revés al cerrar. Por eso el retardo va cambiado entre las dos. */
+    transition: transform var(--nav-movil-dur) var(--ease),
+                opacity 120ms linear;
+  }
+
+  /* Abierta, las tres rayas se vuelven una X: la de arriba y la de abajo se
+     cruzan en el medio y la del medio se apaga. Los 6.5px son la mitad del
+     alto que ocupan las tres juntas (2 gaps de 5 + 3 rayas de 1.5). */
+  .site-nav.is-abierta .site-nav__hamburguesa span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .site-nav.is-abierta .site-nav__hamburguesa span:nth-child(2) { opacity: 0; }
+  .site-nav.is-abierta .site-nav__hamburguesa span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Los enlaces, escondidos mientras está cerrada. visibility (y no solo
+     opacity) es lo que los saca del recorrido del tabulador: si no, se puede
+     tabular a botones que no se ven. El retardo de 0s al abrir y del largo
+     de la animación al cerrar es para que se apaguen recién al final. */
+  .site-nav > .pastilla,
+  .site-nav__fin {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--nav-movil-dur) var(--ease),
+                visibility 0s linear var(--nav-movil-dur);
+  }
+  .site-nav.is-abierta > .pastilla,
+  .site-nav.is-abierta .site-nav__fin {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--nav-movil-dur) var(--ease);
+  }
+
+  /* Contacto y el par ES/EN comparten la última fila */
+  .site-nav__fin { width: 100%; gap: var(--s-2); }
 }
+
+/* Si el sistema pide menos movimiento, abre y cierra sin animar. */
+@media (max-width: 620px) and (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .site-nav__hamburguesa span,
+  .site-nav > .pastilla,
+  .site-nav__fin { transition: none; }
+}
+
+/* ==========================================================================
+   GOOGLE TRANSLATE — TAPARLE LA INTERFAZ
+   El widget no se conforma con traducir: mete UI propia en la página y hay que
+   sacarla, porque no tiene nada que ver con el diseño del sitio.
+
+   1. Una barra celeste arriba de todo, y de yapa le pone `top: 40px` al <body>
+      con estilo en línea para hacerle lugar. Eso EMPUJA LA PÁGINA ENTERA hacia
+      abajo y deja la nav fija flotando 40px más abajo del borde. El
+      `top: 0 !important` es lo único que gana contra un estilo en línea.
+   2. Un globito que sigue al mouse mostrando el texto original.
+   3. El contenedor que el widget necesita para existir; no tiene que verse.
+
+   La clase .skiptranslate es la que Google le pone a SUS propios pedazos —
+   justamente para no traducirlos a ellos mismos—, así que sirve para
+   agarrarlos a todos. Ojo: se esconden solo los iframes, porque esa clase
+   también termina puesta en cosas nuestras.
+   ========================================================================== */
+
+body { top: 0 !important; }
+
+iframe.skiptranslate,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+#google_translate_element { display: none !important; }
+
+/* Google envuelve cada pedazo traducido en un <font>. Sin esto hereda tamaños
+   del navegador en vez de los de la página. */
+font { font: inherit; color: inherit; }
+
+/* El subrayado punteado que le pone al texto traducido: fuera. */
+.goog-text-highlight { background: none !important; box-shadow: none !important; }
+
 
 /* El par ES/EN va pegado, como un solo control partido al medio */
 .nav-idioma { display: flex; }

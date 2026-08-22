@@ -368,6 +368,12 @@ function renderFichas(lista, contenedor) {
 function initReglaGrilla() {
   if (!new URLSearchParams(location.search).has("grid")) return;
 
+  // La regla se cuelga del <body>, o sea FUERA de #swup, así que Swup no la
+  // limpia al navegar: sin esto, con ?grid en la URL cada navegación dejaba
+  // otra regla encima de la anterior. Es la misma trampa de la lupa de abajo.
+  const vieja = document.querySelector(".regla-grilla");
+  if (vieja) vieja.remove();
+
   const regla = document.createElement("div");
   regla.className = "regla-grilla";
   regla.setAttribute("aria-hidden", "true");
@@ -470,6 +476,58 @@ function initColumnaSincro() {
    guarda afuera y se vuelve a apuntar en cada init — si no, después de entrar
    a un proyecto la barra le seguía poniendo la clase a una nav que ya no
    estaba en la página, y dejaba de esconderse. */
+/* --------------------------------------------------------------------------
+   5-quater. EL MENÚ HAMBURGUESA (solo pantalla chica)
+   Abre y cierra la barra. Todo lo visual lo hace el CSS con la clase
+   .is-abierta; acá solo se pone y se saca, y se mantiene al día el
+   aria-expanded, que es lo que un lector de pantalla lee para saber si el
+   menú está abierto.
+
+   OJO CON LA GUARDA: no puede ser una variable de módulo como la de
+   initNavEsquiva. Swup reemplaza la nav entera en cada navegación, así que
+   el <button> es OTRO nodo y hay que volver a engancharlo. La marca va en el
+   nodo mismo (dataset.listo): si es nuevo, no la tiene y se engancha; si es
+   el mismo de antes, no se engancha dos veces.
+   -------------------------------------------------------------------------- */
+
+function initHamburguesa() {
+  const nav = document.querySelector(".site-nav");
+  const boton = nav && nav.querySelector(".site-nav__hamburguesa");
+  if (!boton || boton.dataset.listo) return;
+  boton.dataset.listo = "1";
+
+  function abrir(si) {
+    nav.classList.toggle("is-abierta", si);
+    boton.setAttribute("aria-expanded", si ? "true" : "false");
+    boton.setAttribute("aria-label", si ? "Cerrar el menú" : "Abrir el menú");
+    // Con el menú abierto la barra NO se esconde al scrollear: se iría con el
+    // menú puesto y volvería abierta, que se ve como un error.
+    if (si) nav.classList.remove("is-oculta");
+  }
+
+  boton.addEventListener("click", () => {
+    abrir(!nav.classList.contains("is-abierta"));
+  });
+
+  // Elegir una opción cierra el menú. Hace falta para los enlaces a una
+  // sección de la misma página (#sobre): ahí no hay navegación, así que la
+  // nav no se reemplaza y el menú quedaría abierto tapando lo que se acaba
+  // de pedir. Cuando sí se cambia de página, Swup trae una nav nueva y
+  // cerrada, y esto no molesta.
+  nav.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => abrir(false));
+  });
+
+  // Escape cierra, como cualquier cosa que se abre encima de la página.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && nav.classList.contains("is-abierta")) {
+      abrir(false);
+      boton.focus();
+    }
+  });
+}
+
+
 let navActual = null;
 let navLista = false;
 function initNavEsquiva() {
@@ -490,7 +548,9 @@ function initNavEsquiva() {
     const dif = ahora - ultimo;
     if (Math.abs(dif) < MINIMO) return;
 
-    navActual.classList.toggle("is-oculta", dif > 0 && ahora > ZONA_ALTA);
+    // Con el menú de teléfono abierto la barra se queda quieta.
+    const abierta = navActual.classList.contains("is-abierta");
+    navActual.classList.toggle("is-oculta", !abierta && dif > 0 && ahora > ZONA_ALTA);
     ultimo = ahora;
   }, { passive: true });
 
@@ -574,6 +634,13 @@ function initParallaxLiquenes() {
    -------------------------------------------------------------------------- */
 
 function initLupa() {
+  // La capa de la lupa vive en el <body>, fuera de #swup. Cada llamada a
+  // initLupa arma un cierre nuevo con su propia capa, así que la de la página
+  // anterior quedaba colgada del documento para siempre — invisible, pero
+  // ahí, tapando clics. Se barre la vieja antes de empezar.
+  const capaVieja = document.querySelector(".lupa");
+  if (capaVieja) capaVieja.remove();
+
   const botones = Array.from(document.querySelectorAll("[data-lupa]"));
   if (!botones.length) return;
 
@@ -816,6 +883,7 @@ function init() {
   initReglaGrilla();
   initCarpetas();
   initNavEsquiva();
+  initHamburguesa();
   initBlurPortada();
   initTilt();
   initParallaxLiquenes();
