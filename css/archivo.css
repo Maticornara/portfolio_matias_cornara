@@ -1118,3 +1118,144 @@
 @media (max-width: 620px) {
   .esquina { --caja-proporcion: 1.25; }
 }
+
+
+/* ==========================================================================
+   99. LA ENTRADA DEL HERO
+   --------------------------------------------------------------------------
+   El cuarto se arma solo: las lineas crecen desde el vertice, la caja baja y
+   aterriza, y los papeles aparecen de a uno. Una sola vez, al cargar.
+
+   TRES DECISIONES QUE EXPLICAN POR QUE ESTA ESCRITO ASI
+
+   1. EL ESTADO NORMAL ES EL FINAL, NO EL INICIAL.
+      Nada de esto esta oculto por defecto. Las animaciones cuelgan de
+      `.portada-hero.is-entrando`, una clase que pone archivo.js. Si el JS no
+      corre no hay clase, no hay animacion, y la portada se ve entera y
+      quieta, que es como tiene que verse. Al reves -esconder todo en el CSS
+      y mostrarlo con JS- una falla del JS dejaria la portada en blanco.
+
+   2. LAS LINEAS CRECEN CON clip-path, NO CON scale.
+      Las tres son barras larguisimas ROTADAS, y su angulo (26,565 grados) es
+      la isometria en la que esta dibujada la caja: si se toca, la caja deja
+      de apoyarse en el piso. Meterles un scale obligaria a reescribir el
+      transform entero en cada keyframe y a repetir ese angulo en cuatro
+      lugares: la clase de duplicacion que termina en que alguien cambia uno
+      y se olvida de los otros.
+      clip-path recorta la barra en SU propio sistema de coordenadas, ANTES
+      de rotarla, asi que revela la linea de la punta al final sin enterarse
+      de la rotacion. El transform no se toca ni una vez.
+
+   3. LOS KEYFRAMES SOLO TIENEN `from`.
+      No hay ningun `to`, y es a proposito. Cuando un keyframe no declara una
+      propiedad, el valor final es el que el elemento ya tiene en su CSS, y
+      eso es exactamente lo que hace falta aca: las piezas NO terminan todas
+      en opacity 1 -el post-it y el recuadro de las polaroids viven en .55-.
+      Con un `to { opacity: 1 }` escrito a mano, esas dos terminarian mas
+      opacas de lo que deben y la animacion las romperia al "arreglarlas".
+   ========================================================================== */
+
+/* Las diagonales se revelan de izquierda a derecha; la barra vertical, de
+   abajo hacia arriba. En los dos casos, el lado por el que empieza a
+   aparecer es el que toca el vertice. */
+@keyframes esquina-linea-diagonal {
+  from { clip-path: inset(0 100% 0 0); }
+}
+@keyframes esquina-linea-vertical {
+  from { clip-path: inset(100% 0 0 0); }
+}
+
+/* La caja llega desde arriba. El signo negativo es lo que la pone ARRIBA de
+   su lugar al empezar, para que el movimiento sea de bajada. */
+@keyframes caja-aterriza {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--caja-caida) * -1px));
+  }
+}
+
+/* La sombra SOLO aparece. No se mueve ni un pixel: es la huella de la caja
+   en el piso, y una huella que se desplaza delata que el objeto no esta
+   apoyado. */
+@keyframes caja-sombra-aparece {
+  from { opacity: 0; }
+}
+
+/* Los papeles suben a su lugar */
+@keyframes papel-entra {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--papel-sube) * 1px));
+  }
+}
+
+/* --- Quien hace que, y cuando -------------------------------------------
+   `backwards` es lo que sostiene el estado inicial DURANTE la espera. Sin
+   eso, todo se veria en su lugar desde el cuadro cero y recien ahi saltaria
+   hacia atras para animarse: se veria un parpadeo al reves. */
+
+.portada-hero.is-entrando .esquina__linea--izq,
+.portada-hero.is-entrando .esquina__linea--der {
+  animation: esquina-linea-diagonal var(--entrada-lineas-dur) var(--ease)
+             var(--entrada-lineas) backwards;
+}
+.portada-hero.is-entrando .esquina__linea--vertical {
+  animation: esquina-linea-vertical var(--entrada-lineas-dur) var(--ease)
+             var(--entrada-lineas) backwards;
+}
+
+.portada-hero.is-entrando .caja__cubo {
+  animation: caja-aterriza var(--entrada-caja-dur) var(--ease)
+             var(--entrada-caja) backwards;
+}
+.portada-hero.is-entrando .caja__sombra {
+  animation: caja-sombra-aparece var(--entrada-caja-dur) var(--ease)
+             var(--entrada-caja) backwards;
+}
+
+.portada-hero.is-entrando .caja__papel > *,
+.portada-hero.is-entrando .caja__foto > * {
+  animation: papel-entra var(--entrada-papel-dur) var(--ease) backwards;
+  animation-delay: calc(var(--entrada-papeles) + var(--i, 0) * var(--entrada-paso));
+}
+
+/* EL ORDEN EN QUE ENTRAN. --i es el numero de turno de cada pieza.
+   Se reparte a mano y no con un contador automatico por dos motivos: las
+   tres hojas de la pila comparten turno (entran juntas, como un solo objeto)
+   y el recuadro de cada polaroid tiene que entrar EXACTAMENTE con su base,
+   aunque esten en grupos distintos del SVG. Si se dibujan cosas nuevas en el
+   piso, hay que darles su turno aca. */
+.caja__papel > *:nth-child(1)  { --i: 0; }   /* polaroid de adelante */
+.caja__papel > *:nth-child(2)  { --i: 1; }
+.caja__papel > *:nth-child(3)  { --i: 2; }
+.caja__papel > *:nth-child(4)  { --i: 3; }
+.caja__papel > *:nth-child(5)  { --i: 4; }   /* post-it de adelante */
+.caja__papel > *:nth-child(6)  { --i: 5; }
+.caja__papel > *:nth-child(7)  { --i: 6; }   /* la pila: sus tres hojas */
+.caja__papel > *:nth-child(8)  { --i: 6; }
+.caja__papel > *:nth-child(9)  { --i: 6; }
+.caja__papel > *:nth-child(10) { --i: 7; }   /* post-it de la derecha */
+.caja__papel > *:nth-child(11) { --i: 8; }   /* polaroid de la derecha */
+
+.caja__foto > *:nth-child(1) { --i: 0; }     /* entra con la polaroid nro 1 */
+.caja__foto > *:nth-child(2) { --i: 8; }     /* entra con la polaroid nro 11 */
+
+/* --------------------------------------------------------------------------
+   MOVIMIENTO REDUCIDO
+   El barrido de base.css acorta todas las animaciones a 0,01ms pero NO toca
+   los retrasos. Con `backwards`, un papel con 1,4s de espera se quedaria
+   invisible 1,4 segundos y recien ahi apareceria de golpe: peor que la
+   animacion. Por eso aca se apagan del todo, y sin animacion cada pieza se
+   dibuja directamente en su estado final.
+   (archivo.js ademas ni siquiera enciende la entrada en ese caso; esto es el
+   segundo cerrojo, por si la clase llegara por otro lado.)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .portada-hero.is-entrando .esquina__linea,
+  .portada-hero.is-entrando .caja__cubo,
+  .portada-hero.is-entrando .caja__sombra,
+  .portada-hero.is-entrando .caja__papel > *,
+  .portada-hero.is-entrando .caja__foto > * {
+    animation: none;
+  }
+}
