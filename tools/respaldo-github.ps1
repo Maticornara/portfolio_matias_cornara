@@ -35,12 +35,13 @@ Anotar "$cuantos archivos con cambios"
 
 # GitHub rechaza cualquier archivo de más de 100 MB, y un push rechazado
 # deja el commit hecho a medias. Mejor avisar antes de intentarlo.
+$carpetaGit = Join-Path $repo '.git'
 $grandes = Get-ChildItem $repo -Recurse -File -ErrorAction SilentlyContinue |
-    Where-Object { $_.Length -gt 100MB -and $_.FullName -notmatch '\\.git\' }
+    Where-Object { $_.Length -gt 100MB -and -not $_.FullName.StartsWith($carpetaGit) }
 
 foreach ($g in $grandes) {
-    $rel = $g.FullName.Substring($repo.Length + 1) -replace '\', '/'
-    git check-ignore -q "$rel"
+    $rel = $g.FullName.Substring($repo.Length + 1).Replace([char]92, '/')
+    git check-ignore -q $rel
     if ($LASTEXITCODE -ne 0) {
         $mb = [math]::Round($g.Length / 1MB)
         Anotar "FRENO: '$rel' pesa $mb MB y GitHub corta en 100. Agregalo al .gitignore o comprimilo."

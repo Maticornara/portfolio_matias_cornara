@@ -363,10 +363,56 @@
     }, { passive: true });
   }
 
+  /* ==================================================================
+     LA ENTRADA: EL CUARTO SE ARMA SOLO
+     --------------------------------------------------------------------
+     Todo el movimiento esta en el CSS (buscá "LA ENTRADA DEL HERO" en
+     archivo.css). Lo unico que hace este modulo es ENCENDERLO poniendo una
+     clase, y esa division es a proposito:
+
+       . el CSS no puede decidir "solo al cargar" ni reiniciarse solo;
+       . el JS no tiene por que saber los tiempos ni las distancias, que son
+         decisiones de diseño y viven con las demas perillas.
+
+     Y por eso la clase la pone el JS y no viene escrita en el HTML: si el
+     script no corre, no hay clase, no hay animacion, y la portada se ve
+     entera y quieta. La animacion es un agregado, nunca el estado por
+     defecto.
+     ================================================================== */
+
+  function initEntrada() {
+    const hero = document.querySelector(".portada-hero");
+    if (!hero) return;
+
+    // Con movimiento reducido no se enciende nada. El CSS tiene su propio
+    // cerrojo para lo mismo; este evita que la clase llegue a ponerse.
+    if (sinMovimiento) return;
+
+    /* SWUP LLAMA A ESTO DE NUEVO EN CADA NAVEGACION, y volver al Home es una
+       entrada nueva: la animacion tiene que poder correr otra vez.
+       Volver a poner una clase que YA esta no reinicia nada: para el
+       navegador no cambio nada, asi que no rearranca los keyframes. Hay que
+       sacarla, obligar a que recalcule, y recien ahi ponerla.
+
+       Ese "obligar a que recalcule" es la linea del offsetWidth: leer una
+       medida fuerza al navegador a resolver los estilos pendientes en el
+       momento. Sin ella, sacar y poner la clase en la misma vuelta se junta
+       en una sola operacion que no cambia nada y la animacion no se ve.
+       Es feo, y es la forma estandar de hacerlo. */
+    hero.classList.remove("is-entrando");
+    void hero.offsetWidth;
+    hero.classList.add("is-entrando");
+  }
+
   function init() {
+    /* EL ORDEN IMPORTA. Primero se mide y se coloca el dibujo, y la entrada
+       se enciende AL FINAL. Al reves, la animacion arrancaria con la caja en
+       el tamaño y el lugar equivocados, y se veria dar un salto a mitad de
+       camino cuando acomodarDibujo() la corrigiera. */
     initMedida();
     initEsquina();
     initDesenfoque();
+    initEntrada();
   }
 
   // Swup reemplaza el contenido sin recargar y los scripts no se vuelven a

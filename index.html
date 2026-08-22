@@ -43,10 +43,11 @@
   <link rel="stylesheet" href="css/variables.css?v=6">
   <link rel="stylesheet" href="css/base.css?v=11">
   <link rel="stylesheet" href="css/layout.css?v=12">
-  <link rel="stylesheet" href="css/archivo.css?v=28">
+  <link rel="stylesheet" href="css/archivo.css?v=29">
   <link rel="stylesheet" href="css/simbio.css?v=119">
   <link rel="stylesheet" href="css/mas-54.css?v=22">
   <link rel="stylesheet" href="css/tipines.css?v=12">
+  <link rel="stylesheet" href="css/museo.css?v=1">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -613,14 +614,15 @@
       </article>
 
       <!-- ---------------- 02 · MOBILIARIO DE MUSEO ----------------
-           FALTA LA FOTO. Cuando la tengas: poné el <img> como en Simbio y
-           borrale a este <article> la clase ficha--sin-foto. -->
-      <article class="ficha ficha--museo ficha--sin-foto reveal"
+           Ya tiene foto y link (22/08/2026). La imagen es el fotomontaje en
+           sala, no el render limpio: a tamaño de ficha, el mueble dentro del
+           museo se lee de un vistazo y el objeto suelto no. -->
+      <article class="ficha ficha--museo reveal"
                data-tilt data-tilt-max="4" data-tilt-speed="400"
                data-tilt-glare data-tilt-max-glare="0.1"
                data-tilt-perspective="1600">
         <span class="ficha__pestana">Ficha 02</span>
-        <div class="ficha__cuerpo">
+        <a class="ficha__cuerpo" href="proyectos/mobiliario-museo.html">
           <div class="ficha__marco">
             <div class="ficha__capa ficha__capa--boceto">
               <!-- Un pedestal de exhibición en axonométrica, con una pieza
@@ -636,7 +638,9 @@
                 <path d="M64 17 L64 27 L50 32"/>
               </svg>
             </div>
-            <div class="ficha__capa ficha__capa--real"></div>
+            <div class="ficha__capa ficha__capa--real">
+              <img src="assets/mobiliario-museo/mockup-descanso-comunicacion.jpg" alt="" loading="lazy">
+            </div>
           </div>
           <div class="ficha__pie">
             <h3 class="ficha__titulo">Mobiliario de Museo</h3>
@@ -646,7 +650,7 @@
               <li class="etiqueta">2021</li>
             </ul>
           </div>
-        </div>
+        </a>
       </article>
 
       <!-- ---------------- 03 · +54 ---------------- -->
@@ -782,7 +786,7 @@
 <script src="js/transiciones.js?v=7" defer></script>
 <script src="js/main.js?v=24" defer></script>
 <script src="js/traduccion.js?v=4" defer></script>
-<script src="js/archivo.js?v=11" defer></script>
+<script src="js/archivo.js?v=12" defer></script>
 <script src="js/simbio-scroll.js?v=16" defer></script>
 <script src="js/muestras.js?v=14" defer></script>
 <!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
