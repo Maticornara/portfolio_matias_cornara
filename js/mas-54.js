@@ -352,16 +352,28 @@
 
 
   /* ------------------------------------------------------------------------
-     4. LAS TRES HISTORIAS
+     4. LAS TRES HISTORIAS — UNA POR VEZ
      --------------------------------------------------------------------------
-     Las tres arrancan juntas cuando la sección entra en pantalla y se pausan
-     al salir. Van MUDAS: un video con sonido que empieza solo es lo más
-     molesto que puede hacer una página, y además los navegadores directamente
-     no lo permiten — si un video no está muted, play() se rechaza y no
-     arranca ninguno.
+     Se turnan: corre UNA y las otras dos quedan congeladas en su primer cuadro.
+     Cuando la que está corriendo termina, arranca la siguiente. Al llegar a la
+     tercera vuelve a la primera.
 
-     El botón les prende el sonido a las tres a la vez. Ahí sí se puede, porque
-     el click ES el permiso que el navegador estaba esperando.
+     "Congelada en el primer cuadro" es literal: `pause()` + `currentTime = 0`.
+     No hace falta ningún poster ni ninguna imagen aparte — el propio video
+     pintado en su segundo cero ES el primer cuadro.
+
+     POR QUÉ ARRANCA MUDA AUNQUE TENGA SONIDO.
+     Ningún navegador deja que un video con audio empiece solo: si no está
+     `muted`, `play()` se rechaza y no arranca NADA. Así que la rotación empieza
+     muda y el botón la desmutea. Ese click es el permiso que el navegador
+     estaba esperando, y a partir de ahí todas suenan, también las que siguen.
+     No es una limitación de este código: es política del navegador y no se
+     puede saltear.
+
+     SE AVANZA CON EL EVENTO `ended`, NO CON UN TEMPORIZADOR. Las tres duran
+     distinto (7,4 · 11,2 · 11,1 s) y un setInterval las cortaría al medio o
+     dejaría huecos. `ended` avisa exactamente cuando terminó. Por eso los
+     <video> NO llevan `loop`: con loop no termina nunca y el evento no llega.
      ------------------------------------------------------------------------ */
 
   function initHistorias() {
@@ -374,61 +386,106 @@
     const boton = seccion.querySelector("[data-historias-sonido]");
     const texto = seccion.querySelector("[data-historias-texto]");
 
-    // Con movimiento reducido no arrancan solas: quedan en su poster y con
-    // los controles, para el que quiera verlas igual.
+    // Con movimiento reducido no rota nada: las tres quedan quietas y con sus
+    // controles, para el que quiera verlas a mano.
     if (sinMovimiento) {
       videos.forEach((v) => { v.controls = true; });
       if (boton) boton.hidden = true;
       return;
     }
 
+    let actual = 0;
+    let conSonido = false;
+    let visible = false;
+
+    function congelar(v) {
+      v.pause();
+      // Muda también: una historia congelada no tiene por qué poder sonar. Si
+      // quedara desmuteada, cualquier reproducción accidental metería una
+      // segunda voz encima de la que está corriendo.
+      v.muted = true;
+      // Ponerlo en 0 SIN estar reproduciendo deja pintado el primer cuadro.
+      try { v.currentTime = 0; } catch (e) { /* todavía sin metadatos */ }
+    }
+
+    /* Enciende la historia i y congela las otras dos. La clase .is-activa es
+       solo para el CSS (la que corre se ve entera, las otras se apagan un
+       poco): el estado de verdad es cuál está reproduciendo. */
+    function activar(i) {
+      actual = i;
+      videos.forEach((v, n) => {
+        v.classList.toggle("is-activa", n === i);
+        if (n !== i) congelar(v);
+      });
+
+      const v = videos[i];
+      v.muted = !conSonido;
+      v.currentTime = 0;
+      if (visible) reproducir(v);
+    }
+
+    // Al terminar una, sigue la próxima. El listener va en las tres desde el
+    // principio: es más simple que ponerlo y sacarlo en cada cambio.
+    videos.forEach((v, n) => {
+      v.addEventListener("ended", () => {
+        // Solo manda la que está activa: si otra dispara `ended` por lo que
+        // sea, no tiene que mover la rueda.
+        if (n !== actual) return;
+        activar((n + 1) % videos.length);
+      });
+
+      // Tocar una historia la hace la activa. Es lo que uno intenta apenas ve
+      // tres cosas de las que solo una se mueve.
+      v.addEventListener("click", () => {
+        if (n === actual && !v.paused) return;
+        activar(n);
+      });
+    });
+
+    activar(0);
+
+    /* La rotación solo corre mientras la sección se ve. Si se va de pantalla se
+       congela donde está; al volver, sigue la que estaba activa. */
     new IntersectionObserver((entradas) => {
       entradas.forEach((e) => {
-        if (e.isIntersecting) videos.forEach(reproducir);
+        visible = e.isIntersecting;
+        if (visible) reproducir(videos[actual]);
         else videos.forEach((v) => v.pause());
       });
     }, { threshold: 0.25 }).observe(seccion);
 
     if (!boton) return;
 
-    // Deja el botón y las tres historias en el mismo estado. aria-pressed es
-    // el ÚNICO estado: lo lee el lector de pantalla y lo lee el CSS para
-    // dibujar el icono. Guardar además una variable en JS sería una segunda
-    // verdad que se puede desincronizar de la primera.
-    function aplicar(conSonido) {
-      boton.setAttribute("aria-pressed", String(conSonido));
-      videos.forEach((v) => { v.muted = !conSonido; });
-      if (texto) texto.textContent = conSonido ? "Silenciar" : "Activar sonido";
+    // aria-pressed es el ÚNICO estado del botón: lo lee el lector de pantalla y
+    // lo lee el CSS para dibujar el icono.
+    function aplicarSonido(nuevo) {
+      conSonido = nuevo;
+      boton.setAttribute("aria-pressed", String(nuevo));
+      // Solo la activa suena. Las congeladas van mudas siempre: si no, al
+      // volver a arrancar sonarían dos a la vez por un instante.
+      videos.forEach((v, n) => { v.muted = !(nuevo && n === actual); });
+      if (texto) texto.textContent = nuevo ? "Silenciar" : "Activar sonido";
     }
 
     boton.addEventListener("click", () => {
-      const conSonido = boton.getAttribute("aria-pressed") !== "true";
-      aplicar(conSonido);
+      const nuevo = boton.getAttribute("aria-pressed") !== "true";
+      aplicarSonido(nuevo);
 
-      if (!conSonido) return;
+      if (!nuevo) return;
 
-      /* AL DESMUTEAR HAY QUE VOLVER A PEDIR PLAY, y hay que mirar si sale bien.
-         Sacarle el muted a un video que está corriendo hace que el navegador
+      /* Sacarle el `muted` a un video que está corriendo hace que el navegador
          vuelva a evaluar su política de reproducción, y si decide que no
-         corresponde LO PAUSA. Si eso pasa y no se hace nada, quedan las tres
-         historias congeladas con el botón diciendo "Silenciar": el botón estaría
-         mintiendo sobre lo que está pasando.
-
-         Así que si alguna se niega, se vuelve atrás: mudas otra vez, corriendo
-         otra vez, y el botón vuelve a decir "Activar sonido". Preferimos que no
-         haya sonido antes que tres videos frenados.
-
-         Con un click de verdad esto no se dispara —el click ES el permiso que el
-         navegador espera—, pero sí puede pasar con ahorro de batería o con el
-         sonido bloqueado a nivel del sistema. */
-      Promise.all(videos.map((v) => {
-        const intento = v.play();
-        return intento ? intento.catch(() => { throw new Error("bloqueado"); })
-                       : Promise.resolve();
-      })).catch(() => {
-        aplicar(false);
-        videos.forEach(reproducir);
-      });
+         corresponde LO PAUSA. Si eso pasara y no hiciéramos nada, quedaría la
+         historia congelada con el botón diciendo "Silenciar": el botón estaría
+         mintiendo. Así que si se niega, se vuelve a mudo y se la deja
+         corriendo. Preferimos sin sonido antes que trabada. */
+      const intento = videos[actual].play();
+      if (intento) {
+        intento.catch(() => {
+          aplicarSonido(false);
+          reproducir(videos[actual]);
+        });
+      }
     });
   }
 

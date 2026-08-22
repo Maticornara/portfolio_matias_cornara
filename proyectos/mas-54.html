@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="../css/variables.css?v=6">
   <link rel="stylesheet" href="../css/base.css?v=11">
   <link rel="stylesheet" href="../css/layout.css?v=9">
-  <link rel="stylesheet" href="../css/mas-54.css?v=16">
+  <link rel="stylesheet" href="../css/mas-54.css?v=20">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -217,10 +217,17 @@
 
 
   <!-- ======================================================================
-       LAS TRES HISTORIAS
-       Las tres a la vez, en fila y ENTERAS: object-fit: contain, sin recorte.
-       Arrancan solas cuando la sección entra en pantalla y van en silencio;
-       el botón les prende el sonido a las tres juntas.
+       LAS TRES HISTORIAS — UNA POR VEZ
+       Corre UNA y las otras dos quedan congeladas en su primer cuadro. Cuando
+       la que corre termina, arranca la siguiente (lo maneja initHistorias en
+       mas-54.js, con el evento `ended`).
+
+       LOS <video> NO LLEVAN `loop` A PROPÓSITO: con loop no terminan nunca y
+       el evento `ended` no llega, así que la rueda no giraría.
+
+       Tampoco llevan `autoplay`: la rotación la arranca el JS cuando la
+       sección entra en pantalla, y arranca MUDA porque ningún navegador deja
+       que un video con audio empiece solo. El botón le da el sonido.
        ====================================================================== -->
   <section class="s54 historias54 zona zona--crema-2" data-historias>
     <div class="grilla">
@@ -244,17 +251,17 @@
         <video class="historias54__video" data-historia
                src="../assets/+54/web/historia-1.mp4"
                poster="../assets/+54/web/historia-1.jpg"
-               loop muted playsinline preload="none"
+               muted playsinline preload="none"
                aria-label="Historia 1 de la campaña de +54"></video>
         <video class="historias54__video" data-historia
                src="../assets/+54/web/historia-2.mp4"
                poster="../assets/+54/web/historia-2.jpg"
-               loop muted playsinline preload="none"
+               muted playsinline preload="none"
                aria-label="Historia 2 de la campaña de +54"></video>
         <video class="historias54__video" data-historia
                src="../assets/+54/web/historia-3.mp4"
                poster="../assets/+54/web/historia-3.jpg"
-               loop muted playsinline preload="none"
+               muted playsinline preload="none"
                aria-label="Historia 3 de la campaña de +54"></video>
       </div>
 
@@ -513,9 +520,9 @@
 
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Tiene que estar en TODAS las páginas. -->
-<script src="../js/smooth-scroll.js?v=3" defer></script>
-<script src="../js/transiciones.js?v=4" defer></script>
+<script src="../js/smooth-scroll.js?v=6" defer></script>
+<script src="../js/transiciones.js?v=6" defer></script>
 <script src="../js/main.js?v=23" defer></script>
-<script src="../js/mas-54.js?v=5" defer></script>
+<script src="../js/mas-54.js?v=7" defer></script>
 </body>
 </html>

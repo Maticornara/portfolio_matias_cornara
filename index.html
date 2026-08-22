@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="css/layout.css?v=9">
   <!-- Todo lo que se ve en ESTA página: hero, CV, herramientas, contacto,
        título de transición y grid de proyectos. -->
-  <link rel="stylesheet" href="css/archivo.css?v=18">
+  <link rel="stylesheet" href="css/archivo.css?v=26">
 
   <!-- El CSS de las páginas de proyecto se carga TAMBIÉN acá, aunque esta
        página no lo use.
@@ -31,7 +31,8 @@
        también linkee. Es inofensivo: sus selectores no existen acá, porque
        todo cuelga de .pag-simbio y .pag-54. -->
   <link rel="stylesheet" href="css/simbio.css?v=116">
-  <link rel="stylesheet" href="css/mas-54.css?v=16">
+  <link rel="stylesheet" href="css/mas-54.css?v=20">
+  <link rel="stylesheet" href="css/tipines.css?v=2">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -171,62 +172,82 @@
           <!-- ============================================================
                LO QUE HAY TIRADO EN EL PISO
                ------------------------------------------------------------
-               DOS REGLAS, Y LAS DOS IMPORTAN.
+               TRES CONDICIONES. Las tres se pueden comprobar mirando los
+               números, y las tres se notan si alguna falla.
 
-               1. TODO SIGUE EL MISMO PISO. Cada lado de cada cosa avanza 2 a
-                  lo ancho por 1 a lo alto, igual que las diagonales del
-                  rincón y que las aristas de la caja. Si una sola pieza se
-                  sale de esa proporción, deja de estar apoyada y flota — y se
-                  nota aunque uno no sepa por qué.
+               1. TODO SIGUE EL MISMO PISO. Cada lado avanza 2 a lo ancho por
+                  1 a lo alto, igual que las diagonales del rincón y que las
+                  aristas de la caja. Una sola pieza fuera de esa proporción
+                  deja de estar apoyada y flota.
 
-                  De ahí sale también dónde puede estar cada cosa: el piso
-                  arranca en la diagonal, así que una pieza a la altura x
-                  tiene que caer POR DEBAJO de y = 62 + |x-100| / 2. Más
-                  arriba de esa línea ya no es piso, es pared.
+               2. NINGUNA PASA POR DETRÁS DE LA CAJA. Antes las dos de arriba
+                  se metían medio cuerpo abajo del cubo y quedaban cortadas
+                  por él. Ahora todas caen POR DELANTE del borde inferior de
+                  la caja, que a la altura x está en
+                      y = 79 + (34 - |x-100|) / 2
+                  Cada esquina de cada pieza queda por debajo de esa línea, y
+                  también por debajo de la del piso, y = 62 + |x-100| / 2, que
+                  es donde termina la pared y empieza el suelo.
 
-               2. EL CENTRO DE ADELANTE QUEDA VACÍO. Ahí abajo va el nombre.
-                  Por eso las cosas se reparten hacia los costados, siguiendo
-                  las dos diagonales, en vez de desparramarse hacia adelante:
-                  así el texto no tapa nada y nada tapa al texto.
-                  Las que están cerca de la base sí entran por detrás de la
-                  caja: van dibujadas ANTES que ella, así que la caja las
-                  tapa y se leen como metidas abajo.
+               3. NINGUNA LLEGA AL TEXTO. Las que caen en el ancho del nombre
+                  (x entre 66 y 134) se frenan bastante antes de donde arranca.
+
+               Y ESTÁN DESPAREJAS A PROPÓSITO. Antes eran seis idénticas
+               separadas por un paso exacto: quedaban ordenaditas como una
+               formación. Ahora son nueve, de cuatro tamaños distintos y
+               salidas de la fila — pero ninguna de esas variaciones rompe las
+               tres condiciones de arriba. Desordenado no quiere decir puesto
+               a ojo: son las mismas reglas con más juego.
                ============================================================ -->
 
-          <!-- Hojas y respaldos de polaroid -->
+          <!-- Las bases. Todas juntas en un grupo porque comparten la sombra:
+               una sola sombra para las nueve en vez de nueve.
+
+               SEPARADAS DE LA CAJA. Antes las más cercanas pasaban a 2 de la
+               base del cubo y a esa distancia se leían pegadas a él, como si
+               salieran de abajo. Ahora ninguna se acerca a menos de 11, y esa
+               distancia es lo único que las hace leerse como cosas sueltas
+               apoyadas al lado de la caja y no como parte de ella.
+               Correrlas no las despega del piso: en isometría, mover una
+               figura en cualquier dirección de la pantalla equivale a
+               deslizarla sobre el mismo plano. Lo que no se puede tocar son
+               los ángulos. -->
           <g class="caja__papel">
-            <polygon points="71,98.5 83,92.5 69,85.5 57,91.5"/>
-            <polygon points="133,97.5 143,92.5 131,86.5 121,91.5"/>
-            <polygon points="59,95.5 67,91.5 57,86.5 49,90.5"/>
-            <polygon points="145,95.5 153,91.5 143,86.5 135,90.5"/>
-            <polygon points="157,106.5 169,100.5 155,93.5 143,99.5"/>
+            <!-- adelante de la caja -->
+            <polygon points="85,110.5 95,105.5 83,99.5 73,104.5"/>
+            <polygon points="119,108 128,103.5 117,98 108,102.5"/>
+            <polygon points="71,100.5 79,96.5 69,91.5 61,95.5"/>
+            <polygon points="133,100.5 141,96.5 131,91.5 123,95.5"/>
 
-            <!-- La pila: tres hojas iguales, cada una 1,5 más arriba que la
-                 de abajo. El desfase vertical ES el espesor. -->
-            <polygon points="46,112 56,107 42,100 32,105"/>
-            <polygon points="46,110.5 56,105.5 42,98.5 32,103.5"/>
-            <polygon points="46,109 56,104 42,97 32,102"/>
+            <!-- LOS POST-ITS. Van con la MISMA proporción que las hojas, no
+                 cuadrados. Un cuadrado apoyado en este piso se proyecta como
+                 un rombo con las puntas arriba, abajo y a los costados; al
+                 lado de hojas que son rectángulos, el rombo se lee girado 45°
+                 y por eso parecía descentrado. Es correcto en geometría y
+                 falso a la vista, así que manda la vista: mismo rectángulo
+                 que las demás, y lo que los distingue es el color.
+                 El de adelante va centrado en x=100, el eje de la caja y del
+                 nombre. -->
+            <polygon class="caja__postit" points="101,112.5 109,108.5 99,103.5 91,107.5"/>
 
-            <!-- El cuaderno abierto -->
-            <polygon points="154,118 166,112 150,104 138,110"/>
+            <!-- rama izquierda -->
+            <polygon points="57,106.5 67,101.5 55,95.5 45,100.5"/>
+            <polygon points="41,109 50,104.5 39,99 30,103.5"/>
+            <polygon points="41,110.5 50,106 39,100.5 30,105"/>
+            <polygon points="41,112 50,107.5 39,102 30,106.5"/>
+
+            <!-- rama derecha -->
+            <polygon class="caja__postit" points="145,104.5 153,100.5 143,95.5 135,99.5"/>
+            <polygon points="165,111.5 175,106.5 163,100.5 153,105.5"/>
           </g>
 
-          <!-- El lomo del cuaderno: lo que lo convierte en dos páginas y no
-               en una hoja grande. Va por el eje largo, no en diagonal. -->
-          <path class="caja__doblez" d="M144 107 L160 115"/>
-
-          <!-- El recuadro de la foto en las dos polaroids, corrido hacia el
-               fondo: eso es lo que les deja el borde ancho abajo. -->
+          <!-- El recuadro de la foto de las dos polaroids. Va corrido hacia
+               el fondo: ese desbalance es lo que les deja el borde ancho
+               abajo y las hace leerse como polaroid y no como una hoja. -->
           <g class="caja__foto">
-            <polygon points="71,95 79,91 69,86 61,90"/>
-            <polygon points="157,103 165,99 155,94 147,98"/>
+            <polygon points="84.8,107.4 91.2,104.2 83.2,100.2 76.8,103.4"/>
+            <polygon points="164.8,108.4 171.2,105.2 163.2,101.2 156.8,104.4"/>
           </g>
-
-          <!-- El lápiz. El cuerpo va por el eje del piso; la punta es el
-               único triángulo del dibujo que no respeta el 2:1, y está bien:
-               es una punta tallada, no una cara apoyada. -->
-          <polygon class="caja__lapiz" points="28.2,100.9 31.8,99.1 49.8,108.1 46.2,109.9"/>
-          <polygon class="caja__punta" points="49.8,108.1 46.2,109.9 52.8,111.4"/>
 
           <!-- Las dos caras verticales -->
           <polygon class="caja__cara caja__cara--izq" points="66,45 100,62 100,96 66,79"/>
@@ -265,35 +286,34 @@
           <polygon class="caja__canto" points="66,45 100,62 134,45 134,43.6 100,60.6 66,43.6"/>
 
           <!-- ============================================================
-               LOS AGARRES: EN LAS PAREDES, NO EN LA TAPA
+               LAS AGARRADERAS: QUEDAN DOS, Y EN DIAGONAL
                ------------------------------------------------------------
-               Acá estaba el error. Los tenía troquelados en la tapa, y en la
-               tapa no van: una caja se levanta metiendo los dedos en dos
-               huecos abiertos en las PAREDES, cerca del borde de arriba. Con
-               los agujeros en la tapa no había por dónde agarrarla — y eso se
-               nota aunque uno no sepa decir por qué.
+               Eran cuatro, una por cara visible, y llenaban la caja. Quedan
+               las dos que están ENFRENTADAS en diagonal: la de la pared
+               derecha y la de la solapa de atrás a la izquierda. Con dos
+               alcanza para que se lea que la caja se agarra, y la tapa y la
+               pared de la izquierda quedan limpias.
 
-               Cada uno se acuesta sobre el plano de SU pared, así que siguen
-               direcciones opuestas: el de la izquierda baja hacia la derecha
-               (2,1) y el de la derecha sube hacia la derecha (2,-1), cada uno
-               paralelo al borde superior de su cara. Por eso se ven espejados
-               sin que haya que forzarlos.
+               Las dos se troquelan igual —hueco, y filo claro asomando por
+               abajo— pero se rellenan distinto, y esa es la idea:
 
-               Van a media altura del borde de arriba, no pegados: en una caja
-               real el troquel deja una franja de cartón por encima, que es lo
-               que aguanta el peso cuando la levantás.
-
-               Dos trazos, y el orden importa:
-                 1. el CLARO, corrido un pelo hacia abajo — el canto del
-                    cartón troquelado, la fibra cruda que toma la luz de
-                    arriba en el borde de abajo del hueco;
-                 2. encima, el OSCURO: el interior de la caja, en sombra.
+                 · la de la PARED da al interior de la caja → va oscura;
+                 · la de ATRÁS está calada de lado a lado → por ahí se ve la
+                   pared del cuarto, así que va del MISMO crema del fondo.
+                   Eso es lo que hace que la caja se lea hueca y no maciza:
+                   es el único punto del dibujo donde se ve a través.
                ============================================================ -->
+
+          <!-- La de la pared derecha -->
           <g class="caja__agarre">
-            <path class="caja__agarre-canto"
-                  d="M76.8 61.6 L89.2 67.8 M110.8 67.8 L123.2 61.6"/>
-            <path class="caja__agarre-hueco"
-                  d="M76.8 60.6 L89.2 66.8 M110.8 66.8 L123.2 60.6"/>
+            <path class="caja__agarre-canto" d="M110.8 67.8 L123.2 61.6"/>
+            <path class="caja__agarre-hueco" d="M110.8 66.8 L123.2 60.6"/>
+          </g>
+
+          <!-- La de atrás, calada al crema de la pared -->
+          <g class="caja__agarre caja__agarre--tapa caja__agarre--calada">
+            <path class="caja__agarre-canto" d="M83 48.4 L93 43.4"/>
+            <path class="caja__agarre-hueco" d="M83 47.5 L93 42.5"/>
           </g>
 
           <!-- El contorno, apenas marcado: sobre un fondo claro, un objeto sin
@@ -315,14 +335,21 @@
         <h1 class="portada-hero__nombre">Matías Cornara</h1>
         <p class="portada-hero__frase">El rincón donde guardo mis cosas</p>
 
-        <!-- La flecha es un link de verdad, no un adorno: baja a la primera
-             sección. Dibujada y no escrita con un carácter "↓", porque el
-             glifo cambia de forma y de grosor según la tipografía. -->
-        <a class="portada-hero__flecha" href="#sobre" aria-label="Bajar a Sobre mí">
-          <svg viewBox="0 0 24 34" fill="none" stroke="currentColor"
-               stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M12 2 L12 31 M4 23 L12 31 L20 23"/>
+        <!-- EL MOUSE. Es un link de verdad, no un adorno: baja a la primera
+             sección, y por eso es un <a> con su etiqueta para lectores de
+             pantalla en vez de un dibujo suelto.
+             Va sin flechas y sin la palabra "scrolleá": la forma sola ya se
+             entiende, y el único que se mueve es el puntito. El movimiento
+             es lo que dice qué hacer — no hace falta escribirlo. -->
+        <a class="portada-hero__mouse" href="#sobre" aria-label="Bajar a Sobre mí">
+          <svg viewBox="0 0 26 40" aria-hidden="true">
+            <!-- El cuerpo. El rx igual a la mitad del ancho es lo que le da
+                 los lados perfectamente redondos, sin tener que recalcularlo
+                 si cambia el alto. -->
+            <rect class="mouse__cuerpo" x="1.1" y="1.1" width="23.8" height="37.8"
+                  rx="11.9" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <!-- La rueda. Arranca arriba y la anima el CSS. -->
+            <circle class="mouse__punto" cx="13" cy="11" r="2.6" fill="currentColor"/>
           </svg>
         </a>
       </div>
@@ -608,13 +635,15 @@
       </article>
 
       <!-- ---------------- 04 · AMIGOS TIPINES ----------------
-           FALTA LA FOTO. Mismo procedimiento que en la 02. -->
-      <article class="ficha ficha--tipines ficha--sin-foto reveal"
+           YA TIENE FOTO Y YA TIENE PÁGINA. Al conectarla se le sacó
+           .ficha--sin-foto (que apagaba el cruce boceto → imagen) y el
+           <div> del cuerpo pasó a ser un <a>, igual que en la 03. -->
+      <article class="ficha ficha--tipines reveal"
                data-tilt data-tilt-max="4" data-tilt-speed="400"
                data-tilt-glare data-tilt-max-glare="0.1"
                data-tilt-perspective="1600">
         <span class="ficha__pestana">Ficha 04</span>
-        <div class="ficha__cuerpo">
+        <a class="ficha__cuerpo" href="proyectos/amigos-tipines.html">
           <div class="ficha__marco">
             <div class="ficha__capa ficha__capa--boceto">
               <!-- Dos letras-personaje apoyadas en su línea de base -->
@@ -630,17 +659,23 @@
                 <path d="M20 50 L80 50"/>
               </svg>
             </div>
-            <div class="ficha__capa ficha__capa--real"></div>
+            <div class="ficha__capa ficha__capa--real">
+              <!-- Los tres personajes y no la tapa del libro: la ficha tiene
+                   que decir QUIÉNES son, que es lo único que se reconoce a
+                   este tamaño. Y esta imagen ya viene sobre crema, así que
+                   entra en la ficha sin traer un fondo ajeno. -->
+              <img src="assets/amigos%20tipines/web/hero-1.jpg" alt="" loading="lazy">
+            </div>
           </div>
           <div class="ficha__pie">
             <h3 class="ficha__titulo">Amigos Tipines</h3>
             <ul class="ficha__meta" role="list">
               <li class="etiqueta">Transmedia</li>
-              <li class="etiqueta">IA aplicada</li>
+              <li class="etiqueta">IA generativa</li>
               <li class="etiqueta">2024</li>
             </ul>
           </div>
-        </div>
+        </a>
       </article>
 
       <!-- ---------------- 05 · TESIS ----------------
@@ -693,15 +728,16 @@
 
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
-<script src="js/smooth-scroll.js?v=3" defer></script>
-<script src="js/transiciones.js?v=4" defer></script>
+<script src="js/smooth-scroll.js?v=6" defer></script>
+<script src="js/transiciones.js?v=6" defer></script>
 <script src="js/main.js?v=23" defer></script>
-<script src="js/archivo.js?v=6" defer></script>
+<script src="js/archivo.js?v=11" defer></script>
 <script src="js/simbio-scroll.js?v=20" defer></script>
 <script src="js/muestras.js?v=10" defer></script>
 <!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
-     ejecutar al cambiar de página, así que el de +54 tiene que estar cargado
-     desde acá. Sale sin hacer nada si no encuentra su HTML. -->
-<script src="js/mas-54.js?v=5" defer></script>
+     ejecutar al cambiar de página, así que los de +54 y Tipines tienen que
+     estar cargados desde acá. Salen sin hacer nada si no encuentran su HTML. -->
+<script src="js/mas-54.js?v=7" defer></script>
+<script src="js/tipines.js?v=1" defer></script>
 </body>
 </html>

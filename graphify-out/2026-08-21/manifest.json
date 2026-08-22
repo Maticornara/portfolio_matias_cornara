@@ -20,13 +20,13 @@
     "semantic_hash": ""
   },
   "js/smooth-scroll.js": {
-    "mtime": 1787279981.1974835,
-    "ast_hash": "6353d421a0e817f5029b301d9629edef",
+    "mtime": 1787294835.5596297,
+    "ast_hash": "2c082d3a08b81084c20dc0f3b539ccdc",
     "semantic_hash": ""
   },
   "js/transiciones.js": {
-    "mtime": 1787279957.9988012,
-    "ast_hash": "4c9c116d84140135b17d8399bf69cd7f",
+    "mtime": 1787339563.4576955,
+    "ast_hash": "7baa2a1984e91e063dbf82610867419f",
     "semantic_hash": ""
   },
   "sandbox/sandbox.js": {
@@ -120,8 +120,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1787252845.6276667,
-    "ast_hash": "bec27a604d356abcfaa97582c9717a96",
+    "mtime": 1787340290.617443,
+    "ast_hash": "5f9b18f595a74fcf084ebcb385cc94eb",
     "semantic_hash": ""
   },
   "assets/simbio/foto/LEEME.txt": {
@@ -170,18 +170,18 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787291490.1226702,
-    "ast_hash": "26b8b78634a8029a11f458c481d2d1f8",
+    "mtime": 1787340092.3924055,
+    "ast_hash": "f21f67f82627ffdd53461a15f71b293e",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787291514.179144,
-    "ast_hash": "77b6b86e278895152ec773c9cbd04063",
+    "mtime": 1787340266.7343712,
+    "ast_hash": "70485869477bf6f96f1eeb1f970a087e",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
-    "mtime": 1787291147.7755773,
-    "ast_hash": "816aebf00b7926a95c3ba0964c1a4c13",
+    "mtime": 1787340100.3360872,
+    "ast_hash": "55b500b01fcded19fe0a5fba449e336a",
     "semantic_hash": ""
   },
   "proyectos/cero-al-infinito.html": {
@@ -200,8 +200,8 @@
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787291490.09794,
-    "ast_hash": "9d95a892de75c4cac5f798e3d77ad872",
+    "mtime": 1787339590.5086935,
+    "ast_hash": "3cfe23af604873a19a3b159d321c9a26",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
@@ -215,8 +215,8 @@
     "semantic_hash": ""
   },
   "proyectos/simbio.html": {
-    "mtime": 1787291148.004806,
-    "ast_hash": "f57c85b0474c57a160be2c210326e01c",
+    "mtime": 1787339590.5226502,
+    "ast_hash": "eddc79ef23b41684fb0808e969e69edb",
     "semantic_hash": ""
   },
   "sandbox/index.html": {
@@ -7300,8 +7300,8 @@
     "semantic_hash": ""
   },
   "js/archivo.js": {
-    "mtime": 1787290773.6850686,
-    "ast_hash": "0f533b40b8c5fe741f44be96d7a81014",
+    "mtime": 1787340029.735299,
+    "ast_hash": "c7744a01a1cba90fe83eb5c7e6b372b1",
     "semantic_hash": ""
   },
   "js/mas-54.js": {
@@ -7310,8 +7310,8 @@
     "semantic_hash": ""
   },
   "tools/optimizar-54.ps1": {
-    "mtime": 1787291299.79781,
-    "ast_hash": "03228fdb895e2ff044222aa3930ef981",
+    "mtime": 1787292562.403941,
+    "ast_hash": "ff5de972412553a04cff07b779fdbc77",
     "semantic_hash": ""
   },
   "assets/+54/MOCKUPS/MANUAL DE MARCA 2.jpeg": {
@@ -7460,8 +7460,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/ilustraciones.jpg": {
-    "mtime": 1787291303.4180727,
-    "ast_hash": "fa2062288ecb861992d0239a4c2f0416",
+    "mtime": 1787292565.7690115,
+    "ast_hash": "7b74829dbdf8d59a77dfcddf05ca245d",
     "semantic_hash": ""
   },
   "assets/+54/web/logo.jpg": {
@@ -7585,8 +7585,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/ilustraciones.mp4": {
-    "mtime": 1787291303.1976283,
-    "ast_hash": "f9d0007afeaffce6ef42557850ea9386",
+    "mtime": 1787292565.596581,
+    "ast_hash": "a44126320f0b897c1af776368dcec0ac",
     "semantic_hash": ""
   },
   "assets/+54/web/logo.mp4": {
@@ -7684,9 +7684,264 @@
     "ast_hash": "a7239e82b4e81e479182db68a2389b27",
     "semantic_hash": ""
   },
-  "assets/amigos tipines/imagenes/HERO3.mov": {
-    "mtime": 1787281114.5505278,
-    "ast_hash": "eb547502b5bdcb16aca35c13885defb6",
+  "assets/amigos tipines/paginas/1_TAPA.png": {
+    "mtime": 1787292791.2013142,
+    "ast_hash": "3c3d732e77532451021543938732a418",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/2.png": {
+    "mtime": 1787292806.1735055,
+    "ast_hash": "0422c69f20786f220b643f8944ac0d35",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/10.png": {
+    "mtime": 1787293098.0697868,
+    "ast_hash": "3af49ab74d63944906c8bbf860d2bd13",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/11.png": {
+    "mtime": 1787293108.5509982,
+    "ast_hash": "b9dd328c0f144eba5692d7e722763611",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/12.png": {
+    "mtime": 1787293118.6276925,
+    "ast_hash": "bf9b24729459545645035331eefedab6",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/13.png": {
+    "mtime": 1787293128.5341678,
+    "ast_hash": "7c685de99ff1ae378ee51955ddc542a1",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/14.png": {
+    "mtime": 1787293152.2237587,
+    "ast_hash": "b0e2a906459f6d033a76c1f7fae6b38e",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/15.png": {
+    "mtime": 1787293165.0501661,
+    "ast_hash": "5dae32be4332964b5d403a38e9f088bb",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/16.png": {
+    "mtime": 1787293179.03751,
+    "ast_hash": "61023420003dec627b5b2f4319f2563b",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/17_CONTRATAPA.png": {
+    "mtime": 1787293194.0310318,
+    "ast_hash": "a11eee54a48dc3e8e052d927cf3d1ed9",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/3.png": {
+    "mtime": 1787292849.8093429,
+    "ast_hash": "a85f78d9bf250a9617d9370b520e23d3",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/4.png": {
+    "mtime": 1787292858.6536508,
+    "ast_hash": "caf4dd4d8c766cccc259fcc020430f68",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/5.png": {
+    "mtime": 1787292866.314715,
+    "ast_hash": "e5a2aa3d49d81b7f4c7b6d022d026d18",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/6.png": {
+    "mtime": 1787292880.7013576,
+    "ast_hash": "f03dae6e57d94a20618beaa8ddf888f9",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/7.png": {
+    "mtime": 1787292897.666666,
+    "ast_hash": "b522b06e71e109a1e33ba035818dbcba",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/8.png": {
+    "mtime": 1787293072.6394398,
+    "ast_hash": "3b99855891d686b61a6d9324a9599179",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/paginas/9.png": {
+    "mtime": 1787293084.0707936,
+    "ast_hash": "ac8b259f156b6f970d7c37b76e333f7d",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/imagenes/JUEGO.png": {
+    "mtime": 1787294397.338169,
+    "ast_hash": "2938a2479f7020016179d9352782c7f6",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/imagenes/JUEGO_SPRITE_JEFE.png": {
+    "mtime": 1787294537.9742987,
+    "ast_hash": "84751c0f299ac660c7ba8826a6e5d974",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/imagenes/JUEGO_SPRITE_PERSONAJES.png": {
+    "mtime": 1787294517.3978827,
+    "ast_hash": "cb0b6dd28c6c356096d380add2b0e388",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/imagenes/JUEGO_SPRITE_SODAS.png": {
+    "mtime": 1787294556.3196764,
+    "ast_hash": "dfd02f59da5440791104ebe07f62ed4e",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/VIDEO_FINAL_TIPINES.mp4": {
+    "mtime": 1787294304.7465565,
+    "ast_hash": "0e6ae69c5bd96d268ee145416b2decb2",
+    "semantic_hash": ""
+  },
+  "js/tipines.js": {
+    "mtime": 1787339548.5097117,
+    "ast_hash": "2d8f435090cecdc922c309d9ed5d3880",
+    "semantic_hash": ""
+  },
+  "tools/optimizar-tipines.ps1": {
+    "mtime": 1787339982.034518,
+    "ast_hash": "c0457441fb312e7313adc54e723dfef0",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/hero-1.jpg": {
+    "mtime": 1787296773.5270505,
+    "ast_hash": "7b3529bbc0d3322cf3762afa5c8b2898",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/hero-2.jpg": {
+    "mtime": 1787296773.6457546,
+    "ast_hash": "404d2b9f2898799ab401a2859e516d01",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/hero-3.jpg": {
+    "mtime": 1787296751.5050728,
+    "ast_hash": "80b31785f2f6e710b666af631aef39b0",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/juego.png": {
+    "mtime": 1787339983.313317,
+    "ast_hash": "c78baae72f2f174d849cc05ad77b7776",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/01.jpg": {
+    "mtime": 1787296774.3984954,
+    "ast_hash": "ebe8a6ba370eb6756929cb17b2ce4b56",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/02.jpg": {
+    "mtime": 1787296774.4716208,
+    "ast_hash": "e444cffeddf4c61c77cbd552ca8a532d",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/03.jpg": {
+    "mtime": 1787296774.5529287,
+    "ast_hash": "90baaa2953889d84b274d687d6117027",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/04.jpg": {
+    "mtime": 1787296774.6460457,
+    "ast_hash": "7b3529bbc0d3322cf3762afa5c8b2898",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/05.jpg": {
+    "mtime": 1787296774.7541833,
+    "ast_hash": "2a4e023dd20a0a310ebdd2bf7df93ebe",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/06.jpg": {
+    "mtime": 1787296774.8646538,
+    "ast_hash": "cae1f12168ddf6be45c82210d2298389",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/07.jpg": {
+    "mtime": 1787296774.9738452,
+    "ast_hash": "b25d88c122c3a29e09804076da2f65a1",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/08.jpg": {
+    "mtime": 1787296775.0839057,
+    "ast_hash": "7751c97d4b4f37caff9178b39b8bc573",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/09.jpg": {
+    "mtime": 1787296775.1982076,
+    "ast_hash": "fc68a06a5d99b5b16a101b6f279e7783",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/10.jpg": {
+    "mtime": 1787296775.3044481,
+    "ast_hash": "9fc3c5af66c5dad65584db3e84e22e14",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/11.jpg": {
+    "mtime": 1787296775.4126375,
+    "ast_hash": "d351188bb4d7bf5232caf5288d0efe99",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/12.jpg": {
+    "mtime": 1787296775.516434,
+    "ast_hash": "4b4d71327a6be22063e5eef3ba1616f3",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/13.jpg": {
+    "mtime": 1787296775.6037965,
+    "ast_hash": "ed20daea3cf9c9078ffff92aba34ac15",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/14.jpg": {
+    "mtime": 1787296775.668743,
+    "ast_hash": "7b0c24739e357911b4a354313127106e",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/15.jpg": {
+    "mtime": 1787296775.7332535,
+    "ast_hash": "a603672aaf30b20b6b136f8c13529963",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/contratapa.jpg": {
+    "mtime": 1787296774.3105745,
+    "ast_hash": "7cf0cb2e51777f17253450c49085a6ec",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/libro/tapa.jpg": {
+    "mtime": 1787296774.2458816,
+    "ast_hash": "fa933c438b1b28439e5627e5df4d1384",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/serie.jpg": {
+    "mtime": 1787296773.4102595,
+    "ast_hash": "92acfd4f31cf0dd53225baa4ea6fcda1",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/sprite-jefe.png": {
+    "mtime": 1787296774.1128201,
+    "ast_hash": "1f41dfd59f8277f67cf59a7349446e88",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/sprite-personajes.png": {
+    "mtime": 1787296774.041844,
+    "ast_hash": "d62dd781cc0fe2afd9b1ff8d1a1e3f73",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/sprite-sodas.png": {
+    "mtime": 1787296774.1730773,
+    "ast_hash": "1f75e169e8c741b05cc67a3d47ed0d11",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/tele.png": {
+    "mtime": 1787296773.9319053,
+    "ast_hash": "961491c54564affbad8dfc9f538f7ca6",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/hero-3.mp4": {
+    "mtime": 1787296751.3679304,
+    "ast_hash": "af6bba7bc510a71cff7477f6072ff2a2",
+    "semantic_hash": ""
+  },
+  "assets/amigos tipines/web/serie.mp4": {
+    "mtime": 1787296773.1606367,
+    "ast_hash": "3fb3a5cf9cfb34d268869faab602b363",
     "semantic_hash": ""
   }
 }

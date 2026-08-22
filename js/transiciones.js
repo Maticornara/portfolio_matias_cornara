@@ -78,6 +78,7 @@
     if (typeof window.initSimbioScroll === "function") window.initSimbioScroll();
     if (typeof window.initMuestras === "function") window.initMuestras();
     if (typeof window.init54 === "function") window.init54();
+    if (typeof window.initTipines === "function") window.initTipines();
 
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();
 
@@ -101,10 +102,11 @@
 
   function irA(destino) {
     if (window.lenis) {
-      window.lenis.scrollTo(destino || 0, {
-        offset: destino ? -AIRE_NAV : 0,
-        immediate: true,
-      });
+      // Un número, no el elemento: ver la nota en smooth-scroll.js.
+      const y = destino
+        ? destino.getBoundingClientRect().top + window.scrollY - AIRE_NAV
+        : 0;
+      window.lenis.scrollTo(y, { immediate: true });
     } else if (destino) {
       destino.scrollIntoView();
     } else {

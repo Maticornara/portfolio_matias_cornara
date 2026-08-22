@@ -81,6 +81,16 @@
      uno, cambiá el otro. El mismo número está en transiciones.js. */
   const AIRE_NAV = 48;
 
+  /* A Lenis se le pasa un NÚMERO, no el elemento. Pasándole el elemento, el
+     resultado no era el mismo para todas las secciones: tres caían clavadas a
+     48px del tope y #sobre a 96, porque Lenis resuelve la posición a su manera
+     y ahí se cruzan el scroll-margin del CSS y el offset que le damos acá.
+     La cuenta a mano —dónde está la sección respecto del documento, menos el
+     aire de la nav— no tiene esa ambigüedad y da igual para todas. */
+  function posicionDe(el) {
+    return el.getBoundingClientRect().top + window.scrollY - AIRE_NAV;
+  }
+
   /* --- ENTRAR DIRECTO A UNA SECCIÓN (index.html#sobre) ---
      Cuando la página se abre CON un ancla en la URL —un refresh, un link
      pegado, o venir desde una página de proyecto sin que Swup se meta— el
@@ -88,13 +98,20 @@
      leyendo la posición del scroll y escribiéndola cada cuadro, así que ese
      salto lo pisaba y la página quedaba arriba de todo. Medido: entrar a
      index.html#sobre te dejaba en el hero.
-     Lo hacemos al "load" y no antes a propósito: recién cuando las imágenes
-     tienen su tamaño definitivo la sección está en su altura de verdad. */
+     Lo hacemos al "load" Y ADEMÁS esperando a las tipografías, no antes: la
+     sección solo está en su altura de verdad cuando las imágenes tienen su
+     tamaño definitivo y Archivo ya reemplazó a la de reserva. Medido: sin
+     esperar a la fuente, #sobre caía 46px más abajo de la cuenta, porque el
+     texto de arriba se reacomoda cuando la familia entra (display=swap). */
   window.addEventListener("load", () => {
     const ancla = window.location.hash.slice(1);
     if (!ancla) return;
-    const destino = document.getElementById(ancla);
-    if (destino) lenis.scrollTo(destino, { offset: -AIRE_NAV, immediate: true });
+    const irAlAncla = () => {
+      const destino = document.getElementById(ancla);
+      if (destino) lenis.scrollTo(posicionDe(destino), { immediate: true });
+    };
+    if (document.fonts) document.fonts.ready.then(irAlAncla);
+    else irAlAncla();
   });
 
   document.addEventListener("click", (e) => {
@@ -112,7 +129,7 @@
     if (!destino) return;
 
     e.preventDefault();
-    lenis.scrollTo(destino, { offset: -AIRE_NAV });
+    lenis.scrollTo(posicionDe(destino));
     history.pushState(null, "", link.hash);
   });
 })();

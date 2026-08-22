@@ -1,0 +1,959 @@
+/* ==========================================================================
+   TIPINES.CSS
+   Página de proyecto de Amigos Tipines (Archivo — versión express).
+
+   LA PALETA ES LA DEL PORTFOLIO. NO LA DE LOS TIPINES.
+   Es la misma regla que en mas-54.css, y acá cuesta más sostenerla porque el
+   material es MUCHO más colorido: plastilina saturada, fondos saturados,
+   amarillo flúor en la tapa. Justamente por eso. Si la página también se
+   pinta, las piezas dejan de resaltar porque están apoyadas sobre su propio
+   ruido. Sobre crema y sobre negro, en cambio, cada pliego grita solo.
+
+   NO HAY UN COLOR ESCRITO SUELTO EN NINGÚN COMPONENTE de este archivo. Todo
+   sale de las variables --zona-* de base.css, y cada sección se declara de una
+   zona (.zona--crema, .zona--crema-2, .zona--negro) igual que el resto del
+   sitio. Consecuencia: la .etiqueta y cualquier pieza del sistema se leen bien
+   en las tres zonas sin escribir una regla nueva, y el día que cambie un hex,
+   cambia en variables.css y acá no se toca nada.
+
+   ORDEN DE LA PÁGINA
+     1  HERO           texto en la columna 1, paneo de 3 piezas en las 2-3-4
+     2  INTRO LIBRO    qué es un "busca personajes"
+     3  EL LIBRO       17 páginas hojeables con giro 3D sobre el lomo
+     4  LA MINISERIE   banda negra, solo texto: el apagón
+     5  LA TELE        el video adentro del marco de plastilina
+     6  EL PROCESO     la ficha técnica del circuito de IA + software de mano
+     7  LOS JUGUETES   el método del 2D → 3D → impresión → pintura
+     8  EL MINI-JUEGO  la captura, las hojas de sprites y el link jugable
+     9  EL CIERRE      la reflexión final, sola sobre negro
+
+   EL RITMO DE ZONAS, que es lo que puntúa una página con tanto material:
+     crema · crema · crema-2 · NEGRO · crema-2 · crema · crema-2 · NEGRO · NEGRO
+   Dos apagones: uno corto en el medio (la miniserie) y uno largo al final
+   (el juego y el cierre). El resto es papel.
+   ========================================================================== */
+
+/* ==========================================================================
+   MANUAL RÁPIDO PARA EDITAR A MANO  ·  buscá "PERILLAS" para los bloques
+   --------------------------------------------------------------------------
+   Es el mismo manual que está arriba de simbio.css y de mas-54.css. Va
+   repetido a propósito: el que abre este archivo para mover un número no tiene
+   por qué saber que la explicación está en otro lado.
+
+   LAS UNIDADES (todas miden lo mismo: distancia)
+     px    pixeles pelados. 100px es siempre 100px.
+     rem   16px. Entonces 1rem=16px · 2rem=32px · 10rem=160px.
+     vw    1% del ANCHO de la ventana. 50vw = media pantalla de ancho.
+     svh   1% del ALTO de la ventana. 66svh = dos tercios de la altura.
+     ch    el ancho de un caracter. 30ch = un renglón de ~30 letras.
+     fr    "partes" al repartir un ancho. "1fr 2fr" = la segunda se lleva el
+           doble que la primera. No son medidas, son proporciones.
+     deg   grados. Solo aparece en el librito: 180deg es media vuelta.
+
+   LAS 4 COSAS QUE MÁS VAS A QUERER
+     1. AGRANDAR / ACHICAR    width / height, o la perilla propia del objeto.
+     2. MOVER EN X / Y        translate: 40px -20px;   (+x derecha, +y abajo)
+                              Mueve el dibujo sin empujar a los vecinos.
+                              NO uses margin para acomodar a ojo: eso sí empuja.
+     3. ALINEAR TEXTO         text-align / max-width: 34ch
+                              y para el bloque: justify-self / align-self.
+     4. ACOMODAR A LA GRILLA  grid-column: 2 / 4;  (de la línea 2 a la 4)
+                              grid-column: 1 / -1; (de punta a punta)
+                              Para VER las columnas dibujadas:
+                              localhost:8123/proyectos/amigos-tipines.html?grid
+
+   REGLA DE ORO
+     Cambiá UN número, guardá, refrescá. Si algo se rompe, ya sabés cuál fue.
+     Si el navegador ignora el cambio: subile el ?v=N al <link> del HTML, o
+     Ctrl+F5.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. TIPOGRAFÍA — UNA SOLA FAMILIA: ARCHIVO
+   --------------------------------------------------------------------------
+   La misma que el índice, Simbio y +54. No se reescribe regla por regla: se
+   reasignan las dos variables de familia y todo el CSS del sistema las sigue
+   solo. Es el mismo movimiento que hacen .pag-archivo, .pag-simbio y .pag-54.
+
+   --font-mono TAMBIÉN apunta a Archivo. El papel de "ficha técnica" que antes
+   hacía IBM Plex Mono ahora lo hacen la MAYÚSCULA, las letras separadas y el
+   peso medio — las tres juntas, no una.
+   ========================================================================== */
+
+.pag-tipines {
+  --font: "Archivo", system-ui, sans-serif;
+  --font-mono: "Archivo", system-ui, sans-serif;
+
+  /* Cuánto se separan las letras de un rótulo. Es LO que lo hace leerse como
+     rótulo. Mismo valor que Simbio, +54 y el índice: los cuatro tienen que
+     coincidir o se nota al cambiar de página. */
+  --track-rotulo: 0.14em;
+}
+
+/* .etiqueta y .dato: los letreros chicos del sistema. Tamaño FIJO en 11px, no
+   crece con la ventana — es un rótulo, no un texto para leer. */
+.pag-tipines .etiqueta,
+.pag-tipines .dato {
+  font-family: var(--font);
+  font-size: 0.6875rem;              /* 11px */
+  font-weight: 500;
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+}
+
+/* LA NAV vive fuera de <main>, así que no hereda la zona de ninguna sección:
+   se queda con el crema del sistema, que es el que corresponde porque el hero
+   también es crema. Lo único que se le agrega es la línea de abajo. */
+.pag-tipines .site-nav { border-bottom: var(--borde) solid rgba(26, 26, 24, .1); }
+
+
+/* ==========================================================================
+   2. PIEZAS COMPARTIDAS DE LA PÁGINA
+   ========================================================================== */
+
+/* Cada parte de la página. El aire vertical es el que separa una idea de la
+   siguiente: es la única puntuación que tiene una página con tan poco texto. */
+.stip {
+  padding-block: var(--s-9);
+  position: relative;
+}
+
+/* EL RÓTULO DE SECCIÓN, en la columna 1 y pegado arriba. Va sin numerar: los
+   números convertían la página en un índice de nueve puntos, y no es un
+   índice — es un recorrido. */
+.stip__rotulo {
+  grid-column: 1;
+  align-self: start;
+}
+
+/* EL BLOQUE DE TEXTO. Columnas 2 y 3: la 4 queda libre a propósito, y ese
+   vacío a la derecha es lo que hace que el texto se lea como una nota al
+   costado del material y no como el material mismo. */
+.stip__texto {
+  grid-column: 2 / span 2;
+  display: grid;
+  gap: var(--s-5);
+  align-content: start;
+}
+
+.stip__copy {
+  font-size: var(--t-2);
+  font-weight: var(--peso-liviano);
+  line-height: 1.45;
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+/* Un escalón más grande, para el texto que abre un capítulo. Solo lo usa la
+   banda de la miniserie. */
+.stip__copy--grande {
+  font-size: var(--t-3);
+  line-height: 1.25;
+  max-width: 22ch;
+  letter-spacing: -0.015em;
+}
+
+/* La frase destacada, en verde: el acento del sistema entra por el texto, que
+   es donde menos se gasta. Mismo recurso que en Simbio y en +54. */
+.stip__copy b {
+  font-weight: var(--peso-fuerte);
+  color: var(--zona-acento);
+}
+
+/* --------------------------------------------------------------------------
+   2-bis. LA APERTURA, IGUAL QUE EN SIMBIO Y EN +54
+   ----------------------------------------------------------------------------
+   .proyecto__col, .volver--pastilla, .proyecto__titulo, .proyecto__meta y
+   .proyecto__bajada son una COPIA de los de mas-54.css, a propósito y con los
+   mismos valores. La alternativa era importar mas-54.css entero por cinco
+   bloques, y eso arrastraría toda su página.
+
+   SI SE CAMBIA UNO ACÁ, HAY QUE CAMBIARLO EN LOS OTROS DOS. Las tres aperturas
+   tienen que verse idénticas: es lo que hace que se lean como el mismo sitio.
+   Ahora que son TRES páginas de proyecto, esto ya se ganó la mudanza a
+   layout.css; queda anotado como la próxima limpieza.
+   -------------------------------------------------------------------------- */
+
+.pag-tipines .proyecto__col {
+  /* UNA sola columna, y no dos como en +54: acá las tres piezas del paneo son
+     apaisadas y necesitan el ancho. Ver la nota del hero en el HTML.
+     SI EL TEXTO TE QUEDA MUY ANGOSTO: cambiá este 1 por `1 / span 2` y, más
+     abajo, el `2 / span 3` de .paneo por `3 / span 2`. */
+  grid-column: 1;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--s-4);
+  align-content: center;
+}
+
+.pag-tipines .volver--pastilla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  justify-self: start;
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.pag-tipines .volver--pastilla:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+.pag-tipines .volver--pastilla svg { width: 15px; height: auto; flex: 0 0 auto; }
+
+/* EL TÍTULO. Mismo tamaño que el de Simbio y +54: la columna de apertura
+   IDENTIFICA el proyecto, no lo protagoniza. El protagonismo es del material.
+   Va cortado en dos renglones desde el HTML (<br>) porque en una columna sola
+   "Amigos Tipines" en 900 no entra de un saque. */
+.pag-tipines .proyecto__titulo {
+  font-size: clamp(1.7rem, 1.2rem + 1.1vw, 2.2rem);
+  font-weight: var(--peso-maximo);
+  line-height: .95;
+  letter-spacing: -0.03em;
+}
+
+/* LAS PASTILLAS DE CLASIFICACIÓN. Misma forma que los botones de la nav.
+   Sin hover: no son botones, no llevan a ninguna parte. Un hover en algo que
+   no se puede tocar promete una acción que no existe. */
+.pag-tipines .proyecto__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.pag-tipines .proyecto__meta .etiqueta {
+  padding: 5px 14px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+.pag-tipines .proyecto__bajada {
+  max-width: 40ch;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--tinta);
+}
+
+@media (max-width: 960px) {
+  .stip { padding-block: var(--s-8); }
+  .stip__rotulo,
+  .stip__texto { grid-column: 1 / -1; }
+  .pag-tipines .proyecto__col { grid-column: 1 / -1; }
+}
+
+
+/* ==========================================================================
+   3. HERO
+   --------------------------------------------------------------------------
+   Apertura en la columna 1, paneo de tres piezas en las 2-3-4.
+   ========================================================================== */
+
+.hero-tip { padding-block: 0; }
+
+.hero-tip__grilla {
+  min-height: 100svh;
+  align-content: center;
+  padding-block: var(--s-9) var(--s-8);
+  row-gap: var(--s-7);
+}
+
+/* EL PANEO.
+   --------------------------------------------------------------------------
+   Una ventana con una fila adentro que se corre de a una pieza. El movimiento
+   está en el riel, no en las piezas: por eso se ve que la de al lado ENTRA
+   desde el costado, que es lo que hace que se lea como un recorrido y no como
+   un parpadeo en el lugar.
+
+   LAS TRES PIEZAS VAN CRUDAS: sin rotación, sin esquinas redondeadas y sin
+   sombra. Ya son imágenes terminadas, con su propio encuadre y su propio
+   fondo; envolverlas en adornos de interfaz las convierte en miniaturas de
+   galería de stock.
+
+   PERILLAS — EL PANEO DEL HERO */
+.paneo {
+  --paneo-alto: 62svh;        /* LA perilla del tamaño: subilo y crece */
+  --paneo-paso: 760ms;        /* cuánto tarda en correrse a la siguiente */
+
+  grid-column: 2 / span 3;
+  align-self: center;
+  justify-self: center;
+
+  /* La ventana mide UNA pieza: el resto de la fila queda afuera, cortado.
+     El 16/9 es el denominador común: las tres piezas son apaisadas pero de
+     proporciones distintas (1190x842, 1713x1114, 1920x1080), así que la
+     ventana se clava en una sola forma y adentro cada pieza entra ENTERA. */
+  height: clamp(240px, var(--paneo-alto), 620px);
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.paneo__riel {
+  display: flex;
+  height: 100%;
+  /* El desplazamiento lo escribe initPaneo en --paneo-x. */
+  transform: translate3d(var(--paneo-x, 0px), 0, 0);
+  transition: transform var(--paneo-paso) var(--ease);
+  will-change: transform;
+}
+
+.paneo__pieza {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  /* contain y no cover: las piezas se ven ENTERAS. Con cover, al libro de la
+     segunda se le comían el lomo y a la primera los pies de los personajes. */
+  object-fit: contain;
+}
+
+/* EN PANTALLA ANGOSTA el paneo baja debajo del texto y pasa a mandar por
+   ANCHO en vez de por alto. Es obligatorio y no cosmético: arriba la ventana
+   se mide desde --paneo-alto y se coloca con `grid-column: 2 / span 3`; con
+   una o dos columnas, esa colocación la deja empezando fuera de la pantalla. */
+@media (max-width: 960px) {
+  .paneo {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+/* ==========================================================================
+   4. EL LIBRO HOJEABLE
+   --------------------------------------------------------------------------
+   ESTO ES LO MÁS COMPLICADO DE LA PÁGINA. Vale leer las tres partes antes de
+   tocar un número, porque casi todo acá depende de otra cosa.
+
+   ---- A. QUÉ HAY EN LA CARPETA -------------------------------------------
+   17 archivos, y NO son 17 páginas:
+     tapa.jpg          595x842   una A4 sola
+     01..15.jpg       1190x842   PLIEGOS: dos A4 unidas por el lomo (una A3)
+     contratapa.jpg    595x842   una A4 sola
+
+   ---- B. EL PROBLEMA ------------------------------------------------------
+   Un pliego es una imagen ENTERA que cruza el lomo, pero una hoja de papel de
+   verdad lleva la mitad DERECHA de un pliego de un lado y la mitad IZQUIERDA
+   del pliego siguiente del otro. O sea: ninguna imagen coincide con ninguna
+   hoja. Hay que partirlas.
+
+   ---- C. CÓMO SE RESUELVE -------------------------------------------------
+   El escenario mide un pliego entero (1190x842). Las hojas viven en su MITAD
+   DERECHA y giran sobre el borde izquierdo, que es el lomo y que cae justo en
+   el centro del escenario. Al girar, una hoja aterriza sobre la mitad
+   izquierda: ahí es donde se ve su dorso.
+
+   Son 16 hojas y el reparto es siempre el mismo:
+     hoja 0    frente = TAPA (entera)          dorso = mitad izq. del pliego 1
+     hoja k    frente = mitad der. pliego k    dorso = mitad izq. pliego k+1
+     hoja 15   frente = mitad der. pliego 15   dorso = CONTRATAPA (entera)
+
+   Con N hojas pasadas se ve el pliego N completo: su mitad izquierda es el
+   dorso de la hoja N-1, y su derecha es el frente de la hoja N. Cierra exacto.
+
+   LAS MITADES no se recortan con ningún script: la imagen entra al doble del
+   ancho de la cara y se corre. Ver .hoja__mitad acá abajo.
+
+   Quién arma todo esto: initLibro(), en js/tipines.js.
+   ========================================================================== */
+
+.libro__caja {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-6);
+  margin-top: var(--s-7);
+}
+
+/* PERILLAS — EL TAMAÑO DEL LIBRO */
+.libro__escena {
+  --libro-alto: 66svh;      /* LA perilla del tamaño: subilo y crece */
+  --libro-giro: 760ms;      /* cuánto tarda una hoja en darse vuelta */
+  --libro-ojo: 2200px;      /* distancia del ojo al libro: más chico = giro
+                               más exagerado. Abajo de 1200 se deforma feo,
+                               porque la hoja es MUY ancha. */
+
+  position: relative;
+  /* El ancho sale del alto y de la proporción del pliego, no al revés: si se
+     midiera por ancho, en una pantalla baja el libro no entraría. */
+  width: min(100%, calc(clamp(300px, var(--libro-alto), 620px) * 1190 / 842));
+  aspect-ratio: 1190 / 842;
+
+  /* La perspectiva vive acá. Sin esto el giro se ve plano, como una persiana.
+     El origen queda en el centro del escenario, que es exactamente el lomo. */
+  perspective: var(--libro-ojo);
+  perspective-origin: 50% 50%;
+
+  /* EL DESPLAZAMIENTO DEL LIBRO CERRADO.
+     Con el libro cerrado solo hay tapa —media A3— y la otra mitad quedaría
+     como un rectángulo vacío al costado, que se lee como un error de armado.
+     Cerrado, el escenario se corre un cuarto de su ancho para que la tapa
+     quede centrada; al abrirlo vuelve a cero y el lomo se planta en el medio.
+     Ese viaje ES la sensación de abrir el libro. */
+  transition: translate var(--libro-giro) var(--ease);
+}
+.libro__caja.is-cerrado         .libro__escena { translate: -25% 0; }
+.libro__caja.is-cerrado-atras   .libro__escena { translate:  25% 0; }
+
+/* LA MESA: la mitad izquierda, donde aterrizan las hojas pasadas.
+   VA SIN NINGUNA MARCA VISIBLE, y eso se probó al revés primero. Con un
+   recuadro de línea de pelo, el libro cerrado mostraba la tapa al lado de un
+   rectángulo vacío perfectamente dibujado: se leía como una caja que quedó sin
+   contenido, o sea como un error de armado. Con el libro abierto el recuadro
+   no se ve nunca —lo tapan las hojas pasadas— así que dibujarlo solo servía
+   para arruinar el único momento en que se veía.
+   El elemento igual existe: es el piso sobre el que caen las hojas y el que
+   sostiene el alto de la mitad izquierda. */
+.libro__mesa {
+  position: absolute;
+  inset: 0 50% 0 0;
+}
+
+/* Las 16 hojas viven en la mitad DERECHA del escenario. */
+.libro__hojas {
+  position: absolute;
+  inset: 0 0 0 50%;
+  transform-style: preserve-3d;
+}
+
+/* --- UNA HOJA ---
+   El --i lo escribe initLibro: es el número de hoja, y sirve para dos cosas.
+
+   1. EL ORDEN DE APILADO (z-index).
+   2. LA SEPARACIÓN EN PROFUNDIDAD (el translateZ), que es menos obvia y hace
+      falta igual: 16 hojas quietas en el MISMO plano 3D pelean por quién se
+      dibuja encima y titilan. Un empujoncito de centésimas de pixel por hoja
+      rompe el empate. En total son menos de 2 px: no se ve, pero alcanza.
+
+      Ojo con el signo: después de girar 180°, el eje Z de la hoja apunta al
+      revés. Por eso la MISMA cuenta sirve para los dos estados — de este lado
+      manda las hojas altas al fondo, y del otro las trae adelante, que es
+      justo el orden en que se apilan las que ya se pasaron. */
+.hoja {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: rotateY(0deg) translateZ(calc(var(--i, 0) * -0.08px));
+  transform-style: preserve-3d;
+  transition: transform var(--libro-giro) var(--ease);
+  cursor: pointer;
+  /* La sombra del canto: le da espesor al bloque de papel. */
+  box-shadow: 0 6px 22px rgba(26, 26, 24, .18);
+}
+
+/* .is-pasada la pone initLibro en las hojas que ya se dieron vuelta.
+   180 grados EXACTOS y no 168 como en el sandbox: acá la hoja aterrizada no
+   es decoración, tiene que apoyar perfectamente sobre la mitad izquierda
+   porque ES la mitad izquierda del pliego que se está leyendo. Un grado de
+   más y el pliego queda quebrado por el medio. */
+.hoja.is-pasada {
+  transform: rotateY(-180deg) translateZ(calc(var(--i, 0) * -0.08px));
+}
+
+/* Las hojas que no se ven no reciben clicks ni foco. */
+.hoja[aria-hidden="true"] { pointer-events: none; }
+
+/* --- LAS DOS CARAS ---
+   Apiladas en el mismo lugar, el dorso pre-girado 180°, y las dos con
+   backface-visibility: hidden para que no se vea la cara de atrás en espejo
+   mientras la hoja gira. */
+.hoja__cara {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--crema);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.hoja__cara--dorso { transform: rotateY(180deg); }
+
+/* --- LA MITAD DE PLIEGO ---
+   Acá está el truco entero, y son tres líneas.
+   La cara mide media A3. La imagen del pliego entra al 200% del ancho de la
+   cara —o sea, a su tamaño real— y se la corre: en 0 se ve la mitad izquierda,
+   en -100% la derecha. La tapa y la contratapa son A4, ya miden lo que la
+   cara, y van al 100% sin correr nada.
+   Ninguna imagen se recorta en disco: el navegador muestra la parte que
+   corresponde y la otra queda afuera del overflow. */
+.hoja__mitad {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 200%;
+  object-fit: cover;
+  display: block;
+
+  /* ESTA LÍNEA NO ES OPCIONAL Y CUESTA UNA TARDE ENCONTRARLA.
+     base.css tiene un `img { max-width: 100% }` global (línea 27), que es lo
+     que evita que cualquier foto desborde su caja en todo el sitio. Acá el
+     ancho del 200% es EL mecanismo: la imagen tiene que salirse de la cara a
+     propósito para que se vea solo una mitad. Con el tope puesto, el 200% se
+     recorta a 100%, el `left: -100%` manda la imagen entera fuera de la
+     ventana, y el resultado es una página en blanco a la derecha y el pliego
+     mal encuadrado a la izquierda — que se ve como un problema de imágenes,
+     no de una regla de reset. */
+  max-width: none;
+}
+.hoja__mitad--izq    { left: 0; }
+.hoja__mitad--der    { left: -100%; }
+.hoja__mitad--entera { left: 0; width: 100%; }
+
+/* La sombra que barre la hoja durante el giro: nace en el lomo y se disuelve.
+   Es lo que le da volumen al movimiento — sin esto, la hoja se ve como una
+   calcomanía rotando. */
+.hoja__cara::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to right,
+    rgba(26, 26, 24, .22), rgba(26, 26, 24, 0) 45%);
+  opacity: 0;
+  transition: opacity var(--libro-giro) var(--ease);
+}
+.hoja.is-pasada .hoja__cara::after { opacity: 1; }
+
+/* El dorso tiene el degradé al revés: cuando la hoja aterrizó a la izquierda,
+   su lomo quedó del lado derecho. */
+.hoja__cara--dorso::after {
+  background: linear-gradient(to left,
+    rgba(26, 26, 24, .22), rgba(26, 26, 24, 0) 45%);
+}
+
+/* --- LOS CONTROLES --- */
+.libro__controles {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.libro__nav {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  background: none;
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.libro__nav svg { width: 16px; height: 16px; }
+.libro__nav:hover:not(:disabled) {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+/* Deshabilitado y no escondido: el botón que desaparece mueve a los de al
+   lado, y en la primera y la última página el control salta de lugar. */
+.libro__nav:disabled { opacity: .3; cursor: default; }
+
+.libro__contador {
+  min-width: 9ch;
+  text-align: center;
+  color: var(--zona-texto-2);
+}
+
+.libro__lupa {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 7px 16px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--gris);
+  background: none;
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+.libro__lupa svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.libro__lupa:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+
+/* MOVIMIENTO REDUCIDO: el giro se vuelve un corte seco, pero el libro sigue
+   funcionando igual. No se desactiva nada. */
+@media (prefers-reduced-motion: reduce) {
+  .libro__escena { --libro-giro: 1ms; }
+}
+
+
+/* ==========================================================================
+   5. LA BANDA DE LA MINISERIE
+   --------------------------------------------------------------------------
+   Corta y sin una sola imagen. Es un apagón entre el papel y la pantalla: si
+   hay algo para mirar, el corte no se siente.
+   ========================================================================== */
+
+.serie-intro { padding-block: var(--s-8); }
+
+.serie-intro__texto {
+  grid-column: 2 / span 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--s-6);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .serie-intro__texto {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
+   6. LA TELE
+   --------------------------------------------------------------------------
+   El marco de plastilina es un PNG con el agujero de la pantalla TRANSPARENTE.
+   El <video> va DEBAJO y se ve por el hueco; el PNG le tapa los bordes.
+
+   LAS MEDIDAS DEL HUECO NO SON A OJO. Se midieron sobre el canal alfa del
+   archivo original (1920x1080), buscando en cada fila y cada columna dónde
+   empieza y termina la parte opaca:
+     bisel izquierdo  termina en x=305      bisel derecho  empieza en x=1612
+     bisel de arriba  termina en y=118      el de abajo    empieza en y=879
+   O sea que el hueco es 305..1612 x 119..878 = 68,1% x 70,4% del archivo.
+
+   Y LAS PERILLAS DE ABAJO SON UN POCO MÁS GRANDES QUE ESO, a propósito. El
+   marco está modelado a mano y el borde interno es ondulado, no recto: si el
+   video midiera exactamente el hueco, en las partes donde el bisel se afina
+   asomaría una fisura de fondo. Con un punto de más por lado, el video se mete
+   debajo del bisel y nunca hay hueco.
+
+   SI VES UNA LÍNEA DE FONDO EN ALGÚN BORDE: subile a --tele-ancho o a
+   --tele-alto, y bajale lo mismo a --tele-x o a --tele-y.
+
+   PERILLAS — LA PANTALLA DENTRO DEL MARCO */
+.tele__marco {
+  --tele-x:     15.2%;   /* desde el borde izquierdo del PNG */
+  --tele-y:     10.2%;   /* desde el borde de arriba */
+  --tele-ancho: 69.6%;
+  --tele-alto:  72.0%;
+  --tele-ancho-max: 900px;  /* qué tan grande llega a ser la tele */
+
+  grid-column: 1 / -1;
+  position: relative;
+  width: min(100%, var(--tele-ancho-max));
+  margin-inline: auto;
+  /* La forma del PNG entero, marco incluido. */
+  aspect-ratio: 1920 / 1080;
+}
+
+.tele__video {
+  position: absolute;
+  left: var(--tele-x);
+  top: var(--tele-y);
+  width: var(--tele-ancho);
+  height: var(--tele-alto);
+  /* cover y no contain: el hueco es 1,72:1 y el video 16:9. Con contain
+     quedarían dos franjas de fondo arriba y abajo DENTRO de la pantalla, que
+     es exactamente lo que el marco tiene que evitar. La diferencia es del 3%:
+     no se pierde nada del cuadro. */
+  object-fit: cover;
+  background: var(--negro);
+}
+
+.tele__mueble {
+  position: relative;   /* encima del video, sin z-index: va después en el DOM */
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* LA TAPA. Cubre SOLO el rectángulo de la pantalla, no la tele entera: si
+   cubriera todo, el click en el mueble también daría play y no es eso lo que
+   el gesto promete. Se va al primer click y no vuelve. */
+.tele__play {
+  position: absolute;
+  left: var(--tele-x);
+  top: var(--tele-y);
+  width: var(--tele-ancho);
+  height: var(--tele-alto);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-3);
+  padding: 0;
+  border: 0;
+  color: #fff;
+  background: rgba(11, 11, 11, .72);
+  transition: opacity var(--dur-3) var(--ease);
+}
+.tele__play.is-fuera {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tele__triangulo {
+  width: 3.25rem;
+  height: 3.25rem;
+  display: grid;
+  place-items: center;
+  border: var(--borde-marcado) solid rgba(255, 255, 255, .8);
+  border-radius: 999px;
+  transition: background var(--dur-2) var(--ease),
+              border-color var(--dur-2) var(--ease);
+}
+.tele__triangulo svg { width: 18px; height: 18px; fill: currentColor; translate: 2px 0; }
+.tele__play:hover .tele__triangulo {
+  background: var(--verde);
+  border-color: var(--verde);
+}
+
+
+/* ==========================================================================
+   7. LA FICHA DEL PROCESO
+   --------------------------------------------------------------------------
+   Siete filas: número, qué se hizo, con qué, y si eso fue IA o software de
+   siempre. La última columna es el contenido de verdad — el proyecto es un
+   cruce, y la ficha lo deja ver de un vistazo.
+
+   POR QUÉ FILAS Y NO UN DIAGRAMA DE CAJITAS CON FLECHAS. Un diagrama de siete
+   cajas en cuatro columnas se parte en 4+3 y deja de leerse como una cadena;
+   además obliga a inventar iconos para herramientas que no los tienen. Las
+   filas son el idioma que la página ya habla: mayúscula, tracking y línea de
+   pelo, igual que todos los rótulos del sitio.
+   ========================================================================== */
+
+.proceso {
+  grid-column: 1 / -1;
+  position: relative;
+  margin-top: var(--s-7);
+  /* El espacio de la izquierda es para el riel de la vuelta atrás. */
+  padding-left: var(--s-7);
+}
+
+.proceso__pasos,
+.juguetes__pasos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* UNA FILA. Las cuatro columnas de la fila NO son las cuatro del sitio: son
+   las de una ficha técnica, con anchos fijos para el número y la marca, y el
+   resto repartido entre qué y con qué. */
+.paso {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1.1fr) minmax(0, 1fr) 5.5rem;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding-block: var(--s-4);
+  border-top: var(--borde) solid var(--zona-linea);
+}
+.proceso__pasos > .paso:last-child,
+.juguetes__pasos > .paso:last-child {
+  border-bottom: var(--borde) solid var(--zona-linea);
+}
+
+.paso__n    { color: var(--zona-texto-2); }
+.paso__que  { font-size: var(--t-1); font-weight: var(--peso-cuerpo); }
+.paso__con  { font-size: var(--t-1); font-weight: var(--peso-liviano); color: var(--zona-texto-2); }
+
+/* LA MARCA DE IA / A MANO. Es una pastilla, igual que las de clasificación del
+   hero, porque cumple el mismo papel: clasifica, no lleva a ningún lado.
+   El verde marca lo generado; lo hecho a mano va en el gris del sistema. NO se
+   inventa un segundo color para la oposición: el sitio tiene UN acento. */
+.paso__tipo {
+  justify-self: end;
+  align-self: center;
+  padding: 4px 12px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  color: var(--zona-texto-2);
+  white-space: nowrap;
+}
+.paso__tipo[data-tipo="ia"] {
+  color: var(--zona-acento);
+  border-color: color-mix(in srgb, var(--zona-acento) 45%, transparent);
+}
+
+/* --- LA VUELTA ATRÁS ---
+   El riel punteado con la punta de flecha arriba, pegado al costado izquierdo
+   de la ficha. NO es decoración: la ficha, leída sola, afirma que el proceso
+   fue lineal, y el copy que tiene al lado dice exactamente lo contrario.
+   Punteado y no lleno: es un camino que se recorrió muchas veces, no un paso
+   más del circuito. */
+.proceso__vuelta {
+  position: absolute;
+  left: 0;
+  top: var(--s-5);
+  bottom: var(--s-6);
+  width: 1.25rem;
+  border-left: var(--borde-marcado) dashed
+               color-mix(in srgb, var(--zona-acento) 55%, transparent);
+  color: var(--zona-acento);
+}
+.proceso__punta {
+  position: absolute;
+  top: -6px;
+  left: calc(var(--borde-marcado) * -1 - 5px);
+  width: 12px;
+  height: 12px;
+}
+
+.proceso__nota {
+  margin-top: var(--s-3);
+  color: var(--zona-acento);
+}
+
+@media (max-width: 720px) {
+  .proceso { padding-left: var(--s-6); }
+  /* En angosto la fila se parte en dos renglones: arriba el número y la
+     marca, abajo el qué y el con qué. Cuatro columnas en 360 px de ancho
+     dejan "Runway · Firefly · Veo" en cuatro renglones de una palabra. */
+  .paso {
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+  }
+  .paso__que { grid-column: 2; }
+  .paso__con { grid-column: 2 / -1; }
+  .paso__tipo { grid-column: 3; grid-row: 1; }
+}
+
+
+/* ==========================================================================
+   8. LOS JUGUETES
+   --------------------------------------------------------------------------
+   FALTAN LAS FOTOS de las figuras impresas (ver la nota en el HTML). Mientras
+   tanto la sección muestra el método en tres filas, con la misma ficha del
+   proceso — que es lo que la sección tiene que contar de todos modos.
+   Cuando lleguen las fotos, .juguetes__fotos ya está escrita en el HTML,
+   comentada, y sus estilos están acá abajo esperando.
+   ========================================================================== */
+
+.juguetes__pasos {
+  grid-column: 1 / -1;
+  margin-top: var(--s-7);
+}
+/* Tres columnas y no cuatro: acá no hay "con qué". El brief pide
+   explícitamente NO nombrar la herramienta que hizo el 2D → 3D. */
+.juguetes__pasos .paso {
+  grid-template-columns: 3rem minmax(0, 1fr) 5.5rem;
+}
+
+.juguetes__fotos {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  margin-top: var(--s-7);
+}
+.juguetes__fotos img { width: 100%; height: auto; display: block; }
+@media (max-width: 960px) { .juguetes__fotos { grid-template-columns: 1fr; } }
+
+
+/* ==========================================================================
+   9. EL MINI-JUEGO
+   --------------------------------------------------------------------------
+   Zona negra, y acá el negro no es un recurso de ritmo: las tres hojas de
+   sprites vienen con FONDO TRANSPARENTE y fueron generadas sobre negro. Sobre
+   el crema se les nota el borde sucio de la generación; sobre el negro se
+   apoyan como en la hoja original.
+   ========================================================================== */
+
+/* EL BOTÓN DE JUGAR. Es el único link de salida de toda la página y el juego
+   existe de verdad, así que se ve como un botón y no como una palabra
+   subrayada. Verde lleno: es la única acción de la página. */
+.juego__link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--verde);
+  color: #fff;
+  text-decoration: none;
+  transition: background var(--dur-1) var(--ease), translate var(--dur-1) var(--ease);
+}
+.juego__link svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.juego__link:hover {
+  background: var(--verde-claro);
+  translate: 0 -2px;
+}
+
+/* LA CAPTURA. Ancho propio y centrada: el archivo mide 951 px de ancho y
+   estirarlo hasta los 1400 de la grilla lo dejaría borroso. */
+.juego__captura {
+  grid-column: 1 / -1;
+  width: min(100%, 950px);
+  margin: var(--s-8) auto 0;
+}
+.juego__captura img { width: 100%; height: auto; display: block; }
+
+/* LAS HOJAS DE SPRITES. Van en tres columnas de la grilla del sitio y no en
+   un auto-fit: la regla de la casa es que todo se apoye en las MISMAS cuatro
+   columnas, y estas tres se centran ocupando de la 1 a la 4.
+   Sin marco ni fondo: son hojas de sprites, y una hoja de sprites es una
+   imagen con fondo transparente. Ponerle una caja sería dibujarle un papel
+   que no tiene. */
+.sprites {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  align-items: end;
+  margin-top: var(--s-8);
+}
+.sprite { margin: 0; display: grid; gap: var(--s-3); }
+.sprite img {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* contain por si alguna hoja futura no tiene la misma forma. */
+  object-fit: contain;
+}
+.sprite figcaption { color: var(--zona-texto-2); }
+
+@media (max-width: 720px) { .sprites { grid-template-columns: 1fr; } }
+
+
+/* ==========================================================================
+   10. EL CIERRE
+   --------------------------------------------------------------------------
+   Un solo párrafo, grande, con mucho aire y SIN rótulo de sección: no es un
+   capítulo más, es la conclusión de todo lo anterior. Sigue en negro porque
+   el argumento se cierra a oscuras, después del juego.
+   ========================================================================== */
+
+.cierre { padding-block: var(--s-9) calc(var(--s-9) * 1.4); }
+
+.cierre__texto {
+  grid-column: 2 / span 3;
+  font-size: var(--t-3);
+  font-weight: var(--peso-liviano);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  max-width: 30ch;
+  text-wrap: pretty;
+}
+.cierre__texto b {
+  font-weight: var(--peso-fuerte);
+  color: var(--zona-acento);
+}
+
+@media (max-width: 960px) {
+  .cierre__texto { grid-column: 1 / -1; }
+}

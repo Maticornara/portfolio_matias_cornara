@@ -17,7 +17,17 @@ $RECYCLE.BIN/
 *.bak
 ~$*
 
-# GitHub rechaza cualquier archivo de más de 100 MB. Este pesa 133 MB.
-# No lo usa ninguna página todavía; el original vive en OneDrive.
-# Para poder versionarlo hay que comprimirlo a .mp4 primero.
+# GitHub rechaza cualquier archivo de más de 100 MB, y estos dos son los
+# originales de Amigos Tipines. Los dos viven en OneDrive y NINGUNA página
+# apunta a ellos: lo que se sirve son las versiones de "assets/amigos
+# tipines/web/", que salen de tools\optimizar-tipines.ps1 y sí están
+# versionadas (926 KB y 15,4 MB).
+#
+#   HERO3.mov               133 MB · además viene en códec DXV, que ningún
+#                           navegador reproduce — no es solo cuestión de peso.
+#   VIDEO_FINAL_TIPINES.mp4 297 MB · 2:40 de 1080p a 15,5 Mbps.
+#
+# Si algún día hacen falta en otra máquina: están en OneDrive, y con correr el
+# script se regenera todo lo que usa el sitio.
 assets/amigos tipines/imagenes/HERO3.mov
+assets/amigos tipines/VIDEO_FINAL_TIPINES.mp4

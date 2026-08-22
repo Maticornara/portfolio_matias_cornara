@@ -1599,32 +1599,39 @@ seguir ampliando mi rincón."*, sin el recuadro con rayita al costado.
 
 ### 20-bis. La banda de pictogramas y el video de la casa (20/08/2026)
 
-**LA BANDA DE PICTOGRAMAS: DOS INTENTOS FALLIDOS Y LA CUENTA QUE LOS EXPLICA.**
+**LA TIRA DE PICTOGRAMAS: NO ES UNA BANDA DE PUNTA A PUNTA.**
+Se intentó tres veces y las tres se vieron mal. Queda anotado porque el impulso
+de volver a hacerla full-bleed va a estar siempre.
 
-`ilustraciones.mp4` **no es una tira infinita**: es un cuadro de 1460x820 con
-pictogramas grandes que van pasando. Recortado al dibujo queda 1460x520, o sea
-2,8:1. **Ese es todo el contenido que hay: no existe más ancho.** De ahí salen
-las opciones, y las dos primeras se probaron y se descartaron:
+`ilustraciones.mp4` es **un cuadro de 1460x820** con pictogramas grandes que van
+pasando, no una tira infinita. Recortado al dibujo queda 2,8:1. Meter eso en una
+franja de ancho completo y poca altura (7:1 o más) tiene exactamente **dos**
+resultados posibles:
 
-1. **Banda ancha y baja (1440x216) con `object-fit: cover`.** El navegador
-   escala por el ancho y recorta 280 px de alto: parte los pictogramas al medio.
-   Así se veía "rota" — una lonja de magenta con un pedazo de dibujo cruzando.
-2. **La misma banda baja con `contain`, y la banda pintada del mismo magenta que
-   el video** (`#D30A59`, medido). No corta nada, pero el video entra a 626 px
-   sobre 1425 de banda: **el 44%**. Queda una barra magenta casi vacía con un
-   grupito de dibujos en el medio. El truco del color calza perfecto y aun así
-   no alcanza: lo que se ve es el vacío a los costados.
-3. **La que quedó: que el alto lo ponga el video.** `width: 100%` y
-   `height: auto`. Ocupa el ancho completo y su alto es el de su proporción.
-   Nada recortado, nada vacío. Da unos 508 px en escritorio y unos 135 en un
-   teléfono, porque escala sola.
+| Intento | Qué pasó |
+|---|---|
+| `cover` en banda de 216px | escala por el ancho y recorta el alto: parte los pictogramas al medio. Se veía como una lonja de magenta con un pedazo de dibujo cruzando |
+| `contain` + fondo magenta | no corta nada, pero el video entra al 44% del ancho: dos bandas de relleno a los costados. Pintarlas del mismo color no alcanza, el vacío se sigue leyendo |
+| alto = ancho / 2,8 (508px) | los pictogramas llegan a los dos bordes, pero 508px no es un separador, es una sección |
 
-**EL ALTO DE ESA BANDA NO ES UNA DECISIÓN DE DISEÑO, ES UNA CUENTA:**
-`alto = ancho / proporción`. No se puede tener a la vez banda baja y pictogramas
-de ancho completo, porque el archivo no tiene más ancho que dar. Si hace falta
-bajarla, el número a tocar **no está en el CSS**: hay que recortarle más magenta
-al video en `tools\optimizar-54.ps1`. Hoy el recorte ya está pegado al dibujo,
-así que no hay mucho margen.
+**No hay tercera opción: el archivo no tiene más ancho para dar.** Es
+`alto = ancho / proporción`, y la proporción la fija el contenido.
+
+**Así que no se fuerza.** El video se muestra como lo que es —un rectángulo de
+2,8:1— apoyado sobre el crema, centrado, con aire arriba y abajo. Sin recorte,
+sin relleno y sin bandas, porque no hay ninguna caja que llenar. Y es más
+consistente con el resto de la página, donde todo el material se apoya como una
+pieza sobre el fondo. Las perillas son `--tira-ancho` y `--tira-aire`.
+
+**DE PASO, UN HALLAZGO QUE SIRVE PARA CUALQUIER VIDEO DEL SITIO.** Mientras se
+probaba el fondo magenta apareció una costura vertical nítida en el borde del
+video, con el fondo puesto en `#D30A59` — el color medido sobre los píxeles del
+mp4. El motivo: **el navegador no pinta el color que el archivo guarda.** El
+video viaja en YUV y al convertirlo a RGB para mostrarlo queda en `#D50B5A`.
+Dos puntos de corrimiento, invisibles en aislado, imposibles de ignorar contra
+un fondo CSS exacto. Verificado sacando los colores de una captura de la página.
+**Si alguna vez hay que hacer coincidir un fondo CSS con un video, el color se
+saca de una captura de pantalla, no del archivo.**
 
 **EL RECORTE SE MIDIÓ MAL DOS VECES.** Primero se copiaron filas medidas sobre
 la versión web (1280x718) al filtro `crop`, que se aplica al **original**
@@ -1641,3 +1648,337 @@ el ancho (`width: 100%`) y el alto sale solo. Lleva además `aspect-ratio: 16/9`
 escrito: con `preload="none"`, hasta que el archivo no empieza a bajar el
 navegador le asigna 300x150 a un `<video>` sin metadatos, reserva un hueco de la
 altura equivocada y la página pega un salto cuando el video carga.
+
+## 24. La nav: siete cosas rotas al mismo tiempo (21/08/2026)
+
+Mati lo reportó junto, como una sola sensación: "la NAV BAR funciona mal, no
+linkea bien o está desfasada, no llega a los bordes". Eran siete bugs distintos
+que se sumaban. Van con lo que se midió, no con lo que parecía.
+
+**1. LA BANDA NO LLEGABA A LOS BORDES.** `.site-nav` es `position: fixed` **y**
+`.grilla`, y `.grilla` trae `max-width: 1400px` + `margin-inline: auto`. En un
+elemento fijo con `left: 0` y `right: 0` puestos, el margen automático **centra
+la caja entera**: el crema y el blur terminaban en 1400 px. Medido en una
+ventana de 1920: la banda iba de 252 a 1652 y quedaban 252 px de página asomando
+a cada lado. Por eso se leía como flotando, no como una barra.
+
+El arreglo NO es sacarle la grilla: los botones tienen que seguir cayendo en las
+cuatro columnas. Es separar la banda de las columnas con padding en vez de
+margen — `max-width: none` y
+
+```css
+padding-inline: max(var(--gutter), (100% - var(--ancho-max)) / 2 + var(--gutter));
+```
+
+En pantalla angosta el `max()` da `--gutter`, igual que cualquier bloque; en
+pantalla ancha da el sobrante de los costados más el gutter, que es exactamente
+donde arranca un `.grilla` centrado. Medido después: banda 0→1905, primer botón
+en 300.5 y último en 1604.5, **los mismos números** que el contenido de la
+página. Alineación exacta, fondo de punta a punta.
+
+**2. LA NAV VIVE FUERA DE `#swup`, ASÍ QUE SWUP NO LA REEMPLAZABA.** Este era el
+peor y el más difícil de ver. Al navegar quedaba colgada la nav de la página
+anterior, con sus links relativos intactos: desde la portada entrabas a un
+proyecto y el botón Home seguía diciendo `index.html`, que parado en
+`/proyectos/` apunta a `/proyectos/index.html` — **404**. El botón verde de
+"estás acá" también quedaba en el lugar equivocado.
+Arreglo: `containers: ["#swup", ".site-nav"]`. Cada página trae su nav. No se le
+pega el fade porque el selector de animación es `[class*="transicion-"]` y la
+nav no lleva esa clase.
+
+**Y ojo con el efecto de segundo orden:** al reemplazarse el nodo,
+`initNavEsquiva` le seguía poniendo la clase `is-oculta` a una nav que ya no
+estaba en la página, y la barra dejaba de esconderse después de la primera
+navegación. Los listeners van en `window` y se ponen una sola vez, pero la
+referencia al nodo hay que **volver a apuntarla en cada init** (`navActual`).
+
+**3. DOS ANCLAS QUE NO EXISTÍAN.** `+54` linkeaba a `index.html#archivo` y las
+seis páginas viejas a `index.html#proyectos`. Los ids reales de la portada son
+`#sobre`, `#herramientas`, `#contacto` y `#trabajos`: **ni `#archivo` ni
+`#proyectos` existen en ninguna parte**. Siete links que no llevaban a ningún
+lado — se clickeaban y no pasaba nada. Todos ahora a `#trabajos`.
+Vale la pena tener el chequeo a mano, porque un ancla muerta no da error:
+
+```js
+[...document.querySelectorAll('a[href*="#"]')]
+  .filter(a => a.hash.length > 1 && !document.getElementById(a.hash.slice(1)))
+```
+
+**4. EL ORDEN DE LOS BOTONES CAMBIABA ENTRE PÁGINAS.** Simbio tenía Home /
+Trabajos / Sobre mí y la portada Home / Sobre mí / Trabajos. Con la nav ya
+reemplazándose (bug 2), eso son botones que **se cambian de lugar** al entrar a
+un proyecto. Unificado al orden de la portada en las tres páginas.
+
+**5. ES/EN ERAN `<a href="#">`.** Un href vacío es un ancla al tope del
+documento: hacer clic en ES te disparaba la página para arriba. Son `<button
+type="button">` sin handler hasta que exista la versión en inglés. `.pastilla`
+necesitó tres líneas de reset (`font-family: inherit`, `background:
+transparent`, `cursor: pointer`) para que el botón no traiga lo del navegador.
+
+**6. LAS ANCLAS PELEABAN CON LENIS.** Dos caminos distintos, los dos rotos:
+
+- *Entrar directo* (`index.html#sobre`, un refresh, un link pegado): el salto lo
+  hace el navegador al parsear, pero Lenis arranca leyendo la posición y
+  escribiéndola cada cuadro, y lo pisaba. **Medido: quedaba en el hero.** Ahora
+  se rehace el salto en el `load`, y encima esperando `document.fonts.ready` —
+  sin eso `#sobre` caía 46 px más abajo, porque el texto de arriba se reacomoda
+  cuando entra Archivo (`display=swap`).
+- *Clic dentro de la misma página*: lo resolvía `scroll-behavior: smooth` del
+  navegador mientras Lenis empujaba por su lado. Ahora el ancla pasa por Lenis.
+  El listener va en `document`, no en cada `<a>`, para que sobreviva a Swup.
+
+**7. A LENIS HAY QUE PASARLE UN NÚMERO, NO EL ELEMENTO.** Con
+`lenis.scrollTo(elemento, { offset: -48 })` el resultado **no era el mismo para
+todas las secciones**: `#herramientas`, `#contacto` y `#trabajos` caían clavadas
+a 48 px del tope y `#sobre` a 96. Se revisaron las cuatro y son idénticas —
+mismo `offsetTop`, mismo `scroll-margin-top: 48px`, sin transform, `static`—,
+así que la diferencia está en cómo Lenis resuelve el elemento y dónde se le
+cruza el `scroll-margin` del CSS con el offset. La cuenta a mano no tiene esa
+ambigüedad:
+
+```js
+el.getBoundingClientRect().top + window.scrollY - AIRE_NAV
+```
+
+Después del cambio, las cuatro a 48. **`AIRE_NAV` está escrito dos veces** —en
+`smooth-scroll.js` y en `transiciones.js`— y tiene que coincidir con el
+`scroll-margin-top` de `archivo.css`. Si cambia uno, cambian los tres.
+
+**CÓMO SE VERIFICÓ, QUE ES LA PARTE QUE IMPORTA.** No alcanza con mirar la
+página: la primera captura del ancla salió a mitad de la animación y no decía
+nada. Se manejó Chrome desde afuera (CDP por el puerto 9222) para hacer clics de
+verdad y leer números. La navegación completa simbio → clic en "Sobre mí" →
+portada dio: URL `/index.html#sobre`, body `pag-archivo`, nav reemplazada, Home
+resuelto a la raíz, `#sobre` a 48 px, cero 404. Y al revés, portada → +54, el
+href de Home pasa de `index.html` a `../index.html` — que es la prueba de que la
+nav se está reemplazando. Mobile a 390 px: banda 0→390, `display: flex`,
+padding 24. Las capturas sirven para mirar la grilla con `?grid`; para todo lo
+demás, números.
+
+**QUEDA PENDIENTE, NO ES DE LA NAV:** `index.html` linkea a
+`proyectos/loquesea.html`, que no existe. Es la tarjeta de relleno del grid.
+
+
+---
+
+## 25. Amigos Tipines: la tercera página de proyecto (21/08/2026)
+
+Se armó `proyectos/amigos-tipines.html` entera, con `css/tipines.css` y
+`js/tipines.js`. El HTML que había era el esqueleto viejo de cinco bloques en
+Nunito: se reemplazó completo. La ficha 04 del índice ya linkea.
+
+**LAS NUEVE SECCIONES, EN ORDEN:** hero con paneo de tres piezas · intro al
+libro · el libro hojeable · banda negra de la miniserie · la tele · la ficha
+del proceso · los juguetes · el mini-juego · la reflexión final.
+
+El ritmo de zonas es lo que puntúa una página con tanto material:
+`crema · crema · crema-2 · NEGRO · crema-2 · crema · crema-2 · NEGRO · NEGRO`.
+Dos apagones: uno corto en el medio y uno largo al final.
+
+### LOS ASSETS: 480 MB QUE NO SE PODÍAN SERVIR
+
+`tools/optimizar-tipines.ps1`, misma forma que el de +54. Dos archivos eran
+todo el problema:
+
+| | original | web | |
+|---|---|---|---|
+| `VIDEO_FINAL_TIPINES.mp4` | 311 MB | **15,4 MB** | 2:40 · 1080p · 15,5 Mbps |
+| `imagenes/HERO3.mov` | 139 MB | **926 KB** | 8 s · códec **DXV** |
+| las 17 páginas del libro | 22 MB | **4,3 MB** | PNG → JPEG |
+
+**EL .MOV NO ERA UN PROBLEMA DE PESO, ERA DE CÓDEC.** DXV es el códec de
+Resolume, para descomprimir en la placa de video de una VJ. **Ningún navegador
+lo reproduce**: puesto en un `<video>` no se ve nada, ni en Chrome ni en Safari.
+No hay perilla que lo arregle, tiene que pasar por ffmpeg. Ocho segundos de
+video ocupando 139 MB son 16 MB por segundo.
+
+**TRES ARCHIVOS SALEN EN PNG Y NO EN JPEG, Y NO ES CAPRICHO:** `tele.png` y las
+dos hojas de sprites tienen fondo transparente, y eso es para lo que sirven. El
+video de la miniserie se ve por el agujero de la pantalla de la tele; los
+sprites se apoyan sobre el fondo de la sección. JPEG no tiene canal alfa.
+
+### EL LIBRO HOJEABLE: EL PROBLEMA QUE NO SE VE HASTA QUE LO ARMÁS
+
+En la carpeta hay 17 archivos y **no son 17 páginas**: son una tapa A4, 15
+**pliegos** A3 (dos A4 unidas por el lomo) y una contratapa A4.
+
+Y **una hoja de papel no es un pliego**. Una hoja lleva la mitad DERECHA de un
+pliego de un lado, y la mitad IZQUIERDA del pliego siguiente del otro. O sea que
+ninguna imagen coincide con ninguna hoja. Con 15 pliegos salen **16 hojas**:
+
+```
+hoja 0     frente = tapa (entera)        dorso = mitad izq. pliego 1
+hoja k     frente = mitad der. pliego k  dorso = mitad izq. pliego k+1
+hoja 15    frente = mitad der. pliego 15 dorso = contratapa (entera)
+```
+
+Con N hojas pasadas se ve el pliego N entero: la mitad izquierda es el dorso de
+la hoja N-1 y la derecha es el frente de la hoja N. Cierra exacto, y **por eso
+el giro es de 180 grados justos** y no de 168 como el del sandbox: acá la hoja
+aterrizada no es decoración, ES la mitad izquierda del pliego que se está
+leyendo. Un grado de más y el pliego queda quebrado por el medio.
+
+**LAS MITADES NO SE RECORTAN EN DISCO.** La imagen entra al 200 % del ancho de
+la cara y se corre: en `left: 0` se ve la mitad izquierda, en `left: -100%` la
+derecha. Un solo archivo por pliego, y el navegador muestra la parte que
+corresponde.
+
+**LAS 32 CARAS NO ESTÁN ESCRITAS EN EL HTML.** Las arma `initLibro()` a partir
+de `data-libro-pliegos`, porque las 32 salen de la misma cuenta y escribirlas a
+mano es equivocarse en una. De paso, solo les pone el `src` a las que están a
+menos de dos hojas de la abierta: el libro entero pesa 4,3 MB y bajarlo completo
+para ver la tapa sería exactamente el problema que el script vino a resolver.
+**Medido: con el libro abierto en el pliego 3 hay 12 de 32 imágenes cargadas.**
+
+### CATÁLOGO DE BUGS DE ESTA SESIÓN
+
+**1. `max-width: 100%` OTRA VEZ, Y ES EL MISMO DE LA CAJA DE LA ESQUINA.**
+`base.css:27` tiene `img { max-width: 100% }` global, que es lo que evita que
+cualquier foto desborde su caja en todo el sitio. En el librito el ancho del
+200 % **es** el mecanismo: la imagen tiene que salirse de la cara a propósito.
+Con el tope puesto, el 200 % se recortaba a 100 %, el `left: -100%` mandaba la
+imagen entera fuera de la ventana, y el resultado era **una página en blanco a
+la derecha y el pliego mal encuadrado a la izquierda**. Se ve como un problema
+de imágenes, no de una regla de reset — que es lo que lo hace caro. La cuenta
+que lo delató: el pliego 03 se veía escalado a `cover` centrado, mostrando la
+franja del medio de la imagen en vez de una mitad. `max-width: none` en
+`.hoja__mitad`.
+
+**2. `JUEGO.png` TIENE ALFA Y SALIÓ EN JPEG.** La captura del juego es un
+televisor retro **recortado**: todo lo que lo rodea es transparente. En JPEG
+ffmpeg rellena el hueco con negro PLANO (#000), y la sección es `.zona--negro`,
+que es un **degradé** (#161614 → #0B0B0B → #020202). Dos negros distintos con un
+borde recto entre ellos: se leía como una imagen mal recortada. Pasó a PNG.
+
+**3. EL RECUADRO DE LA MESA DEL LIBRO.** La mitad izquierda del escenario tenía
+una línea de pelo para "leerse como el lugar del libro". Con el libro abierto no
+se ve nunca (la tapan las hojas pasadas), así que solo servía para arruinar el
+único momento en que se veía: **el libro cerrado mostraba la tapa al lado de un
+rectángulo vacío perfectamente dibujado**, o sea un error de armado. Se sacó.
+
+**4. EL VIDEO DEL HERO SEGUÍA CORRIENDO DE COSTADO.** El `[data-video-visible]`
+de +54 usa un IntersectionObserver, y un observer mira el **viewport**, no el
+`overflow: hidden` del padre. La ventana del paneo recorta, pero para el
+observer el video "se ve" igual cuando ya está corrido afuera. Lo maneja
+`initPaneo`, que sabe cuál es la pieza activa.
+
+### DECISIONES DE DISEÑO QUE SE PROBARON AL REVÉS PRIMERO
+
+**LA TELE NO VA SOBRE NEGRO, Y ES CONTRAINTUITIVO.** Una tele encendida pide
+cuarto oscuro. Pero el marco de plastilina es marrón oscuro — **se midió:
+#362D26 promedio** — y sobre el negro del sitio desaparece: quedaba una pantalla
+flotando sola y la tele, que es la pieza, no se veía. Va sobre crema tostado. El
+apagón lo hace la banda de arriba, que es texto y aguanta el negro.
+
+**LAS MEDIDAS DEL AGUJERO DE LA PANTALLA NO SON A OJO.** Se sacó el canal alfa
+del PNG original (1920x1080) y se buscó fila por fila y columna por columna
+dónde termina la parte opaca: bisel izquierdo hasta x=305, derecho desde x=1612,
+arriba hasta y=118, abajo desde y=879. El hueco es 68,1 % × 70,4 % del archivo.
+**Las perillas están puestas un punto más grandes que eso a propósito**: el
+marco está modelado a mano y el borde interno es ondulado, no recto; si el video
+midiera exacto, donde el bisel se afina asomaría una fisura de fondo.
+
+**EL PROCESO ES UNA FICHA TÉCNICA, NO UN DIAGRAMA DE CAJITAS.** Siete filas:
+número, qué se hizo, con qué, y si eso fue IA o software de siempre. Esa última
+columna es el contenido real. Siete cajas con flechas en cuatro columnas se
+parten en 4+3 y dejan de leerse como cadena, y obligan a inventar iconos para
+herramientas que no los tienen. **La flecha de vuelta atrás no es decoración**:
+el copy dice que el proceso no fue lineal, y la ficha leída sola afirma lo
+contrario.
+
+**EL HERO USA UNA COLUMNA PARA EL TEXTO Y TRES PARA EL PANEO**, al revés que
++54. Ahí el material son afiches verticales; acá las tres piezas son apaisadas
+(1190x842, 1713x1114, 1920x1080) y con dos columnas no se leía ninguna. La
+vuelta atrás está señalada en el CSS: es cambiar dos `grid-column`.
+
+### CÓMO SE VERIFICÓ
+
+Chrome manejado desde afuera (puppeteer-core contra el Chrome instalado), no
+capturas a ojo:
+
+- **El camino real portada → clic en la ficha 04 → Tipines, por Swup y sin
+  recargar:** body `pag-tipines`, cursor `anillo`, `initLibro` corrió (16 hojas
+  armadas), familia `Archivo` aplicada, `performance.navigation` = 1 entrada
+  (o sea, no hubo recarga). Cero errores de JS.
+- **La cuenta del librito, leída del DOM y no de la foto:** en el pliego 3, la
+  mitad izquierda es `03.jpg [izq]` y la derecha `03.jpg [der]`. Contador
+  "Pliego 03 / 15", lupa apuntando a `03.jpg`. Al final: "Contratapa" y el botón
+  siguiente deshabilitado.
+- **Desborde horizontal a 390 y a 820 px:** `scrollWidth === clientWidth` en las
+  dos. Los elementos que se pasan del viewport están todos adentro de un
+  `overflow: hidden` (el riel del paneo y las mitades de pliego), que es el
+  mecanismo, no un bug.
+- Las 18 rutas de assets de la página: **200 en todas.**
+
+### QUEDA PENDIENTE
+
+1. **LA BAJADA DEL HERO ESTÁ SIN CONFIRMAR.** Es el único texto de la página que
+   no venía cerrado del brief. Está escrita y marcada con un comentario en el
+   HTML.
+2. **FALTAN LAS FOTOS DE LOS JUGUETES.** `assets/amigos tipines/3D/` existe y
+   está vacía. La sección muestra el método en tres filas mientras tanto, y el
+   bloque `.juguetes__fotos` ya está escrito en el HTML, comentado, con sus
+   estilos esperando en el CSS. Son tres pasos: poner los archivos, agregarlos
+   al script, descomentar.
+3. **LA APERTURA ESTÁ COPIADA TRES VECES.** `.proyecto__col`, `.volver--pastilla`,
+   `.proyecto__titulo`, `.proyecto__meta` y `.proyecto__bajada` están iguales en
+   `simbio.css`, `mas-54.css` y ahora `tipines.css`. Con dos páginas se copiaba;
+   con tres se muda a `layout.css`. Es la próxima limpieza.
+
+---
+
+## 21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)
+
+### LAS HISTORIAS NO SONABAN, Y NO ERA EL BOTÓN
+
+El botón de sonido estaba bien. **El problema era que los archivos no tenían
+pista de audio**: `tools\optimizar-54.ps1` los convertía con `-an`, o sea que
+los dejaba mudos. Los originales de `assets/+54/HISTORIAS` sí traen audio (aac,
+2 canales). Se verifica en dos segundos:
+
+```
+ffprobe -v error -show_entries stream=codec_type -of csv=p=0 <archivo>
+```
+
+Antes de tocar una línea de JS por un problema de sonido, **chequear que el
+archivo tenga sonido.**
+
+### AHORA VAN DE A UNA
+
+Corre UNA historia y las otras dos quedan **congeladas en su primer cuadro**.
+Cuando la que corre termina, arranca la siguiente; de la tercera vuelve a la
+primera. Tocar cualquiera la hace la activa.
+
+- **"Congelada en el primer cuadro" es literal:** `pause()` + `currentTime = 0`.
+  No hace falta ningún poster ni imagen aparte — el propio video pintado en su
+  segundo cero ES el primer cuadro.
+- **Se avanza con el evento `ended`, no con un temporizador.** Las tres duran
+  distinto (7,4 · 11,2 · 11,1 s) y un `setInterval` las cortaría al medio o
+  dejaría huecos. **Por eso los `<video>` NO llevan `loop`:** con loop no
+  terminan nunca y el evento no llega. Si alguien se lo vuelve a poner, la
+  rueda deja de girar.
+- **Las que esperan se apagan un poco** (menos opacidad y menos saturación) para
+  que se lea cuál es la que está corriendo. No se ocultan: siguen a la vista e
+  invitan a tocarlas.
+- **Las congeladas van siempre mudas.** Si quedaran desmuteadas, cualquier
+  reproducción accidental metería una segunda voz encima de la que corre.
+
+**POR QUÉ ARRANCA MUDA AUNQUE TENGA SONIDO.** Ningún navegador deja que un video
+con audio empiece solo: si no está `muted`, `play()` se rechaza y **no arranca
+nada**. Así que la rotación empieza muda y el botón la desmutea — ese click es
+el permiso que el navegador estaba esperando, y de ahí en adelante suenan
+también las que siguen. No es una limitación de este código: es política del
+navegador y no se puede saltear.
+
+Medido: al entrar, la 1 corre y la 2 y la 3 están en `t=0` y pausadas. Al tocar
+el botón, la 1 se desmutea sin frenarse. A los 7,4 s la 1 termina, la 2 arranca
+sola **ya con sonido**, y la 1 vuelve a quedar congelada en cero.
+
+### EL VIDEO DE LA CASA
+
+Estuvo un rato a pantalla completa (`100svh`, el video de borde a borde) y era
+demasiado: 800 px de alto llenando la ventana entera se comían la página. Ahora
+es una pieza centrada sobre la franja negra, con el mismo tratamiento que el
+teaser: **900x505 dentro de una sección negra de 1425 de ancho.** La franja
+alrededor es la que le da el aire de proyección; el video no tiene que ser
+gigante para leerse. La perilla es `--casa-ancho`.

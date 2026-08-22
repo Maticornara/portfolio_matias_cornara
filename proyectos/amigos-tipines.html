@@ -3,17 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Amigos Tipines — Mati</title>
+  <title>Amigos Tipines — Archivo</title>
+  <meta name="description" content="Amigos Tipines: un libro de buscá y encontrá que se expande en miniserie, juguetes y videojuego. Producido cruzando IA generativa con herramientas de diseño tradicionales.">
 
-  <!-- Mismas tipografías que el resto del sitio -->
+  <!-- UNA SOLA FAMILIA: ARCHIVO. La misma del índice, de Simbio y de +54.
+       Rango 300..900 porque el titular va en 900 y los copys en 300.
+
+       Y LA PALETA ES LA DEL SITIO. Este proyecto es lo más colorido del
+       portfolio —plastilina saturada sobre fondos saturados— y justamente por
+       eso la página NO se pinta de sus colores: crema, negro y verde, como el
+       resto. Ver la nota larga arriba de css/tipines.css. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..900&display=swap" rel="stylesheet">
 
   <!-- Ojo con las rutas: estamos dentro de /proyectos/, por eso el ../ -->
-  <link rel="stylesheet" href="../css/variables.css">
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/variables.css?v=6">
+  <link rel="stylesheet" href="../css/base.css?v=11">
+  <link rel="stylesheet" href="../css/layout.css?v=9">
+  <link rel="stylesheet" href="../css/tipines.css?v=3">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -21,74 +29,641 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+
+  <!-- Swup: transición entre páginas. -->
+  <script src="https://unpkg.com/swup@4/dist/swup.umd.js"></script>
 </head>
-<body>
 
-  <nav class="site-nav">
-    <a class="site-nav__logo" href="../index.html">Mati</a>
-    <ul class="site-nav__links" role="list">
-      <li><a href="../index.html#trabajos">Volver al índice</a></li>
-    </ul>
-  </nav>
+<!-- pag-tipines: el alcance de css/tipines.css. Todo lo de esta página cuelga
+     de esta clase, así que nada de acá puede filtrarse al índice, a Simbio ni
+     a +54. No define colores nuevos: los toma de variables.css.
+     data-cursor: el mismo cursor de anillo que usan Simbio y +54. -->
+<body class="pag-tipines" data-cursor="anillo">
 
-  <main>
+<!-- Los mismos cuatro botones que la portada, en el mismo orden. Las anclas
+     apuntan a las secciones que EXISTEN en index.html: #sobre, #trabajos,
+     #contacto. -->
+<nav class="site-nav grilla">
+  <a class="pastilla" href="../index.html">Home</a>
+  <a class="pastilla" href="../index.html#sobre">Sobre mí</a>
+  <a class="pastilla is-activa" href="../index.html#trabajos">Trabajos</a>
+  <div class="site-nav__fin">
+    <a class="pastilla" href="../index.html#contacto">Contacto</a>
+    <div class="nav-idioma">
+      <button type="button" class="pastilla is-activa" aria-pressed="true">ES</button>
+      <button type="button" class="pastilla" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</nav>
 
-    <header class="project-header wrap">
-      <p class="eyebrow">Transmedia / IA aplicada al diseño</p>
-      <h1>Amigos Tipines</h1>
-    </header>
+<!-- data-body / data-cursor-pag: la clase y el cursor que le tocan al <body>
+     en esta página. Los copia transiciones.js después de cada navegación de
+     Swup, que reemplaza solo lo de adentro de #swup y deja el <body> de la
+     página anterior tal cual estaba. -->
+<main id="swup" class="transicion-fade"
+      data-body="pag-tipines" data-cursor-pag="anillo">
 
-    <!-- ======================================================
-         FICHA DEL PROYECTO — las 5 secciones fijas.
-         Por ahora solo el esqueleto: el contenido real viene después.
-         ====================================================== -->
-    <article class="wrap">
+  <!-- ======================================================================
+       1 · HERO
+       ----------------------------------------------------------------------
+       MISMA APERTURA QUE SIMBIO Y +54: flecha de volver, título, pastillas de
+       clasificación y bajada. Con dos diferencias deliberadas:
 
-      <section class="project-block">
-        <h2 class="eyebrow">El Concepto</h2>
-        <div><p><!-- TODO --></p></div>
-      </section>
+       1. La columna de texto ocupa UNA sola columna y el paneo se lleva las
+          otras TRES. En +54 el material del hero son afiches verticales, que
+          piden poco ancho; acá las tres piezas son apaisadas (1190x842,
+          1713x1114 y 1920x1080) y con dos columnas no se leía ninguna.
+       2. El texto arranca ARRIBA, alineado con el borde superior del paneo, y
+          no centrado. Con la bajada de dos párrafos, centrado dejaba el título
+          flotando a media altura sin nada con qué alinearse.
 
-      <section class="project-block">
-        <h2 class="eyebrow">Mi Rol</h2>
-        <div><p><!-- TODO --></p></div>
-      </section>
+       SI EL TEXTO TE QUEDA MUY ANGOSTO, la vuelta atrás es una línea: en
+       css/tipines.css, .hero-tip .proyecto__col pasa a `1 / span 2` y
+       .paneo a `3 / span 2`. Está señalado ahí con ese mismo comentario.
+       ====================================================================== -->
+  <header class="stip hero-tip zona zona--crema">
+    <div class="hero-tip__grilla grilla">
 
-      <section class="project-block">
-        <h2 class="eyebrow">El Contexto</h2>
-        <div><p><!-- TODO --></p></div>
-      </section>
+      <aside class="proyecto__col">
+        <a class="volver volver--pastilla" href="../index.html#trabajos"
+           aria-label="Volver a los trabajos">
+          <svg viewBox="0 0 28 10" fill="none" aria-hidden="true"
+               stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M27 5H1M1 5l4.5-4M1 5l4.5 4"/>
+          </svg>
+        </a>
 
-      <section class="project-block">
-        <h2 class="eyebrow">El Proceso</h2>
-        <div><p><!-- TODO --></p></div>
-      </section>
+        <h1 class="proyecto__titulo">Amigos<br>Tipines</h1>
 
-      <section class="project-block">
-        <h2 class="eyebrow">El Resultado</h2>
-        <div><p><!-- TODO --></p></div>
-      </section>
+        <div class="proyecto__meta">
+          <p class="etiqueta">Transmedia</p>
+          <p class="etiqueta">IA generativa</p>
+          <p class="etiqueta">2024</p>
+        </div>
 
-      <!-- BLOQUE EXTRA, propio de este proyecto.
-           Acá va la documentación de la cadena de herramientas: qué IA,
-           qué software tradicional, en qué orden y por qué.
-           En los datos (js/main.js) esto corresponde a un item del array
-           `extras` del proyecto amigos-tipines. -->
-      <section class="project-block">
-        <h2 class="eyebrow">Flujo de trabajo</h2>
-        <div><p><!-- TODO: cadena de herramientas IA + software tradicional --></p></div>
-      </section>
+        <div class="proyecto__bajada">
+          <p>
+            Un universo de plastilina protagonizado por tres amigos con
+            personalidades bien marcadas: Peppi, Matti y Gatti. Habitan un
+            mundo hecho de plastilina, con una paleta de colores propia y un
+            humor caótico y energético, bien argentino.
+          </p>
+          <p>
+            Las piezas objetivo del proyecto fueron un libro de «busca y
+            encuentra» ambientado en este universo y una pieza audiovisual que
+            da inicio a una miniserie animada, ambas generadas íntegramente
+            con inteligencia artificial. A partir de esas dos piezas se
+            desprendió mucho más.
+          </p>
+        </div>
+      </aside>
 
-    </article>
+      <!-- EL PANEO.
+           Tres piezas en una fila que se corre de a una: dos imágenes y un
+           video mudo. Es el mismo mecanismo del carrusel de +54 (el que se
+           mueve es el riel, no las piezas) porque hace que la siguiente se vea
+           ENTRAR desde el costado; apiladas y fundiéndose en el lugar se lee
+           como un parpadeo, no como un recorrido.
+           data-paneo = cada cuánto pasa a la siguiente, en milisegundos. -->
+      <div class="paneo" data-paneo="4600"
+           aria-label="Tres vistas del universo de Amigos Tipines">
+        <div class="paneo__riel" data-paneo-riel>
 
-  </main>
+          <img class="paneo__pieza" src="../assets/amigos%20tipines/web/hero-1.jpg"
+               alt="Los tres personajes de plastilina: uno dispara una gomera, los otros dos se atrincheran detrás de unas sillas">
 
-  <footer class="site-footer wrap">
-    <p><a href="../index.html">← Volver al índice</a></p>
-  </footer>
+          <img class="paneo__pieza" src="../assets/amigos%20tipines/web/hero-2.jpg"
+               alt="El libro Amigos Tipines impreso y encuadernado" loading="lazy">
 
-  <div class="transition-veil" aria-hidden="true"></div>
+          <!-- SIN AUDIO A PROPÓSITO (viene mudo del original y además va en
+               loop en el hero: un video que suena solo al entrar a una página
+               es la peor bienvenida posible). El único con sonido de toda la
+               página es la miniserie, y ese arranca con un click.
 
-  <script src="../js/main.js" defer></script>
+               SE TRABABA, Y ERAN TRES COSAS SUMADAS. Ahora: el archivo salió
+               de 1280 a 960 y de 25 a 24 fps con un keyframe por segundo (ver
+               ConvertirVideoLoop en tools\optimizar-tipines.ps1), y acá el
+               preload pasó de "none" a "auto". Con "none" el video empezaba a
+               reproducirse mientras todavía se estaba bajando. Pesa 763 KB: se
+               puede pedir de entrada.
+
+               NO LLEVA data-video-visible como los videos de +54: de arrancarlo
+               y pausarlo se ocupa initPaneo, que además sabe cuándo esta pieza
+               es la que se está viendo. El observer genérico mira el viewport
+               y no el recorte de la ventana del paneo, así que dejaba el video
+               corriendo cuando ya se había ido de costado. -->
+          <video class="paneo__pieza"
+                 src="../assets/amigos%20tipines/web/hero-3.mp4"
+                 poster="../assets/amigos%20tipines/web/hero-3.jpg"
+                 loop muted playsinline preload="auto"
+                 aria-label="Los personajes cruzando un puente sobre unas cataratas, animados en plastilina"></video>
+
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ======================================================================
+       2 · INTRO AL LIBRO
+       Sigue en la misma zona crema que el hero: no es un capítulo nuevo,
+       es lo que el hero venía diciendo, ahora sobre el objeto concreto.
+       ====================================================================== -->
+  <section class="stip zona zona--crema">
+    <div class="grilla">
+
+      <p class="stip__rotulo etiqueta">El libro</p>
+
+      <div class="stip__texto">
+        <p class="stip__copy">
+          Es un libro de <b>«Buscá y Encontrá»</b> que sigue el ritmo de un día
+          completo en la vida de un niño, desde el desayuno hasta los sueños. A
+          lo largo de 8 escenarios en estética claymation, el lector busca a
+          Peppi, Matti y Gatti escondidos entre el caos que generan según su
+          personalidad, dejando pistas y objetos característicos en cada
+          escena. Combina la densidad visual de los libros de búsqueda clásicos
+          con el humor y la calidez de la plastilina.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       3 · EL LIBRO NAVEGABLE
+       ----------------------------------------------------------------------
+       17 archivos: tapa A4, 15 pliegos A3 (dos A4 unidas por el lomo) y
+       contratapa A4. Ver la explicación completa —qué hoja lleva qué mitad de
+       qué pliego, y por qué— en el bloque "EL LIBRO" de css/tipines.css y en
+       initLibro() de js/tipines.js.
+
+       LAS HOJAS NO ESTÁN ESCRITAS ACÁ. Son 16 hojas por 2 caras = 32 imágenes,
+       y cada una es DERIVABLE del número de pliego: la cara de adelante de la
+       hoja N es la mitad derecha del pliego N, y la de atrás es la mitad
+       izquierda del pliego N+1. Escribir 32 <img> a mano es copiar 32 veces la
+       misma cuenta y equivocarse en una. Las arma initLibro() a partir de
+       data-libro-pliegos, y de paso solo les pone el src a las que están cerca
+       de la hoja abierta: el libro entero pesa 4,3 MB.
+
+       SIN RÓTULO DE SECCIÓN. Decía "HOJEALO" y sobraba: un libro dibujado con
+       su tapa y dos flechas debajo no necesita que le avisen qué hacer.
+       ====================================================================== -->
+  <section class="stip libro zona zona--crema-2" id="libro">
+    <div class="grilla">
+
+      <div class="libro__caja"
+           data-libro
+           data-libro-pliegos="15"
+           data-libro-ruta="../assets/amigos%20tipines/web/libro/">
+
+        <div class="libro__escena">
+          <!-- La mitad izquierda, vacía: es donde aterrizan las hojas ya
+               pasadas. Con el libro cerrado se ve el hueco, y eso es correcto:
+               un libro cerrado es una tapa sola, no un pliego. -->
+          <div class="libro__mesa" aria-hidden="true"></div>
+          <!-- initLibro cuelga las 16 hojas acá adentro. -->
+          <div class="libro__hojas" data-libro-hojas></div>
+        </div>
+
+        <div class="libro__controles">
+          <button class="libro__nav" type="button" data-libro-prev
+                  aria-label="Pliego anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true"><path d="M15 4 L7 12 L15 20"/></svg>
+          </button>
+
+          <button class="libro__nav" type="button" data-libro-next
+                  aria-label="Pliego siguiente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true"><path d="M9 4 L17 12 L9 20"/></svg>
+          </button>
+
+          <p class="libro__contador etiqueta" data-libro-contador
+             aria-live="polite">Tapa</p>
+
+          <!-- VER EN GRANDE.
+               NO usa la lupa de main.js, y esa fue la primera versión: initLupa
+               abre la imagen adentro de un marco de polaroid, con borde blanco
+               y más aire abajo. Para las láminas de +54 está bien; para un
+               pliego apaisado de un busca-personajes quedaba una estampita con
+               marco, más chica todavía que el librito de la página.
+               Este visor no tiene marco: el pliego ocupa la pantalla entera y
+               se puede acercar hasta 4x. Es initVisor(), en js/tipines.js. -->
+          <button class="libro__lupa" type="button" data-libro-lupa
+                  aria-label="Ver el pliego en pantalla completa">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L21 21"/>
+              <path d="M8.5 11h5M11 8.5v5"/>
+            </svg>
+            <span class="etiqueta">Ver en grande</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       4 · LA MINISERIE
+       ----------------------------------------------------------------------
+       UNA PANTALLA ENTERA EN NEGRO. Es el apagón: hasta acá el proyecto era
+       papel, de acá en adelante es pantalla. La sección mide 100svh completos
+       para que el corte se sienta como un cambio de sala y no como un párrafo
+       sobre fondo oscuro.
+
+       LA SEÑAL —la carta de ajuste de plastilina, en loop y muda— va donde
+       antes había un SEGUNDO bloque de texto grande. Dos columnas de texto,
+       una al lado de la otra y del mismo largo, se leían como un rectángulo de
+       palabras y no como una sección.
+       ====================================================================== -->
+  <section class="stip serie zona zona--negro">
+    <div class="serie__grilla grilla">
+
+      <p class="stip__rotulo etiqueta">La miniserie</p>
+
+      <!-- autoplay + loop + muted + playsinline: el comportamiento de un GIF,
+           con el peso de un MP4 (810 KB contra varios megas). muted no es
+           opcional — sin eso ningún navegador deja que un video arranque
+           solo. Son los primeros 4 segundos del original, saturados un punto;
+           el corte y el color los hace el script de assets, no el CSS. -->
+      <div class="serie__senal">
+        <video src="../assets/amigos%20tipines/web/senal.mp4"
+               poster="../assets/amigos%20tipines/web/senal.jpg"
+               autoplay loop muted playsinline preload="auto"
+               aria-label="La carta de ajuste de TippinesTV, modelada en plastilina"></video>
+      </div>
+
+      <div class="serie__texto">
+        <p class="stip__copy">
+          Una serie de sketches cortos protagonizados por Peppi, Matti y Gatti,
+          que recorren situaciones, culturas y géneros distintos bajo la
+          producción de la marca ficticia <b>TippinesTV</b>. El video funciona
+          como el opening de una serie animada: escenas de 15 a 35 segundos
+          conectadas por cortinas de transición, sin narrativa lineal ni
+          principio ni fin. Cada sketch tiene su propio universo visual y el
+          mismo sentido del humor.
+        </p>
+        <p class="stip__copy">
+          La consistencia de la caracterización de cada personaje es lo que
+          hace funcionar el formato. <b>El contexto cambia, ellos no.</b>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       5 · LA TELE
+       ----------------------------------------------------------------------
+       El video metido adentro del marco de plastilina. La tele es un PNG con
+       el agujero de la pantalla TRANSPARENTE, así que el <video> va debajo y
+       se ve por el hueco. Las medidas del hueco están medidas sobre el canal
+       alfa del archivo y viven como perillas en css/tipines.css.
+
+       POR QUÉ ESTA SECCIÓN NO ES NEGRA, si la de arriba sí.
+       El marco de plastilina es marrón oscuro (#362D26 promedio). Sobre el
+       negro del sitio no se ve: quedaba una pantalla flotando sola y la tele
+       —que es la pieza— desaparecía. Sobre el crema tostado se recorta entera.
+       El apagón lo hace la pantalla negra de arriba, que es texto y señal.
+       ====================================================================== -->
+  <section class="stip tele zona zona--crema-2">
+    <div class="grilla">
+
+      <div class="tele__marco">
+        <!-- El video va PRIMERO en el HTML y la tele encima: así el marco
+             tapa los bordes del video y no al revés. -->
+        <video class="tele__video" data-tele-video controls
+               src="../assets/amigos%20tipines/web/serie.mp4"
+               poster="../assets/amigos%20tipines/web/serie.jpg"
+               playsinline preload="none"></video>
+
+        <img class="tele__mueble" src="../assets/amigos%20tipines/web/tele.png"
+             alt="" aria-hidden="true">
+
+        <!-- LA TAPA. Se va al primer click y no vuelve, igual que la del
+             teaser de +54. Existe por una razón concreta: serie.mp4 pesa
+             15,4 MB y el <video> lleva preload="none", así que no se baja un
+             solo byte hasta que alguien decide verlo. -->
+        <button class="tele__play" type="button" data-tele-play
+                aria-label="Reproducir la miniserie de TippinesTV">
+          <span class="tele__triangulo" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9z"/></svg>
+          </span>
+          <span class="etiqueta">TippinesTV · 2:40 · con sonido</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       6 · LOS JUGUETES
+       ----------------------------------------------------------------------
+       Las dos imágenes cuentan el paso solas: el modelo en gris a la
+       izquierda, chico, y las figuras pintadas a la derecha, grandes — que son
+       las que importan. Las dos apoyadas en la MISMA línea de piso, que es lo
+       que las hace leerse como dos momentos del mismo objeto y no como dos
+       fotos sueltas.
+       ====================================================================== -->
+  <section class="stip zona zona--crema-2">
+    <div class="grilla">
+
+      <p class="stip__rotulo etiqueta">Los juguetes</p>
+
+      <div class="stip__texto">
+        <p class="stip__copy">
+          Se usó una herramienta de IA que convierte imágenes 2D en modelos
+          3D. A partir de las imágenes de referencia de los Tipines, la IA
+          generó el modelado tridimensional, que se exportó en formato
+          <b>STL</b> para impresión 3D. Las figuras impresas se pintaron a
+          mano.
+        </p>
+      </div>
+
+      <div class="juguetes">
+        <figure class="juguetes__pieza juguetes__pieza--stl reveal">
+          <img src="../assets/amigos%20tipines/web/stl.png"
+               alt="Los tres personajes modelados en 3D, en gris, sin pintar"
+               loading="lazy">
+          <figcaption class="etiqueta">El modelo · STL</figcaption>
+        </figure>
+
+        <figure class="juguetes__pieza juguetes__pieza--figuras reveal">
+          <img src="../assets/amigos%20tipines/web/juguetes.png"
+               alt="Las tres figuras impresas en 3D y pintadas a mano, paradas sobre sus bases"
+               loading="lazy">
+          <figcaption class="etiqueta">Impresas y pintadas a mano</figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       7 · EL MINI-JUEGO
+       ----------------------------------------------------------------------
+       Zona negra, y esta vez sí corresponde: las tres hojas de sprites vienen
+       con FONDO TRANSPARENTE y fueron generadas sobre negro. Sobre el crema se
+       les nota el borde sucio de la generación; sobre el negro se apoyan como
+       en la hoja de sprites original.
+
+       Las hojas están acá porque son la prueba de lo que dice el copy: cada
+       animación existió como imagen antes de existir como código.
+       ====================================================================== -->
+  <section class="stip juego zona zona--negro">
+    <div class="grilla">
+
+      <p class="stip__rotulo etiqueta">El mini-juego</p>
+
+      <div class="stip__texto">
+        <p class="stip__copy">
+          Todo el universo visual del juego <b>se generó con IA antes de
+          escribir una línea de código</b>: los sprites de Peppi, Matti y
+          Gatti con sus animaciones de corrida y salto, los sprites del jefe
+          Soda y su ejército de mini-guardias, los íconos de vida de cada
+          personaje, y las pantallas de inicio, victoria y derrota. Cada
+          elemento nació como imagen generada, y recién después se integró al
+          motor del juego.
+        </p>
+
+        <!-- EL JUEGO EXISTE Y SE PUEDE JUGAR. Por eso es un botón de verdad y
+             no una captura con un pie de foto: es la única pieza de toda la
+             página con la que se puede interactuar fuera del sitio.
+             SIN la flechita de "se abre en otra pestaña": el botón dice JUGAR,
+             que ya es la acción entera, y el ícono le sumaba una segunda
+             lectura que nadie pidió.
+             rel="noopener": sin esto, la página que se abre puede tocar la
+             nuestra por window.opener. -->
+        <a class="juego__link" href="https://constantinogatti.github.io/los-tipines/"
+           target="_blank" rel="noopener noreferrer">
+          <span class="etiqueta">Jugar</span>
+        </a>
+      </div>
+
+      <figure class="juego__captura reveal">
+        <img src="../assets/amigos%20tipines/web/juego.png"
+             alt="Una pantalla del juego: uno de los personajes corriendo sobre plataformas de plastilina, con tres vidas arriba a la izquierda"
+             loading="lazy">
+      </figure>
+
+      <!-- LAS TRES HOJAS, TODAS DEL MISMO ALTO. Cada archivo tiene su propia
+           forma (874x582, 467x423 y 339x272), así que a tamaño libre quedaban
+           desalineadas arriba y abajo, y encima enormes. Con un alto fijo y
+           object-fit: contain las tres arrancan y terminan en la misma línea. -->
+      <div class="sprites">
+        <figure class="sprite reveal">
+          <img src="../assets/amigos%20tipines/web/sprite-personajes.png"
+               alt="Hoja de sprites: los tres personajes, siete cuadros de corrida cada uno" loading="lazy">
+          <figcaption class="etiqueta">Corrida · 3 personajes × 7 cuadros</figcaption>
+        </figure>
+        <figure class="sprite reveal">
+          <img src="../assets/amigos%20tipines/web/sprite-jefe.png"
+               alt="Hoja de sprites del jefe Soda: un sifón que dispara y termina reventando" loading="lazy">
+          <figcaption class="etiqueta">Jefe Soda · disparo y derrota</figcaption>
+        </figure>
+        <figure class="sprite reveal">
+          <img src="../assets/amigos%20tipines/web/sprite-sodas.png"
+               alt="Hoja de sprites de los mini-guardias: sifones chicos en ocho posiciones" loading="lazy">
+          <figcaption class="etiqueta">Mini-guardias · 8 posiciones</figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       8 · EL PROCESO
+       ----------------------------------------------------------------------
+       VA ANTEÚLTIMO, JUSTO ANTES DEL CIERRE, y no en el medio de la página.
+       El motivo es de lectura: primero se ven las cuatro piezas terminadas
+       —libro, miniserie, juguetes, juego— y recién entonces se explica el
+       circuito que las produjo a todas. Puesto en el medio, cortaba el
+       recorrido para explicar algo de lo que todavía faltaba la mitad.
+
+       LA FICHA VA EN LAS COLUMNAS 2-4, ADENTRO DEL BLOQUE DE TEXTO, y no de
+       punta a punta como estaba antes. De punta a punta eran siete renglones
+       de 11 px estirados a 1300 px con un agujero en el medio: se leía como
+       una tabla de Excel, no como una ficha. Cada fila ahora apila la acción y
+       la herramienta en la misma columna, con el número a la izquierda y la
+       marca de IA / a mano a la derecha.
+
+       LA FLECHA DE VUELTA no es decoración: es la segunda mitad del copy. El
+       circuito se ve lineal y no lo fue; sin la flecha, la ficha estaría
+       afirmando lo contrario de lo que dice el texto que tiene arriba.
+       ====================================================================== -->
+  <section class="stip zona zona--crema">
+    <div class="grilla">
+
+      <p class="stip__rotulo etiqueta">El proceso</p>
+
+      <div class="stip__texto">
+        <p class="stip__copy">
+          Prácticamente todas las escenas siguieron <b>el mismo circuito</b>:
+          prompts pensados en Claude, generación de imágenes en Gemini,
+          edición manual de detalles en Photoshop, mockups de referencia en
+          Figma AI, generación de video en Runway, Firefly y Veo, voz y música
+          en ElevenLabs y Suno, montaje final en After Effects.
+        </p>
+        <p class="stip__copy">
+          Aunque en apariencia es un proceso lineal, no lo fue: cada escena
+          volvió atrás varias veces, no solo por una cuestión estética o
+          narrativa, sino por una economización de recursos, como el tiempo o
+          los créditos limitados de cada plataforma.
+        </p>
+
+        <div class="proceso">
+
+          <ol class="proceso__pasos" role="list">
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">01</p>
+              <p class="paso__que">Guion y prompts</p>
+              <p class="paso__con">Claude</p>
+              <p class="paso__tipo etiqueta" data-tipo="ia">IA</p>
+            </li>
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">02</p>
+              <p class="paso__que">Generación de imagen</p>
+              <p class="paso__con">Gemini</p>
+              <p class="paso__tipo etiqueta" data-tipo="ia">IA</p>
+            </li>
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">03</p>
+              <p class="paso__que">Edición manual de detalles</p>
+              <p class="paso__con">Photoshop</p>
+              <p class="paso__tipo etiqueta" data-tipo="mano">A mano</p>
+            </li>
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">04</p>
+              <p class="paso__que">Mockups de referencia</p>
+              <p class="paso__con">Figma AI</p>
+              <p class="paso__tipo etiqueta" data-tipo="ia">IA</p>
+            </li>
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">05</p>
+              <p class="paso__que">Generación de video</p>
+              <p class="paso__con">Runway · Firefly · Veo</p>
+              <p class="paso__tipo etiqueta" data-tipo="ia">IA</p>
+            </li>
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">06</p>
+              <p class="paso__que">Voz y música</p>
+              <p class="paso__con">ElevenLabs · Suno</p>
+              <p class="paso__tipo etiqueta" data-tipo="ia">IA</p>
+            </li>
+            <li class="paso reveal">
+              <p class="paso__n etiqueta">07</p>
+              <p class="paso__que">Montaje final</p>
+              <p class="paso__con">After Effects</p>
+              <p class="paso__tipo etiqueta" data-tipo="mano">A mano</p>
+            </li>
+          </ol>
+
+          <!-- La vuelta atrás: el riel vertical con la punta de flecha arriba,
+               pegado al costado izquierdo de la ficha. -->
+          <div class="proceso__vuelta" aria-hidden="true">
+            <svg class="proceso__punta" viewBox="0 0 12 12" fill="none"
+                 stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                 stroke-linejoin="round"><path d="M6 1.5 L1.5 6.5 M6 1.5 L10.5 6.5"/></svg>
+          </div>
+          <p class="proceso__nota etiqueta">Cada escena volvió atrás varias veces</p>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================================
+       9 · REFLEXIÓN FINAL
+       ----------------------------------------------------------------------
+       El cierre. Va en negro y SIN rótulo de sección: no es un capítulo más,
+       es la conclusión de todo lo anterior. Un solo párrafo, grande, con mucho
+       aire alrededor y el acento verde en la frase que sostiene el argumento
+       entero.
+       ====================================================================== -->
+  <section class="stip cierre zona zona--negro">
+    <div class="grilla">
+      <p class="cierre__texto">
+        Ningún contenido generado por IA tiene sentido aislado. Una imagen
+        suelta, un video suelto, un audio suelto son materia prima, no
+        resultado. El trabajo real está en cruzarlos, curarlos, corregirlos y
+        editarlos hasta que formen un conjunto coherente. Ahí es donde
+        <b>ninguna plataforma sola alcanza</b>, y donde entra el criterio de
+        diseño.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ==========================================================================
+     EL VISOR DEL LIBRO
+     --------------------------------------------------------------------------
+     La pantalla completa del "Ver en grande". Vive FUERA de #swup a propósito:
+     es una capa que tapa todo, no contenido de la página, y así Swup no la
+     reemplaza a mitad de una navegación.
+     Arranca vacío y con [hidden]; initVisor le pone la imagen al abrirlo.
+     ========================================================================== -->
+<div class="visor" data-visor hidden>
+  <!-- El fondo es un <button> y no un <div> con onclick: cerrar tocando
+       afuera es una acción, y así funciona con teclado sin agregar nada. -->
+  <button class="visor__fondo" type="button" data-visor-cerrar
+          aria-label="Cerrar el visor"></button>
+
+  <div class="visor__lienzo" data-visor-lienzo>
+    <img data-visor-img alt="">
+  </div>
+
+  <button class="visor__nav visor__nav--prev" type="button" data-visor-prev
+          aria-label="Pliego anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 L7 12 L15 20"/></svg>
+  </button>
+  <button class="visor__nav visor__nav--next" type="button" data-visor-next
+          aria-label="Pliego siguiente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 L17 12 L9 20"/></svg>
+  </button>
+
+  <button class="visor__cerrar" type="button" data-visor-cerrar aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+         stroke-linecap="round" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18"/></svg>
+  </button>
+
+  <p class="visor__pie etiqueta" data-visor-pie></p>
+</div>
+
+<footer class="zona zona--crema-2">
+  <div class="site-footer grilla">
+    <p class="etiqueta"><a href="../index.html">Archivo — Matías Cornara</a></p>
+    <p class="etiqueta">
+      Amigos Tipines · con Pedro Benadiba y Constantino Gatti<br>
+      Matías Cornara · 2024
+    </p>
+  </div>
+</footer>
+
+<div class="transition-veil" aria-hidden="true"></div>
+
+<!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
+     Lenis. Tiene que estar en TODAS las páginas. -->
+<script src="../js/smooth-scroll.js?v=6" defer></script>
+<script src="../js/transiciones.js?v=6" defer></script>
+<script src="../js/main.js?v=23" defer></script>
+<script src="../js/tipines.js?v=2" defer></script>
 </body>
 </html>

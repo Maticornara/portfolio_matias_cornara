@@ -38,6 +38,8 @@ JS y no subís ese número, el navegador sirve la versión vieja. Pasó varias v
 | `js/main.js` | 16 | Init de todo: cursor, reveals, tilt, lupa, carpetas, aviso de file:// |
 | `css/archivo.css` | — | **La portada entera.** Hero + esquina, CV, herramientas, contacto, título de transición, grid de fichas, índice. Buscá `PERILLAS`. |
 | `js/archivo.js` | — | El punto de fuga de la esquina del hero, y nada más |
+| `css/tipines.css` | — | **Amigos Tipines**, la tercera página de proyecto. Buscá `PERILLAS`. |
+| `js/tipines.js` | — | Paneo del hero, el librito hojeable de 16 hojas, la tapa de la tele |
 | `sandbox/sandbox.js` | 7 | Init del sandbox (booklet, folder, cursor) |
 | `js/muestras.js` | 2 | Las 3 animaciones de pieza (`armarMuestra()`) |
 | `js/smooth-scroll.js` | 1 | Lenis + puente con GSAP/ScrollTrigger. **Carga primero.** |
@@ -86,8 +88,9 @@ nombre como `.bloque`, `.item`, `.fila` o `.grupo`, grepealo contra `simbio.css`
    portada (20/08). Los rótulos chicos ya no son monoespaciados: el papel de
    "ficha técnica" lo hacen MAYÚSCULA + tracking `0.14em` + peso 500. La
    reasignación es una variable por página (`--font` y `--font-mono` bajo
-   `.pag-archivo` en archivo.css, bajo `.pag-simbio` en simbio.css). Las 7
-   páginas de proyecto viejas todavía están en Nunito.
+   `.pag-archivo` en archivo.css, bajo `.pag-simbio` en simbio.css, bajo
+   `.pag-54` en mas-54.css y bajo `.pag-tipines` en tipines.css). Las 6 páginas
+   de proyecto que quedan sin rehacer todavía están en Nunito.
    **Tipografía de Simbio: Archivo, cuatro tamaños y nada más** — TÍTULO /
    SUBTÍTULO / CUERPO / RÓTULO. Todo cuelga de `.pag-simbio`; buscá **"SISTEMA
    TIPOGRÁFICO"** en `css/simbio.css`.
@@ -97,9 +100,11 @@ nombre como `.bloque`, `.item`, `.fila` o `.grupo`, grepealo contra `simbio.css`
 ## Perillas para editar a mano
 
 Mati edita el CSS él mismo. Los números ajustables están agrupados y comentados:
-buscá **`PERILLAS`** en `css/archivo.css` (la portada) y en `css/simbio.css` (la
-página de proyecto). Arriba de simbio.css hay además un **manual de unidades**
-(px, rem, vw, svh, ch, fr) y cómo mover/alinear cosas.
+buscá **`PERILLAS`** en `css/archivo.css` (la portada), `css/simbio.css`,
+`css/mas-54.css` y `css/tipines.css` (las tres páginas de proyecto). Arriba de
+simbio.css hay además un **manual de unidades** (px, rem, vw, svh, ch, fr) y
+cómo mover/alinear cosas; está repetido arriba de mas-54.css y de tipines.css a
+propósito, para no mandar a nadie a otro archivo por una explicación.
 Si agregás algo ajustable, ponelo como variable con su comentario.
 
 ## Diagnóstico

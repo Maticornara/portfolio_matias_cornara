@@ -59,7 +59,7 @@
 
   /* Cuánto aire queda entre el texto del hero y el borde de abajo. Es lo
      que decide qué tan lejos de la caja cae el nombre. */
-  --texto-abajo: clamp(3rem, 9vh, 7rem);
+  --texto-abajo: clamp(3rem, 9vh, 4rem);
 
   /* Aire entre el nombre y la frase de abajo. Son una sola unidad —un
      nombre y su bajada—, así que van casi pegados: lo único que los separa
@@ -112,9 +112,12 @@
      que la caja y el texto quedan igual de anchos en cualquier pantalla, sin
      una sola media query. Si mañana cambia --nombre-tam, se acomodan solos.
 
-     --texto-ancho: cuánto mide el nombre. Son 14 caracteres en peso 800, y
-     medido en pantalla ocupan 9,09 px de ancho por cada px de tamaño de
-     letra. (Es el mismo 9,09 que usa --frase-tam más arriba.)
+     --texto-ancho: cuánto mide el nombre DE VERDAD. El valor que está
+     escrito acá es solo una estimación para el primer cuadro: apenas carga,
+     archivo.js mide el ancho real del <h1> y lo pisa con un valor en px.
+     Tiene que ser así porque el ancho de un texto depende de la tipografía,
+     y ninguna cuenta de CSS puede saberlo — la estimación de antes daba 320
+     px cuando el texto medía otra cosa, y el cubo salía de otro tamaño.
 
      --caja-ancho: OJO, este número NO es el ancho del cubo, es el del
      dibujo entero. El lienzo del SVG mide 200 de ancho y el cubo ocupa 68 de
@@ -125,6 +128,19 @@
      sea que el cubo se veía a un tercio de eso. */
   --texto-ancho: calc(var(--nombre-tam) * 9.09);
   --caja-ancho: calc(var(--texto-ancho) * 2.941);
+
+  /* CUÁNTO MIDE EL CUBO COMPARADO CON EL NOMBRE. *** LA PERILLA DEL TAMAÑO ***
+     ------------------------------------------------------------------
+     1 = el cubo mide exactamente lo mismo de ancho que "Matías Cornara".
+     Suena a que debería ser el valor correcto, y no lo es: el cubo es un
+     objeto macizo y oscuro, el nombre son letras con aire entre medio. Con
+     los dos al mismo ancho, el cubo pesa mucho más y la ilustración se come
+     la portada.
+     0.75 lo deja mandando pero sin aplastar al texto. Y ojo con bajarlo
+     mucho: el DIBUJO ENTERO se achica con él —incluidas las hojas del
+     piso—, así que por debajo de 0.55 la caja vuelve a verse perdida.
+     Lo lee archivo.js; el resto de la cuenta la hace él. */
+  --caja-proporcion: 0.75;
 
   /* --- SEPARACIÓN ENTRE SECCIONES ------------------------------------
      ES LA PERILLA MÁS IMPORTANTE DE LA PÁGINA. Lo único que separa una
@@ -276,7 +292,7 @@
   text-align: center;
 }
 .portada-hero__frase { margin-top: var(--nombre-frase-aire); }
-.portada-hero__flecha { margin-top: var(--flecha-aire); }
+.portada-hero__mouse { margin-top: var(--flecha-aire); }
 
 /* EL NOMBRE VA EN VERDE Y CHICO.
    Antes era negro, enorme y contra el margen izquierdo. Acá acompaña a la
@@ -299,15 +315,52 @@
 
 /* La flecha: baja a la primera sección. El alto es la perilla de su tamaño;
    el ancho sale de la proporción del dibujo. */
-.portada-hero__flecha {
+/* EL MOUSE QUE INDICA EL SCROLL.
+   Reemplazó a la flecha. Sin flechas debajo y sin texto: la silueta de un
+   mouse con un punto que baja ya se lee sola, y agregarle "scrolleá" sería
+   explicar dos veces lo mismo.
+   El margen sale de --flecha-aire (arriba, en PERILLAS), que es el mismo que
+   usaba la flecha. */
+.portada-hero__mouse {
   display: block;
-  margin-top: var(--s-5);
   color: var(--verde);
-  opacity: .8;
-  transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
+  opacity: .75;
+  transition: opacity var(--dur-2) var(--ease);
 }
-.portada-hero__flecha svg { height: 30px; width: auto; }
-.portada-hero__flecha:hover { transform: translateY(4px); opacity: 1; }
+.portada-hero__mouse svg { height: 38px; width: auto; }
+
+/* El contorno del mouse. El grosor vive acá y no en el atributo del SVG para
+   que quede como una perilla más: 2.2 lo deja parejo con el peso del nombre
+   que tiene encima. Más fino se despega del texto, más grueso pesa de más. */
+.mouse__cuerpo { stroke-width: 2.2; }
+.portada-hero__mouse:hover { opacity: 1; }
+
+/* EL PUNTITO QUE BAJA.
+   Aparece arriba, baja y se apaga antes de llegar al final del cuerpo — que
+   es como se lee "acá se baja". Si llegara hasta abajo y volviera de un
+   salto, se vería el rebobinado.
+
+   El translate va en unidades del LIENZO del SVG, no en píxeles de pantalla:
+   adentro de un viewBox, un "px" de CSS es una unidad de ese lienzo. Por eso
+   el recorrido de 12 no depende del tamaño al que se muestre el mouse — si
+   mañana se agranda, el punto sigue recorriendo la misma proporción. */
+@keyframes mouse-rueda {
+  0%   { transform: translateY(0);     opacity: 0; }
+  18%  { opacity: 1; }
+  65%  { opacity: 1; }
+  100% { transform: translateY(12px);  opacity: 0; }
+}
+.mouse__punto {
+  animation: mouse-rueda 2.1s var(--ease) infinite;
+}
+
+/* Con movimiento reducido el punto se queda quieto y visible arriba: sin
+   animación sigue siendo un mouse, que es lo que tiene que comunicar.
+   (El barrido general de base.css apaga la animación; esto le devuelve la
+   opacidad, que si no quedaría en el 0 del primer fotograma.) */
+@media (prefers-reduced-motion: reduce) {
+  .mouse__punto { animation: none; opacity: 1; }
+}
 
 
 /* --------------------------------------------------------------------------
@@ -345,12 +398,26 @@
      nombre. El texto no se mueve —está anclado al pie del hero con
      --texto-abajo—, así que lo único que cambia es cuánto aire queda entre
      los papeles del piso y el nombre. Subilo y la caja se aleja del texto;
-     bajalo y se le acerca. */
-  --fuga-y: 60;
+     bajalo y se le acerca.
+
+     VOLVIÓ A 55 AL AGRANDAR LA CAJA. Un cubo en isometría 2:1 mide tan ALTO
+     como ancho: al pasar el cubo de 130 a 320 px de ancho, también creció
+     320 px hacia abajo, y con el vértice al 60% la base se le montaba al
+     nombre. Los dos números están atados — si agrandás la caja, este tiene
+     que subir. */
+  --fuga-y: 44;
 
   position: absolute;
   left: calc(var(--fuga-x) * 1%);
-  top: calc(var(--fuga-y) * 1%);
+
+  /* LA ALTURA LA CALCULA EL JS, Y ESTE % ES LA RESERVA.
+     archivo.js mide la nav, el nombre y el hueco que queda entre los dos, y
+     escribe --fuga-y-px con la altura exacta. Mientras no lo haya hecho —o
+     si el JS no corre— vale el porcentaje de acá arriba, que deja la portada
+     razonable igual.
+     Para subir o bajar el dibujo NO se toca este número: se toca `sesgo` en
+     archivo.js, que es el que manda cuando el JS está vivo. */
+  top: var(--fuga-y-px, calc(var(--fuga-y) * 1%));
   /* 0x0 a propósito: no es una caja, es un punto. Todo lo de adentro se
      posiciona respecto de este origen. */
   width: 0;
@@ -502,6 +569,22 @@
   stroke: #C3D09C;
   stroke-width: 6.6;
 }
+/* LA AGARRADERA CALADA. Es un agujero pasante: no muestra el interior de la
+   caja sino la pared del cuarto que hay detrás, así que se rellena con el
+   MISMO crema del fondo de la página. Es el único lugar del dibujo donde se
+   ve a través, y es lo que hace que la caja se lea hueca y no maciza.
+   Si algún día cambia el fondo de la portada, este color lo sigue solo,
+   porque no es un valor escrito acá sino la variable del sitio. */
+.caja__agarre--calada .caja__agarre-hueco { stroke: var(--crema); }
+
+/* EN LA TAPA EL TROQUEL VA MÁS ANGOSTO QUE EN LAS PAREDES.
+   No es un capricho: la tapa es un plano horizontal y en isometría se ve
+   escorzado —aplastado a la mitad—, mientras que las paredes se ven de
+   frente. Con el mismo grosor de trazo, las de arriba se verían más gordas
+   que las de abajo aunque el agujero real sea igual. */
+.caja__agarre--tapa .caja__agarre-canto { stroke-width: 5.8; }
+.caja__agarre--tapa .caja__agarre-hueco { stroke-width: 4.5; }
+
 .caja__agarre-hueco {
   /* El interior de la caja, en sombra. MÁS OSCURO QUE LA CARA MÁS OSCURA:
      los dos agujeros están en paredes de distinto claro, y si el hueco no
@@ -541,10 +624,45 @@
    y las hace leerse como polaroid y no como una hoja más. */
 .caja__foto polygon { fill: var(--verde-claro); opacity: .55; }
 
-/* En pantalla chica la caja se achica, y nada más: el texto no se le cruza
-   porque vive contra el borde de abajo. */
+/* EL POST-IT. Misma huella que las hojas, pero CUADRADO en el piso (los dos
+   lados iguales) y de color parejo en vez de crema con borde. Con eso solo
+   ya se lee como otra cosa, sin necesidad de cambiarle el tamaño. */
+.caja__postit {
+  fill: var(--verde-claro);
+  stroke: var(--verde);
+  stroke-width: 1;
+  opacity: .55;
+}
+
+/* EN PANTALLA CHICA EL DIBUJO SE ACHICA RESPECTO DEL TEXTO.
+   En pantalla grande el cubo mide exactamente lo que el texto (proporción
+   2,941, ver PERILLAS). En un teléfono esa cuenta hace que el LIENZO —que es
+   casi tres veces el cubo, porque incluye el piso— quede más ancho que la
+   pantalla, y las cosas de los extremos (el lápiz, el cuaderno) se cortan
+   contra el borde. Con 2,0 el cubo queda un poco más chico que el texto pero
+   entra el piso entero, que es lo que importa: media hoja cortada se lee
+   como un error, un cubo un poco más chico no. */
 @media (max-width: 960px) {
-  .esquina { --caja-ancho: clamp(130px, 32vw, 200px); }
+  .esquina { --caja-ancho: calc(var(--texto-ancho) * 2.0); }
+}
+
+/* EN PANTALLA BAJA MANDA EL ALTO, NO EL ANCHO.
+   El tamaño de la caja sale del ancho del texto, pero el lugar que necesita
+   es VERTICAL: un cubo en isometría 2:1 mide tan alto como ancho. En una
+   ventana ancha y baja (un portátil de 1366x700, una ventana a media
+   pantalla) la cuenta del ancho pide una caja más alta que el hueco que hay
+   entre la nav y el nombre, y la base se le monta al texto.
+   ARRANCABA EN 850 Y ERA DEMASIADO PRONTO. Con ese número, una ventana de
+   portátil normal caía justo del lado malo y el cubo salía un 25% más chico
+   que el texto — que es justo lo contrario de lo que se le pidió. El 850
+   estaba calculado cuando el dibujo llegaba más abajo y el nombre más
+   arriba; al subir los papeles y bajar el texto dejó de hacer falta tan
+   pronto. Recalculado: por encima de 760 px de alto entra sin problema, y
+   ahí el cubo mide exactamente lo mismo que el texto. */
+@media (max-height: 760px) {
+  .esquina {
+    --caja-ancho: min(calc(var(--texto-ancho) * 2.941), 82vh);
+  }
 }
 
 /* El contenido del hero va POR ENCIMA de la esquina */

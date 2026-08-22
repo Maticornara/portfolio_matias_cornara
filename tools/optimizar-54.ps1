@@ -226,11 +226,16 @@ if ($teaser) {
 # de 250 px de ancho, asi que 540 de ancho ya cubre pantallas de doble
 # densidad y de sobra. Se buscan con comodin y se numeran por orden alfabetico:
 # asi el nombre exacto del archivo no importa.
+# LAS HISTORIAS CONSERVAN EL AUDIO ($true al final).
+# Estaban saliendo con -an, o sea mudas, y en la pagina no habia forma de que
+# sonaran por mas que el boton estuviera bien: el archivo directamente no traia
+# pista de audio. Los originales SI la traen (aac, 2 canales) — se verifica con:
+#   ffprobe -v error -show_entries stream=codec_type -of csv=p=0 <archivo>
 $historias = Get-ChildItem (Join-Path $origen "HISTORIAS") -Filter *.mp4 -ErrorAction SilentlyContinue | Sort-Object Name
 if ($historias) {
   $n = 1
   foreach ($h in $historias) {
-    ConvertirVideo $h.FullName (Join-Path $destino "historia-$n.mp4") 540 30 $false
+    ConvertirVideo $h.FullName (Join-Path $destino "historia-$n.mp4") 540 30 $true
     $n++
   }
 } else {

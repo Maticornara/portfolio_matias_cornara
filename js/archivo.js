@@ -205,14 +205,166 @@
       ease: "none",
       scrollTrigger: {
         trigger: hero,
-        start: "top top",      // arranca cuando el hero toca el borde
-        end: "bottom top",     // termina cuando terminó de salir
+
+        /* CUÁNDO ARRANCA. "60% top" = recién cuando el 60% del hero ya pasó
+           por el borde de arriba. Y no es un porcentaje elegido a ojo: la
+           caja está apoyada al 60% del alto del hero (--fuga-y en el CSS), o
+           sea que ese es justo el momento en que la ilustración empieza a
+           salir de pantalla.
+           Antes arrancaba en "top top", con el hero todavía entero a la
+           vista, y el dibujo se desenfocaba mientras se lo estaba mirando.
+           Si algún día se mueve --fuga-y, este número lo acompaña. */
+        start: "60% top",
+        end: "bottom top",     // termina cuando el hero terminó de salir
         scrub: true,
       },
     });
   }
 
+  /* ==================================================================
+     DÓNDE VA Y CUÁNTO MIDE LA ILUSTRACIÓN
+     --------------------------------------------------------------------
+     ESTO ESTABA EN EL CSS Y ESTABA MAL. El tamaño salía de estimar el
+     ancho del nombre (tamaño de letra x 9,09, un número sacado de medir
+     una captura) y la posición de un porcentaje del alto del hero. Las dos
+     cuentas fallan por el mismo motivo: dependen de cosas que el CSS no
+     puede saber — cuánto ocupa un texto en una tipografía concreta, cuánto
+     mide la nav, dónde arranca el nombre. Cada vez que había que corregir
+     "un poco más arriba" se ajustaba un porcentaje a ciegas.
+
+     Acá se mide todo y se resuelve de una:
+       · el ancho REAL del nombre, para que el cubo mida exactamente lo
+         mismo que él;
+       · el borde de abajo de la nav y el borde de arriba del texto, que
+         son los que definen la franja libre donde la ilustración tiene que
+         entrar;
+       · y con eso, el tamaño más grande que entra y la altura a la que hay
+         que colgar el vértice.
+
+     Si el JS no corre, el CSS tiene sus valores de reserva (--fuga-y y la
+     estimación de --texto-ancho) y la portada se ve razonable igual.
+     ================================================================== */
+
+  const DIBUJO = {
+    /* EL DIBUJO, EN UNIDADES DEL LIENZO DEL SVG (que mide 200 x 160).
+       Estos cuatro números describen la ilustración y solo cambian si se
+       redibuja: son de dónde a dónde llega y dónde tiene el vértice. */
+    LIENZO: 200,
+    TECHO: 28,      // lo más alto: la punta de la tapa
+    PISO: 112.5,    // lo más bajo: el post-it de adelante
+    ANCLA: 62,      // el vértice del cuarto, de donde cuelga todo
+    CUBO: 68,       // cuánto del lienzo ocupa el cubo de ancho
+
+    /* --- PERILLAS DE AIRE, EN PÍXELES ---------------------------------
+       Cuánto respiro se le deja arriba y abajo. Son mínimos: si sobra
+       lugar, la ilustración crece hasta donde le permita el ancho del
+       nombre y el resto queda como aire repartido. */
+    aireNav: 40,      // entre la nav y la punta de la caja
+    aireTexto: 80,    // entre lo más bajo del dibujo y el nombre
+
+    /* CUÁNTO SE CORRE DEL CENTRO DEL HUECO. *** LA PERILLA DE LA ALTURA ***
+       0 = el mismo aire arriba que abajo. Negativo = más arriba, positivo =
+       más abajo, en fracción del sobrante (0.1 = un 10%).
+       Queda en 0: con la cuenta arreglada, centrado es centrado, y no hace
+       falta compensar nada. Es el único número que hay que tocar si la
+       querés más arriba o más abajo. */
+    sesgo: 0,
+  };
+
+  function acomodarDibujo() {
+    const esquina = document.querySelector("[data-esquina]");
+    if (!esquina) return;
+
+    const hero = esquina.closest(".portada-hero");
+    const nombre = document.querySelector(".portada-hero__nombre");
+    const bloque = document.querySelector(".portada-hero__texto");
+    const nav = document.querySelector(".site-nav");
+    if (!hero || !nombre || !bloque || !nombre.firstChild) return;
+
+    const rHero = hero.getBoundingClientRect();
+    const rTexto = bloque.getBoundingClientRect();
+
+    /* El ancho del nombre se mide con un Range y no con el ancho del <h1>:
+       el <h1> ocupa TODA la fila de la grilla y está centrado adentro, así
+       que su ancho es el de la columna, no el de las letras. */
+    const rango = document.createRange();
+    rango.selectNodeContents(nombre);
+    const anchoTexto = rango.getBoundingClientRect().width;
+    if (anchoTexto <= 0) return;
+
+    /* EL HUECO, DE BORDE A BORDE: del pie de la nav al techo del nombre.
+       Se guarda ENTERO y sin recortar, porque el centro del dibujo tiene que
+       calcularse contra este hueco y no contra uno ya mordido.
+       Acá estaba el "quedó muy arriba": yo restaba primero los aires mínimos
+       —40 arriba y 80 abajo— y recién después centraba. Centrar en un hueco
+       al que le sacaste más de abajo que de arriba no da el medio: da 20 px
+       más arriba, siempre, y encima el sesgo sumaba lo suyo. */
+    const navAbajo = nav ? nav.getBoundingClientRect().bottom : 0;
+    const arriba = Math.max(navAbajo - rHero.top, 0);
+    const abajo = rTexto.top - rHero.top;
+
+    /* Para el TAMAÑO sí valen los aires mínimos: es el alto máximo que puede
+       tener el dibujo sin pegarse a la nav ni al nombre. */
+    const franja = (abajo - DIBUJO.aireTexto) - (arriba + DIBUJO.aireNav);
+    if (franja <= 0) return;
+
+    /* DOS CANDIDATOS DE TAMAÑO Y GANA EL MÁS CHICO.
+       Uno sale del ancho: es el que hace que el cubo mida lo mismo que el
+       nombre, que es lo que se busca. El otro sale del alto: es el más
+       grande que entra en la franja sin pisar nada. En una pantalla normal
+       manda el del ancho; en una ventana baja manda el del alto y la caja
+       se achica sola en vez de encimarse al texto. */
+    const alto = DIBUJO.PISO - DIBUJO.TECHO;
+
+    /* La proporción contra el nombre vive en el CSS, con las demás perillas,
+       y no acá: es una decisión de diseño y Mati las toca ahí. Si por lo que
+       sea no se puede leer, vale 1 — el cubo del ancho del nombre. */
+    const prop = parseFloat(
+      getComputedStyle(esquina).getPropertyValue("--caja-proporcion")
+    ) || 1;
+
+    const porTexto = anchoTexto * prop * DIBUJO.LIENZO / DIBUJO.CUBO;
+    const porAlto = franja * DIBUJO.LIENZO / alto;
+    const lienzo = Math.min(porTexto, porAlto);
+
+    /* Y DÓNDE CAE EL VÉRTICE.
+       El dibujo se centra en el hueco COMPLETO —así queda el mismo aire
+       arriba que abajo, que es lo que el ojo lee como centrado— y recién
+       después se lo empuja hacia adentro si quedó pegado a alguno de los dos
+       bordes. Los mínimos actúan como tope, no como parte del centrado. */
+    const altoDibujo = lienzo * alto / DIBUJO.LIENZO;
+    const sobra = (abajo - arriba) - altoDibujo;
+
+    let techo = arriba + sobra * (0.5 + DIBUJO.sesgo);
+    techo = Math.max(techo, arriba + DIBUJO.aireNav);
+    techo = Math.min(techo, abajo - DIBUJO.aireTexto - altoDibujo);
+
+    const vertice = techo + lienzo * (DIBUJO.ANCLA - DIBUJO.TECHO) / DIBUJO.LIENZO;
+
+    esquina.style.setProperty("--caja-ancho", lienzo.toFixed(1) + "px");
+    esquina.style.setProperty("--fuga-y-px", vertice.toFixed(1) + "px");
+  }
+
+  function initMedida() {
+    acomodarDibujo();
+
+    // La tipografía llega después del primer dibujo: sin esto, el cubo se
+    // queda con la medida de la tipografía de reemplazo, que es otra.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(acomodarDibujo);
+    }
+
+    // Un temporizador corto junta las decenas de eventos que dispara
+    // arrastrar el borde de la ventana en una sola medición.
+    let espera = null;
+    window.addEventListener("resize", () => {
+      clearTimeout(espera);
+      espera = setTimeout(acomodarDibujo, 120);
+    }, { passive: true });
+  }
+
   function init() {
+    initMedida();
     initEsquina();
     initDesenfoque();
   }
