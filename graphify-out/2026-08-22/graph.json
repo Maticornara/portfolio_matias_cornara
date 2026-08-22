@@ -3599,15 +3599,15 @@
       "norm_label": "queda pendiente"
     },
     {
-      "label": "30. El ruido fantasma era el teaser, no las historias (22/08/2026)",
+      "label": "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)",
       "file_type": "document",
       "source_file": "notas/DECISIONES.md",
       "source_location": "L2715",
       "_origin": "ast",
-      "id": "notas_decisiones_30_el_ruido_fantasma_era_el_teaser_no_las_historias_22_08_2026",
+      "id": "notas_decisiones_30_el_ruido_fantasma_eran_dos_bugs_y_el_segundo_era_el_bueno_22_08_2026",
       "community": 48,
-      "community_name": "30. El ruido fantasma era el teaser, no las historias (22/08/2026)",
-      "norm_label": "30. el ruido fantasma era el teaser, no las historias (22/08/2026)"
+      "community_name": "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)",
+      "norm_label": "30. el ruido fantasma: eran dos bugs, y el segundo era el bueno (22/08/2026)"
     },
     {
       "label": "C\u00d3MO SE ENCONTR\u00d3",
@@ -3617,7 +3617,7 @@
       "_origin": "ast",
       "id": "notas_decisiones_c\u00f3mo_se_encontr\u00f3",
       "community": 48,
-      "community_name": "30. El ruido fantasma era el teaser, no las historias (22/08/2026)",
+      "community_name": "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)",
       "norm_label": "como se encontro"
     },
     {
@@ -3628,7 +3628,7 @@
       "_origin": "ast",
       "id": "notas_decisiones_la_regla_del_teaser_no_es_la_de_las_historias",
       "community": 48,
-      "community_name": "30. El ruido fantasma era el teaser, no las historias (22/08/2026)",
+      "community_name": "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)",
       "norm_label": "la regla del teaser no es la de las historias"
     },
     {
@@ -3639,7 +3639,7 @@
       "_origin": "ast",
       "id": "notas_decisiones_el_bug_adentro_del_arreglo_pause_es_as\u00edncrono",
       "community": 48,
-      "community_name": "30. El ruido fantasma era el teaser, no las historias (22/08/2026)",
+      "community_name": "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)",
       "norm_label": "el bug adentro del arreglo: `pause` es asincrono"
     },
     {
@@ -3650,7 +3650,7 @@
       "_origin": "ast",
       "id": "notas_decisiones_la_regla_general_para_todo_el_sitio",
       "community": 48,
-      "community_name": "30. El ruido fantasma era el teaser, no las historias (22/08/2026)",
+      "community_name": "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)",
       "norm_label": "la regla general para todo el sitio"
     },
     {
@@ -3726,9 +3726,64 @@
       "source_location": "L2892",
       "_origin": "ast",
       "id": "notas_decisiones_23_simbio_en_mobile_20_08_2026",
-      "community": 1,
-      "community_name": "ARCHIVO / MI CAJ\u00d3N \u2014 bit\u00e1cora del proyecto",
+      "community": 50,
+      "community_name": "23. Simbio en mobile (20/08/2026)",
       "norm_label": "23. simbio en mobile (20/08/2026)"
+    },
+    {
+      "label": "30-bis. El que de verdad molestaba: ATRAVESAR la secci\u00f3n",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L2961",
+      "_origin": "ast",
+      "id": "notas_decisiones_30_bis_el_que_de_verdad_molestaba_atravesar_la_secci\u00f3n",
+      "community": 50,
+      "community_name": "23. Simbio en mobile (20/08/2026)",
+      "norm_label": "30-bis. el que de verdad molestaba: atravesar la seccion"
+    },
+    {
+      "label": "LA REGLA GENERAL, CORREGIDA",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3004",
+      "_origin": "ast",
+      "id": "notas_decisiones_la_regla_general_corregida",
+      "community": 50,
+      "community_name": "23. Simbio en mobile (20/08/2026)",
+      "norm_label": "la regla general, corregida"
+    },
+    {
+      "label": "32. Tipines: la composici\u00f3n de la miniserie y el bot\u00f3n que no se ve\u00eda (22/08/2026)",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3020",
+      "_origin": "ast",
+      "id": "notas_decisiones_32_tipines_la_composici\u00f3n_de_la_miniserie_y_el_bot\u00f3n_que_no_se_ve\u00eda_22_08_2026",
+      "community": 51,
+      "community_name": "32. Tipines: la composici\u00f3n de la miniserie y el bot\u00f3n que no se ve\u00eda (22/08/2026)",
+      "norm_label": "32. tipines: la composicion de la miniserie y el boton que no se veia (22/08/2026)"
+    },
+    {
+      "label": "LA SE\u00d1AL ARRANCA EN LA COLUMNA 2",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3022",
+      "_origin": "ast",
+      "id": "notas_decisiones_la_se\u00f1al_arranca_en_la_columna_2",
+      "community": 51,
+      "community_name": "32. Tipines: la composici\u00f3n de la miniserie y el bot\u00f3n que no se ve\u00eda (22/08/2026)",
+      "norm_label": "la senal arranca en la columna 2"
+    },
+    {
+      "label": "EL BOT\u00d3N DE JUGAR ERA UN PROBLEMA DE CONTRASTE",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3050",
+      "_origin": "ast",
+      "id": "notas_decisiones_el_bot\u00f3n_de_jugar_era_un_problema_de_contraste",
+      "community": 51,
+      "community_name": "32. Tipines: la composici\u00f3n de la miniserie y el bot\u00f3n que no se ve\u00eda (22/08/2026)",
+      "norm_label": "el boton de jugar era un problema de contraste"
     }
   ],
   "links": [
@@ -7064,7 +7119,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
-      "target": "notas_decisiones_30_el_ruido_fantasma_era_el_teaser_no_las_historias_22_08_2026",
+      "target": "notas_decisiones_30_el_ruido_fantasma_eran_dos_bugs_y_el_segundo_era_el_bueno_22_08_2026",
       "confidence_score": 1.0
     },
     {
@@ -7076,6 +7131,17 @@
       "_origin": "ast",
       "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
       "target": "notas_decisiones_31_tipines_tres_cosas_rotas_y_por_qu\u00e9_22_08_2026",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3020",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
+      "target": "notas_decisiones_32_tipines_la_composici\u00f3n_de_la_miniserie_y_el_bot\u00f3n_que_no_se_ve\u00eda_22_08_2026",
       "confidence_score": 1.0
     },
     {
@@ -8185,7 +8251,7 @@
       "source_location": "L2721",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "notas_decisiones_30_el_ruido_fantasma_era_el_teaser_no_las_historias_22_08_2026",
+      "source": "notas_decisiones_30_el_ruido_fantasma_eran_dos_bugs_y_el_segundo_era_el_bueno_22_08_2026",
       "target": "notas_decisiones_c\u00f3mo_se_encontr\u00f3",
       "confidence_score": 1.0
     },
@@ -8196,7 +8262,7 @@
       "source_location": "L2755",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "notas_decisiones_30_el_ruido_fantasma_era_el_teaser_no_las_historias_22_08_2026",
+      "source": "notas_decisiones_30_el_ruido_fantasma_eran_dos_bugs_y_el_segundo_era_el_bueno_22_08_2026",
       "target": "notas_decisiones_el_bug_adentro_del_arreglo_pause_es_as\u00edncrono",
       "confidence_score": 1.0
     },
@@ -8207,7 +8273,7 @@
       "source_location": "L2740",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "notas_decisiones_30_el_ruido_fantasma_era_el_teaser_no_las_historias_22_08_2026",
+      "source": "notas_decisiones_30_el_ruido_fantasma_eran_dos_bugs_y_el_segundo_era_el_bueno_22_08_2026",
       "target": "notas_decisiones_la_regla_del_teaser_no_es_la_de_las_historias",
       "confidence_score": 1.0
     },
@@ -8218,7 +8284,7 @@
       "source_location": "L2776",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "notas_decisiones_30_el_ruido_fantasma_era_el_teaser_no_las_historias_22_08_2026",
+      "source": "notas_decisiones_30_el_ruido_fantasma_eran_dos_bugs_y_el_segundo_era_el_bueno_22_08_2026",
       "target": "notas_decisiones_la_regla_general_para_todo_el_sitio",
       "confidence_score": 1.0
     },
@@ -8276,8 +8342,52 @@
       "source": "notas_decisiones_31_tipines_tres_cosas_rotas_y_por_qu\u00e9_22_08_2026",
       "target": "notas_decisiones_queda_pendiente_2882",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L2961",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_23_simbio_en_mobile_20_08_2026",
+      "target": "notas_decisiones_30_bis_el_que_de_verdad_molestaba_atravesar_la_secci\u00f3n",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3004",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_23_simbio_en_mobile_20_08_2026",
+      "target": "notas_decisiones_la_regla_general_corregida",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3050",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_32_tipines_la_composici\u00f3n_de_la_miniserie_y_el_bot\u00f3n_que_no_se_ve\u00eda_22_08_2026",
+      "target": "notas_decisiones_el_bot\u00f3n_de_jugar_era_un_problema_de_contraste",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3022",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_32_tipines_la_composici\u00f3n_de_la_miniserie_y_el_bot\u00f3n_que_no_se_ve\u00eda_22_08_2026",
+      "target": "notas_decisiones_la_se\u00f1al_arranca_en_la_columna_2",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8f41416b3a6127ca21b3d675eb3b4dcf19a2c38a"
+  "built_at_commit": "39d8db936e96b1e33bbb23ce70ace1454b0e40b0"
 }

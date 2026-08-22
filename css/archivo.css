@@ -142,6 +142,42 @@
      Lo lee archivo.js; el resto de la cuenta la hace él. */
   --caja-proporcion: 0.75;
 
+  /* --- LA ENTRADA DEL HERO ------------------------------------------
+     El cuarto se arma solo al cargar la pagina: primero las lineas, despues
+     la caja, despues los papeles. Pasa UNA vez y queda quieto: no hay nada
+     en loop.
+
+     Los tiempos son "cuando arranca" cada cosa, contados desde que el JS
+     enciende la entrada, y estan escritos en el mismo orden en que se ven.
+
+     OJO CON LA CUENTA DEL FINAL. Los papeles entran de a uno cada --paso, y
+     son NUEVE objetos: la pila de tres cuenta como uno solo, porque sus tres
+     hojas entran juntas (si no, se ve armarse una pila y queda raro). O sea
+     que el ultimo arranca 8 x --paso despues del primero. Con estos valores:
+        1.00 + 8 x 0.06 + 0.26 = 1.74s de punta a punta.
+     El pedido decia 1.4s, pero con nueve piezas y 60ms entre una y otra esa
+     cuenta no cierra: son 480ms solo de escalonado. Si lo querés mas corto,
+     el numero que mas rinde es --entrada-paso: bajarlo a 0.04 deja todo en
+     1.58s sin que se pierda el efecto de a uno. */
+  --entrada-lineas: 0.2s;       /* crecen las tres lineas del rincon */
+  --entrada-lineas-dur: 0.5s;
+  --entrada-caja: 0.6s;         /* baja la caja y aterriza */
+  --entrada-caja-dur: 0.45s;
+  --entrada-papeles: 1s;        /* empiezan a entrar los papeles */
+  --entrada-papel-dur: 0.26s;
+  --entrada-paso: 0.06s;        /* espera entre un papel y el siguiente */
+
+  /* CUANTO CAE LA CAJA Y CUANTO SUBEN LOS PAPELES.
+     Van en unidades del LIENZO del SVG, no en pixeles de pantalla: adentro
+     de un viewBox, un "px" de CSS es una unidad de ese lienzo. Eso es lo que
+     queremos, porque asi el recorrido se escala con el dibujo y la caida se
+     ve igual de grande en una pantalla chica que en una grande.
+     El lienzo mide 200 y se muestra a unos 700 px, o sea que 1 unidad son
+     ~3,5 px reales: --caja-caida 3.5 son los 12 px de caida del pedido, y
+     --papel-sube 1.2 son los 4 px de los papeles. */
+  --caja-caida: 3.5;
+  --papel-sube: 1.2;
+
   /* --- SEPARACIÓN ENTRE SECCIONES ------------------------------------
      ES LA PERILLA MÁS IMPORTANTE DE LA PÁGINA. Lo único que separa una
      sección de otra es este aire: no hay ni divisor ni cambio de fondo.
@@ -1054,4 +1090,31 @@
   .ficha--simbio, .ficha--museo, .ficha--54,
   .ficha--tipines, .ficha--tesis { grid-column: 1 / -1; }
   .ficha--simbio .ficha__marco { aspect-ratio: 16 / 9; }
+}
+
+
+/* --------------------------------------------------------------------------
+   LA CAJA EN EL TELÉFONO — MÁS GRANDE  (20/08/2026)
+   ----------------------------------------------------------------------------
+   Medido a 375x844 antes de tocar nada: el cubo se veía de 118px (31% del
+   ancho) y entre la nav y el nombre sobraban 600px de alto sin usar.
+
+   POR QUÉ ERA CHICO: el tamaño del cubo sale del ancho del NOMBRE, y en un
+   teléfono el nombre mide 157px. Con la proporción de escritorio (0.75) el
+   cubo termina midiendo tres cuartos de un texto que ya es chiquito.
+
+   OJO CON DÓNDE SE TOCA ESTO. El ancho final (--caja-ancho) lo escribe
+   js/archivo.js como valor inline, y lo inline le gana a cualquier archivo
+   CSS: intentar cambiarlo desde acá no hace absolutamente nada (probado).
+   La perilla que el JS SÍ lee del CSS es --caja-proporcion, así que es acá
+   donde hay que tocar.
+
+   1.25 = el cubo mide una vez y cuarto el ancho del nombre. En el teléfono
+   eso lo deja en poco más de la mitad del ancho de la pantalla.
+   No hace falta poner un freno por altura: el JS ya elige el más chico entre
+   lo que pide esta proporción y lo que entra entre la nav y el nombre, así
+   que en un teléfono bajo se achica solo en vez de montarse sobre el texto.
+   -------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .esquina { --caja-proporcion: 1.25; }
 }

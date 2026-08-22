@@ -249,7 +249,13 @@ window.initMuestras = function () {
           // CSS con la clase .is-lista).
           await cargar();
 
-          if (!imagenes.some(Boolean)) return; // no había frames: queda el cartel
+          // Si terminó la carga y no entró ni una sola imagen, el cartel deja
+          // de decir "Cargando": ahí sí falta el material y hay que decirlo,
+          // porque un "Cargando" eterno es exactamente lo que parece roto.
+          if (!imagenes.some(Boolean)) {
+            if (aviso) aviso.textContent = "No se pudieron cargar los frames";
+            return;
+          }
 
           medir();
           dibujar(0);                     // primer cuadro antes de destapar

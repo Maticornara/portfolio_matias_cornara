@@ -1,16 +1,16 @@
 # Graph Report - CODIGO_CLAUDE  (2026-08-22)
 
 ## Corpus Check
-- 30 files · ~57,450,786 words
+- 30 files · ~57,451,823 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 332 nodes · 406 edges · 50 communities (46 shown, 4 thin omitted)
+- 337 nodes · 411 edges · 52 communities (48 shown, 4 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.57)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8f41416b`
+- Built from commit: `39d8db93`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -56,11 +56,13 @@
 - 22. La caja de cartón, y por qué se trababa (20/08/2026)
 - 23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)
 - 29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)
-- 30. El ruido fantasma era el teaser, no las historias (22/08/2026)
+- 30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)
 - 31. Tipines: tres cosas rotas y por qué (22/08/2026)
+- 23. Simbio en mobile (20/08/2026)
+- 32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)
 
 ## God Nodes (most connected - your core abstractions)
-1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 39 edges
+1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 40 edges
 2. `init()` - 14 edges
 3. `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` - 13 edges
 4. `What You Must Do When Invoked` - 12 edges
@@ -78,7 +80,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (50 total, 4 thin omitted)
+## Communities (52 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.21
@@ -86,7 +88,7 @@ Nodes (15): avisarSiEsArchivo(), init(), initBlurPortada(), initCarpetas(), init
 
 ### Community 1 - "ARCHIVO / MI CAJÓN — bitácora del proyecto"
 Cohesion: 0.11
-Nodes (18): 0. Cómo levantar el sitio, 10. Herramientas de diagnóstico, 11. Mapa de archivos, 12. Pendientes, 13. Perillas para editar a mano (11/08/2026), 14. Rebranding tipográfico de Simbio + arreglos (12/08/2026), 15. La grilla manda: 4 columnas para todo (12/08/2026), 16. Ajustes de composición y las carpetas (12/08/2026) (+10 more)
+Nodes (17): 0. Cómo levantar el sitio, 10. Herramientas de diagnóstico, 11. Mapa de archivos, 12. Pendientes, 13. Perillas para editar a mano (11/08/2026), 14. Rebranding tipográfico de Simbio + arreglos (12/08/2026), 15. La grilla manda: 4 columnas para todo (12/08/2026), 16. Ajustes de composición y las carpetas (12/08/2026) (+9 more)
 
 ### Community 2 - "sandbox.js"
 Cohesion: 0.52
@@ -228,31 +230,39 @@ Nodes (4): 23. El bug del sonido que seguía sonando: `isIntersecting` no es el 
 Cohesion: 0.18
 Nodes (11): 29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026), CÓMO SE VERIFICÓ, EL BUG DEL `1fr` QUE NO ES `1fr`, EL VIDEO DEL HERO: NO ERA EL PESO, ERA EL MATERIAL, EL VISOR DEL LIBRO DEJÓ DE FUNCIONAR — Y NO DIO NINGÚN ERROR, LAS SOMBRAS DEL LIBRO, TERCERA VERSIÓN Y ÚLTIMA, LO DEMÁS, LOS DOS BLOQUES QUE NUNCA SE ALINEABAN (+3 more)
 
-### Community 48 - "30. El ruido fantasma era el teaser, no las historias (22/08/2026)"
+### Community 48 - "30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)"
 Cohesion: 0.40
-Nodes (5): 30. El ruido fantasma era el teaser, no las historias (22/08/2026), CÓMO SE ENCONTRÓ, EL BUG ADENTRO DEL ARREGLO: `pause` ES ASÍNCRONO, LA REGLA DEL TEASER NO ES LA DE LAS HISTORIAS, LA REGLA GENERAL PARA TODO EL SITIO
+Nodes (5): 30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026), CÓMO SE ENCONTRÓ, EL BUG ADENTRO DEL ARREGLO: `pause` ES ASÍNCRONO, LA REGLA DEL TEASER NO ES LA DE LAS HISTORIAS, LA REGLA GENERAL PARA TODO EL SITIO
 
 ### Community 49 - "31. Tipines: tres cosas rotas y por qué (22/08/2026)"
 Cohesion: 0.33
 Nodes (6): 1. EL PASE DE PÁGINA "MAL ARTICULADO Y CON DESTIEMPO", 2. EL "VER EN GRANDE" NO TENÍA LA ANIMACIÓN DEL LIBRO, 31. Tipines: tres cosas rotas y por qué (22/08/2026), 3. EL TEXTO DE LA MINISERIE DESBORDABA LA SECCIÓN, 4. EL MINI-JUEGO: LAS CUATRO PIEZAS AHORA SE TURNAN, QUEDA PENDIENTE
 
+### Community 50 - "23. Simbio en mobile (20/08/2026)"
+Cohesion: 0.67
+Nodes (3): 23. Simbio en mobile (20/08/2026), 30-bis. El que de verdad molestaba: ATRAVESAR la sección, LA REGLA GENERAL, CORREGIDA
+
+### Community 51 - "32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)"
+Cohesion: 0.67
+Nodes (3): 32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026), EL BOTÓN DE JUGAR ERA UN PROBLEMA DE CONTRASTE, LA SEÑAL ARRANCA EN LA COLUMNA 2
+
 ## Knowledge Gaps
-- **176 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+171 more)
+- **179 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+174 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `3. Tipografía`, `23. La caja como caja, el aire y un solo crema (21/08/2026)`, `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)`, `25. Amigos Tipines: la tercera página de proyecto (21/08/2026)`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `6. Las imágenes — el pipeline`, `22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `18. "ARCHIVO": remake de la portada (20/08/2026)`, `21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)`, `26. Los estilos fantasma, y el menú de teléfono (21/08/2026)`, `28. El par ES/EN: traducción automática de Google (22/08/2026)`, `5. Estado actual — qué está hecho`, `22. La caja de cartón, y por qué se trababa (20/08/2026)`, `23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)`, `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)`, `30. El ruido fantasma era el teaser, no las historias (22/08/2026)`, `31. Tipines: tres cosas rotas y por qué (22/08/2026)`?**
-  _High betweenness centrality (0.174) - this node is a cross-community bridge._
+- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `3. Tipografía`, `23. La caja como caja, el aire y un solo crema (21/08/2026)`, `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)`, `25. Amigos Tipines: la tercera página de proyecto (21/08/2026)`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `6. Las imágenes — el pipeline`, `22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `18. "ARCHIVO": remake de la portada (20/08/2026)`, `21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)`, `26. Los estilos fantasma, y el menú de teléfono (21/08/2026)`, `28. El par ES/EN: traducción automática de Google (22/08/2026)`, `5. Estado actual — qué está hecho`, `22. La caja de cartón, y por qué se trababa (20/08/2026)`, `23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)`, `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)`, `30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)`, `31. Tipines: tres cosas rotas y por qué (22/08/2026)`, `23. Simbio en mobile (20/08/2026)`, `32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)`?**
+  _High betweenness centrality (0.182) - this node is a cross-community bridge._
 - **Why does `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` connect `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
   _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **Why does `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)` connect `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **What connects `PROYECTOS`, `graphify`, `Usage` to the rest of the system?**
-  _176 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _179 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `ARCHIVO / MI CAJÓN — bitácora del proyecto` be split into smaller, more focused modules?**
-  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `What You Must Do When Invoked` be split into smaller, more focused modules?**
   _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._

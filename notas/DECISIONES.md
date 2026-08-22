@@ -3014,3 +3014,96 @@ Son cuatro cosas:
 4. **Pausar al irse de la página** (`visit:start` de Swup y `pagehide`), porque
    un elemento fuera del DOM puede seguir sonando.
 
+
+---
+
+## 32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)
+
+### LA SEÑAL ARRANCA EN LA COLUMNA 2
+
+Antes la señal y el texto empezaban las dos en la columna 3 y quedaban
+perfectamente apiladas, con la mitad izquierda de la pantalla vacía de arriba
+abajo. Dos bloques del mismo ancho, uno encima del otro y contra un borde, no
+son una composición: son **una columna sola corrida a la derecha**, y el vacío
+no se leía como aire sino como que faltaba algo.
+
+Ahora la señal va de la **columna 2 a la 4** y el texto sigue en la **3 y 4**,
+con la imagen alineada **por la derecha**: comparte borde con el texto y
+desborda una columna hacia la izquierda. Los dos bloques se leen como una pieza
+sin ser el mismo rectángulo.
+
+**Medido** (ventana de 1600, columnas que empiezan en 148 · 482 · 816 · 1150):
+la señal va de 599 a 1452 —o sea que su borde izquierdo cae adentro de la
+columna 2— y el texto de 816 a 1452.
+
+**Y LA SECCIÓN AHORA MIDE MÁS QUE UNA PANTALLA: 118svh.** Con 100svh justos la
+banda negra medía exactamente lo que la ventana, así que entraba y salía del
+cuadro al mismo tiempo que el contenido: se sentía como una diapositiva, no
+como un cambio de sala. Con el negro empezando antes de que llegue el material
+y siguiendo después de que se fue, el apagón se siente. Es la única sección de
+la página que se pasa de una pantalla, y la perilla está comentada.
+
+**EL NEGRO ES EL DEL SISTEMA, no uno nuevo.** `.zona--negro` pinta
+`--grad-negro`, que va de `#161614` a `#0B0B0B` a `#020202` — el mismo que usan
+Simbio y +54. No es `#1C1C1A`.
+
+### EL BOTÓN DE JUGAR ERA UN PROBLEMA DE CONTRASTE
+
+Se veía tímido, y no era cuestión de tamaño solamente. Estaba en `--verde`
+(#5A6E32) con la etiqueta en blanco, sobre el negro de la sección:
+
+| | antes | ahora |
+|---|---|---|
+| el botón contra el fondo negro | **3,5 : 1** | **5,8 : 1** |
+| la etiqueta contra el botón | 4,4 : 1 | **5,8 : 1** |
+
+El verde oscuro del sistema está pensado para destacar **sobre crema**; sobre
+negro tiene casi el mismo valor que el fondo y el botón se hunde. Ahora usa
+`--verde-claro` (#7C9448) con la etiqueta en el negro del sitio. **No es un
+color nuevo:** `--verde-claro` ya es lo que `base.css` le asigna a
+`--zona-acento` dentro de `.zona--negro`. O sea que el botón por fin usa el
+verde que le corresponde a la zona en la que está.
+
+Y texto oscuro sobre claro, no al revés: en una sección negra, un rectángulo
+lleno y claro es lo único que se lee como "esto se toca".
+
+**LA TRAMPA QUE COSTÓ UNA MEDICIÓN.** Poner `color: var(--negro)` en el `<a>`
+no alcanzaba: la `.etiqueta` de adentro trae su propio color del sistema (el
+gris claro de los rótulos en zona oscura) y ese selector le gana al color
+heredado. El botón quedaba verde claro con la palabra en gris claro encima —
+**medido, 1,93 : 1**, ilegible, y justo en el único botón de la página. El
+color tiene que ir en `.juego__link .etiqueta`.
+
+Lo demás es peso: 52 px de alto, la etiqueta a 14 px en vez de los 11 px del
+sistema (es un botón, no un rótulo) y menos tracking. El halo del hover es del
+mismo verde y no una sombra negra: sobre fondo negro una sombra no se ve, y lo
+que tiene que crecer es la luz.
+
+## 24. La caja más grande en el teléfono, y "Cargando" (20/08/2026)
+
+**LA CAJA DEL HERO.** Medido a 375x844 antes de tocar nada: el cubo se veía de
+**118px, el 31% del ancho**, y entre la nav y el nombre sobraban 600px de alto
+sin usar. Ahora mide **197px, el 52%**, sin acercarse ni a la nav (98px de aire)
+ni al nombre (42px).
+
+**DÓNDE SE TOCA ESO — Y DÓNDE NO.** Perdí un intento escribiendo
+`--caja-ancho` en el CSS: no hace absolutamente nada, porque **js/archivo.js lo
+escribe como valor inline** y lo inline le gana a cualquier archivo CSS. Es la
+tercera vez en el proyecto que aparece esta trampa (las tapas de carpeta, los
+`--dx` de las gráficas, y ahora esto).
+La perilla que el JS **sí** lee del CSS es **`--caja-proporcion`**: cuánto mide
+el cubo comparado con el ancho del nombre. En el teléfono pasa de 0.75 a **1.25**.
+Regla para la próxima: **si un valor lo calcula el JS, buscá qué variable lee el
+JS del CSS y tocá esa; no intentes pisar el resultado.**
+
+No hizo falta ponerle un freno por altura: el JS ya elige el más chico entre lo
+que pide la proporción y lo que entra entre la nav y el nombre, así que en un
+teléfono bajo el cubo se achica solo en vez de montarse sobre el texto.
+
+**EL CARTEL "FRAMES PENDIENTES" AHORA DICE "CARGANDO".** Es el cartel que se ve
+mientras baja cada secuencia de pieza, o sea el caso normal: decir "pendientes"
+hacía parecer que faltaba material y que la página estaba rota.
+Y para que "Cargando" no mienta nunca: si la carga **termina** y no entró ni una
+imagen, `muestras.js` le cambia el texto a "No se pudieron cargar los frames".
+Ahí sí es un problema de material y hay que decirlo — un "Cargando" eterno es
+exactamente lo que parece roto.

@@ -1,0 +1,597 @@
+/* ==========================================================================
+   MUSEO.CSS — Mobiliario de Museo
+   Todo cuelga de .pag-museo, así que nada de acá puede filtrarse al índice
+   ni a las otras páginas de proyecto. No define colores nuevos: los toma
+   de variables.css.
+
+   LA PALETA ES LA DEL SITIO. Los renders traen madera, plástico blanco y
+   perillas rojas; eso es el color del OBJETO, no de la página. La página
+   sigue siendo crema, negro y verde, como todas.
+
+   ---------------------------------------------------------------------------
+   MANUAL DE UNIDADES (el mismo que está arriba de simbio.css, mas-54.css y
+   tipines.css; se repite a propósito para no mandarte a otro archivo)
+
+     px    medida fija. Un borde de 3px es 3px siempre.
+     rem   relativa al tamaño de letra raíz. 1rem = 16px. Para tipografía.
+     vw    1% del ANCHO de la ventana. 50vw = media pantalla de ancho.
+     svh   1% del ALTO visible de la ventana, ya descontando la barra del
+           navegador del celular. Es la buena para "que ocupe una pantalla".
+     ch    el ancho del carácter cero. Sirve para limitar el largo de un
+           párrafo: 65ch es una línea cómoda de leer.
+     fr    fracción del espacio sobrante, solo dentro de grid.
+
+   Para MOVER algo: cambiá su padding o su margin, no su position.
+   Para ALINEAR: usá las columnas (.col-1, .col-1-2, etc.), no márgenes a ojo.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   PERILLAS
+   Los números que se van a querer tocar están todos acá. Cambiá estos y
+   no busques más abajo.
+   -------------------------------------------------------------------------- */
+
+.pag-museo {
+  /* LA FAMILIA. Igual que la portada, Simbio, +54 y Tipines: una sola. */
+  --font: "Archivo", system-ui, sans-serif;
+  --font-mono: "Archivo", system-ui, sans-serif;
+
+  /* EL NEGRO DE LOS RENDERS.
+     OJO: no es el --negro del sitio (#0B0B0B) sino negro puro. Los frames
+     de Blender vienen con #000000 horneado adentro; si la sección usara el
+     negro del sitio, se vería el rectángulo de la imagen recortado contra
+     el fondo. Si algún día se vuelven a exportar los frames sobre otro
+     color, hay que cambiarlo acá Y en tools/optimizar-frames-museo.ps1. */
+  --museo-negro-render: #000000;
+
+  /* ALTURA DE LAS SECCIONES.
+     Regla de la página: ninguna sección queda más baja que una pantalla. */
+  --museo-alto-seccion: 100svh;
+
+  /* EL CARRUSEL */
+  --museo-carrusel-alto: 62svh;   /* alto del marco, igual para las 5 */
+  --museo-carrusel-radio: 10px;
+
+  /* LOS CÍRCULOS DE DETALLE */
+  --museo-circulo: 240px;         /* diámetro */
+  --museo-circulo-borde: 3px;     /* grosor del outline: pedido cerrado */
+
+  /* LAS ANIMACIONES.
+     Cuánto scroll dura cada una. Más alto = la animación avanza más
+     despacio, porque los mismos frames se reparten en más pantallas. */
+  --museo-scroll-descanso: 420svh;
+  --museo-scroll-exposicion: 460svh;
+  --museo-scroll-comunicacion: 480svh;
+
+  /* EL CIERRE QUE PANEA (PARTES_FINAL) */
+  --museo-paneo-alto: 46svh;
+  --museo-paneo-duracion: 38s;    /* ida y vuelta completa */
+}
+
+
+/* --------------------------------------------------------------------------
+   1. HERO
+   Título + una bajada corta y nada más. El detalle de cada sistema viene
+   mucho después; acá solo se presenta el proyecto.
+   -------------------------------------------------------------------------- */
+
+.museo-hero {
+  min-height: var(--museo-alto-seccion);
+  display: grid;
+  align-content: center;
+  gap: var(--s-4);
+  padding-block: var(--s-8);
+}
+
+.museo-hero__rotulo { grid-column: 1 / -1; color: var(--zona-acento); }
+
+.museo-hero__titulo {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: clamp(2.6rem, 8vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+/* La bajada arranca en la columna 3: deja las dos primeras al aire, que es
+   lo que hace que el título respire en vez de quedar apretado contra ella. */
+.museo-hero__bajada {
+  grid-column: 3 / -1;
+  max-width: 46ch;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+.museo-hero__concepto {
+  color: var(--zona-acento);
+  font-weight: 500;
+  font-style: italic;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. CARRUSEL
+   Las 3 portadas + las 2 fotos del museo, en un marco común.
+
+   POR QUÉ UN MARCO COMÚN: las 5 imágenes tienen proporciones muy distintas
+   (0,92 la portada de Exposición contra 2,45 las fotos). Sin marco fijo,
+   cada slide cambiaría de alto y el carrusel saltaría en cada paso.
+
+   Las portadas son PNG con alfa: van con object-fit contain y flotan sobre
+   el crema. Las fotos son opacas: van con cover, a sangre.
+
+   AUTOMÁTICO Y MANUAL a la vez (pedido cerrado). Tocar a mano corta el
+   automático, que lo hace js/museo.js: si no, la imagen se te escapa
+   mientras la estás mirando.
+   -------------------------------------------------------------------------- */
+
+.museo-carrusel {
+  min-height: var(--museo-alto-seccion);
+  display: grid;
+  align-content: center;
+  gap: var(--s-5);
+  padding-block: var(--s-8);
+}
+
+.museo-carrusel__rotulo { grid-column: 1 / -1; color: var(--zona-texto-2); }
+
+.museo-carrusel__marco {
+  grid-column: 1 / -1;
+  position: relative;
+  height: var(--museo-carrusel-alto);
+  border-radius: var(--museo-carrusel-radio);
+  overflow: hidden;
+  background: var(--crema-2);
+  /* El swipe horizontal lo maneja el JS, pero el scroll vertical de la
+     página tiene que seguir andando con el dedo apoyado encima. */
+  touch-action: pan-y;
+}
+
+.museo-carrusel__pista {
+  display: flex;
+  height: 100%;
+  transition: transform 620ms cubic-bezier(.22,.61,.36,1);
+}
+
+.museo-carrusel__slide {
+  flex: 0 0 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.museo-carrusel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* portadas transparentes: se ven enteras */
+  padding: var(--s-4);
+}
+
+.museo-carrusel__slide--foto img {
+  object-fit: cover;     /* fotos opacas: llenan el marco */
+  padding: 0;
+}
+
+.museo-carrusel__flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--zona-linea);
+  border-radius: 50%;
+  background: rgba(243, 237, 225, 0.82);
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease;
+}
+.museo-carrusel__flecha:hover { background: var(--crema); }
+.museo-carrusel__flecha--antes { left: var(--s-3); }
+.museo-carrusel__flecha--despues { right: var(--s-3); }
+
+.museo-carrusel__puntos {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--s-2);
+  justify-content: center;
+}
+
+.museo-carrusel__punto {
+  width: 8px; height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--zona-linea);
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease;
+}
+.museo-carrusel__punto.is-activo { background: var(--zona-acento); transform: scale(1.4); }
+
+
+/* --------------------------------------------------------------------------
+   3. MOCKUPS
+   Los tres fotomontajes en el museo real. La misma grilla de 4 columnas de
+   siempre: el primero se lleva las 4 y los otros dos se reparten 2 y 2.
+   -------------------------------------------------------------------------- */
+
+.museo-mockups {
+  min-height: var(--museo-alto-seccion);
+  display: grid;
+  align-content: center;
+  gap: var(--s-4);
+  padding-block: var(--s-8);
+}
+
+.museo-mockups__rotulo { grid-column: 1 / -1; color: var(--zona-texto-2); }
+
+.museo-mockups__pieza { margin: 0; }
+.museo-mockups__pieza--ancho { grid-column: 1 / -1; }
+.museo-mockups__pieza--izq   { grid-column: 1 / 3; }
+.museo-mockups__pieza--der   { grid-column: 3 / -1; }
+
+.museo-mockups__pieza img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.museo-mockups__pie { margin-top: var(--s-2); color: var(--zona-texto-2); }
+
+
+/* --------------------------------------------------------------------------
+   4. PANTALLA DE INVESTIGACIÓN
+   La única sección sin animación de scroll. Los insights van tratados como
+   infografía —tarjetas con problema y oportunidad enfrentados— y no como
+   bloque de texto corrido.
+   -------------------------------------------------------------------------- */
+
+.museo-investigacion {
+  min-height: var(--museo-alto-seccion);
+  display: grid;
+  align-content: center;
+  gap: var(--s-5);
+  padding-block: var(--s-8);
+}
+
+.museo-investigacion__rotulo { grid-column: 1 / -1; color: var(--zona-acento); }
+
+.museo-investigacion__titulo {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+/* Las tres tarjetas de insight, una por columna y media. */
+.museo-insight {
+  grid-column: span 4;
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border: 1px solid var(--zona-linea);
+  border-radius: 10px;
+  background: var(--zona-superficie, transparent);
+}
+
+@media (min-width: 961px) {
+  .museo-insight { grid-column: span 2; }
+  /* El tercero, que no tiene oportunidad propia, se lleva las 4 columnas
+     y queda como cierre de la fila. */
+  .museo-insight--ancho { grid-column: 1 / -1; }
+}
+
+.museo-insight__par { display: grid; gap: var(--s-1); }
+
+/* El rótulo de PROBLEMA va en gris y el de OPORTUNIDAD en verde: es el
+   único contraste de color de la tarjeta, y alcanza para leerla de un ojo. */
+.museo-insight__clave { color: var(--zona-texto-2); }
+.museo-insight__par--oportunidad .museo-insight__clave { color: var(--zona-acento); }
+
+.museo-insight__texto { margin: 0; font-weight: 300; line-height: 1.5; }
+
+/* La foto de posturas: obligatoria en esta pantalla. */
+.museo-investigacion__posturas { grid-column: 1 / -1; margin: 0; }
+.museo-investigacion__posturas img { width: 100%; height: auto; display: block; }
+.museo-investigacion__pie { margin-top: var(--s-2); color: var(--zona-texto-2); }
+
+/* Las leyes del sistema: dato de contexto, no protagonista. Una línea. */
+.museo-leyes {
+  grid-column: 1 / -1;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--zona-linea);
+  color: var(--zona-texto-2);
+  font-weight: 300;
+  max-width: 80ch;
+}
+
+/* La frase que cierra la pantalla y engancha con el concepto general. */
+.museo-conclusion {
+  grid-column: 2 / -1;
+  margin: 0;
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  font-weight: 300;
+  line-height: 1.4;
+  border-left: 3px solid var(--zona-acento);
+  padding-left: var(--s-4);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. DESGLOSE POR DISPOSITIVO
+   El mismo patrón tres veces: portada, círculos de detalle, texto corto y
+   después la animación de scroll.
+   -------------------------------------------------------------------------- */
+
+.museo-sistema {
+  min-height: var(--museo-alto-seccion);
+  display: grid;
+  align-content: center;
+  gap: var(--s-4);
+  padding-block: var(--s-8);
+}
+
+.museo-sistema__rotulo { grid-column: 1 / -1; color: var(--zona-acento); }
+
+.museo-sistema__titulo {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* Imagen en las columnas 1-2, texto en 3-4: la misma regla que Simbio. */
+.museo-sistema__portada { grid-column: 1 / 3; margin: 0; }
+.museo-sistema__portada img { width: 100%; height: auto; display: block; }
+
+.museo-sistema__texto {
+  grid-column: 3 / -1;
+  align-self: center;
+  max-width: 42ch;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+/* --- Los círculos de detalle -------------------------------------------
+   Marco circular con outline, no imágenes flotando sueltas. El diámetro y
+   el grosor son perillas de arriba. Los renders que van adentro son PNG
+   transparentes, así que el círculo se ve entero alrededor del objeto. */
+
+.museo-detalles {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  justify-content: flex-start;
+}
+
+.museo-detalle {
+  width: var(--museo-circulo);
+  display: grid;
+  gap: var(--s-2);
+  justify-items: center;
+  margin: 0;
+}
+
+.museo-detalle__marco {
+  width: var(--museo-circulo);
+  height: var(--museo-circulo);
+  border: var(--museo-circulo-borde) solid var(--zona-acento);
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--museo-negro-render);
+}
+
+.museo-detalle__marco img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6%;
+}
+
+.museo-detalle__pie { text-align: center; color: var(--zona-texto-2); }
+
+/* La anotación del sistema de riel: una llamada con flecha sobre el panel.
+   El panel ya trae dibujados sus dos círculos rojos de origen; esto suma
+   la flecha y el texto, en el lenguaje de la página. */
+.museo-anotacion { position: relative; grid-column: 1 / -1; margin: 0; }
+.museo-anotacion img { width: 100%; height: auto; display: block; }
+
+.museo-anotacion__llamada {
+  position: absolute;
+  /* Perillas de posición de la llamada, en % del ancho de la imagen. */
+  left: 58%;
+  top: 12%;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--zona-acento);
+}
+
+.museo-anotacion__flecha { width: 64px; height: 24px; flex: none; }
+
+
+/* --------------------------------------------------------------------------
+   6. LA ANIMACIÓN DE SCROLL
+   Mismo mecanismo que Simbio: el escenario se clava con position sticky
+   (NO con el pin de ScrollTrigger, que rompe con Swup) y el canvas dibuja
+   el frame que corresponde al avance del scroll.
+
+   El alto de .museo-anim es lo que define cuánto dura: el escenario queda
+   pegado mientras la sección pasa por la pantalla.
+   -------------------------------------------------------------------------- */
+
+.museo-anim {
+  position: relative;
+  background: var(--museo-negro-render);
+}
+
+.museo-anim--descanso     { height: var(--museo-scroll-descanso); }
+.museo-anim--exposicion   { height: var(--museo-scroll-exposicion); }
+.museo-anim--comunicacion { height: var(--museo-scroll-comunicacion); }
+
+.museo-anim__escenario {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.museo-anim__canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* --- El rótulo de fase --------------------------------------------------
+   MISMO TRATAMIENTO QUE SIMBIO, sin excepción: número "01 / 03" arriba,
+   título abajo tipeado letra por letra. Lo único distinto es que acá una
+   fase puede no tener título (el tramo de rotación de Descanso): en ese
+   caso el rótulo entero se esconde en vez de mostrar un número suelto. */
+
+.museo-anim__fase {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--s-6);
+  display: grid;
+  gap: var(--s-1);
+  color: #f0eee6;
+  max-width: 34ch;
+  transition: opacity 320ms ease;
+}
+
+.museo-anim__fase.is-oculto { opacity: 0; }
+
+.museo-anim__fase-num { color: var(--verde-claro); }
+
+.museo-anim__fase-nombre {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.9rem);
+  font-weight: 500;
+  line-height: 1.15;
+  min-height: 1.2em;   /* reserva el renglón: si no, la línea salta al tipear */
+}
+
+/* --- El cartel de carga ------------------------------------------------- */
+
+.museo-anim__loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: var(--s-2);
+  justify-items: center;
+  background: var(--museo-negro-render);
+  color: #f0eee6;
+  transition: opacity 420ms ease;
+}
+.museo-anim__loader.is-listo { opacity: 0; pointer-events: none; }
+
+.museo-anim__barra {
+  width: min(280px, 50vw);
+  height: 2px;
+  background: var(--linea-oscura);
+  overflow: hidden;
+}
+.museo-anim__barra span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--verde-claro);
+  transition: width 180ms linear;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. CIERRE — PARTES_FINAL en paneo
+   La lámina de todas las partes del sistema, paneando de izquierda a
+   derecha y de vuelta, en loop continuo (tipo boomerang, sin salto).
+
+   La imagen es MUCHO más ancha que la pantalla (2800px), así que el paneo
+   es un translateX negativo sobre el sobrante. El alternate del animation
+   es lo que hace la vuelta suave en vez del corte seco.
+   -------------------------------------------------------------------------- */
+
+.museo-cierre {
+  padding-block: var(--s-8);
+  display: grid;
+  gap: var(--s-4);
+}
+
+.museo-cierre__rotulo { grid-column: 1 / -1; color: var(--zona-texto-2); }
+
+.museo-cierre__ventana {
+  grid-column: 1 / -1;
+  height: var(--museo-paneo-alto);
+  overflow: hidden;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.museo-cierre__tira {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  display: block;
+  animation: museo-paneo var(--museo-paneo-duracion) ease-in-out infinite alternate;
+}
+
+@keyframes museo-paneo {
+  from { transform: translateX(0); }
+  /* -100% del ANCHO DE LA IMAGEN menos el ancho de la ventana: así el
+     final del recorrido es el borde derecho de la lámina, no más allá. */
+  to   { transform: translateX(calc(-100% + 100vw - var(--gutter) * 2)); }
+}
+
+
+/* --------------------------------------------------------------------------
+   ACCESIBILIDAD Y PANTALLA CHICA
+   -------------------------------------------------------------------------- */
+
+/* Sin movimiento: nada se desliza solo. El carrusel salta, el paneo se
+   queda quieto y el tipeo de fase aparece entero (eso lo hace el JS). */
+@media (prefers-reduced-motion: reduce) {
+  .museo-carrusel__pista { transition: none; }
+  .museo-cierre__tira { animation: none; }
+}
+
+@media (max-width: 960px) {
+  .pag-museo {
+    /* En el teléfono las animaciones duran menos: el mismo recorrido en
+       una pantalla angosta se hace eterno. */
+    --museo-scroll-descanso: 300svh;
+    --museo-scroll-exposicion: 320svh;
+    --museo-scroll-comunicacion: 340svh;
+    --museo-circulo: 150px;
+    --museo-carrusel-alto: 46svh;
+  }
+
+  .museo-hero__bajada,
+  .museo-sistema__portada,
+  .museo-sistema__texto,
+  .museo-conclusion,
+  .museo-mockups__pieza--izq,
+  .museo-mockups__pieza--der { grid-column: 1 / -1; }
+
+  .museo-insight { grid-column: 1 / -1; }
+
+  .museo-conclusion { padding-left: var(--s-3); }
+
+  /* La llamada del riel, encima de la imagen, no cabe en pantalla chica:
+     baja a ser un pie de foto común. */
+  .museo-anotacion__llamada { position: static; margin-top: var(--s-2); }
+  .museo-anotacion__flecha { display: none; }
+}

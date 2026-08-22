@@ -1256,12 +1256,22 @@
               box-shadow var(--dur-1) var(--ease);
 }
 /* Más grande que una .etiqueta del sistema, y con menos tracking: a 11 px con
-   0.14em de separación la palabra se leía como un rótulo al pie de una foto. */
+   0.14em de separación la palabra se leía como un rótulo al pie de una foto.
+
+   EL COLOR VA ACÁ Y NO EN EL <a>, y eso costó una medición. La .etiqueta de
+   adentro trae su propio color del sistema (el gris claro de los rótulos en
+   zona oscura), y ese selector le gana al `color` heredado del botón. O sea
+   que el botón quedaba verde claro con la palabra en gris claro encima:
+   MEDIDO, 1,93 : 1 de contraste — ilegible, y encima justo en el único botón
+   de la página. Pintado acá, 5,8 : 1. */
 .juego__link .etiqueta {
+  color: var(--negro);
   font-size: 0.875rem;
   letter-spacing: 0.1em;
   font-weight: var(--peso-medio);
 }
+.juego__link:hover .etiqueta,
+.juego__link:focus-visible .etiqueta { color: var(--negro); }
 .juego__link:hover,
 .juego__link:focus-visible {
   background: var(--crema);

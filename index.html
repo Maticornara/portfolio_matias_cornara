@@ -43,10 +43,10 @@
   <link rel="stylesheet" href="css/variables.css?v=6">
   <link rel="stylesheet" href="css/base.css?v=11">
   <link rel="stylesheet" href="css/layout.css?v=12">
-  <link rel="stylesheet" href="css/archivo.css?v=26">
+  <link rel="stylesheet" href="css/archivo.css?v=28">
   <link rel="stylesheet" href="css/simbio.css?v=119">
   <link rel="stylesheet" href="css/mas-54.css?v=22">
-  <link rel="stylesheet" href="css/tipines.css?v=11">
+  <link rel="stylesheet" href="css/tipines.css?v=12">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -283,77 +283,93 @@
             <polygon points="164.8,108.4 171.2,105.2 163.2,101.2 156.8,104.4"/>
           </g>
 
-          <!-- Las dos caras verticales -->
-          <polygon class="caja__cara caja__cara--izq" points="66,45 100,62 100,96 66,79"/>
-          <polygon class="caja__cara caja__cara--der" points="134,45 100,62 100,96 134,79"/>
-
           <!-- ============================================================
-               LA TAPA: DOS SOLAPAS QUE SE JUNTAN AL MEDIO
+               EL CUBO, AGRUPADO
                ------------------------------------------------------------
-               Una caja de cartón se cierra plegando DOS solapas grandes que
-               se encuentran en el centro. Lo que se ve desde arriba es esa
-               única costura, y va de punta a punta en un solo sentido.
+               Las piezas del cubo van juntas en un grupo por la animación de
+               entrada: la caja baja y aterriza, y para eso hay que mover UNA
+               cosa, no diez polígonos por separado.
 
-               Antes había cuatro solapas y por lo tanto una cruz: la línea
-               que cruzaba de la punta izquierda a la derecha no existe en
-               una caja. Sacarla no es borrar una raya — es cambiar la tapa
-               de cuatro triángulos a dos.
-
-               Cada solapa lleva un verde apenas distinto: al quedar
-               plegadas nunca terminan exactamente en el mismo plano y cada
-               una toma la luz de otra manera. La diferencia tiene que ser
-               CHICA; exagerada, deja de ser cartón y pasa a ser un dibujo
-               de dos triángulos de colores.
+               Y LA SOMBRA QUEDA AFUERA A PROPÓSITO. Es la huella en el piso:
+               si se moviera con la caja, la caja se leería flotando, que es
+               justo lo que costó una ronda entera arreglar. La sombra
+               aparece, pero no se mueve nunca.
+               Los papeles también quedan afuera: entran después y cada uno
+               por su cuenta.
                ============================================================ -->
-          <polygon class="caja__solapa caja__solapa--izq" points="100,28 66,45 100,62"/>
-          <polygon class="caja__solapa caja__solapa--der" points="100,28 134,45 100,62"/>
+          <g class="caja__cubo">
+            <!-- Las dos caras verticales -->
+            <polygon class="caja__cara caja__cara--izq" points="66,45 100,62 100,96 66,79"/>
+            <polygon class="caja__cara caja__cara--der" points="134,45 100,62 100,96 134,79"/>
 
-          <!-- La costura, el único pliegue de la tapa -->
-          <path class="caja__pliegue" d="M100 28 L100 62"/>
+            <!-- ============================================================
+                 LA TAPA: DOS SOLAPAS QUE SE JUNTAN AL MEDIO
+                 ------------------------------------------------------------
+                 Una caja de cartón se cierra plegando DOS solapas grandes que
+                 se encuentran en el centro. Lo que se ve desde arriba es esa
+                 única costura, y va de punta a punta en un solo sentido.
 
-          <!-- EL CANTO DEL CARTÓN. Una banda finita por dentro del borde de
-               adelante de la tapa: es el espesor de la lámina, visto de
-               canto. Va más claro que la tapa porque el corte del cartón no
-               está impreso — es la fibra cruda. Sin esto, la tapa y los
-               laterales se juntan en una arista matemática y el cubo se lee
-               como una figura, no como un objeto hecho de un material. -->
-          <polygon class="caja__canto" points="66,45 100,62 134,45 134,43.6 100,60.6 66,43.6"/>
+                 Antes había cuatro solapas y por lo tanto una cruz: la línea
+                 que cruzaba de la punta izquierda a la derecha no existe en
+                 una caja. Sacarla no es borrar una raya — es cambiar la tapa
+                 de cuatro triángulos a dos.
 
-          <!-- ============================================================
-               LAS AGARRADERAS: QUEDAN DOS, Y EN DIAGONAL
-               ------------------------------------------------------------
-               Eran cuatro, una por cara visible, y llenaban la caja. Quedan
-               las dos que están ENFRENTADAS en diagonal: la de la pared
-               derecha y la de la solapa de atrás a la izquierda. Con dos
-               alcanza para que se lea que la caja se agarra, y la tapa y la
-               pared de la izquierda quedan limpias.
+                 Cada solapa lleva un verde apenas distinto: al quedar
+                 plegadas nunca terminan exactamente en el mismo plano y cada
+                 una toma la luz de otra manera. La diferencia tiene que ser
+                 CHICA; exagerada, deja de ser cartón y pasa a ser un dibujo
+                 de dos triángulos de colores.
+                 ============================================================ -->
+            <polygon class="caja__solapa caja__solapa--izq" points="100,28 66,45 100,62"/>
+            <polygon class="caja__solapa caja__solapa--der" points="100,28 134,45 100,62"/>
 
-               Las dos se troquelan igual —hueco, y filo claro asomando por
-               abajo— pero se rellenan distinto, y esa es la idea:
+            <!-- La costura, el único pliegue de la tapa -->
+            <path class="caja__pliegue" d="M100 28 L100 62"/>
 
-                 · la de la PARED da al interior de la caja → va oscura;
-                 · la de ATRÁS está calada de lado a lado → por ahí se ve la
-                   pared del cuarto, así que va del MISMO crema del fondo.
-                   Eso es lo que hace que la caja se lea hueca y no maciza:
-                   es el único punto del dibujo donde se ve a través.
-               ============================================================ -->
+            <!-- EL CANTO DEL CARTÓN. Una banda finita por dentro del borde de
+                 adelante de la tapa: es el espesor de la lámina, visto de
+                 canto. Va más claro que la tapa porque el corte del cartón no
+                 está impreso — es la fibra cruda. Sin esto, la tapa y los
+                 laterales se juntan en una arista matemática y el cubo se lee
+                 como una figura, no como un objeto hecho de un material. -->
+            <polygon class="caja__canto" points="66,45 100,62 134,45 134,43.6 100,60.6 66,43.6"/>
 
-          <!-- La de la pared derecha -->
-          <g class="caja__agarre">
-            <path class="caja__agarre-canto" d="M110.8 67.8 L123.2 61.6"/>
-            <path class="caja__agarre-hueco" d="M110.8 66.8 L123.2 60.6"/>
+            <!-- ============================================================
+                 LAS AGARRADERAS: QUEDAN DOS, Y EN DIAGONAL
+                 ------------------------------------------------------------
+                 Eran cuatro, una por cara visible, y llenaban la caja. Quedan
+                 las dos que están ENFRENTADAS en diagonal: la de la pared
+                 derecha y la de la solapa de atrás a la izquierda. Con dos
+                 alcanza para que se lea que la caja se agarra, y la tapa y la
+                 pared de la izquierda quedan limpias.
+
+                 Las dos se troquelan igual —hueco, y filo claro asomando por
+                 abajo— pero se rellenan distinto, y esa es la idea:
+
+                   · la de la PARED da al interior de la caja → va oscura;
+                   · la de ATRÁS está calada de lado a lado → por ahí se ve la
+                     pared del cuarto, así que va del MISMO crema del fondo.
+                     Eso es lo que hace que la caja se lea hueca y no maciza:
+                     es el único punto del dibujo donde se ve a través.
+                 ============================================================ -->
+
+            <!-- La de la pared derecha -->
+            <g class="caja__agarre">
+              <path class="caja__agarre-canto" d="M110.8 67.8 L123.2 61.6"/>
+              <path class="caja__agarre-hueco" d="M110.8 66.8 L123.2 60.6"/>
+            </g>
+
+            <!-- La de atrás, calada al crema de la pared -->
+            <g class="caja__agarre caja__agarre--tapa caja__agarre--calada">
+              <path class="caja__agarre-canto" d="M83 48.4 L93 43.4"/>
+              <path class="caja__agarre-hueco" d="M83 47.5 L93 42.5"/>
+            </g>
+
+            <!-- El contorno, apenas marcado: sobre un fondo claro, un objeto sin
+                 ningún borde se desarma contra el fondo. Tiene que estar y no
+                 tiene que verse. -->
+            <polygon class="caja__contorno" points="100,28 134,45 134,79 100,96 66,79 66,45"/>
           </g>
-
-          <!-- La de atrás, calada al crema de la pared -->
-          <g class="caja__agarre caja__agarre--tapa caja__agarre--calada">
-            <path class="caja__agarre-canto" d="M83 48.4 L93 43.4"/>
-            <path class="caja__agarre-hueco" d="M83 47.5 L93 42.5"/>
-          </g>
-
-          <!-- El contorno, apenas marcado: sobre un fondo claro, un objeto sin
-               ningún borde se desarma contra el fondo. Tiene que estar y no
-               tiene que verse. -->
-          <polygon class="caja__contorno" points="100,28 134,45 134,79 100,96 66,79 66,45"/>
         </svg>
       </div>
 
@@ -768,7 +784,7 @@
 <script src="js/traduccion.js?v=4" defer></script>
 <script src="js/archivo.js?v=11" defer></script>
 <script src="js/simbio-scroll.js?v=16" defer></script>
-<script src="js/muestras.js?v=13" defer></script>
+<script src="js/muestras.js?v=14" defer></script>
 <!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
      ejecutar al cambiar de página, así que los de +54 y Tipines tienen que
      estar cargados desde acá. Salen sin hacer nada si no encuentran su HTML. -->
