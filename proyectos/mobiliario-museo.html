@@ -32,11 +32,11 @@
   <link rel="stylesheet" href="../css/variables.css?v=6">
   <link rel="stylesheet" href="../css/base.css?v=11">
   <link rel="stylesheet" href="../css/layout.css?v=12">
-  <link rel="stylesheet" href="../css/archivo.css?v=28">
+  <link rel="stylesheet" href="../css/archivo.css?v=29">
   <link rel="stylesheet" href="../css/simbio.css?v=119">
   <link rel="stylesheet" href="../css/mas-54.css?v=22">
-  <link rel="stylesheet" href="../css/tipines.css?v=12">
-  <link rel="stylesheet" href="../css/museo.css?v=1">
+  <link rel="stylesheet" href="../css/tipines.css?v=13">
+  <link rel="stylesheet" href="../css/museo.css?v=5">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -80,167 +80,211 @@
 
   <!-- ======================================================================
        1. HERO
-       Breve a propósito: acá solo se presenta el proyecto. El detalle de
-       cada sistema viene mucho más abajo.
+       Dos mitades: a la izquierda la columna de proyecto (volver, titulo,
+       pastillas, bajada) y a la derecha el carrusel de las 5 imagenes. Es la
+       misma estructura del hero de Tipines, donde el paneo va al lado del
+       titulo.
+
+       Las clases proyecto__* y volver--pastilla NO se definen en museo.css:
+       vienen sin apellidar de simbio.css, que se carga en todas las paginas.
+       museo.css solo les pone la tipografia de esta pagina.
        ====================================================================== -->
-  <section class="zona zona--crema">
-    <header class="museo-hero grilla">
-      <p class="etiqueta museo-hero__rotulo">Diseño industrial · Mobiliario · 2021</p>
-      <h1 class="museo-hero__titulo">Mobiliario<br>de Museo</h1>
-      <p class="museo-hero__bajada">
-        Proyecto de diseño industrial: tres dispositivos de mobiliario para el
-        Museo Argentino de Ciencias Naturales Bernardino Rivadavia, bajo el
-        concepto <span class="museo-hero__concepto">sin estructura ósea, no hay
-        experiencia</span>.
-      </p>
-    </header>
-  </section>
+  <header class="zona zona--crema">
+    <div class="museo-hero grilla">
 
-  <!-- ======================================================================
-       2. CARRUSEL
-       Las 3 portadas de los sistemas + las 2 fotos del museo, tratadas como
-       una sola secuencia. Automático y manual a la vez: lo maneja js/museo.js.
+      <aside class="proyecto__col">
+        <a class="volver volver--pastilla" href="../index.html#trabajos"
+           aria-label="Volver a los trabajos">
+          <svg viewBox="0 0 28 10" fill="none" aria-hidden="true"
+               stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M27 5H1M1 5l4.5-4M1 5l4.5 4"/>
+          </svg>
+        </a>
 
-       Las portadas son PNG con alfa y van con object-fit contain; las dos
-       fotos son opacas y llevan la clase --foto, que las pasa a cover.
-       ====================================================================== -->
-  <section class="zona zona--crema">
-    <div class="museo-carrusel grilla" data-museo-carrusel tabindex="0"
-         role="region" aria-roledescription="carrusel" aria-label="El proyecto y su lugar">
+        <h1 class="proyecto__titulo">Mobiliario<br>de Museo</h1>
 
-      <p class="etiqueta museo-carrusel__rotulo">Los tres dispositivos, y dónde van</p>
-
-      <div class="museo-carrusel__marco">
-        <div class="museo-carrusel__pista" data-museo-pista>
-
-          <div class="museo-carrusel__slide" data-museo-slide>
-            <img src="../assets/mobiliario-museo/portada-descanso.png"
-                 alt="Sistema de Descanso: asiento doble con respaldo de listones de madera." loading="lazy">
-          </div>
-
-          <div class="museo-carrusel__slide" data-museo-slide>
-            <img src="../assets/mobiliario-museo/portada-exposicion.png"
-                 alt="Sistema de Exposición: módulo con cajones y vidriera para piezas pequeñas." loading="lazy">
-          </div>
-
-          <div class="museo-carrusel__slide" data-museo-slide>
-            <img src="../assets/mobiliario-museo/portada-comunicacion.png"
-                 alt="Sistema de Comunicación: paneles informativos y giratorios en línea." loading="lazy">
-          </div>
-
-          <div class="museo-carrusel__slide museo-carrusel__slide--foto" data-museo-slide>
-            <img src="../assets/mobiliario-museo/museo-fachada.jpg"
-                 alt="Fachada del Museo Argentino de Ciencias Naturales Bernardino Rivadavia." loading="lazy">
-          </div>
-
-          <div class="museo-carrusel__slide museo-carrusel__slide--foto" data-museo-slide>
-            <img src="../assets/mobiliario-museo/museo-adentro.jpg"
-                 alt="Sala de Paleontología del museo, con esqueletos montados." loading="lazy">
-          </div>
-
+        <div class="proyecto__meta">
+          <p class="etiqueta">Diseño industrial</p>
+          <p class="etiqueta">Mobiliario</p>
+          <p class="etiqueta">2021</p>
         </div>
 
-        <button class="museo-carrusel__flecha museo-carrusel__flecha--antes"
-                type="button" data-museo-antes aria-label="Imagen anterior">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-               stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <path d="M9 2 L4 7 L9 12"/>
-          </svg>
-        </button>
-        <button class="museo-carrusel__flecha museo-carrusel__flecha--despues"
-                type="button" data-museo-despues aria-label="Imagen siguiente">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-               stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <path d="M5 2 L10 7 L5 12"/>
-          </svg>
-        </button>
-      </div>
+        <div class="proyecto__bajada">
+          <p>
+            Proyecto de diseño industrial: tres dispositivos de mobiliario para
+            el Museo Argentino de Ciencias Naturales Bernardino Rivadavia, bajo
+            el concepto <span class="museo-hero__concepto">sin estructura ósea,
+            no hay experiencia</span>.
+          </p>
+        </div>
+      </aside>
 
-      <div class="museo-carrusel__puntos">
-        <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 1"></button>
-        <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 2"></button>
-        <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 3"></button>
-        <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 4"></button>
-        <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 5"></button>
-      </div>
+      <!-- EL CARRUSEL, a la derecha del titulo.
+           Las 3 portadas de los sistemas + las 2 fotos del museo, tratadas
+           como una sola secuencia. Automatico y manual a la vez: lo maneja
+           js/museo.js. Las portadas son PNG con alfa y van con object-fit
+           contain; las dos fotos son opacas y llevan --foto, que las pasa a
+           cover. -->
+      <div class="museo-carrusel" data-museo-carrusel tabindex="0"
+           role="region" aria-roledescription="carrusel" aria-label="El proyecto y su lugar">
 
+        <div class="museo-carrusel__marco">
+          <div class="museo-carrusel__pista" data-museo-pista>
+
+            <div class="museo-carrusel__slide" data-museo-slide>
+              <img src="../assets/mobiliario-museo/portada-descanso.png"
+                   alt="Sistema de Descanso: asiento doble con respaldo de listones de madera." loading="lazy">
+            </div>
+
+            <div class="museo-carrusel__slide" data-museo-slide>
+              <img src="../assets/mobiliario-museo/portada-exposicion.png"
+                   alt="Sistema de Exposición: módulo con cajones y vidriera para piezas pequeñas." loading="lazy">
+            </div>
+
+            <div class="museo-carrusel__slide" data-museo-slide>
+              <img src="../assets/mobiliario-museo/portada-comunicacion.png"
+                   alt="Sistema de Comunicación: paneles informativos y giratorios en línea." loading="lazy">
+            </div>
+
+            <div class="museo-carrusel__slide museo-carrusel__slide--foto" data-museo-slide>
+              <img src="../assets/mobiliario-museo/museo-fachada.jpg"
+                   alt="Fachada del Museo Argentino de Ciencias Naturales Bernardino Rivadavia." loading="lazy">
+            </div>
+
+            <div class="museo-carrusel__slide museo-carrusel__slide--foto" data-museo-slide>
+              <img src="../assets/mobiliario-museo/museo-adentro.jpg"
+                   alt="Sala de Paleontología del museo, con esqueletos montados." loading="lazy">
+            </div>
+
+          </div>
+
+          <button class="museo-carrusel__flecha museo-carrusel__flecha--antes"
+                  type="button" data-museo-antes aria-label="Imagen anterior">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                 stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M9 2 L4 7 L9 12"/>
+            </svg>
+          </button>
+          <button class="museo-carrusel__flecha museo-carrusel__flecha--despues"
+                  type="button" data-museo-despues aria-label="Imagen siguiente">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                 stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M5 2 L10 7 L5 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="museo-carrusel__puntos">
+          <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 1"></button>
+          <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 2"></button>
+          <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 3"></button>
+          <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 4"></button>
+          <button class="museo-carrusel__punto" type="button" data-museo-punto aria-label="Ir a la imagen 5"></button>
+        </div>
+
+      </div>
     </div>
-  </section>
+  </header>
 
   <!-- ======================================================================
-       3. MOCKUPS
-       Los tres fotomontajes dentro del museo real. Tratamiento simple: no
-       es la sección protagonista, pero las imágenes van grandes.
+       2. MOCKUPS
+       Los tres fotomontajes en el museo real, los tres a la MISMA jerarquia y
+       mas chicos. Se clickean para verlos en grande.
+
+       data-lupa lo maneja initLupa, en main.js: es la misma lupa que ya usa
+       +54 para sus mockups, con flechas para pasar de una a la otra. No hay
+       codigo nuevo para esto.
        ====================================================================== -->
   <section class="zona zona--crema-2">
     <div class="museo-mockups grilla">
-      <p class="etiqueta museo-mockups__rotulo">En sala</p>
+      <p class="etiqueta museo-mockups__rotulo">En sala · tocá para ver en grande</p>
 
-      <figure class="museo-mockups__pieza museo-mockups__pieza--ancho">
-        <img src="../assets/mobiliario-museo/mockup-descanso-comunicacion.jpg"
-             alt="Los sistemas de Descanso y Comunicación montados en una sala del museo." loading="lazy">
-        <figcaption class="etiqueta museo-mockups__pie">Descanso y Comunicación · Sala Paleontología</figcaption>
-      </figure>
+      <div class="museo-mockups__fila">
 
-      <figure class="museo-mockups__pieza museo-mockups__pieza--izq">
-        <img src="../assets/mobiliario-museo/mockup-exposicion.jpg"
-             alt="El sistema de Exposición en la sala de Artrópodos." loading="lazy">
-        <figcaption class="etiqueta museo-mockups__pie">Exposición · Sala Artrópodos</figcaption>
-      </figure>
+        <figure class="museo-mockups__pieza">
+          <button type="button" data-lupa="../assets/mobiliario-museo/mockup-descanso-comunicacion.jpg"
+                  aria-label="Ver en grande: Descanso y Comunicación en la Sala Paleontología">
+            <img src="../assets/mobiliario-museo/mockup-descanso-comunicacion.jpg"
+                 alt="Los sistemas de Descanso y Comunicación montados en una sala del museo." loading="lazy">
+          </button>
+          <figcaption class="etiqueta museo-mockups__pie">Descanso y Comunicación</figcaption>
+        </figure>
 
-      <figure class="museo-mockups__pieza museo-mockups__pieza--der">
-        <img src="../assets/mobiliario-museo/mockup-comunicacion.jpg"
-             alt="Los paneles del sistema de Comunicación guiando el recorrido." loading="lazy">
-        <figcaption class="etiqueta museo-mockups__pie">Comunicación · el recorrido</figcaption>
-      </figure>
+        <figure class="museo-mockups__pieza">
+          <button type="button" data-lupa="../assets/mobiliario-museo/mockup-exposicion.jpg"
+                  aria-label="Ver en grande: Exposición en la Sala Artrópodos">
+            <img src="../assets/mobiliario-museo/mockup-exposicion.jpg"
+                 alt="El sistema de Exposición en la sala de Artrópodos." loading="lazy">
+          </button>
+          <figcaption class="etiqueta museo-mockups__pie">Exposición · Sala Artrópodos</figcaption>
+        </figure>
+
+        <figure class="museo-mockups__pieza">
+          <button type="button" data-lupa="../assets/mobiliario-museo/mockup-comunicacion.jpg"
+                  aria-label="Ver en grande: los paneles de Comunicación guiando el recorrido">
+            <img src="../assets/mobiliario-museo/mockup-comunicacion.jpg"
+                 alt="Los paneles del sistema de Comunicación guiando el recorrido." loading="lazy">
+          </button>
+          <figcaption class="etiqueta museo-mockups__pie">Comunicación · el recorrido</figcaption>
+        </figure>
+
+      </div>
     </div>
   </section>
 
   <!-- ======================================================================
-       4. INVESTIGACIÓN
+       3. INVESTIGACIÓN
        La única pantalla sin animación de scroll. Los insights van como
-       infografía y no como bloque de texto: cada tarjeta enfrenta el
-       problema observado con la oportunidad que abre.
+       infografía: tres tarjetas numeradas y, adentro de cada una, el problema
+       y la oportunidad separados por una flecha que baja. La flecha es lo que
+       la vuelve infografía y no tres bloques de texto: dice "esto lleva a
+       esto" sin tener que escribirlo.
        ====================================================================== -->
   <section class="zona zona--crema">
     <div class="museo-investigacion grilla">
       <p class="etiqueta museo-investigacion__rotulo">Investigación</p>
       <h2 class="museo-investigacion__titulo">Lo que vimos en sala</h2>
 
-      <article class="museo-insight">
-        <div class="museo-insight__par">
-          <p class="etiqueta museo-insight__clave">Problema</p>
-          <p class="museo-insight__texto">La observación se vuelve aburrida y monótona; hay mucho para observar y mucho para leer, y los padres suelen terminar explicándole todo a los chicos.</p>
-        </div>
-        <div class="museo-insight__par museo-insight__par--oportunidad">
-          <p class="etiqueta museo-insight__clave">Oportunidad</p>
-          <p class="museo-insight__texto">Explotar los sentidos, haciendo el recorrido más inmersivo.</p>
-        </div>
-      </article>
-
-      <article class="museo-insight">
-        <div class="museo-insight__par">
-          <p class="etiqueta museo-insight__clave">Problema</p>
-          <p class="museo-insight__texto">Dificultad para apreciar detalles de lo expuesto, por mala luz, poca interacción y vidrio que no facilita la observación.</p>
-        </div>
-        <div class="museo-insight__par museo-insight__par--oportunidad">
-          <p class="etiqueta museo-insight__clave">Oportunidad</p>
-          <p class="museo-insight__texto">Mejorar la visión con lupas, mejor iluminación, y más interacción directa con lo expuesto.</p>
-        </div>
-      </article>
-
-      <article class="museo-insight museo-insight--ancho">
-        <div class="museo-insight__par">
-          <p class="etiqueta museo-insight__clave">Lo que no funcionó</p>
-          <p class="museo-insight__texto">Se buscó aumentar el componente sonoro del recorrido sin éxito; en cambio se observó que el público se interesa mucho más en lo visual e interactivo que en lo auditivo.</p>
-        </div>
-      </article>
-
-      <figure class="museo-investigacion__posturas">
-        <img src="../assets/mobiliario-museo/posturas.png"
-             alt="Tres fotos de visitantes del museo, con círculos que marcan las posturas que adoptan para observar." loading="lazy">
-        <figcaption class="etiqueta museo-investigacion__pie">Las posturas que adopta el visitante para poder ver</figcaption>
-      </figure>
+      <div class="museo-insights">
+          <article class="museo-insight">
+            <p class="museo-insight__num">01</p>
+            <div class="museo-insight__par">
+              <p class="etiqueta museo-insight__clave">Problema</p>
+              <p class="museo-insight__texto">La observación se vuelve aburrida y monótona; hay mucho para observar y mucho para leer, y los padres suelen terminar explicándole todo a los chicos.</p>
+            </div>
+            <svg class="museo-insight__flecha" viewBox="0 0 18 26" fill="none"
+                 stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M9 1 L9 22"/><path d="M2 15 L9 22 L16 15"/>
+            </svg>
+            <div class="museo-insight__par museo-insight__par--oportunidad">
+              <p class="etiqueta museo-insight__clave">Oportunidad</p>
+              <p class="museo-insight__texto">Explotar los sentidos, haciendo el recorrido más inmersivo.</p>
+            </div>
+          </article>
+          <article class="museo-insight">
+            <p class="museo-insight__num">02</p>
+            <div class="museo-insight__par">
+              <p class="etiqueta museo-insight__clave">Problema</p>
+              <p class="museo-insight__texto">Dificultad para apreciar detalles de lo expuesto, por mala luz, poca interacción y vidrio que no facilita la observación.</p>
+            </div>
+            <svg class="museo-insight__flecha" viewBox="0 0 18 26" fill="none"
+                 stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M9 1 L9 22"/><path d="M2 15 L9 22 L16 15"/>
+            </svg>
+            <div class="museo-insight__par museo-insight__par--oportunidad">
+              <p class="etiqueta museo-insight__clave">Oportunidad</p>
+              <p class="museo-insight__texto">Mejorar la visión con lupas, mejor iluminación, y más interacción directa con lo expuesto.</p>
+            </div>
+          </article>
+          <article class="museo-insight">
+            <p class="museo-insight__num">03</p>
+            <div class="museo-insight__par">
+              <p class="etiqueta museo-insight__clave">Lo que no funcionó</p>
+              <p class="museo-insight__texto">Se buscó aumentar el componente sonoro del recorrido sin éxito; en cambio se observó que el público se interesa mucho más en lo visual e interactivo que en lo auditivo.</p>
+            </div>
+          </article>
+      </div>
 
       <p class="etiqueta museo-leyes">
         Leyes del sistema · modular, componible y configurable; conexión por ejes
@@ -257,41 +301,64 @@
   </section>
 
   <!-- ======================================================================
+       4. POSTURAS
+       Pantalla propia y centrada. Es la observación de campo que justifica
+       todo el sistema de Descanso, así que se mira sola.
+       ====================================================================== -->
+  <section class="zona zona--crema-2">
+    <div class="museo-posturas grilla">
+      <p class="etiqueta museo-posturas__rotulo">Observación de campo</p>
+      <figure class="museo-posturas__figura">
+        <img src="../assets/mobiliario-museo/posturas.png"
+             alt="Tres fotos de visitantes del museo, con círculos que marcan las posturas que adoptan para poder observar." loading="lazy">
+        <figcaption class="etiqueta museo-posturas__pie">
+          Las posturas que adopta el visitante para poder ver
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ======================================================================
        5-A. SISTEMA DE DESCANSO
        ====================================================================== -->
   <section class="zona zona--crema">
     <div class="museo-sistema grilla">
       <p class="etiqueta museo-sistema__rotulo">Sistema 01</p>
-      <h2 class="museo-sistema__titulo">Descanso</h2>
 
+      <!-- La portada va con alto fijo (--museo-portada-alto) y object-fit
+           contain, para que los tres dispositivos se vean a la MISMA escala
+           aunque los archivos midan muy distinto. -->
       <figure class="museo-sistema__portada">
-        <img src="../assets/mobiliario-museo/portada-descanso.png"
-             alt="El asiento del sistema de Descanso, visto de tres cuartos." loading="lazy">
+        <img src="../assets/mobiliario-museo/portada-descanso.png" alt="El asiento del sistema de Descanso, visto de tres cuartos." loading="lazy">
       </figure>
 
-      <p class="museo-sistema__texto">
-        Un asiento con tres posturas distintas, para pausar el recorrido sin
-        perder la vista sobre lo expuesto.
-      </p>
+      <!-- Titulo, bajada y circulos van juntos en la columna de la derecha,
+           para que TODO el dispositivo entre en una sola pantalla. -->
+      <div class="museo-sistema__cuerpo">
+        <h2 class="museo-sistema__titulo">Descanso</h2>
+        <p class="museo-sistema__texto">Un asiento con tres posturas distintas, para pausar el recorrido sin
+          perder la vista sobre lo expuesto.</p>
 
-      <!-- Los círculos de Descanso salen de su propia secuencia de frames:
-           el único detalle suelto que existe de este sistema viene sobre
-           fondo gris opaco, y adentro del círculo se vería un disco gris
-           mientras los otros dos sistemas flotan. Estos dos vienen sobre el
-           mismo negro que la animación. -->
-      <div class="museo-detalles">
-        <figure class="museo-detalle">
-          <div class="museo-detalle__marco">
-            <img src="../assets/mobiliario-museo/frames-descanso/0022.jpg" alt="Detalle del respaldo de listones." loading="lazy">
-          </div>
-          <figcaption class="etiqueta museo-detalle__pie">Respaldo de listones</figcaption>
-        </figure>
-        <figure class="museo-detalle">
-          <div class="museo-detalle__marco">
-            <img src="../assets/mobiliario-museo/frames-descanso/0230.jpg" alt="Detalle del respaldo convertido en apoyo." loading="lazy">
-          </div>
-          <figcaption class="etiqueta museo-detalle__pie">De respaldo a apoyo</figcaption>
-        </figure>
+        <div class="museo-detalles">
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/detalle-descanso-perilla.jpg" alt="Detalle de la perilla roja que traba el respaldo." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">Perilla de traba</figcaption>
+          </figure>
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/frames-descanso/0045.jpg?v=4" alt="El respaldo de listones desplegado." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">Respaldo de listones</figcaption>
+          </figure>
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/frames-descanso/0230.jpg?v=4" alt="El respaldo convertido en apoyo." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">De respaldo a apoyo</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -322,31 +389,35 @@
   <section class="zona zona--crema">
     <div class="museo-sistema grilla">
       <p class="etiqueta museo-sistema__rotulo">Sistema 02</p>
-      <h2 class="museo-sistema__titulo">Exposición</h2>
 
+      <!-- La portada va con alto fijo (--museo-portada-alto) y object-fit
+           contain, para que los tres dispositivos se vean a la MISMA escala
+           aunque los archivos midan muy distinto. -->
       <figure class="museo-sistema__portada">
-        <img src="../assets/mobiliario-museo/portada-exposicion.png"
-             alt="El módulo de Exposición con su vidriera superior." loading="lazy">
+        <img src="../assets/mobiliario-museo/portada-exposicion.png" alt="El módulo de Exposición con su vidriera superior." loading="lazy">
       </figure>
 
-      <p class="museo-sistema__texto">
-        Acerca piezas pequeñas a la altura y distancia que elige el usuario, con
-        cajones que se abren en abanico para observar de cerca.
-      </p>
+      <!-- Titulo, bajada y circulos van juntos en la columna de la derecha,
+           para que TODO el dispositivo entre en una sola pantalla. -->
+      <div class="museo-sistema__cuerpo">
+        <h2 class="museo-sistema__titulo">Exposición</h2>
+        <p class="museo-sistema__texto">Acerca piezas pequeñas a la altura y distancia que elige el usuario, con
+          cajones que se abren en abanico para observar de cerca.</p>
 
-      <div class="museo-detalles">
-        <figure class="museo-detalle">
-          <div class="museo-detalle__marco">
-            <img src="../assets/mobiliario-museo/detalle-expo-abanico.png" alt="Los cajones abiertos en abanico." loading="lazy">
-          </div>
-          <figcaption class="etiqueta museo-detalle__pie">Apertura en abanico</figcaption>
-        </figure>
-        <figure class="museo-detalle">
-          <div class="museo-detalle__marco">
-            <img src="../assets/mobiliario-museo/detalle-expo-varilla.png" alt="La varilla roscada sobre la que pivotean los cajones." loading="lazy">
-          </div>
-          <figcaption class="etiqueta museo-detalle__pie">Eje de pivoteo</figcaption>
-        </figure>
+        <div class="museo-detalles">
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/detalle-expo-abanico.png" alt="Los cajones abiertos en abanico." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">Apertura en abanico</figcaption>
+          </figure>
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/detalle-expo-varilla.png" alt="La varilla roscada sobre la que pivotean los cajones." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">Eje de pivoteo</figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -376,36 +447,40 @@
   <section class="zona zona--crema">
     <div class="museo-sistema grilla">
       <p class="etiqueta museo-sistema__rotulo">Sistema 03</p>
-      <h2 class="museo-sistema__titulo">Comunicación</h2>
 
+      <!-- La portada va con alto fijo (--museo-portada-alto) y object-fit
+           contain, para que los tres dispositivos se vean a la MISMA escala
+           aunque los archivos midan muy distinto. -->
       <figure class="museo-sistema__portada">
-        <img src="../assets/mobiliario-museo/portada-comunicacion.png"
-             alt="La línea de paneles del sistema de Comunicación." loading="lazy">
+        <img src="../assets/mobiliario-museo/portada-comunicacion.png" alt="La línea de paneles del sistema de Comunicación." loading="lazy">
       </figure>
 
-      <p class="museo-sistema__texto">
-        Guía el recorrido con paneles giratorios, ofreciendo distintos niveles y
-        velocidades de lectura.
-      </p>
+      <!-- Titulo, bajada y circulos van juntos en la columna de la derecha,
+           para que TODO el dispositivo entre en una sola pantalla. -->
+      <div class="museo-sistema__cuerpo">
+        <h2 class="museo-sistema__titulo">Comunicación</h2>
+        <p class="museo-sistema__texto">Guía el recorrido con paneles giratorios, ofreciendo distintos niveles y
+          velocidades de lectura.</p>
 
-      <div class="museo-detalles">
-        <figure class="museo-detalle">
-          <div class="museo-detalle__marco">
-            <img src="../assets/mobiliario-museo/detalle-comunicacion-ele.png" alt="La pieza en ele que traba dos módulos." loading="lazy">
-          </div>
-          <figcaption class="etiqueta museo-detalle__pie">Pieza de unión</figcaption>
-        </figure>
-        <figure class="museo-detalle">
-          <div class="museo-detalle__marco">
-            <img src="../assets/mobiliario-museo/detalle-comunicacion-rosca.png" alt="La perilla roscada que ajusta las piezas." loading="lazy">
-          </div>
-          <figcaption class="etiqueta museo-detalle__pie">Perilla de ajuste</figcaption>
-        </figure>
+        <div class="museo-detalles">
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/detalle-comunicacion-ele.png" alt="La pieza en ele que traba dos módulos." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">Pieza de unión</figcaption>
+          </figure>
+          <figure class="museo-detalle">
+            <div class="museo-detalle__marco">
+              <img src="../assets/mobiliario-museo/detalle-comunicacion-rosca.png" alt="La perilla roscada que ajusta las piezas." loading="lazy">
+            </div>
+            <figcaption class="etiqueta museo-detalle__pie">Perilla de ajuste</figcaption>
+          </figure>
+        </div>
       </div>
 
-      <!-- El panel ya trae dibujados sus dos círculos rojos de llamada, del
-           panel técnico original. Lo que se suma acá es la flecha y el
-           texto del riel, en el lenguaje de la página. -->
+      <!-- El panel ya trae dibujados sus dos circulos rojos de llamada, del
+           panel tecnico original. Lo que se suma aca es la flecha y el texto
+           del riel, en el lenguaje de la pagina. -->
       <figure class="museo-anotacion">
         <img src="../assets/mobiliario-museo/panel-riel.png"
              alt="Panel informativo con dos llamadas circulares al mecanismo de encastre." loading="lazy">
@@ -483,8 +558,8 @@
 <script src="../js/simbio-scroll.js?v=16" defer></script>
 <script src="../js/muestras.js?v=14" defer></script>
 <script src="../js/mas-54.js?v=12" defer></script>
-<script src="../js/tipines.js?v=5" defer></script>
-<script src="../js/museo-scroll.js?v=1" defer></script>
+<script src="../js/tipines.js?v=6" defer></script>
+<script src="../js/museo-scroll.js?v=7" defer></script>
 <script src="../js/museo.js?v=1" defer></script>
 </body>
 </html>

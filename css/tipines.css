@@ -740,7 +740,10 @@
 .visor {
   --visor-margen-x: 4vw;    /* aire a los costados del pliego */
   --visor-margen-y: 8svh;   /* aire arriba y abajo */
-  --visor-cerca: 2.6;       /* cuánto agranda un click cuando está lejos */
+  /* Acá había un --visor-cerca: 2.6 (cuánto agrandaba un click). Ya no lo lee
+     nadie: el zoom del visor se cayó cuando el libro de verdad se mudó adentro,
+     porque el click lo usa la hoja para pasar de página. Ver la nota de
+     armarVisor() en js/tipines.js. */
 
   position: fixed;
   inset: 0;

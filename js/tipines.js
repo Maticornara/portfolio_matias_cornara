@@ -341,10 +341,17 @@
      busca-personajes el marco se come el ancho y la imagen termina MÁS CHICA
      que el propio librito de la página. Se veía como un post-it.
 
-     Acá el pliego manda: ocupa lo que puede de la ventana, el fondo es negro
-     liso, y se puede acercar. Que se pueda acercar no es un lujo — es un
-     busca-personajes: hay que poder mirar de cerca un objeto del tamaño de una
-     moneda dentro de un pliego lleno de cosas.
+     Acá el pliego manda: ocupa lo que puede de la ventana y el fondo es negro
+     liso.
+
+     NO SE PUEDE ACERCAR, y conviene saberlo antes de buscar el bug. Hubo una
+     versión que sí: click para agrandar 2,6x y arrastrar para moverse. Se cayó
+     al mudar el libro de verdad adentro del visor, porque el click ya lo usa
+     la hoja para pasar de página y los dos gestos se pisaban. Se eligió
+     conservar el pase de página, que es lo que hace que esto sea un libro.
+     PENDIENTE: para un busca-personajes el acercar vale, así que en algún
+     momento hay que devolverlo por otra vía —rueda del mouse o un botón
+     aparte— sin tocar el click.
 
      EL VISOR ES UNO SOLO Y VIVE FUERA DE #swup. Los listeners se enganchan una
      vez sola (la marca es el data-visor-armado); el libro que está en pantalla

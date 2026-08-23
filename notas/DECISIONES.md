@@ -3211,3 +3211,207 @@ propio JS. El bug existe hoy entre Simbio, +54 y Tipines.
   perilla es `salto` en `museo-scroll.js`.
 - Falta mirar la página en teléfono. El corte de 960px ya apila todo y baja
   los recorridos de scroll, pero está preparado, no diseñado.
+
+### 33-bis. La segunda vuelta: blanco, y por qué se cortaba en el teléfono (23/08/2026)
+
+**EL FONDO PASÓ A BLANCO.** Sobre negro, lo oscuro del propio mueble (el
+respaldo marrón, la silueta gris de la persona) se perdía contra el fondo y
+parecía un agujero. Pero Descanso y Comunicación **no tienen canal alfa**: se
+midieron los tres y dan `Format24bppRgb` con cero píxeles transparentes, o sea
+que el negro está horneado. Poner el lienzo en blanco no alcanzaba.
+
+Hubo que **recortarlo**: donde el píxel es casi negro se pinta de blanco, y en
+la franja del medio se mezcla para que el borde no quede dentado. Los umbrales
+(8 y 42 sobre 255) son bajos a propósito, para no comerse lo oscuro del objeto:
+el respaldo marrón ronda 58 de luminancia y la silueta gris 68. Exposición sí
+tiene alfa, así que a esa **no** se le recorta nada.
+
+El bucle de píxeles va compilado en C# dentro del `.ps1`. En PowerShell puro
+son casi mil millones de operaciones: horas contra minutos.
+
+**LA ANIMACIÓN INCOMPLETA EN MOBILE ERAN TRES COSAS, NO UNA:**
+
+1. **Memoria.** Las tres secuencias juntas son ~5 GB de bitmaps en desktop y
+   2,5 GB en teléfono. El navegador descarta imágenes por su cuenta y la
+   animación se corta **sin dar ningún error**. Ahora cada secuencia suelta la
+   memoria cuando su sección queda a más de una pantalla, y la vuelve a bajar
+   al regresar (no cuesta red: los JPG quedan en el caché). El pico pasó a ser
+   el de UNA secuencia.
+2. **En el teléfono se usa la mitad de los cuadros** (`esChico` en
+   museo-scroll.js). El movimiento no sufre porque el scroll ya interpola.
+3. **`dibujar()` se iba sin hacer nada** si el cuadro exacto no había bajado, y
+   quedaba clavado el anterior. Ahora dibuja el vecino cargado más cercano y
+   vuelve a dibujar cuando llega el bueno (`dibujadoExacto`).
+
+Verificado con números: las tres llegan al último cuadro en los dos cortes.
+
+**LO DEMÁS DE ESTA VUELTA:** el hero pasó a dos mitades reusando `.proyecto__col`
+de simbio.css (con la pastilla de volver y las tres pastillas de meta, que era
+lo que faltaba) y el carrusel se mudó al lado del título. Los círculos de
+detalle ahora entran en la misma pantalla que la portada y la bajada. Las tres
+portadas van con alto fijo y `object-fit: contain`, así se ven a la misma
+escala aunque los archivos midan 1128x1025, 948x1031 y 3019x1413. Los mockups
+quedaron los tres iguales, más chicos y clickeables con `[data-lupa]`, la misma
+lupa de main.js que ya usa +54. Descanso recuperó su detalle real (la perilla),
+que en la primera vuelta se había descartado por venir opaco sobre gris.
+
+### 33-ter. El rompe-cachés que faltaba: los frames no están en el HTML (23/08/2026)
+
+Se reconvirtieron los 1007 cuadros de negro a blanco, se verificó que los
+archivos en disco tuvieran `#FFFFFF` en las esquinas... y en el navegador
+seguían saliendo negros. Ni con Ctrl+F5.
+
+**El motivo:** la regla del `?v=N` estaba aplicada a los `<link>` y los
+`<script>`, que es donde vive el resto del sitio. Pero los frames **no están
+en el HTML**: los pide `museo-scroll.js` con `new Image()`, y esas URL no
+llevaban versión. El navegador tenía los JPG negros cacheados con la misma
+URL exacta y no volvía a pedirlos nunca.
+
+Ahora la versión la pone el JS (`VERSION_FRAMES` arriba de museo-scroll.js) y
+se pega a cada ruta de cuadro. **Si se vuelven a convertir los frames, hay que
+subir ese número**, igual que con los CSS.
+
+Los dos cuadros que se usan como círculo de detalle sí están en el HTML, así
+que esos llevan el `?v=` escrito a mano en el `<img>`.
+
+**La regla general, ampliada:** el rompe-cachés no es "de los CSS y los JS",
+es **de todo archivo que se reemplace y se pida por la misma URL**. Si un
+asset lo pide el JS en vez del HTML, el `?v=` va en el JS.
+
+**Y de paso:** la pantalla de investigación pasó a infografía de verdad (tres
+tarjetas numeradas, con una flecha que baja del problema a la oportunidad) y
+la foto de posturas se llevó una pantalla propia, centrada y a 1100px, que es
+el ancho del original y por lo tanto su techo antes de pixelarse.
+
+### 33-quater. El recorte del negro: tres intentos, y el bueno era el simple (23/08/2026)
+
+Mati reporto que "las siluetas se ven raras, como que no existen" y que habia
+"algo raro con los colores". Tenia razon, y era el recorte.
+
+**Intento 1, rampa de luminancia (mal).** Mezclaba hacia blanco toda la franja
+entre 8 y 42. Como el fondo negro y una silueta negra son el mismo color, la
+silueta se blanqueaba a manchones segun que tan oscuro fuera cada pedazo, y de
+paso lavaba los tonos oscuros de toda la imagen.
+
+**Intento 2, relleno por conectividad desde el borde (peor).** La idea era
+distinguir fondo de silueta por DONDE esta, no por su color. Anduvo para las
+siluetas, pero los huecos de las patas de madera son fondo y estan ENCERRADOS
+por el objeto: el relleno no llegaba y quedaban manchones negros grandes.
+
+**Intento 3, umbral duro en 30 (bien).** Lo que resuelve el problema no es un
+algoritmo mas complicado sino un dato medido:
+
+| | luminancia |
+|---|---|
+| fondo y huecos de las piezas | **<= 30**, casi todo en 0 |
+| siluetas de las personas | **~60** |
+
+Un corte limpio en 30 se lleva el fondo y los huecos y no toca las siluetas.
+Verificado en los cuadros donde hay gente: 296 de Descanso (persona sentada),
+225 de Comunicacion (mano) y 60 de Exposicion.
+
+**El riesgo que queda anotado:** si algun render trajera una silueta en negro
+puro, esto se la come y no hay umbral que lo arregle; habria que re-exportar
+ese render con alfa.
+
+**Y un detalle que resulto estructural:** `$g.PixelOffsetMode = "HighQuality"`
+en el DrawImage no es cosmetico. Sin esa linea el reescalado deja un reborde
+claro de un pixel alrededor de toda la imagen. Con el intento 2 eso sellaba el
+fondo y rompia el relleno (medido: 400.631 pixeles de fondo con la linea contra
+195.251 sin ella). Quedo el comentario en el script para que nadie la saque.
+
+**Una trampa de metodo, para no repetirla:** el intento 2 parecia fallar en el
+script cuando en realidad fallaba en la PRUEBA, que se habia olvidado de esa
+misma linea. Si un script y su prueba difieren en una sola linea de setup, el
+diagnostico apunta al lugar equivocado. La prueba ahora extrae el C# del script
+real con una regex en vez de tener una copia.
+
+### 33-quinquies. El fondo, cuarta y ultima vuelta: crema + alfa reforzado (23/08/2026)
+
+Mati seguia viendo mal las siluetas despues del arreglo del umbral. Comparando
+el ORIGINAL crudo contra la salida, pixel a pixel y ampliado, aparecio que la
+conversion no rompia nada: **el problema es que estos renders se hicieron para
+verse sobre negro.** Sobre claro salen dos cosas a la luz:
+
+1. **Los huecos entre las tablitas del respaldo** se vuelven rayas del color
+   del fondo. Es correcto (son huecos de verdad), pero sobre negro eran negro
+   sobre negro y no se veian. No hay nada que hacerle sin re-renderizar.
+2. **Las siluetas de la gente en Exposicion son SEMITRANSPARENTES.** Medido: el
+   grueso de sus pixeles esta en alfa 160-191, o sea ~70% de opacidad. Sobre
+   negro se leen solidas; sobre claro se lavan a gris palido. Eso era el
+   "parece que no existen".
+
+Se le mostraron cuatro variantes renderizadas del mismo cuadro y eligio:
+**fondo crema del sitio + reforzar el alfa (x1.9) al componer.** El costo
+aceptado es que el vidrio de las vitrinas queda mas ahumado.
+
+Las tres secuencias se tratan distinto y no es capricho:
+
+| | alfa | tratamiento |
+|---|---|---|
+| Descanso | no tiene | recorte por umbral (<=30). Siluetas opacas, no necesitan refuerzo |
+| Comunicacion | no tiene | igual que Descanso |
+| Exposicion | si tiene | composicion a mano con alfa x1.9. NO se recorta: el umbral le comeria los vidrios |
+
+**El crema del CSS y el del script tienen que ser el mismo numero.**
+`--museo-fondo-render: #F3EDE1` en museo.css y `$FondoR/G/B = 243/237/225` en
+el conversor. Verificado que el fondo plano de los frames sale exactamente en
+243,237,225 (1033 de 1034 muestras).
+
+**Dos trampas de PowerShell que costaron tiempo, para no repetirlas:**
+
+- **El backtick es el caracter de escape dentro de un here-string `@"..."@`.**
+  Un comentario del C# que decia una palabra entre backticks metio un retorno
+  de carro en el medio del codigo. El compilador marcaba la linea SIGUIENTE,
+  asi que el error se buscaba en el lugar equivocado. Quedo un aviso arriba del
+  bloque.
+- **Muestrear un solo pixel de la esquina miente.** La esquina de un JPEG cae
+  en el primer bloque de 8x8 y sale corrida (#EDE7DB en vez de #F3EDE1). Parecia
+  que el fondo no coincidia con la pagina. Con un barrido de toda la imagen dio
+  exacto. Medir una region, nunca un pixel.
+
+### 33-sexies. La respuesta a "los otros siguen en la misma" (23/08/2026)
+
+Mati insistio en que Exposicion siempre estuvo bien y las otras dos no, y
+pidio rehacerlas desde los originales. La medicion cierra el caso:
+
+| | canal alfa |
+|---|---|
+| portada Descanso | **si** |
+| portada Exposicion | **si** |
+| portada Comunicacion | **si** |
+| frames Exposicion | **si** |
+| **frames Descanso** | **NO** (Format24bppRgb) |
+| **frames Comunicacion** | **NO** (Format24bppRgb) |
+
+Exposicion "siempre estuvo bien" porque es **la unica animacion exportada con
+transparencia**. Las tres portadas tambien la tienen. O sea que en su momento
+se exporto con Film > Transparent para las portadas y para Exposicion, y sin
+eso para las otras dos secuencias.
+
+**Rehacer desde los originales no cambia nada: el canal no esta en el
+archivo.** Todo lo que se puede hacer con esos dos es recortar el negro por
+umbral, que es lo que se hace, y funciona salvo donde el render tiene material
+semitransparente compuesto contra negro (ahi el color quedo horneado oscuro y
+no hay forma de recuperarlo).
+
+**EL ARREGLO DE VERDAD, y esta al alcance:** re-renderizar esas dos secuencias
+desde `PROYECTOS/MUSEO/*.blend` con **Render Properties > Film > Transparent**
+tildado y salida PNG RGBA. Con eso, `optimizar-frames-museo.ps1` se corre con
+`Recortar=$false` en las tres y quedan como Exposicion. Verificado que los
+.blend existen.
+
+### Y de paso: sacarle la caja al carrusel
+
+El carrusel tenia fondo --crema-2 y esquinas redondeadas, o sea que se leia
+como una tarjeta con las piezas adentro. Como las tres portadas son PNG con
+alfa, no necesitan ningun fondo: sacado el relleno y el radio, flotan sobre la
+pagina igual que en Simbio. Las flechas pasaron a ser marcas finas sin relleno,
+porque un boton macizo sobre un carrusel sin caja vuelve a encapsular.
+
+Las animaciones sumaron la perilla **`--museo-anim-zoom`** (hoy en 1.28): los
+renders traen mucho aire alrededor del objeto y entrando enteros la pieza queda
+chica en medio de la pantalla, que se lee como una estampa dentro de una caja.
+El numero la agranda y deja que se recorte contra los bordes. Vive en el CSS y
+lo lee museo-scroll.js al medir el canvas, NO en cada cuadro: getComputedStyle
+fuerza recalculo de estilos y a 60 por segundo se nota.

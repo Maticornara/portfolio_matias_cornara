@@ -87,14 +87,26 @@ window.initMuseoScroll = function () {
     },
   };
 
+  /* ROMPE-CACHÉS DE LOS FRAMES.
+     El resto del sitio lo resuelve con ?v=N en el <link> y el <script>, pero
+     los frames NO están en el HTML: los pide este archivo con new Image(),
+     así que el ?v= tiene que ponerse acá.
+
+     Hace falta de verdad: el 23/08 se reconvirtieron los 1007 cuadros de
+     negro a blanco y el navegador siguió sirviendo los negros que ya tenía
+     bajados, incluso con Ctrl+F5. Se veía como si el cambio no hubiera
+     pasado. SI SE VUELVEN A CONVERTIR LOS FRAMES, SUBIR ESTE NÚMERO. */
+  const VERSION_FRAMES = 4;
+
   // Cuántas imágenes se piden a la vez. Ni de a una (lentísimo) ni todas
   // juntas (el navegador se satura y las resuelve en cualquier orden).
   const CARGAS_EN_PARALELO = 8;
   const TIMEOUT_IMAGEN = 12000;
 
-  // Cuánto antes de llegar empieza a bajar los frames. 60% de pantalla de
-  // anticipo alcanza para que estén listos cuando la sección entra.
-  const ANTICIPO = "60% 0px";
+  // Cuánto antes de llegar empieza a bajar los frames, y cuánto después de
+  // pasar suelta la memoria. Una pantalla entera: alcanza para que estén
+  // listos al entrar, y para no soltar y recargar por un scroll chico.
+  const ANTICIPO = "100% 0px";
 
   const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const DEBUG = new URLSearchParams(location.search).has("debug");
@@ -121,12 +133,23 @@ window.initMuseoScroll = function () {
     const salidaNum = seccion.querySelector("[data-museo-fase-num]");
     const salidaNombre = seccion.querySelector("[data-museo-fase-nombre]");
 
-    const { carpeta, primero, ultimo, salto, fases } = config;
+    const { carpeta, primero, ultimo, fases } = config;
+
+    /* EN EL TELÉFONO SE USAN LA MITAD DE LOS CUADROS (23/08/2026)
+       Era el motivo de que la animación quedara incompleta en mobile: tres
+       secuencias de ~1600x900 no entran en la memoria de un teléfono, el
+       navegador empieza a descartar imágenes y la animación se corta a la
+       mitad sin dar ningún error. Con el salto al doble, cada secuencia
+       ocupa la mitad y entra. El movimiento no sufre, porque el scroll ya
+       interpola visualmente entre cuadro y cuadro. */
+    const esChico = window.innerWidth <= 960;
+    const salto = config.salto * (esChico ? 2 : 1);
 
     // Cuántas imágenes manejamos de verdad, ya contando el salto.
     const TOTAL = Math.floor((ultimo - primero) / salto) + 1;
     const numeroDeFrame = (i) => primero + i * salto;
-    const rutaDeFrame = (n) => carpeta + String(n).padStart(4, "0") + ".jpg";
+    const rutaDeFrame = (n) =>
+      carpeta + String(n).padStart(4, "0") + ".jpg?v=" + VERSION_FRAMES;
 
     const imagenes = new Array(TOTAL).fill(null);
     let cargadas = 0;
@@ -134,6 +157,14 @@ window.initMuseoScroll = function () {
     let frameActual = -1;
     let pendiente = false;
     let arrancado = false;
+    // ¿Lo último que se dibujó era el cuadro exacto, o un vecino de relleno?
+    // Si fue relleno hay que volver a dibujar cuando llegue el bueno.
+    let dibujadoExacto = false;
+    let cargando = false;
+    // Sube en cada liberar(). Una precarga en vuelo compara su número con
+    // este: si no coincide, la liberaron en el medio y se corta sola en vez
+    // de seguir llenando un array que ya no sirve.
+    let generacion = 0;
 
     /* --- El reparto del scroll entre las fases --------------------------
        Cada fase pesa lo que ocupa en scroll. Por defecto ese peso es su
@@ -275,6 +306,10 @@ window.initMuseoScroll = function () {
     }
 
     async function precargar() {
+      if (cargando || arrancado) return;   // ya está cargada o ya viene en camino
+      cargando = true;
+      const gen = generacion;
+
       for (let i = 0; i < TOTAL; i += CARGAS_EN_PARALELO) {
         const tanda = [];
         for (let j = i; j < Math.min(i + CARGAS_EN_PARALELO, TOTAL); j++) {
@@ -282,36 +317,81 @@ window.initMuseoScroll = function () {
         }
         await Promise.all(tanda);
 
+        // Nos liberaron mientras cargábamos: soltamos y no seguimos.
+        if (gen !== generacion) return;
+
         // Apenas hay con qué dibujar, se muestra: es preferible una
         // animación que arranca incompleta a un loader clavado.
         if (!arrancado && exitosas > 6) {
           arrancado = true;
           if (loader) loader.classList.add("is-listo");
-          alScrollear();
         }
+        // Después de CADA tanda se redibuja. Si lo que hay en pantalla era un
+        // vecino de relleno, esta es la llamada que lo reemplaza por el
+        // cuadro bueno apenas termina de bajar.
+        if (arrancado) alScrollear();
       }
+      cargando = false;
       if (loader) loader.classList.add("is-listo");
     }
 
     /* --- Dibujo --------------------------------------------------------- */
+
+    /* EL ACERCAMIENTO SALE DEL CSS, no de acá.
+       Es la perilla --museo-anim-zoom de css/museo.css, para que Mati pueda
+       moverla donde estan todas las demás. Se lee al medir el canvas y no en
+       cada cuadro: getComputedStyle fuerza al navegador a recalcular estilos,
+       y hacerlo 60 veces por segundo mientras se scrollea se nota. */
+    let zoom = 1;
+
+    function leerZoom() {
+      const valor = parseFloat(
+        getComputedStyle(seccion).getPropertyValue("--museo-anim-zoom")
+      );
+      // Si la variable no está o vino cualquier cosa, la pieza entra entera.
+      zoom = Number.isFinite(valor) && valor > 0 ? valor : 1;
+    }
 
     function medirCanvas() {
       const caja = canvas.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(caja.width * dpr);
       canvas.height = Math.round(caja.height * dpr);
+      leerZoom();
+    }
+
+    /* EL CUADRO MÁS CERCANO QUE YA ESTÉ CARGADO (23/08/2026)
+       Antes, si el cuadro exacto todavía no había bajado, dibujar() se iba
+       sin hacer nada y quedaba en pantalla el último que sí estaba: la
+       animación parecía trabada o incompleta. Ahora se dibuja el vecino más
+       próximo que exista, así el movimiento nunca se frena, y cuando llega
+       el cuadro de verdad se vuelve a dibujar (por eso dibujadoExacto). */
+    function imagenMasCercana(indice) {
+      if (imagenes[indice]) return imagenes[indice];
+      for (let d = 1; d < TOTAL; d++) {
+        if (indice - d >= 0 && imagenes[indice - d]) return imagenes[indice - d];
+        if (indice + d < TOTAL && imagenes[indice + d]) return imagenes[indice + d];
+      }
+      return null;
     }
 
     function dibujar(indice) {
-      const img = imagenes[indice];
+      const img = imagenMasCercana(indice);
       if (!img) return;
+      dibujadoExacto = Boolean(imagenes[indice]);
 
       const cw = canvas.width;
       const ch = canvas.height;
       ctx.clearRect(0, 0, cw, ch);
 
-      // "contain": la pieza entra entera, sin recortarse ni deformarse.
-      const escala = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
+      // Se parte de "contain" (la pieza entera, sin deformar) y después se
+      // multiplica por el acercamiento de --museo-anim-zoom. Con zoom 1 es
+      // exactamente contain; por encima de 1 la pieza crece y el sobrante
+      // se sale del canvas, que está en overflow:hidden.
+      //
+      // Sigue centrada: al restar (cw - w) / 2 el recorte se reparte igual
+      // de los dos lados, así que la pieza no se corre al agrandarse.
+      const escala = Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * zoom;
       const w = img.naturalWidth * escala;
       const h = img.naturalHeight * escala;
       ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
@@ -337,7 +417,10 @@ window.initMuseoScroll = function () {
         // De número de frame a índice del array, respetando el salto.
         const indice = Math.min(TOTAL - 1, Math.max(0, Math.round((numero - primero) / salto)));
 
-        if (indice === frameActual) return;   // el cuadro no cambió: no redibujamos
+        // El cuadro no cambió Y lo que hay dibujado es el bueno: no tocamos
+        // nada. Si lo dibujado era un vecino de relleno, sí redibujamos, por
+        // si el cuadro exacto ya terminó de bajar.
+        if (indice === frameActual && dibujadoExacto) return;
         frameActual = indice;
 
         dibujar(indice);
@@ -362,7 +445,32 @@ window.initMuseoScroll = function () {
                   fases.filter((f) => f.nombre).length + " fases con título");
     }
 
-    return { precargar, alScrollear };
+    /* --- Soltar la memoria -----------------------------------------------
+       Las tres secuencias juntas son unos 5 GB de bitmaps descomprimidos en
+       desktop y 2,5 GB en teléfono. Ningún teléfono aguanta eso: el navegador
+       empieza a descartar imágenes por su cuenta y la animación aparece
+       incompleta, sin dar ningún error.
+
+       Por eso, cuando una sección queda lejos, su secuencia suelta las
+       imágenes y vuelve a bajarlas si el visitante regresa. Volver no cuesta
+       red: los JPG ya están en el caché del navegador, así que es solo
+       volver a decodificarlos. Así el pico de memoria es el de UNA secuencia
+       y no el de las tres. */
+    function liberar() {
+      if (!arrancado && !cargando) return;
+      generacion++;              // corta la precarga que esté en vuelo
+      imagenes.fill(null);
+      cargadas = 0;
+      exitosas = 0;
+      frameActual = -1;
+      dibujadoExacto = false;
+      arrancado = false;
+      cargando = false;
+      if (loader) loader.classList.remove("is-listo");
+      if (barra) barra.style.width = "0%";
+    }
+
+    return { precargar, alScrollear, liberar, estaCargando: () => cargando };
   }
 
 
@@ -390,11 +498,17 @@ window.initMuseoScroll = function () {
     // Sin IntersectionObserver (navegador viejo): se carga y listo.
     if (!("IntersectionObserver" in window)) { anim.precargar(); return; }
 
+    /* El observador NO se desconecta después de la primera vez: sigue vivo
+       para poder soltar la memoria cuando la sección queda lejos y volver a
+       cargarla si el visitante regresa. Ver liberar() en crearAnim.
+
+       El margen de ANTICIPO es una pantalla entera, así que carga cuando
+       falta una pantalla para llegar y suelta cuando ya pasó una pantalla.
+       Volver no cuesta red: los JPG quedan en el caché del navegador. */
     const observador = new IntersectionObserver((entradas) => {
       entradas.forEach((e) => {
-        if (!e.isIntersecting) return;
-        observador.disconnect();   // una sola vez: ya está cargando
-        anim.precargar();
+        if (e.isIntersecting) anim.precargar();
+        else anim.liberar();
       });
     }, { rootMargin: ANTICIPO });
 

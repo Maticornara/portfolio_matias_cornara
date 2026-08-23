@@ -341,8 +341,20 @@
 
     const vertice = techo + lienzo * (DIBUJO.ANCLA - DIBUJO.TECHO) / DIBUJO.LIENZO;
 
+    /* LAS DOS VARIABLES VAN A ELEMENTOS DISTINTOS, Y NO ES CAPRICHO.
+
+       --caja-ancho va en .esquina porque ahí hay media queries que también lo
+       definen; un estilo en línea es lo único que les gana. Si lo pusiera más
+       arriba, en una ventana baja la media query pisaría la medida real.
+
+       --fuga-y-px va en el HERO porque lo leen dos cosas: .esquina, que se
+       cuelga de esa altura, y el degradé que pinta las paredes, que tiene que
+       converger en el mismo punto. Puesto en .esquina, el degradé no lo vería
+       —las variables bajan, no suben— y las paredes convergerían en el % de
+       reserva mientras la caja está en otro lado: las líneas quedarían
+       corridas de los bordes de sus propias paredes. */
     esquina.style.setProperty("--caja-ancho", lienzo.toFixed(1) + "px");
-    esquina.style.setProperty("--fuga-y-px", vertice.toFixed(1) + "px");
+    hero.style.setProperty("--fuga-y-px", vertice.toFixed(1) + "px");
   }
 
   function initMedida() {

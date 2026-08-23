@@ -42,6 +42,10 @@ $Piezas = @(
   @{ dir="$Origen\COMUNICACION\PORTADA"; buscar="PORTADA_*.png";      salida="portada-comunicacion.png";  ancho=1800 }
 
   # --- Detalles en circulo: renders transparentes ---
+  # El de Descanso es el UNICO opaco de todos (fondo gris con alfa parcial).
+  # Sale como JPG sobre blanco, que es el mismo fondo que el circulo y que la
+  # animacion, asi que no se nota que no flota como los otros.
+  @{ dir="$Origen\DESCANSO\DETALLES";    buscar="DESCANSO DESACTIVADO*"; salida="detalle-descanso-perilla.jpg"; ancho=1200 }
   @{ dir="$Origen\EXPOSICION\DETALLES";   buscar="APERTURA CAJONES*"; salida="detalle-expo-abanico.png";        ancho=1200 }
   @{ dir="$Origen\EXPOSICION\DETALLES";   buscar="CAJONES.*";         salida="detalle-expo-varilla.png";        ancho=1200 }
   @{ dir="$Origen\COMUNICACION\DETALLES"; buscar="COMUNICACION ELE*"; salida="detalle-comunicacion-ele.png";    ancho=1200 }

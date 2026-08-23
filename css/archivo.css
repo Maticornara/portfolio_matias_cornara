@@ -142,6 +142,43 @@
      Lo lee archivo.js; el resto de la cuenta la hace él. */
   --caja-proporcion: 0.75;
 
+  /* --- EL CUARTO: EL ÁNGULO Y LAS PAREDES ---------------------------
+     EL ÁNGULO NO SE TOCA. 26,565° es el arcotangente de 0,5, o sea la
+     isometría 2:1 en la que está dibujada la caja. Si cambia, la caja deja de
+     apoyarse en el piso. Está acá arriba de todo justamente para que se vea
+     que es UN valor y no cuatro repetidos. */
+  --iso-angulo: 26.565deg;
+
+  /* LOS DOS TONOS DE PARED.
+     Las tres líneas dividen la pantalla en tres planos: piso abajo y una
+     pared de cada lado. El piso queda del crema de siempre —mira hacia
+     arriba, es el que más luz recibe— y las paredes van más apagadas.
+
+     CUÁL VA MÁS OSCURA NO ES A GUSTO. La luz del dibujo viene de arriba a la
+     izquierda: por eso la caja tiene su cara izquierda clara y la derecha
+     oscura. Y acá está lo que confunde: la pared IZQUIERDA del cuarto es
+     paralela a la cara DERECHA de la caja (las dos se van hacia el fondo por
+     el mismo eje), así que le toca el tono oscuro. Al revés se ve raro sin
+     que uno sepa por qué: dos planos paralelos con luces distintas.
+
+     Los dos colores salen de mezclar los DOS cremas que ya existen en
+     variables.css, así que no entra ningún color nuevo a la paleta. El número
+     es cuánto se acerca al crema oscuro: 0% = el crema de siempre, 100% = el
+     --crema-2 puro. Si querés las paredes más marcadas, subí los dos
+     manteniendo la diferencia entre ellos. */
+  --pared-izq: color-mix(in srgb, var(--crema-2) 80%, var(--crema));
+  --pared-der: color-mix(in srgb, var(--crema-2) 40%, var(--crema));
+
+  /* DESDE DÓNDE SE DESVANECEN LAS PAREDES HACIA ABAJO.
+     Abajo del hero viene la sección siguiente, que es crema plano. Si una
+     pared llegara pintada hasta el borde de abajo, se vería una línea
+     horizontal donde termina una sección y empieza la otra. Con esto el
+     cuarto se apaga antes de llegar y el corte no existe nunca, ni siquiera
+     en una ventana ancha y baja, que es donde las diagonales salen por abajo
+     en vez de por los costados.
+     Además deja el pie del hero limpio, que es donde va el nombre. */
+  --cuarto-desvanece: 55%;
+
   /* --- LA ENTRADA DEL HERO ------------------------------------------
      El cuarto se arma solo al cargar la pagina: primero las lineas, despues
      la caja, despues los papeles. Pasa UNA vez y queda quieto: no hay nada
@@ -313,6 +350,71 @@
      contenedor de scroll y eso ya nos rompió los sticky del sitio una vez
      (está anotado en base.css). clip recorta igual y no crea contenedor. */
   overflow: clip;
+
+  /* EL HERO VA A TODO LO ANCHO, Y ES OBLIGATORIO AHORA QUE HAY PAREDES.
+     .grilla le pone max-width: 1400px, y como el hero es el que recorta las
+     líneas (overflow: clip de arriba), hasta ahora el cuarto terminaba a los
+     1400 px. Con líneas de opacidad .18 eso no se notaba: se cortaban en el
+     aire y listo. Con las paredes PINTADAS sí se notaría — quedaría una
+     franja de crema plano a cada lado con un borde vertical marcadísimo.
+     El texto no se entera: es un bloque centrado, no está colocado en las
+     columnas de la grilla. */
+  max-width: none;
+
+  /* El vértice, en % del hero. Vive acá y no en .esquina porque ahora lo
+     necesitan los dos: .esquina para colgarse de él (lo hereda) y el degradé
+     de las paredes de acá abajo para saber dónde converger. */
+  --fuga-x: 50;
+  --fuga-y: 44;
+}
+
+/* --------------------------------------------------------------------------
+   LAS PAREDES Y EL PISO DEL CUARTO
+   ----------------------------------------------------------------------------
+   Las tres líneas ya partían la pantalla en tres planos; esto los pinta.
+
+   ES UN conic-gradient, Y ESA ES LA ELECCIÓN QUE HACE QUE ESTO SEA SIMPLE.
+   Un degradé cónico gira alrededor de un punto repartiendo colores por
+   ÁNGULO, que es exactamente lo que hay acá: tres sectores que salen del
+   mismo vértice. Con cortes duros —el mismo ángulo de fin de uno y de
+   arranque del siguiente— no hay degradado, hay tres cuñas de color plano
+   con el borde justo sobre cada línea.
+   La alternativa era dibujar tres polígonos gigantes y mantenerlos
+   sincronizados con las líneas a mano. Esto es una propiedad.
+
+   LOS ÁNGULOS. En un conic-gradient el 0° apunta hacia ARRIBA y crece en
+   sentido horario. La línea vertical sube desde el vértice, o sea 0°. Las
+   diagonales salen hacia abajo a --iso-angulo de la horizontal, así que caen
+   en 90°+ángulo la derecha y 270°-ángulo la izquierda. Los tres sectores que
+   quedan entre medio son, en ese orden: pared derecha, piso, pared izquierda.
+
+   VA EN UN ::before Y NO EN EL background DEL HERO porque tiene que poder
+   aparecer con la animación de entrada, y un background-image no se puede
+   desvanecer. Un pseudo-elemento sí: se le anima la opacidad.
+   Sin z-index a propósito. Es el primer hijo, así que ya se pinta antes que
+   .esquina (que está en z-index 0) y que el texto (en 1). Poniéndole un
+   z-index negativo se metería detrás del fondo de la sección y desaparecería.
+   -------------------------------------------------------------------------- */
+
+.portada-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    /* 1. El desvanecido hacia abajo. Va PRIMERO porque en CSS la primera
+          capa es la de más arriba: tapa al cuarto contra el pie del hero. */
+    linear-gradient(to bottom,
+      transparent var(--cuarto-desvanece),
+      var(--crema) 100%),
+
+    /* 2. Los tres planos */
+    conic-gradient(from 0deg
+      at calc(var(--fuga-x) * 1%) var(--fuga-y-px, calc(var(--fuga-y) * 1%)),
+      var(--pared-der) 0deg calc(90deg + var(--iso-angulo)),
+      var(--crema)     calc(90deg + var(--iso-angulo)) calc(270deg - var(--iso-angulo)),
+      var(--pared-izq) calc(270deg - var(--iso-angulo)) 360deg);
 }
 
 /* El bloque entero va centrado y ocupa el ancho de la grilla: el nombre cae
@@ -425,23 +527,13 @@
    -------------------------------------------------------------------------- */
 
 .esquina {
-  /* El vértice. Estos dos números son las perillas: --fuga-x es cuánto a la
-     derecha y --fuga-y cuánto abajo, los dos en % del hero. El JS les suma el
-     vaivén encima; si el JS no corre, la esquina se queda acá y se ve igual. */
-  --fuga-x: 50;
-
-  /* 60 y no 55: el rincón entero baja un poco y la caja queda MÁS CERCA del
-     nombre. El texto no se mueve —está anclado al pie del hero con
-     --texto-abajo—, así que lo único que cambia es cuánto aire queda entre
-     los papeles del piso y el nombre. Subilo y la caja se aleja del texto;
-     bajalo y se le acerca.
-
-     VOLVIÓ A 55 AL AGRANDAR LA CAJA. Un cubo en isometría 2:1 mide tan ALTO
-     como ancho: al pasar el cubo de 130 a 320 px de ancho, también creció
-     320 px hacia abajo, y con el vértice al 60% la base se le montaba al
-     nombre. Los dos números están atados — si agrandás la caja, este tiene
-     que subir. */
-  --fuga-y: 44;
+  /* EL VÉRTICE YA NO SE DECLARA ACÁ: se hereda de .portada-hero.
+     Se mudó porque ahora lo necesitan dos cosas —esta esquina, para colgarse
+     de él, y el degradé que pinta las paredes, que tiene que converger en el
+     mismo punto— y un valor que usan dos lugares no puede vivir dentro de
+     uno de ellos. Las perillas --fuga-x y --fuga-y están en .portada-hero.
+     La altura fina la escribe archivo.js en --fuga-y-px; el % es la reserva
+     por si el JS no corre. */
 
   position: absolute;
   left: calc(var(--fuga-x) * 1%);
@@ -503,8 +595,14 @@
 
 /* Las dos aristas del piso. 26.565deg = el ángulo de la isometría 2:1.
    La izquierda es la misma rotación reflejada: 180 - 26.565. */
-.esquina__linea--der { transform: rotate(26.565deg); }
-.esquina__linea--izq { transform: rotate(153.435deg); }
+/* EL ÁNGULO SALE DE --iso-angulo Y NO ESTÁ ESCRITO ACÁ.
+   Ahora ese número lo usan tres cosas: estas dos rotaciones y los cortes del
+   degradé que pinta las paredes. Con el valor repetido en cuatro lugares,
+   cambiar uno y olvidarse de los otros despega las paredes de las líneas y
+   la caja vuelve a flotar. La izquierda es la de la derecha espejada, o sea
+   180° menos el ángulo. */
+.esquina__linea--der { transform: rotate(var(--iso-angulo)); }
+.esquina__linea--izq { transform: rotate(calc(180deg - var(--iso-angulo))); }
 
 
 /* --------------------------------------------------------------------------
@@ -1165,6 +1263,14 @@
   from { clip-path: inset(100% 0 0 0); }
 }
 
+/* Las paredes aparecen JUNTO con las líneas, no antes ni después: son la
+   misma idea —el cuarto tomando forma— y separarlas en dos tiempos las
+   convertiría en dos eventos distintos. Solo se desvanecen: un plano que
+   además se moviera se leería como una tela, no como una pared. */
+@keyframes cuarto-aparece {
+  from { opacity: 0; }
+}
+
 /* La caja llega desde arriba. El signo negativo es lo que la pone ARRIBA de
    su lugar al empezar, para que el movimiento sea de bajada. */
 @keyframes caja-aterriza {
@@ -1193,6 +1299,11 @@
    `backwards` es lo que sostiene el estado inicial DURANTE la espera. Sin
    eso, todo se veria en su lugar desde el cuadro cero y recien ahi saltaria
    hacia atras para animarse: se veria un parpadeo al reves. */
+
+.portada-hero.is-entrando::before {
+  animation: cuarto-aparece var(--entrada-lineas-dur) var(--ease)
+             var(--entrada-lineas) backwards;
+}
 
 .portada-hero.is-entrando .esquina__linea--izq,
 .portada-hero.is-entrando .esquina__linea--der {
@@ -1251,6 +1362,7 @@
    segundo cerrojo, por si la clase llegara por otro lado.)
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .portada-hero.is-entrando::before,
   .portada-hero.is-entrando .esquina__linea,
   .portada-hero.is-entrando .caja__cubo,
   .portada-hero.is-entrando .caja__sombra,
