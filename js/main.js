@@ -31,9 +31,14 @@ const hayMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches
    Fuente única de verdad. Renombrar o reordenar proyectos se hace acá.
 
    OJO: son los OCHO proyectos del sitio largo. La portada express muestra
-   una selección de cinco (Simbio, Mobiliario de Museo, +54, Amigos Tipines
-   y Tesis) y sus fichas están escritas a mano en index.html, no salen de
-   esta lista. Tesis todavía no está acá porque no tiene página propia.
+   una selección de CUATRO (Simbio, Mobiliario de Museo, +54 y Amigos
+   Tipines) y sus fichas están escritas a mano en index.html, no salen de
+   esta lista. Tesis salió de la portada el 25/08/2026 y tampoco está acá:
+   todavía no tiene página propia.
+
+   LAS CATEGORÍAS Y LOS AÑOS DE ACÁ SON LOS DE LAS PASTILLAS del home y de
+   la apertura de cada proyecto. Si se cambian en un lado, se cambian en los
+   tres — es la única forma de que esta lista siga siendo fuente de verdad.
 
    Cada ficha completa va a tener los 5 bloques fijos (concepto, rol,
    contexto, proceso, resultado), hoy en null. `extras` es el campo abierto:
@@ -44,13 +49,13 @@ const hayMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches
 
 const PROYECTOS = [
   { slug: "cero-al-infinito",   titulo: "Cero al Infinito",       categoria: "Investigación · Arquitectura",      anio: 2022, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
-  { slug: "simbio",             titulo: "Simbio",                 categoria: "Diseño industrial · Biomímesis",    anio: 2023, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
+  { slug: "simbio",             titulo: "Simbio",                 categoria: "D. Industrial · Prototipo · Juego", anio: 2023, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
   { slug: "saprobio",           titulo: "Saprobio",               categoria: "Audiovisual · Inmersivo",           anio: 2023, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
   { slug: "lamparas",           titulo: "Lámparas",               categoria: "Diseño industrial · Matricería",    anio: 2022, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
   { slug: "mas-54",             titulo: "+54",                    categoria: "Sistema gráfico · 3D",              anio: 2021, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
   { slug: "fanzine-zoe-gotusso",titulo: "Fanzine (Zoe Gotusso)",  categoria: "Ilustración · Editorial",           anio: 2023, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
-  { slug: "mobiliario-museo",   titulo: "Mobiliario de Museo",    categoria: "Diseño industrial · Mobiliario",    anio: 2021, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
-  { slug: "amigos-tipines",     titulo: "Amigos Tipines",         categoria: "Transmedia · IA aplicada",          anio: 2024, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
+  { slug: "mobiliario-museo",   titulo: "Mobiliario de Museo",    categoria: "D. Industrial · Mobiliario",        anio: 2023, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
+  { slug: "amigos-tipines",     titulo: "Amigos Tipines",         categoria: "IA generativa · Transmedia",        anio: 2026, concepto: null, rol: null, contexto: null, proceso: null, resultado: null, extras: [] },
 ];
 
 

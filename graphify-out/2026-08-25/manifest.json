@@ -5,8 +5,8 @@
     "semantic_hash": "ad0ef25d29161e7a51a6b44c86105c7f"
   },
   "js/main.js": {
-    "mtime": 1787682371.731311,
-    "ast_hash": "c2ddae94f72d92cfafab16db00ed95d1",
+    "mtime": 1787621337.341513,
+    "ast_hash": "bb88d43d7e2dec91ac628e2c24c879fd",
     "semantic_hash": ""
   },
   "js/muestras.js": {
@@ -170,53 +170,53 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787682382.2046678,
-    "ast_hash": "2c0675319f4bf6ad2ff4328f555d1074",
+    "mtime": 1787622049.8024917,
+    "ast_hash": "7cac8de5674267fffce7a7860fbbbb11",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787682329.2949584,
-    "ast_hash": "1a87591d1262505c4318e62210954078",
+    "mtime": 1787622179.978384,
+    "ast_hash": "5b32a61a81a55819726d7137ebbdae2b",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
-    "mtime": 1787682382.2497976,
-    "ast_hash": "51fd53765b63bc0e790c56955fbdba2a",
+    "mtime": 1787622049.820946,
+    "ast_hash": "e120541555629fc70b05e44b57f080ac",
     "semantic_hash": ""
   },
   "proyectos/cero-al-infinito.html": {
-    "mtime": 1787679595.6378028,
-    "ast_hash": "20ea933de5434e7f3c88aac056f988bf",
+    "mtime": 1787622049.838671,
+    "ast_hash": "6ff1db790245589a0072011edb25e426",
     "semantic_hash": ""
   },
   "proyectos/fanzine-zoe-gotusso.html": {
-    "mtime": 1787679595.639807,
-    "ast_hash": "775094758d07d001edba24afe2d124dd",
+    "mtime": 1787622049.8411746,
+    "ast_hash": "c3a3839717bdcc759afa12f9d2e1d2df",
     "semantic_hash": ""
   },
   "proyectos/lamparas.html": {
-    "mtime": 1787679595.639807,
-    "ast_hash": "a6d6532b71fb600427c30dbd0c02ef37",
+    "mtime": 1787622049.8457036,
+    "ast_hash": "3aff5ea04b7bace38ac3d975ef7f9772",
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787682382.2812142,
-    "ast_hash": "12851c669c786fde5ac0d36d99f66876",
+    "mtime": 1787622049.8499935,
+    "ast_hash": "07ec4bf0f094f03df940a24bb879a114",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
-    "mtime": 1787682382.3142483,
-    "ast_hash": "3d8474a5bc223aabe565337eeab785fb",
+    "mtime": 1787622049.866186,
+    "ast_hash": "38ab5f80870d99e3629296662cb5d94e",
     "semantic_hash": ""
   },
   "proyectos/saprobio.html": {
-    "mtime": 1787679595.645347,
-    "ast_hash": "212be0b4d5ef0d86daee0bf9461fea93",
+    "mtime": 1787622049.8811014,
+    "ast_hash": "f5765311ef0632e19fee6fcadab0a0dc",
     "semantic_hash": ""
   },
   "proyectos/simbio.html": {
-    "mtime": 1787682382.3438735,
-    "ast_hash": "45e1e88b1272fb39f94d5d1d469c8e67",
+    "mtime": 1787622049.8840902,
+    "ast_hash": "8bfa3388e8fdefbdc421e519f5cfe503",
     "semantic_hash": ""
   },
   "sandbox/index.html": {
@@ -18292,21 +18292,6 @@
   "assets/mobiliario-museo/posturas.jpg": {
     "mtime": 1787544263.9434774,
     "ast_hash": "d06a94a1e987a4035a97de4316bc6d29",
-    "semantic_hash": ""
-  },
-  "tools/optimizar-portada-simbio.ps1": {
-    "mtime": 1787681996.6299229,
-    "ast_hash": "28013f953e570b8afc738cc70f24cb13",
-    "semantic_hash": ""
-  },
-  "assets/favicon.svg": {
-    "mtime": 1787679595.624151,
-    "ast_hash": "55842a17f073b8892e66b348a360c47c",
-    "semantic_hash": ""
-  },
-  "assets/simbio/foto/home-simbio.png": {
-    "mtime": 1787682006.431219,
-    "ast_hash": "2cc13d2760ba5ea462df2ed7b6ed4d8e",
     "semantic_hash": ""
   }
 }

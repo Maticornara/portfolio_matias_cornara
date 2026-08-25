@@ -53,7 +53,7 @@
   <link rel="stylesheet" href="css/variables.css?v=9">
   <link rel="stylesheet" href="css/base.css?v=11">
   <link rel="stylesheet" href="css/layout.css?v=17">
-  <link rel="stylesheet" href="css/archivo.css?v=34">
+  <link rel="stylesheet" href="css/archivo.css?v=35">
   <link rel="stylesheet" href="css/simbio.css?v=120">
   <link rel="stylesheet" href="css/mas-54.css?v=25">
   <link rel="stylesheet" href="css/tipines.css?v=15">
@@ -426,23 +426,26 @@
        palabra grande: es un letrero más de la serie SOBRE MÍ / HERRAMIENTAS /
        CONTACTO / TRABAJOS, y la página se lee como una sola tirada.
 
-       LAS CINCO FICHAS, ORDENADAS Y RECTAS, sobre las columnas 2 y 3:
+       LAS CUATRO FICHAS, ORDENADAS Y RECTAS, sobre las columnas 2 y 3:
 
            col 1        col 2            col 3         col 4
-         TRABAJOS   [ ---------- SIMBIO ---------- ]
-                    [   MUSEO    ] [     +54       ]
-                    [  TIPINES   ] [    TESIS      ]
+         TRABAJOS   [   SIMBIO   ] [     MUSEO     ]
+                    [    +54     ] [    TIPINES    ]
 
-       Simbio se lleva las dos columnas porque son cinco y de a dos quedaba
-       una suelta. Las otras cuatro miden todas lo mismo y ninguna está
-       inclinada: acá el orden es el punto.
+       Las cuatro miden exactamente lo mismo y ninguna está inclinada: acá el
+       orden es el punto. Simbio tenía las dos columnas y proporción 21:9
+       cuando eran cinco y una quedaba suelta; sacada la Tesis (25/08/2026)
+       son cuatro pares y vuelve a la fila con las demás.
 
-       LINKEAN LAS DOS QUE TIENEN PÁGINA TERMINADA: Simbio y +54. Las otras
-       tres tienen el `.ficha__cuerpo` como <div> y no como <a>, a propósito:
+       LAS CUATRO LINKEAN: cada una tiene su página terminada. Si alguna
+       vuelve a quedar sin página, su `.ficha__cuerpo` pasa de <a> a <div> —
        mandar a una página a medio hacer es peor que no mandar a ningún lado.
-       Cuando cada una tenga la suya, se cambia el <div> por
-       <a class="ficha__cuerpo" href="proyectos/loquesea.html"> y listo — el
-       CSS no hay que tocarlo.
+
+       YA NO HAY PREPORTADA. Antes cada ficha mostraba un dibujo de línea y
+       recién al pasar el mouse aparecía la foto. Ahora la foto se ve siempre
+       y el hover la agranda un poco. Los <svg> del boceto siguen escritos
+       acá abajo: los apaga el CSS (buscá SIN PREPORTADA en archivo.css), así
+       volver atrás es una regla, no rehacer cinco dibujos.
        ====================================================================== -->
   <section class="zona zona--crema" id="trabajos">
     <div class="tramo tramo--trabajos grilla">
@@ -466,14 +469,20 @@
               </svg>
             </div>
             <div class="ficha__capa ficha__capa--real">
-              <img src="assets/simbio/foto/portada.jpg" alt="" loading="lazy">
+              <!-- El render REAL, recortado a 4:3 alrededor de la pieza y no
+                   por el centro de la imagen (la pieza está corrida a la
+                   derecha). Viene con fondo transparente a propósito: abajo
+                   está el crema del marco, igual que en Amigos Tipines.
+                   Lo arma tools/optimizar-portada-simbio.ps1. -->
+              <img src="assets/simbio/foto/home-simbio.png" alt="" loading="lazy">
             </div>
           </div>
           <div class="ficha__pie">
             <h3 class="ficha__titulo" translate="no">Simbio</h3>
             <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Diseño industrial</li>
-              <li class="etiqueta">Biomímesis</li>
+              <li class="etiqueta">D. Industrial</li>
+              <li class="etiqueta">Prototipo</li>
+              <li class="etiqueta">Juego</li>
               <li class="etiqueta">2023</li>
             </ul>
           </div>
@@ -517,9 +526,9 @@
           <div class="ficha__pie">
             <h3 class="ficha__titulo">Mobiliario de Museo</h3>
             <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Diseño industrial</li>
+              <li class="etiqueta">D. Industrial</li>
               <li class="etiqueta">Mobiliario</li>
-              <li class="etiqueta">2021</li>
+              <li class="etiqueta">2023</li>
             </ul>
           </div>
         </a>
@@ -596,45 +605,27 @@
           <div class="ficha__pie">
             <h3 class="ficha__titulo" translate="no">Amigos Tipines</h3>
             <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Transmedia</li>
               <li class="etiqueta">IA generativa</li>
-              <li class="etiqueta">2024</li>
+              <li class="etiqueta">Transmedia</li>
+              <li class="etiqueta">2026</li>
             </ul>
           </div>
         </a>
       </article>
 
-      <!-- ---------------- 05 · TESIS ----------------
-           FALTA LA FOTO, y falta el AÑO: el <p class="dato"> del pie quedó
-           vacío a propósito para no inventar una fecha. -->
-      <article class="ficha ficha--tesis ficha--sin-foto reveal"
-               data-tilt data-tilt-max="4" data-tilt-speed="400"
-               data-tilt-glare data-tilt-max-glare="0.1"
-               data-tilt-perspective="1600">
-        <span class="ficha__pestana" translate="no" data-es="Proy. 5" data-en="Proj 5">Proy. 5</span>
-        <div class="ficha__cuerpo">
-          <div class="ficha__marco">
-            <div class="ficha__capa ficha__capa--boceto">
-              <!-- Un cuerpo de páginas encuadernado -->
-              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
-                   stroke-width="1.4" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 8 L64 8 L64 50 L14 50 Z"/>
-                <path d="M22 16 L22 62 L72 62 L72 16"/>
-                <path d="M30 26 L64 26 M30 35 L64 35 M30 44 L52 44"/>
-              </svg>
-            </div>
-            <div class="ficha__capa ficha__capa--real"></div>
-          </div>
-          <div class="ficha__pie">
-            <h3 class="ficha__titulo">Tesis</h3>
-            <!-- FALTA: la pastilla del año de la tesis -->
-            <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Proyecto final de carrera</li>
-            </ul>
-          </div>
-        </div>
-      </article>
+      <!-- ---------------- 05 · TESIS — FUERA POR AHORA (25/08/2026) ----------
+           La ficha existía pero sin foto y sin año, y se veía como un hueco.
+           VA A VOLVER: la tesis tiene link público, solo falta la portada.
+
+           PARA REPONERLA: el <article class="ficha ficha--tesis"> completo
+           está en el commit a4f724b de este archivo (era la ficha 05, con
+           .ficha--sin-foto y el boceto del libro encuadernado).
+           Al reponerla hay que acordarse de tres cosas:
+             · el grid vuelve a ser 5 fichas → ver "TRABAJOS" en archivo.css,
+               donde ahora las cuatro van de a dos por fila;
+             · la pestaña es "Proy. 5";
+             · las pastillas todavía hay que decidirlas.
+           ------------------------------------------------------------------ -->
 
     </div>
   </section>
@@ -869,7 +860,7 @@
      Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
 <script src="js/smooth-scroll.js?v=6" defer></script>
 <script src="js/transiciones.js?v=8" defer></script>
-<script src="js/main.js?v=25" defer></script>
+<script src="js/main.js?v=26" defer></script>
 <script src="js/traduccion.js?v=5" defer></script>
 <script src="js/archivo.js?v=13" defer></script>
 <script src="js/simbio-scroll.js?v=16" defer></script>

@@ -238,6 +238,18 @@
   /* Aire entre las filas de fichas. Más chico que el de las secciones: las
      fichas son un grupo, tienen que leerse juntas. */
   --grid-fila: var(--s-7);
+
+  /* CUÁNTO SE AGRANDA LA FOTO AL PASAR EL MOUSE.  *** PERILLA ***
+     1 = no se mueve. 1.06 = se agranda un 6%. Arriba de 1.12 la foto se
+     empieza a comer sus propios bordes y el gesto se lee como un salto.
+     El marco tiene overflow: hidden, así que lo que se sale se recorta y la
+     tarjeta no cambia de tamaño: crece la imagen adentro de su ventana. */
+  --ficha-zoom: 1.06;
+
+  /* Cuánto tarda ese zoom. Es el MISMO tiempo con el que la tarjeta se
+     levanta (--dur-3, 500ms): si fueran distintos se vería que son dos
+     animaciones y no un solo movimiento. */
+  --ficha-zoom-dur: var(--dur-3);
 }
 
 
@@ -1129,7 +1141,7 @@
 
 
 /* ==========================================================================
-   3. TRABAJOS — LAS CINCO FICHAS
+   3. TRABAJOS — LAS CUATRO FICHAS
    ==========================================================================
    Las fichas cuelgan del mismo .tramo que el CV, las herramientas y el
    contacto: rótulo chico en la columna 1 y el contenido a la derecha. Por eso
@@ -1138,12 +1150,14 @@
    ORDENADAS, RECTAS Y DEL MISMO TAMAÑO, sobre las columnas 2 y 3:
 
        col 1        col 2            col 3         col 4
-     TRABAJOS   [ ---------- SIMBIO ---------- ]
-                [   MUSEO    ] [     +54       ]
-                [  TIPINES   ] [    TESIS      ]
+     TRABAJOS   [   SIMBIO   ] [     MUSEO     ]
+                [    +54     ] [    TIPINES    ]
 
-   Simbio se lleva las dos columnas porque son CINCO: de a dos, una quedaba
-   suelta. Las otras cuatro miden todas exactamente lo mismo.
+   TODAS MIDEN LO MISMO Y TODAS SON 4:3. Hasta el 25/08/2026 eran cinco:
+   Simbio se llevaba las dos columnas en 21:9 porque de a dos quedaba una
+   suelta. Sacada la Tesis son cuatro, entran de a pares, y Simbio vuelve a
+   la fila con las demás. Si algún día vuelven a ser cinco (o siete), la
+   que sobre se lleva `grid-column: 2 / span 2` y una proporción apaisada.
 
    NINGUNA ESTÁ INCLINADA. El componente .ficha trae una micro-rotación de
    fábrica (--giro-ficha); acá se pone en 0. La versión anterior las tenía
@@ -1151,13 +1165,11 @@
    desprolijo, no desacomodado.
    -------------------------------------------------------------------------- */
 
-/* Cada ficha dice su columna. La proporción es la misma para las cuatro
-   chicas; Simbio es más apaisada porque ocupa el doble de ancho. */
-.ficha--simbio  { grid-column: 2 / span 2; }
-.ficha--museo   { grid-column: 2; }
-.ficha--54      { grid-column: 3; }
-.ficha--tipines { grid-column: 2; }
-.ficha--tesis   { grid-column: 3; }
+/* Cada ficha dice su columna. Las cuatro tienen la misma proporción. */
+.ficha--simbio  { grid-column: 2; }
+.ficha--museo   { grid-column: 3; }
+.ficha--54      { grid-column: 2; }
+.ficha--tipines { grid-column: 3; }
 
 .tramo .ficha {
   /* El componente trae un tope de 560px pensado para una ficha suelta; acá
@@ -1209,17 +1221,17 @@
   align-content: start;
 }
 
-/* DOS FILAS DE PASTILLAS SIEMPRE — pero solo en las cuatro chicas.
-   En una tarjeta de una columna, tres pastillas se reparten en dos filas;
-   Tesis tiene una sola pastilla y ocupaba una. Sin este mínimo, su pie queda
-   más bajo que el de la ficha de al lado y las dos imágenes de la fila
-   terminan a distinta altura — que es justo lo que había que arreglar.
-   La cuenta: alto de pastilla (~1.7rem) por dos, más el gap.
+/* DOS FILAS DE PASTILLAS SIEMPRE, EN LAS CUATRO.
+   En una tarjeta de una columna, tres o cuatro pastillas se reparten en dos
+   filas. Sin este mínimo, una ficha con menos pastillas deja su pie más
+   arriba que el de la ficha de al lado y las dos imágenes de la fila
+   terminan a distinta altura. La cuenta: alto de pastilla (~1.7rem) por dos,
+   más el gap.
 
-   Simbio queda AFUERA: es la única de su fila, no tiene con quién
-   emparejarse, y al doble de ancho sus tres pastillas entran en un renglón.
-   Con el mínimo puesto le quedaba un hueco de aire abajo del pie. */
-.tramo .ficha:not(.ficha--simbio) .ficha__meta {
+   Antes Simbio quedaba afuera de esta regla porque ocupaba dos columnas y
+   sus pastillas entraban en un renglón. Ahora mide como las demás y entra
+   con las demás. */
+.tramo .ficha__meta {
   min-height: calc(1.7rem * 2 + 6px);
 }
 .ficha__meta .etiqueta {
@@ -1237,15 +1249,20 @@
   padding: var(--s-4) var(--s-5) var(--s-5);
 }
 
+/* Una sola proporción para las cuatro. Simbio tenía 21/9 mientras ocupaba
+   dos columnas; ahora no hay excepción. */
 .tramo .ficha__marco { aspect-ratio: 4 / 3; }
-.ficha--simbio .ficha__marco { aspect-ratio: 21 / 9; }
 
 /* EL DIBUJO DE LÍNEA SE MIDE POR LOS DOS LADOS.
-   El componente le da solo un ancho (62% del marco) y el alto sale de la
-   proporción del lienzo, 100x70. En la ficha apaisada de Simbio eso lo hacía
-   tan alto como el marco entero, tocando los bordes. El max-height es el
-   freno: cuando el alto se pasa, el navegador recalcula el ancho solo y el
-   dibujo mantiene su forma. */
+   DORMIDA desde el 25/08/2026: el boceto ya no se muestra (buscá SIN
+   PREPORTADA, más abajo). Se deja escrita porque el día que se vuelva a
+   encender hace falta, y porque el motivo por el que existe sigue valiendo:
+
+   el componente le da solo un ancho (62% del marco) y el alto sale de la
+   proporción del lienzo, 100x70. En la ficha apaisada que tenía Simbio eso
+   lo hacía tan alto como el marco entero, tocando los bordes. El max-height
+   es el freno: cuando el alto se pasa, el navegador recalcula el ancho solo
+   y el dibujo mantiene su forma. */
 .tramo .ficha__capa--boceto svg {
   width: 46%;
   max-height: 64%;
@@ -1267,6 +1284,51 @@
 /* Cuando hay foto, la capa real es la foto: hay que sacarle el degradé
    verde que el componente trae como relleno por defecto. */
 .ficha__capa--real:has(img) { background: none; }
+
+/* --- SIN PREPORTADA: LA FOTO SE VE SIEMPRE  (25/08/2026) -----------------
+   ANTES: cada ficha mostraba un dibujo de línea (.ficha__capa--boceto) y la
+   foto aparecía recién al pasar el mouse, cruzándose con el dibujo. El
+   estado de ese cruce vive en --revelado (0 = boceto, 1 = foto), en
+   layout.css.
+
+   AHORA: la foto se ve de entrada y el hover la agranda un poco. Se hace en
+   tres líneas y sin tocar el componente:
+     · --revelado clavado en 1  → la capa real ya está opaca
+     · el boceto apagado        → si no, quedaría abajo, invisible pero vivo
+     · transform: none          → el componente le deja un scale de entrada
+                                  calculado con --revelado; acá lo pisamos
+                                  para que el único scale sea el del hover.
+
+   VOLVER ATRÁS ES BORRAR ESTE BLOQUE. Los <svg> de los bocetos siguen
+   escritos en index.html: no se tiró nada.
+
+   SOLO EN EL HOME (todo cuelga de .tramo). La ficha del sandbox sigue con su
+   preportada, que es donde se probó el cruce. */
+.tramo .ficha { --revelado: 1; }
+.tramo .ficha__capa--boceto { display: none; }
+
+.tramo .ficha__capa--real {
+  opacity: 1;
+  transform: none;
+  transition: transform var(--ficha-zoom-dur) var(--ease);
+}
+
+/* El zoom, solo con mouse de verdad: en touch el hover se queda pegado
+   después de tocar y la foto quedaría agrandada para siempre.
+   Va en :hover de la FICHA entera y no de la imagen, así el gesto es el
+   mismo que levanta la tarjeta: una sola cosa que responde, no dos. */
+@media (hover: hover) and (pointer: fine) {
+  .tramo .ficha:hover .ficha__capa--real,
+  .tramo .ficha:focus-within .ficha__capa--real {
+    transform: scale(var(--ficha-zoom));
+  }
+}
+
+/* Y con "prefiero menos movimiento" activado, no se agranda nada. */
+@media (prefers-reduced-motion: reduce) {
+  .tramo .ficha:hover .ficha__capa--real,
+  .tramo .ficha:focus-within .ficha__capa--real { transform: none; }
+}
 
 /* FICHAS SIN FOTO TODAVÍA.
    El componente cruza el boceto con la capa real al pasar el mouse. Si no
@@ -1304,12 +1366,10 @@
 .ficha[data-tilt] .ficha__meta    { transform: translateZ(24px); }
 
 /* En pantalla chica no hay columnas que repartir: van una abajo de la otra,
-   todas del mismo alto. Simbio pierde su formato apaisado, que a ese ancho
-   la dejaba como una franja. */
+   todas del mismo alto y con la misma proporción que en escritorio. */
 @media (max-width: 960px) {
-  .ficha--simbio, .ficha--museo, .ficha--54,
-  .ficha--tipines, .ficha--tesis { grid-column: 1 / -1; }
-  .ficha--simbio .ficha__marco { aspect-ratio: 16 / 9; }
+  .ficha--simbio, .ficha--museo,
+  .ficha--54, .ficha--tipines { grid-column: 1 / -1; }
 }
 
 

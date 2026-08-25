@@ -2064,7 +2064,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
    mitad del alto da un lado perfectamente redondo, así que 999 significa
    "redondeá todo lo que puedas" y no hay que recalcularlo si cambia el alto.
 
-   flex-wrap: si no entran las tres en el ancho, la que sobra baja sola. */
+   flex-wrap: si no entran todas en el ancho, la que sobra baja sola. */
 .pag-simbio .proyecto__meta {
   display: flex;
   flex-wrap: wrap;

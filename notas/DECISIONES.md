@@ -3772,3 +3772,76 @@ sigue en 11px y la pastilla en 86x31—, porque todo va dentro de
 hizo nada, y solo se vio porque la medición lo siguió reportando. Una regla CSS
 que no matchea es silenciosa: si escribís una y el número no cambia, lo primero
 que hay que chequear es el nombre.
+
+---
+
+## 34. Las pastillas, la portada de Simbio y el fin de la preportada (25/08/2026)
+
+Tres cambios que se pidieron juntos y en realidad son uno solo: **la grilla de
+trabajos del home dejó de ser una vidriera con truco y pasó a ser una lista de
+cuatro fichas iguales.**
+
+### Las pastillas, corregidas
+
+Se cambiaron **en los dos lugares a la vez** —la ficha del home
+(`.ficha__meta` en `index.html`) y la apertura de cada proyecto
+(`.proyecto__meta`)— porque son la misma ficha vista de lejos y de cerca. Si
+solo se toca una, el visitante lee una cosa en el home y otra adentro.
+
+| | Antes | Ahora |
+|---|---|---|
+| Simbio | D. industrial · Biomímesis · 2023 | **D. Industrial · Prototipo · Juego · 2023** |
+| Mobiliario | D. industrial · Mobiliario · **2021** | D. Industrial · Mobiliario · **2023** |
+| Amigos Tipines | Transmedia · IA generativa · **2024** | **IA generativa · Transmedia · 2026** |
+| +54 | — | sin cambios |
+
+Simbio pasó a tener **cuatro** pastillas. No hizo falta tocar nada: las dos
+listas ya son `flex-wrap: wrap`, así que la cuarta baja sola.
+
+### La Tesis, afuera por ahora
+
+Estaba sin foto y sin año: una tarjeta con un dibujo de línea y una sola
+pastilla, al lado de cuatro que ya tienen material. Se sacó el `<article>`
+entero de `index.html` y en su lugar quedó un comentario que dice **dónde está
+para reponerla** (commit `a4f724b`) y qué hay que acordarse al hacerlo. Va a
+volver: la tesis tiene link público, lo que falta es la portada.
+
+### Simbio vuelve a la fila
+
+Simbio ocupaba **dos columnas y proporción 21:9**. Eso no era una decisión de
+diseño sobre Simbio, era aritmética: **eran cinco fichas y de a dos quedaba una
+suelta**, así que la primera se llevaba la fila entera. Sacada la Tesis son
+cuatro, entran de a pares, y la excepción se queda sin motivo. Ahora las cuatro
+son `grid-column` de una columna y **4:3 todas**.
+
+La imagen nueva sale de `RENDER/MINIATURA/REAL.png`, y acá hubo un detalle que
+`object-fit: cover` no podía resolver solo: **la pieza está corrida a la derecha
+dentro del 1920x1080** (su caja real va de x=363 a x=1575). Recortar 4:3 por el
+centro de la imagen le comía media pieza. Por eso se escribió
+`tools/optimizar-portada-simbio.ps1`, que **mide dónde empieza y termina el
+dibujo por el canal alfa** y recorta la ventana 4:3 centrada en la pieza, no en
+el lienzo. Resultado: ventana 1440x1080 desde (249,0) → 1200x900.
+
+**El fondo queda transparente a propósito.** Abajo está el crema del marco de la
+ficha, igual que la imagen de Amigos Tipines. Es lo que evita que un render con
+su propio fondo meta un cuarto color en una página de tres.
+
+### Se fue la preportada
+
+Cada ficha mostraba un **dibujo de línea** y la foto aparecía recién al pasar el
+mouse. Ahora **la foto se ve siempre y el hover la agranda** (`--ficha-zoom`,
+1.06 por defecto, con el mismo tiempo que el levantón de la tarjeta para que se
+lea como un solo movimiento).
+
+Se hizo **sin tocar el componente** `.ficha` de `layout.css`, que sigue teniendo
+su cruce boceto→foto intacto para el sandbox. Todo cuelga de `.tramo` (o sea:
+solo el home) y son tres líneas:
+
+```css
+.tramo .ficha { --revelado: 1; }          /* el cruce, clavado en "foto" */
+.tramo .ficha__capa--boceto { display: none; }
+.tramo .ficha__capa--real { transform: none; }  /* el único scale es el del hover */
+```
+
+**Los `<svg>` de los bocetos siguen escritos en `index.html`.** No se tiró nada:
+volver atrás es borrar un bloque de CSS, no rehacer cuatro dibujos.
