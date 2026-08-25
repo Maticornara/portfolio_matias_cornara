@@ -61,11 +61,28 @@ $Piezas = @(
   @{ dir="$Origen\COMUNICACION\DETALLES"; buscar="PANALES DETALLA*";   salida="panel-riel.png";      ancho=1026 }
 
   # --- Contexto e investigacion ---
-  @{ dir=$ctx; buscar="POSTURAS*";      salida="posturas.png";      ancho=1125 }
+  # POSTURAS: 5823x3417 de origen (segunda entrega, 24/08). Sale a 2200 para
+  # que en pantalla retina se vea al doble de su tamano de CSS (1100px).
+  # Va en JPG y no en PNG porque es 85% foto opaca: en PNG pesaba 1,7 MB.
+  # El 15% transparente son los huecos entre las tres fotos, y se componen
+  # contra el crema-2, que es el fondo de SU seccion. Si esa seccion cambia
+  # de zona, este color cambia con ella.
+  @{ dir=$ctx; buscar="POSTURAS*";      salida="posturas.jpg";      ancho=2200; fondo="#EAE1CF" }
   @{ dir=$ctx; buscar="MUSEO_FACHADA*"; salida="museo-fachada.jpg";  ancho=1600 }
   @{ dir=$ctx; buscar="MUSEO_ADENTRO*"; salida="museo-adentro.jpg";  ancho=1600 }
   # Ancha a proposito (3646 de origen): es la que panea en loop en el cierre.
   @{ dir=$ctx; buscar="PARTES_FINAL*";  salida="partes-final.jpg";   ancho=2800 }
+
+  # --- La ficha del home ---------------------------------------------------
+  # La ficha del indice es 4:3 y su imagen va con object-fit: cover, asi que
+  # una panoramica de 2.14 como la portada de Comunicacion perderia los
+  # paneles de los costados. Por eso NO se manda la portada tal cual: se la
+  # compone entera sobre un lienzo 4:3 en crema. Asi el cover no recorta nada,
+  # porque el archivo YA viene con la proporcion de la ficha.
+  #
+  # saturacion 1.25: "un poco mas", pedido de Mati. 1 = sin tocar.
+  @{ dir="$Origen\COMUNICACION\PORTADA"; buscar="PORTADA_*.png"; salida="home-museo.jpg";
+     lienzo=@(1600,1200); saturacion=1.25; fondo="#F3EDE1"; ancho=1600 }
 
   # --- Mockups: fotomontajes opacos ---
   @{ dir="$Origen\MOCKUPS"; buscar="COMUNIACION*";            salida="mockup-comunicacion.jpg";           ancho=1600 }
@@ -96,7 +113,7 @@ foreach ($p in $Piezas) {
   # Si un PNG no necesita reescalado, se COPIA en vez de recodificarse.
   # El codificador PNG de .NET no optimiza nada: recomprimir sin achicar
   # deja el archivo MAS pesado que el original (medido: +15% de media).
-  if ((-not $p.salida.EndsWith(".jpg")) -and ($ancho -eq $img.Width)) {
+  if ((-not $p.salida.EndsWith(".jpg")) -and ($ancho -eq $img.Width) -and (-not $p.ContainsKey("lienzo")) -and (-not $p.ContainsKey("saturacion"))) {
     $w = $img.Width; $h = $img.Height   # se leen ANTES de liberar la imagen
     $img.Dispose()
     Copy-Item -LiteralPath $f.FullName -Destination $salida
@@ -106,6 +123,13 @@ foreach ($p in $Piezas) {
   }
   $alto  = [int][math]::Round($img.Height * ($ancho / $img.Width))
 
+  # LIENZO FIJO: la pieza sale con la proporcion que pide quien la consume,
+  # no con la suya. Tiene que ir DESPUES de calcular $alto, porque lo pisa.
+  if ($p.ContainsKey("lienzo") -and $p.lienzo) {
+    $ancho = $p.lienzo[0]
+    $alto  = $p.lienzo[1]
+  }
+
   $esJpg = $p.salida.EndsWith(".jpg")
   if ($esJpg) {
     $bmp = New-Object System.Drawing.Bitmap($ancho, $alto)
@@ -113,10 +137,63 @@ foreach ($p in $Piezas) {
     $bmp = New-Object System.Drawing.Bitmap($ancho, $alto, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
   }
   $g = [System.Drawing.Graphics]::FromImage($bmp)
-  if ($esJpg) { $g.Clear([System.Drawing.Color]::White) } else { $g.Clear([System.Drawing.Color]::Transparent) }
+  if ($esJpg) {
+    # Fondo propio si la pieza lo pide; si no, blanco.
+    $colorFondo = if ($p.ContainsKey("fondo")) { [System.Drawing.ColorTranslator]::FromHtml($p.fondo) }
+                  else { [System.Drawing.Color]::White }
+    $g.Clear($colorFondo)
+  } else {
+    $g.Clear([System.Drawing.Color]::Transparent)
+  }
   $g.InterpolationMode = "HighQualityBicubic"
   $g.PixelOffsetMode = "HighQuality"
-  $g.DrawImage($img, 0, 0, $ancho, $alto)
+
+  # Saturacion, si la pieza la pide. Se aplica con una matriz de color de
+  # GDI+: mezcla cada canal con la luminancia del pixel. Con s = 1 la matriz
+  # es la identidad y no cambia nada.
+  $atributos = $null
+  if ($p.ContainsKey("saturacion") -and $p.saturacion -ne 1) {
+    $sat = [double]$p.saturacion
+    # Pesos de luminancia percibida. No son iguales entre si porque el ojo
+    # ve el verde mucho mas que el azul.
+    $lr = 0.3086; $lg = 0.6094; $lb = 0.0820
+    # Se arma por propiedades con nombre y no pasando el array al
+    # constructor: PowerShell desarma un array escalonado en argumentos
+    # sueltos y ColorMatrix no tiene una sobrecarga de 5.
+    $matriz = New-Object System.Drawing.Imaging.ColorMatrix
+    $matriz.Matrix00 = $lr * (1 - $sat) + $sat
+    $matriz.Matrix01 = $lr * (1 - $sat)
+    $matriz.Matrix02 = $lr * (1 - $sat)
+    $matriz.Matrix10 = $lg * (1 - $sat)
+    $matriz.Matrix11 = $lg * (1 - $sat) + $sat
+    $matriz.Matrix12 = $lg * (1 - $sat)
+    $matriz.Matrix20 = $lb * (1 - $sat)
+    $matriz.Matrix21 = $lb * (1 - $sat)
+    $matriz.Matrix22 = $lb * (1 - $sat) + $sat
+    $matriz.Matrix33 = 1
+    $matriz.Matrix44 = 1
+    $atributos = New-Object System.Drawing.Imaging.ImageAttributes
+    $atributos.SetColorMatrix($matriz)
+  }
+
+  if ($p.ContainsKey("lienzo") -and $p.lienzo) {
+    # LIENZO FIJO: la pieza entra ENTERA y centrada, con el sobrante del
+    # color de fondo. Sirve para que un archivo de proporcion cualquiera
+    # salga con la proporcion exacta que necesita quien lo consume.
+    $esc = [math]::Min($ancho / $img.Width, $alto / $img.Height)
+    $w = [int]($img.Width * $esc); $h = [int]($img.Height * $esc)
+    $x = [int](($ancho - $w) / 2); $y = [int](($alto - $h) / 2)
+    $destino = New-Object System.Drawing.Rectangle($x, $y, $w, $h)
+  } else {
+    $destino = New-Object System.Drawing.Rectangle(0, 0, $ancho, $alto)
+  }
+
+  if ($atributos) {
+    $g.DrawImage($img, $destino, 0, 0, $img.Width, $img.Height,
+                 [System.Drawing.GraphicsUnit]::Pixel, $atributos)
+  } else {
+    $g.DrawImage($img, $destino)
+  }
 
   if ($esJpg) { $bmp.Save($salida, $codec, $params) }
   else        { $bmp.Save($salida, [System.Drawing.Imaging.ImageFormat]::Png) }

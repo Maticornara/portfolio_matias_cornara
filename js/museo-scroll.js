@@ -62,6 +62,11 @@ window.initMuseoScroll = function () {
       primero: 0,
       ultimo: 337,
       salto: 1,
+      // El 18% final del scroll se queda en el ultimo cuadro. El cajon
+      // abierto con las mariposas aparece recien al final y sin esto pasaba
+      // de largo. La seccion tambien se hizo mas alta para compensar, asi
+      // que el resto de la animacion no queda mas rapido.
+      cola: 0.18,
       fases: [
         { nombre: "Módulo Superior Versátil para la altura del Visitante", inicio: 0,   fin: 60,  veloc: 1 },
         { nombre: "Cajones con Apertura por Pivoteo",                      inicio: 61,  fin: 210, veloc: 1 },
@@ -96,7 +101,7 @@ window.initMuseoScroll = function () {
      negro a blanco y el navegador siguió sirviendo los negros que ya tenía
      bajados, incluso con Ctrl+F5. Se veía como si el cambio no hubiera
      pasado. SI SE VUELVEN A CONVERTIR LOS FRAMES, SUBIR ESTE NÚMERO. */
-  const VERSION_FRAMES = 4;
+  const VERSION_FRAMES = 12;
 
   // Cuántas imágenes se piden a la vez. Ni de a una (lentísimo) ni todas
   // juntas (el navegador se satura y las resuelve en cualquier orden).
@@ -145,9 +150,19 @@ window.initMuseoScroll = function () {
     const esChico = window.innerWidth <= 960;
     const salto = config.salto * (esChico ? 2 : 1);
 
-    // Cuántas imágenes manejamos de verdad, ya contando el salto.
-    const TOTAL = Math.floor((ultimo - primero) / salto) + 1;
-    const numeroDeFrame = (i) => primero + i * salto;
+    /* Cuántas imágenes manejamos de verdad, ya contando el salto.
+
+       EL +1 DEL RESTO NO ES DECORATIVO. Si el recorrido no es divisible por
+       el salto, la última posición cae ANTES del final: Comunicación tiene
+       374 cuadros con salto 2, y sin esto terminaba en el 372 en vez del
+       373. La animación se quedaba a un cuadro de cerrar, que es parte de
+       lo que se veía como "queda incompleta".
+
+       El Math.min de abajo es el que garantiza que la última posición sea
+       exactamente `ultimo` y no se pase. */
+    const resto = (ultimo - primero) % salto;
+    const TOTAL = Math.floor((ultimo - primero) / salto) + 1 + (resto ? 1 : 0);
+    const numeroDeFrame = (i) => Math.min(primero + i * salto, ultimo);
     const rutaDeFrame = (n) =>
       carpeta + String(n).padStart(4, "0") + ".jpg?v=" + VERSION_FRAMES;
 
@@ -179,8 +194,20 @@ window.initMuseoScroll = function () {
     const pesos = fases.map((f) => (f.fin - f.inicio + 1) / (f.veloc || 1));
     const pesoTotal = pesos.reduce((a, b) => a + b, 0);
 
+    /* LA COLA DEL FINAL.
+       `cola` es la fracción del scroll que se queda quieta en el último
+       cuadro, en vez de seguir avanzando. Sirve para dar tiempo a mirar
+       cómo termina: en Exposición, el cajón abierto con las mariposas
+       aparece justo al final y sin esto pasaba de largo.
+
+       No repite el cuadro en el array de imágenes ni alarga la secuencia:
+       lo único que hace es reescalar el avance para que llegue a 1 antes de
+       que termine el recorrido. Lo que sobra queda clavado en el último. */
+    const cola = Math.min(0.6, Math.max(0, config.cola || 0));
+
     // Dado el avance 0..1 del scroll, qué número de frame toca.
     function frameSegunAvance(avance) {
+      if (cola > 0) avance = Math.min(1, avance / (1 - cola));
       let objetivo = avance * pesoTotal;
       for (let i = 0; i < fases.length; i++) {
         if (objetivo <= pesos[i] || i === fases.length - 1) {
@@ -325,6 +352,16 @@ window.initMuseoScroll = function () {
         if (!arrancado && exitosas > 6) {
           arrancado = true;
           if (loader) loader.classList.add("is-listo");
+
+          /* VOLVER A MEDIR EL LIENZO, AHORA QUE HAY UNA IMAGEN.
+             medirCanvas() topea el lienzo al tamaño del cuadro para no
+             ampliar el JPEG, pero para eso necesita CONOCER ese tamaño. La
+             primera llamada pasa en el arranque, cuando todavía no bajó
+             ninguna imagen, así que el techo no se podía aplicar y el lienzo
+             quedaba grande igual. Esta segunda llamada es la que lo aplica
+             de verdad. Sin esto, todo el arreglo de la nitidez no hacía
+             nada. */
+          medirCanvas();
         }
         // Después de CADA tanda se redibuja. Si lo que hay en pantalla era un
         // vecino de relleno, esta es la llamada que lo reemplaza por el
@@ -352,9 +389,33 @@ window.initMuseoScroll = function () {
       zoom = Number.isFinite(valor) && valor > 0 ? valor : 1;
     }
 
+    /* EL LIENZO NUNCA SE HACE MAS GRANDE QUE EL FRAME (23/08/2026)
+       Era la causa de que se viera pixelado. En una ventana de 1900 con
+       devicePixelRatio 1.5, el lienzo salía de ~2850x1335 y el frame mide
+       1920x1080: el navegador tenía que AMPLIARLO 1.24 veces solo para
+       llenar la pantalla, y con el zoom encima llegaba a 1.8. Ampliar un
+       JPEG casi al doble se ve exactamente así, pixelado y sucio.
+
+       Ahora el lienzo se topea en el tamaño del frame. El resultado es que
+       el dibujo siempre REDUCE en vez de ampliar, que es lo que se ve
+       nítido, y de paso gasta menos memoria en pantallas retina. */
     function medirCanvas() {
       const caja = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (!caja.width || !caja.height) return;
+
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      const muestra = imagenes.find(Boolean);
+      if (muestra && muestra.naturalWidth) {
+        const techo = Math.min(
+          muestra.naturalWidth / caja.width,
+          muestra.naturalHeight / caja.height
+        );
+        // El max(1, …) es para no bajar de 1 en pantallas muy grandes: ahí
+        // preferimos un lienzo del tamaño CSS antes que uno borroso.
+        dpr = Math.min(dpr, Math.max(1, techo));
+      }
+
       canvas.width = Math.round(caja.width * dpr);
       canvas.height = Math.round(caja.height * dpr);
       leerZoom();

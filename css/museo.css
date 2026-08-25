@@ -72,15 +72,24 @@
   /* LAS PORTADAS DE CADA DISPOSITIVO.
      Alto fijo + object-fit: contain = los tres se ven a la MISMA escala,
      aunque los archivos midan distinto (1128x1025, 948x1031 y 3019x1413).
-     Sin esto, el de Comunicación se veía enorme y el de Exposición chico. */
-  --museo-portada-alto: 42svh;
+     Sin esto, el de Comunicación se veía enorme y el de Exposición chico.
+
+     Subido de 42 a 62svh el 23/08: a 42 la pieza quedaba chiquita al lado
+     del título, que va en 900 y pesa mucho. */
+  --museo-portada-alto: 62svh;
 
   /* LOS CÍRCULOS DE DETALLE */
-  --museo-circulo: 168px;
+  --museo-circulo: 150px;
   --museo-circulo-borde: 3px;     /* grosor del outline: pedido cerrado */
 
-  /* LOS MOCKUPS. Los tres iguales y más chicos que antes. */
-  --museo-mockup-alto: 30svh;
+  /* LA ANOTACIÓN DEL SISTEMA DE RIEL, en el bloque de Comunicación. Es un
+     detalle de encastre: si crece con la ventana se ve más grande que el
+     mueble entero, que fue justo lo que pasó. */
+  --museo-anotacion-ancho: 420px;
+
+  /* LOS MOCKUPS. Van de a uno, así que pueden ocupar bastante alto: son
+     fotos de sala completas y necesitan tamaño para leerse. */
+  --museo-mockup-alto: 62svh;
 
   /* LA FOTO DE POSTURAS, que ahora tiene pantalla propia y va centrada.
      El original mide 1125px de ancho, así que más de eso la pixela: ese es
@@ -94,22 +103,46 @@
      los bordes, que es lo que hace que ocupe la pantalla en vez de flotar
      adentro de ella.
 
-     1 = la pieza entra entera, con todo su aire (como estaba).
+     1   = la pieza entra entera, tocando los bordes de la pantalla.
+     0.8 = entra al 80%, dejando aire alrededor.
      1.3 = se ve un 30% más grande y se recorta por los costados.
-     Subirlo de más empieza a cortar la pieza en los cuadros donde más se
-     mueve; el que más viaja es Descanso entre el 173 y el 296.
-     Lo lee js/museo-scroll.js en cada dibujo. */
-  --museo-anim-zoom: 1.28;
+
+     ARRANCA EN 1 Y CONVIENE DEJARLO AHI. Subirlo agranda la pieza, pero lo
+     hace AMPLIANDO el JPEG, y los frames ya se muestran casi al límite de su
+     resolución: con 1.28 se veía pixelado y sucio. Si en algún momento se
+     re-renderizan los cuadros más grandes que 1920, ahí sí se puede subir.
+
+     Va por dispositivo igual, porque cada uno tiene distinto aire alrededor
+     de la pieza. Este de acá es el valor por defecto y lo pisa cada
+     .museo-anim--* más abajo.
+
+     Lo lee js/museo-scroll.js cuando mide el canvas. */
+  --museo-anim-zoom: 1;
 
   /* LAS ANIMACIONES.
      Cuánto scroll dura cada una. Más alto = la animación avanza más
      despacio, porque los mismos frames se reparten en más pantallas. */
   --museo-scroll-descanso: 420svh;
-  --museo-scroll-exposicion: 460svh;
+
+  /* EXPOSICIÓN VA AL DOBLE DE LARGO QUE LAS OTRAS (24/08/2026).
+     No es capricho: es la única de las tres donde la pieza recorre mucho por
+     cuadro, así que a la misma densidad se sentía brusca. La cuenta útil no
+     es el alto sino CUÁNTOS CUADROS PASAN POR PANTALLA SCROLLEADA:
+
+       cuadros por pantalla = cuadros / ((alto - 100svh) × (1 - cola) / 100)
+
+     Con 560svh daba 90 por pantalla; con 900 da 51. Las otras dos siguen en
+     93 y 98 y ahí funcionan, porque sus piezas se mueven menos entre cuadro
+     y cuadro. Si alguna se siente brusca, subir SU alto, no el de todas. */
+  --museo-scroll-exposicion: 900svh;
+
   --museo-scroll-comunicacion: 480svh;
 
-  /* EL CIERRE QUE PANEA (PARTES_FINAL) */
-  --museo-paneo-alto: 46svh;
+  /* EL CIERRE QUE PANEA (PARTES_FINAL).
+     Subido de 46 a 68svh el 24/08: la lamina es muy ancha (3646px de
+     origen) y a poca altura el paneo casi no tenia recorrido, porque
+     entraba demasiado de una sola vez. */
+  --museo-paneo-alto: 68svh;
   --museo-paneo-duracion: 38s;    /* ida y vuelta completa */
 }
 
@@ -243,11 +276,40 @@
   transition: transform 620ms cubic-bezier(.22,.61,.36,1);
 }
 
+/* SIN place-items: center. ACÁ ESTABA EL RECORTE (24/08/2026).
+   Costó tres vueltas encontrarlo, así que queda escrito.
+
+   El slide era `display: grid; place-items: center`. Eso incluye
+   `align-items: center`, y con eso la FILA del grid se dimensiona por su
+   contenido en vez de ocupar la caja. Como la fila deja de tener una altura
+   definida, el `height: 100%` de la imagen no tiene contra qué resolver:
+   cae a `auto`, la imagen toma su altura natural a partir del ancho, y se
+   pasa de largo. El `overflow: hidden` del marco la corta.
+
+   Medido en el navegador: la caja era de 640x540 y la imagen salía de
+   640x582 en la portada de Descanso y de 640x696 en la de Exposición. Por
+   eso se cortaban esas dos y no las otras: son las únicas más altas que
+   anchas.
+
+   LA CLAVE ES `grid-template-rows: minmax(0, 1fr)`. Sin eso la fila es
+   `auto`, o sea que su tamaño sale del contenido; con la imagen cargada ese
+   contenido pedía 582px, más que los 528 de la caja, así que la fila crecía
+   a 582 y no quedaba espacio libre para estirar. Y entonces el `height:100%`
+   de la imagen resolvía contra 582 en vez de 528. Es circular: el alto del
+   item depende de la fila y la fila depende del item.
+
+   La prueba está en los slides que todavía no cargaron: esos sí daban 528,
+   porque sin contenido la fila se estira normal.
+
+   Con `minmax(0, 1fr)` la fila mide lo que la caja y nunca lo que el
+   contenido. El `0` de mínimo es lo que le saca el piso de max-content. */
 .museo-carrusel__slide {
   flex: 0 0 100%;
   height: 100%;
   display: grid;
-  place-items: center;
+  grid-template-rows: minmax(0, 1fr);
+  padding-block-end: var(--s-3);
+  box-sizing: border-box;
 }
 
 /* Las portadas van SIN recuadro y sin relleno: la pieza flota sobre el
@@ -257,19 +319,15 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding-block-end: var(--s-2);
+  display: block;
 }
 
-/* Las dos fotos del museo SÍ son opacas, así que son rectángulos quieran o
-   no. Se las deja llenar la altura pero con el ancho limitado, para que no
-   corten a sangre y no pesen más que las portadas. El radio chiquito es lo
-   único que queda de la caja vieja. */
-.museo-carrusel__slide--foto {
-  padding-block-end: var(--s-2);
-}
+/* La foto del museo es opaca, así que es un rectángulo quiera o no. Pero
+   TAMPOCO se recorta: con cover se le comía la fachada por los costados.
+   Entra entera, como las portadas, y el radio chiquito la despega del
+   crema sin encerrarla. */
 .museo-carrusel__slide--foto img {
-  object-fit: cover;
-  padding: 0;
+  object-fit: contain;
   border-radius: 6px;
 }
 
@@ -319,14 +377,15 @@
 
 /* --------------------------------------------------------------------------
    3. MOCKUPS
-   Los tres fotomontajes en el museo real, los tres a la MISMA jerarquía y
-   más chicos que antes. Se clickean para verlos en grande: usan [data-lupa],
-   la misma lupa de main.js que ya usa +54 para sus mockups.
+   Los tres fotomontajes en sala, de a UNO y grande.
 
-   La fila de 3 va adentro de un bloque que ocupa las 4 columnas. Es la única
-   forma de tener tres piezas iguales sobre una grilla de cuatro: 4 no se
-   divide en 3. La grilla de la página se sigue respetando, porque el bloque
-   entero arranca y termina en columna.
+   POR QUÉ NO TRES EN FILA (23/08/2026). Estaban los tres al mismo tiempo,
+   cada uno a un tercio del ancho. No se entendía ninguno: son fotos de sala
+   completas, con vitrinas, esqueletos y gente adentro. A ese tamaño el
+   mueble, que es lo que hay que mirar, quedaba del tamaño de una uña.
+
+   Reusa el carrusel del hero (mismo data-museo-carrusel, mismo JS), así que
+   avanza solo cada 4 segundos y se puede mover a mano.
    -------------------------------------------------------------------------- */
 
 .museo-mockups {
@@ -339,37 +398,43 @@
 
 .museo-mockups__rotulo { grid-column: 1 / -1; color: var(--zona-texto-2); }
 
-.museo-mockups__fila {
+.museo-mockups__visor {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
+  gap: var(--s-3);
 }
 
-.museo-mockups__pieza { margin: 0; }
-
-.museo-mockups__pieza button {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: zoom-in;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.museo-mockups__pieza img {
-  width: 100%;
+.museo-mockups__marco {
+  position: relative;
   height: var(--museo-mockup-alto);
-  object-fit: cover;
-  display: block;
-  transition: transform 400ms var(--ease, ease);
+  overflow: hidden;
+  border-radius: 10px;
+  touch-action: pan-y;
 }
-.museo-mockups__pieza button:hover img { transform: scale(1.03); }
+
+.museo-mockups__pista {
+  display: flex;
+  height: 100%;
+  transition: transform 620ms cubic-bezier(.22,.61,.36,1);
+}
+
+.museo-mockups__slide {
+  flex: 0 0 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* CONTAIN, NO COVER. Son fotomontajes en sala: recortarlos les come parte
+   del mueble o de la sala, que es justo lo que hay que ver. Entra entera y
+   el marco se acomoda alrededor. */
+.museo-mockups__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 
 .museo-mockups__pie { margin-top: var(--s-2); color: var(--zona-texto-2); }
-
 
 /* --------------------------------------------------------------------------
    4. PANTALLA DE INVESTIGACIÓN
@@ -382,8 +447,8 @@
   min-height: var(--museo-alto-seccion);
   display: grid;
   align-content: center;
-  gap: var(--s-4);
-  padding-block: var(--s-7);
+  gap: var(--s-6);          /* más aire entre bloques que el resto de la página */
+  padding-block: var(--s-8, var(--s-7));
 }
 
 .museo-investigacion__rotulo { grid-column: 1 / -1; color: var(--zona-acento); }
@@ -406,19 +471,20 @@
    mismo que los mockups: 4 no se divide en 3, pero el bloque entero
    arranca y termina en columna, así que la grilla se respeta. */
 
+/* Las tres tarjetas, con más aire entre ellas que el gap de la grilla. */
 .museo-insights {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--grid-gap);
+  gap: var(--s-4);
   align-items: stretch;
 }
 
 .museo-insight {
   display: grid;
   grid-template-rows: auto auto auto 1fr;
-  gap: var(--s-2);
-  padding: var(--s-4) var(--s-3) var(--s-3);
+  gap: var(--s-3);
+  padding: var(--s-5) var(--s-4) var(--s-4);
   border: 1px solid var(--zona-linea);
   border-radius: 10px;
   position: relative;
@@ -426,11 +492,12 @@
 
 /* El número, grande y en verde clarito: ordena la lectura de un vistazo. */
 .museo-insight__num {
-  font-size: 2.4rem;
+  font-size: clamp(2.8rem, 4.4vw, 4rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 0.85;
   color: var(--zona-acento);
-  opacity: 0.28;
+  opacity: 0.22;
+  letter-spacing: -0.03em;
 }
 
 .museo-insight__par { display: grid; gap: var(--s-1); }
@@ -458,16 +525,23 @@
 
 .museo-insight__texto {
   margin: 0;
+  max-width: 38ch;
   font-weight: 300;
-  line-height: 1.5;
-  font-size: 0.92rem;
+  line-height: 1.6;
+  font-size: 0.94rem;
 }
 
-/* Las leyes del sistema: dato de contexto, no protagonista. */
+/* Las leyes del sistema: dato de contexto, no protagonista.
+
+   CON TECHO DE MEDIDA. Iba a las cuatro columnas sin límite y quedaba un
+   renglón de casi 1800px: ilegible y feo. Una línea cómoda no pasa de unos
+   75 caracteres, y en MAYÚSCULA con tracking, bastante menos. */
 .museo-leyes {
-  grid-column: 1 / -1;
+  grid-column: 1 / 3;
+  max-width: 52ch;
   color: var(--zona-texto-2);
   font-weight: 300;
+  line-height: 1.7;
 }
 
 /* --- LA PANTALLA DE POSTURAS -------------------------------------------
@@ -501,14 +575,18 @@
 }
 
 /* La frase que cierra la pantalla y engancha con el concepto general. */
+/* La frase que cierra. También con techo: es la que más se lee de toda la
+   pantalla, así que es la que peor aguanta un renglón de punta a punta. */
 .museo-conclusion {
-  grid-column: 1 / -1;
+  grid-column: 3 / -1;
+  align-self: center;
+  max-width: 46ch;
   margin: 0;
   font-size: clamp(1.05rem, 1.9vw, 1.45rem);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: 1.45;
   border-left: 3px solid var(--zona-acento);
-  padding-left: var(--s-3);
+  padding-left: var(--s-4);
 }
 
 
@@ -599,19 +677,48 @@
   background: var(--museo-fondo-render);
 }
 
+/* MÁSCARA DE RECORTE, no una imagen metida adentro de un aro (23/08/2026).
+   Antes iba con object-fit: contain y padding, así que la foto entraba
+   entera y se veía el rectángulo flotando dentro del círculo: el aro no
+   recortaba nada y por eso no se leía como círculo.
+
+   Con cover la imagen LLENA el disco y el borde del círculo es el que
+   corta. El aspect-ratio: 1 y el overflow del padre son los que hacen de
+   máscara. */
 .museo-detalle__marco img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 6%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .museo-detalle__pie { text-align: center; color: var(--zona-texto-2); }
 
+/* El pie del riel es una frase, no dos palabras como los otros: se le deja
+   mas ancho para que no arme una columna de una palabra por renglon. */
+.museo-detalle--ancho .museo-detalle__pie {
+  width: calc(var(--museo-circulo) * 1.9);
+  margin-inline: calc(var(--museo-circulo) * -0.45);
+}
+
 /* La anotación del sistema de riel: una llamada con flecha sobre el panel.
    El panel ya trae dibujados sus dos círculos rojos de origen; esto suma la
    flecha y el texto, en el lenguaje de la página. */
-.museo-anotacion { position: relative; grid-column: 1 / -1; margin: 0; }
+/* LA ANOTACIÓN DEL RIEL.
+   Iba a `grid-column: 1 / -1` y sin techo de ancho, así que se comía la
+   pantalla entera: un detalle de un encastre mostrado más grande que el
+   mueble completo. No tiene sentido y encima no se entendía.
+
+   Ahora ocupa la mitad derecha y tiene un máximo en px, para que no crezca
+   con la ventana. Es una nota al pie del sistema, no una pieza. */
+.museo-anotacion {
+  position: relative;
+  grid-column: 3 / -1;
+  margin: 0;
+  max-width: var(--museo-anotacion-ancho);
+  justify-self: end;
+}
 .museo-anotacion img { width: 100%; height: auto; display: block; }
 
 .museo-anotacion__llamada {
@@ -643,9 +750,31 @@
   background: var(--museo-fondo-render);
 }
 
-.museo-anim--descanso     { height: var(--museo-scroll-descanso); }
-.museo-anim--exposicion   { height: var(--museo-scroll-exposicion); }
-.museo-anim--comunicacion { height: var(--museo-scroll-comunicacion); }
+/* Cada animación trae su propio alto de scroll y su propio acercamiento.
+   Ver la nota de --museo-anim-zoom arriba: Comunicación va en 1 a propósito,
+   porque su cámara ya está encima de la pieza y cualquier zoom la recorta. */
+.museo-anim--descanso {
+  height: var(--museo-scroll-descanso);
+  --museo-anim-zoom: 1;
+}
+/* EXPOSICIÓN VA POR DEBAJO DE 1, y es el único caso (23/08/2026).
+   Su cuadro es casi cuadrado (1425x1282) y la pieza lo ocupa de arriba a
+   abajo. Al entrar "entera" en una pantalla ancha, el ajuste lo manda el
+   alto y la pieza queda pegada al borde de arriba y al de abajo: se veía
+   enorme y sin respirar. Con 0.8 le queda aire y se lee como una pieza
+   sobre la página, no como una foto a sangre. */
+/* EXPOSICIÓN, después del centrado por cuadro (24/08/2026).
+   Su cuadro ahora es 940x1300 y viene ajustado a la pieza, con la pieza
+   centrada. Ya no hace falta el 0.8 que compensaba el descentrado: con 0.94
+   queda un margen chico y la pieza se ve grande. */
+.museo-anim--exposicion {
+  height: var(--museo-scroll-exposicion);
+  --museo-anim-zoom: 0.94;
+}
+.museo-anim--comunicacion {
+  height: var(--museo-scroll-comunicacion);
+  --museo-anim-zoom: 1;
+}
 
 .museo-anim__escenario {
   position: sticky;
@@ -784,7 +913,7 @@
        los cuadros, porque tres secuencias no entran en la memoria de un
        teléfono. Ver la nota de esChico en js/museo-scroll.js. */
     --museo-scroll-descanso: 300svh;
-    --museo-scroll-exposicion: 320svh;
+    --museo-scroll-exposicion: 500svh;
     --museo-scroll-comunicacion: 340svh;
     --museo-circulo: 128px;
     --museo-carrusel-alto: 40svh;
@@ -799,15 +928,11 @@
   .museo-sistema__portada,
   .museo-sistema__cuerpo,
   .museo-leyes,
-  .museo-conclusion { grid-column: 1 / -1; }
+  .museo-conclusion,
+  .museo-anotacion { grid-column: 1 / -1; }
+  .museo-anotacion { justify-self: start; max-width: 100%; }
 
   /* Los tres mockups y los tres insights se apilan: en un teléfono, tres en
      fila quedan ilegibles. */
   .museo-mockups__fila,
-  .museo-insights { grid-template-columns: 1fr; }
-
-  /* La llamada del riel, encima de la imagen, no cabe en pantalla chica:
-     baja a ser un pie de foto común. */
-  .museo-anotacion__llamada { position: static; margin-top: var(--s-2); }
-  .museo-anotacion__flecha { display: none; }
-}
+  .museo-insights { grid-template-column

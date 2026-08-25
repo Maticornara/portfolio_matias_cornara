@@ -43,11 +43,11 @@
   <link rel="stylesheet" href="css/variables.css?v=6">
   <link rel="stylesheet" href="css/base.css?v=11">
   <link rel="stylesheet" href="css/layout.css?v=12">
-  <link rel="stylesheet" href="css/archivo.css?v=30">
+  <link rel="stylesheet" href="css/archivo.css?v=31">
   <link rel="stylesheet" href="css/simbio.css?v=119">
   <link rel="stylesheet" href="css/mas-54.css?v=22">
   <link rel="stylesheet" href="css/tipines.css?v=13">
-  <link rel="stylesheet" href="css/museo.css?v=5">
+  <link rel="stylesheet" href="css/museo.css?v=14">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -84,8 +84,8 @@
     <span aria-hidden="true"></span>
   </button>
   <a class="pastilla is-activa" href="index.html" translate="no" data-es="Home" data-en="Home">Home</a>
-  <a class="pastilla" href="#sobre" translate="no" data-es="Sobre mí" data-en="About">Sobre mí</a>
   <a class="pastilla" href="#trabajos" translate="no" data-es="Trabajos" data-en="Work">Trabajos</a>
+  <a class="pastilla" href="#sobre" translate="no" data-es="Sobre mí" data-en="About">Sobre mí</a>
   <div class="site-nav__fin">
     <a class="pastilla" href="#contacto" translate="no" data-es="Contacto" data-en="Contact">Contacto</a>
     <!-- El cambio de idioma está puesto como forma, todavía sin función.
@@ -409,7 +409,228 @@
   </header>
 
   <!-- ======================================================================
-       2. CV — zona crema
+       2. TRABAJOS — zona crema
+       ----------------------------------------------------------------------
+       Mismo esqueleto que los tres tramos de arriba: rótulo chico en la
+       columna 1 y el contenido a la derecha. Por eso el título no es una
+       palabra grande: es un letrero más de la serie SOBRE MÍ / HERRAMIENTAS /
+       CONTACTO / TRABAJOS, y la página se lee como una sola tirada.
+
+       LAS CINCO FICHAS, ORDENADAS Y RECTAS, sobre las columnas 2 y 3:
+
+           col 1        col 2            col 3         col 4
+         TRABAJOS   [ ---------- SIMBIO ---------- ]
+                    [   MUSEO    ] [     +54       ]
+                    [  TIPINES   ] [    TESIS      ]
+
+       Simbio se lleva las dos columnas porque son cinco y de a dos quedaba
+       una suelta. Las otras cuatro miden todas lo mismo y ninguna está
+       inclinada: acá el orden es el punto.
+
+       LINKEAN LAS DOS QUE TIENEN PÁGINA TERMINADA: Simbio y +54. Las otras
+       tres tienen el `.ficha__cuerpo` como <div> y no como <a>, a propósito:
+       mandar a una página a medio hacer es peor que no mandar a ningún lado.
+       Cuando cada una tenga la suya, se cambia el <div> por
+       <a class="ficha__cuerpo" href="proyectos/loquesea.html"> y listo — el
+       CSS no hay que tocarlo.
+       ====================================================================== -->
+  <section class="zona zona--crema" id="trabajos">
+    <div class="tramo tramo--trabajos grilla">
+      <p class="etiqueta tramo__rotulo">Trabajos</p>
+
+      <!-- ---------------- 01 · SIMBIO ---------------- -->
+      <article class="ficha ficha--simbio reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana" translate="no" data-es="Proy. 1" data-en="Proj 1">Proy. 1</span>
+        <a class="ficha__cuerpo" href="proyectos/simbio.html">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <polygon points="50,15 70,25 70,45 50,55 30,45 30,25"/>
+                <path d="M50 15 L50 35 L70 45 M50 35 L30 45"/>
+                <circle cx="50" cy="35" r="3.5" fill="var(--tinta)" stroke="none"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real">
+              <img src="assets/simbio/foto/portada.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo" translate="no">Simbio</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Diseño industrial</li>
+              <li class="etiqueta">Biomímesis</li>
+              <li class="etiqueta">2023</li>
+            </ul>
+          </div>
+        </a>
+      </article>
+
+      <!-- ---------------- 02 · MOBILIARIO DE MUSEO ----------------
+           Ya tiene foto y link (22/08/2026). La imagen es el fotomontaje en
+           sala, no el render limpio: a tamaño de ficha, el mueble dentro del
+           museo se lee de un vistazo y el objeto suelto no. -->
+      <article class="ficha ficha--museo reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana" translate="no" data-es="Proy. 2" data-en="Proj 2">Proy. 2</span>
+        <a class="ficha__cuerpo" href="proyectos/mobiliario-museo.html">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Un pedestal de exhibición en axonométrica, con una pieza
+                   chica apoyada arriba -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <polygon points="50,32 82,44 50,56 18,44"/>
+                <path d="M18 44 L18 56 L50 68 L50 56"/>
+                <path d="M82 44 L82 56 L50 68"/>
+                <polygon points="50,12 64,17 50,22 36,17"/>
+                <path d="M36 17 L36 27 L50 32 L50 22"/>
+                <path d="M64 17 L64 27 L50 32"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real">
+              <!-- La portada de Comunicacion, no el mockup: es el render limpio
+                   del sistema y lee mejor en chico. Viene compuesta sobre un
+                   lienzo 4:3 con un poco mas de saturacion, porque la ficha
+                   usa object-fit: cover y una panoramica perderia los paneles
+                   de los costados. La arma tools/optimizar-estaticas-museo.ps1. -->
+              <img src="assets/mobiliario-museo/home-museo.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">Mobiliario de Museo</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Diseño industrial</li>
+              <li class="etiqueta">Mobiliario</li>
+              <li class="etiqueta">2021</li>
+            </ul>
+          </div>
+        </a>
+      </article>
+
+      <!-- ---------------- 03 · +54 ---------------- -->
+      <article class="ficha ficha--54 reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana" translate="no" data-es="Proy. 3" data-en="Proj 3">Proy. 3</span>
+        <a class="ficha__cuerpo" href="proyectos/mas-54.html">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Tres afiches apilados -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <rect x="12" y="8"  width="34" height="54" rx="1" transform="rotate(-5 29 35)"/>
+                <rect x="33" y="8"  width="34" height="54" rx="1"/>
+                <rect x="54" y="8"  width="34" height="54" rx="1" transform="rotate(5 71 35)"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real">
+              <!-- El mockup y no un afiche suelto: el afiche vertical
+                   recortado al cuadro de la ficha pierde la mitad. -->
+              <img src="assets/+54/web/mockup-1.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo" translate="no">+54</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Curaduría</li>
+              <li class="etiqueta">Identidad visual</li>
+              <li class="etiqueta">2025</li>
+            </ul>
+          </div>
+        </a>
+      </article>
+
+      <!-- ---------------- 04 · AMIGOS TIPINES ----------------
+           YA TIENE FOTO Y YA TIENE PÁGINA. Al conectarla se le sacó
+           .ficha--sin-foto (que apagaba el cruce boceto → imagen) y el
+           <div> del cuerpo pasó a ser un <a>, igual que en la 03. -->
+      <article class="ficha ficha--tipines reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana" translate="no" data-es="Proy. 4" data-en="Proj 4">Proy. 4</span>
+        <a class="ficha__cuerpo" href="proyectos/amigos-tipines.html">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Dos letras-personaje apoyadas en su línea de base -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <rect x="28" y="20" width="18" height="30" rx="9"/>
+                <path d="M56 50 L56 26 A8 8 0 0 1 72 26 L72 50"/>
+                <circle cx="34" cy="31" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <circle cx="40" cy="31" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <circle cx="61" cy="34" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <circle cx="67" cy="34" r="1.6" fill="var(--tinta)" stroke="none"/>
+                <path d="M20 50 L80 50"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real">
+              <!-- Los tres personajes y no la tapa del libro: la ficha tiene
+                   que decir QUIÉNES son, que es lo único que se reconoce a
+                   este tamaño. Y esta imagen ya viene sobre crema, así que
+                   entra en la ficha sin traer un fondo ajeno. -->
+              <img src="assets/amigos%20tipines/web/hero-1.jpg" alt="" loading="lazy">
+            </div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo" translate="no">Amigos Tipines</h3>
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Transmedia</li>
+              <li class="etiqueta">IA generativa</li>
+              <li class="etiqueta">2024</li>
+            </ul>
+          </div>
+        </a>
+      </article>
+
+      <!-- ---------------- 05 · TESIS ----------------
+           FALTA LA FOTO, y falta el AÑO: el <p class="dato"> del pie quedó
+           vacío a propósito para no inventar una fecha. -->
+      <article class="ficha ficha--tesis ficha--sin-foto reveal"
+               data-tilt data-tilt-max="4" data-tilt-speed="400"
+               data-tilt-glare data-tilt-max-glare="0.1"
+               data-tilt-perspective="1600">
+        <span class="ficha__pestana" translate="no" data-es="Proy. 5" data-en="Proj 5">Proy. 5</span>
+        <div class="ficha__cuerpo">
+          <div class="ficha__marco">
+            <div class="ficha__capa ficha__capa--boceto">
+              <!-- Un cuerpo de páginas encuadernado -->
+              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
+                   stroke-width="1.4" stroke-linecap="round"
+                   stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 8 L64 8 L64 50 L14 50 Z"/>
+                <path d="M22 16 L22 62 L72 62 L72 16"/>
+                <path d="M30 26 L64 26 M30 35 L64 35 M30 44 L52 44"/>
+              </svg>
+            </div>
+            <div class="ficha__capa ficha__capa--real"></div>
+          </div>
+          <div class="ficha__pie">
+            <h3 class="ficha__titulo">Tesis</h3>
+            <!-- FALTA: la pastilla del año de la tesis -->
+            <ul class="ficha__meta" role="list">
+              <li class="etiqueta">Proyecto final de carrera</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       3. SOBRE MÍ — zona crema
        ====================================================================== -->
   <section class="zona zona--crema" id="sobre">
     <div class="tramo grilla">
@@ -432,17 +653,52 @@
         </p>
 
         <p class="cv__cierre">Estoy abierto a seguir ampliando mi rincón.</p>
+
+        <!-- ==============================================================
+             EL CV EN PDF
+             --------------------------------------------------------------
+             UN SOLO BOTÓN QUE CAMBIA DE ARCHIVO CON EL IDIOMA. Hay dos PDF,
+             uno en español y otro en inglés, y el que se baja es el del
+             idioma que esté puesto en ese momento.
+
+             El mecanismo es el mismo que ya usaba la nav para no dejar que
+             Google traduzca las palabras sueltas: translate="no" para que no
+             las toque, y data-es / data-en con el texto de cada idioma. Lo
+             nuevo es que ahora el par data-href-es / data-href-en hace lo
+             mismo con el ARCHIVO, no solo con el texto (ver textosAMano en
+             traduccion.js).
+
+             El href suelto de arriba es el de reserva: si el JS no corre, el
+             botón igual baja el CV en español en vez de no hacer nada.
+
+             `download` es lo que hace que se baje en vez de abrirse en una
+             pestaña; el nombre del archivo ya es el que corresponde, así que
+             no hace falta pasarle uno.
+             ============================================================== -->
+        <a class="cv__descarga" translate="no" download
+           href="assets/cv/CV-Matias-Cornara-ES.pdf"
+           data-href-es="assets/cv/CV-Matias-Cornara-ES.pdf"
+           data-href-en="assets/cv/CV-Matias-Cornara-EN.pdf"
+           data-es="Descargar CV" data-en="Download CV">Descargar CV<svg viewBox="0 0 16 16" aria-hidden="true" fill="none"
+               stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M8 2 L8 11 M4 7.5 L8 11 L12 7.5 M3 14 L13 14"/></svg></a>
       </div>
     </div>
   </section>
 
   <!-- ======================================================================
-       3. APTITUDES — zona crema
+       4. APTITUDES — zona crema
        ----------------------------------------------------------------------
        Qué sé hacer, no con qué lo hago: eso último es la sección siguiente.
-       Una lista y nada más — sin líneas, sin viñetas y sin columnas. Son
-       siete renglones y se leen de un tirón; repartidos en columnas habría
-       que decidir cuál va primero y ninguno es más importante que otro.
+       La lista va sin líneas, sin viñetas y sin columnas. Son siete renglones
+       y se leen de un tirón; repartidos en columnas habría que decidir cuál
+       va primero y ninguno es más importante que otro.
+
+       Los idiomas van acá abajo y no en una sección propia: son dos renglones
+       y cada sección de esta portada ocupa una pantalla entera, así que una
+       para eso solo sería una pantalla casi vacía. Igual van separados de la
+       lista y con su propio rótulo, porque no son una aptitud más de la
+       misma serie.
        ====================================================================== -->
   <section class="zona zona--crema" id="aptitudes">
     <div class="tramo grilla">
@@ -458,12 +714,32 @@
           <li>Diseño de objeto, producto y maquetización</li>
           <li>Modelado 3D</li>
         </ul>
+
+        <div class="idiomas">
+          <p class="etiqueta idiomas__rotulo">Idiomas</p>
+          <!-- <dl> y no una lista suelta: cada idioma es un término y su
+               nivel es la definición de ese término, que es exactamente para
+               lo que existe esta etiqueta. Un lector de pantalla lee
+               "Español, nativo" como un par y no como dos cosas seguidas.
+               Los <div> adentro del <dl> son válidos y son lo que mantiene
+               junto a cada par cuando la fila se parte en dos. -->
+          <dl class="idiomas__lista">
+            <div class="idiomas__par">
+              <dt>Español</dt>
+              <dd>Nativo</dd>
+            </div>
+            <div class="idiomas__par">
+              <dt>Inglés</dt>
+              <dd>B2</dd>
+            </div>
+          </dl>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ======================================================================
-       4. HERRAMIENTAS — zona crema
+       5. HERRAMIENTAS — zona crema
        Tres categorías arriba, y abajo Audio al lado de la nota de IA.
        Cada columna se apoya en una columna real de la grilla del sitio.
        ====================================================================== -->
@@ -527,7 +803,7 @@
   </section>
 
   <!-- ======================================================================
-       5. CONTACTO — zona crema
+       6. CONTACTO — zona crema
        ====================================================================== -->
   <section class="zona zona--crema" id="contacto">
     <div class="tramo grilla">
@@ -536,6 +812,13 @@
       <div class="tramo__cuerpo">
         <a class="contacto__mail" href="mailto:maticornaradsgn@gmail.com">maticornaradsgn@gmail.com</a>
 
+        <!-- El teléfono va como <a href="tel:">: en un celular se toca y
+             llama, y en la computadora igual se puede copiar. El href lleva
+             el número sin espacios ni guiones, que es como tiene que ir para
+             que el sistema lo marque; lo que se LEE es la versión espaciada,
+             que es la legible. -->
+        <a class="contacto__tel" href="tel:+5492944936020">+54 9 2944 936020</a>
+
         <!-- ESPACIO PREPARADO PARA LAS REDES.
              El CSS ya está escrito en archivo.css (buscá ".redes"). Para
              activarlas: descomentá este bloque y poné los links de verdad.
@@ -543,258 +826,4 @@
         <!--
         <ul class="redes" role="list">
           <li><a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <li><a href="#" target="_blank" rel="noopener noreferrer">Behance</a></li>
-        </ul>
-        -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ======================================================================
-       6. TRABAJOS — zona crema
-       ----------------------------------------------------------------------
-       Mismo esqueleto que los tres tramos de arriba: rótulo chico en la
-       columna 1 y el contenido a la derecha. Por eso el título no es una
-       palabra grande: es un letrero más de la serie SOBRE MÍ / HERRAMIENTAS /
-       CONTACTO / TRABAJOS, y la página se lee como una sola tirada.
-
-       LAS CINCO FICHAS, ORDENADAS Y RECTAS, sobre las columnas 2 y 3:
-
-           col 1        col 2            col 3         col 4
-         TRABAJOS   [ ---------- SIMBIO ---------- ]
-                    [   MUSEO    ] [     +54       ]
-                    [  TIPINES   ] [    TESIS      ]
-
-       Simbio se lleva las dos columnas porque son cinco y de a dos quedaba
-       una suelta. Las otras cuatro miden todas lo mismo y ninguna está
-       inclinada: acá el orden es el punto.
-
-       LINKEAN LAS DOS QUE TIENEN PÁGINA TERMINADA: Simbio y +54. Las otras
-       tres tienen el `.ficha__cuerpo` como <div> y no como <a>, a propósito:
-       mandar a una página a medio hacer es peor que no mandar a ningún lado.
-       Cuando cada una tenga la suya, se cambia el <div> por
-       <a class="ficha__cuerpo" href="proyectos/loquesea.html"> y listo — el
-       CSS no hay que tocarlo.
-       ====================================================================== -->
-  <section class="zona zona--crema" id="trabajos">
-    <div class="tramo tramo--trabajos grilla">
-      <p class="etiqueta tramo__rotulo">Trabajos</p>
-
-      <!-- ---------------- 01 · SIMBIO ---------------- -->
-      <article class="ficha ficha--simbio reveal"
-               data-tilt data-tilt-max="4" data-tilt-speed="400"
-               data-tilt-glare data-tilt-max-glare="0.1"
-               data-tilt-perspective="1600">
-        <span class="ficha__pestana">Ficha 01</span>
-        <a class="ficha__cuerpo" href="proyectos/simbio.html">
-          <div class="ficha__marco">
-            <div class="ficha__capa ficha__capa--boceto">
-              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
-                   stroke-width="1.4" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <polygon points="50,15 70,25 70,45 50,55 30,45 30,25"/>
-                <path d="M50 15 L50 35 L70 45 M50 35 L30 45"/>
-                <circle cx="50" cy="35" r="3.5" fill="var(--tinta)" stroke="none"/>
-              </svg>
-            </div>
-            <div class="ficha__capa ficha__capa--real">
-              <img src="assets/simbio/foto/portada.jpg" alt="" loading="lazy">
-            </div>
-          </div>
-          <div class="ficha__pie">
-            <h3 class="ficha__titulo" translate="no">Simbio</h3>
-            <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Diseño industrial</li>
-              <li class="etiqueta">Biomímesis</li>
-              <li class="etiqueta">2023</li>
-            </ul>
-          </div>
-        </a>
-      </article>
-
-      <!-- ---------------- 02 · MOBILIARIO DE MUSEO ----------------
-           Ya tiene foto y link (22/08/2026). La imagen es el fotomontaje en
-           sala, no el render limpio: a tamaño de ficha, el mueble dentro del
-           museo se lee de un vistazo y el objeto suelto no. -->
-      <article class="ficha ficha--museo reveal"
-               data-tilt data-tilt-max="4" data-tilt-speed="400"
-               data-tilt-glare data-tilt-max-glare="0.1"
-               data-tilt-perspective="1600">
-        <span class="ficha__pestana">Ficha 02</span>
-        <a class="ficha__cuerpo" href="proyectos/mobiliario-museo.html">
-          <div class="ficha__marco">
-            <div class="ficha__capa ficha__capa--boceto">
-              <!-- Un pedestal de exhibición en axonométrica, con una pieza
-                   chica apoyada arriba -->
-              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
-                   stroke-width="1.4" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <polygon points="50,32 82,44 50,56 18,44"/>
-                <path d="M18 44 L18 56 L50 68 L50 56"/>
-                <path d="M82 44 L82 56 L50 68"/>
-                <polygon points="50,12 64,17 50,22 36,17"/>
-                <path d="M36 17 L36 27 L50 32 L50 22"/>
-                <path d="M64 17 L64 27 L50 32"/>
-              </svg>
-            </div>
-            <div class="ficha__capa ficha__capa--real">
-              <img src="assets/mobiliario-museo/mockup-descanso-comunicacion.jpg" alt="" loading="lazy">
-            </div>
-          </div>
-          <div class="ficha__pie">
-            <h3 class="ficha__titulo">Mobiliario de Museo</h3>
-            <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Diseño industrial</li>
-              <li class="etiqueta">Mobiliario</li>
-              <li class="etiqueta">2021</li>
-            </ul>
-          </div>
-        </a>
-      </article>
-
-      <!-- ---------------- 03 · +54 ---------------- -->
-      <article class="ficha ficha--54 reveal"
-               data-tilt data-tilt-max="4" data-tilt-speed="400"
-               data-tilt-glare data-tilt-max-glare="0.1"
-               data-tilt-perspective="1600">
-        <span class="ficha__pestana">Ficha 03</span>
-        <a class="ficha__cuerpo" href="proyectos/mas-54.html">
-          <div class="ficha__marco">
-            <div class="ficha__capa ficha__capa--boceto">
-              <!-- Tres afiches apilados -->
-              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
-                   stroke-width="1.4" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <rect x="12" y="8"  width="34" height="54" rx="1" transform="rotate(-5 29 35)"/>
-                <rect x="33" y="8"  width="34" height="54" rx="1"/>
-                <rect x="54" y="8"  width="34" height="54" rx="1" transform="rotate(5 71 35)"/>
-              </svg>
-            </div>
-            <div class="ficha__capa ficha__capa--real">
-              <!-- El mockup y no un afiche suelto: el afiche vertical
-                   recortado al cuadro de la ficha pierde la mitad. -->
-              <img src="assets/+54/web/mockup-1.jpg" alt="" loading="lazy">
-            </div>
-          </div>
-          <div class="ficha__pie">
-            <h3 class="ficha__titulo" translate="no">+54</h3>
-            <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Curaduría</li>
-              <li class="etiqueta">Identidad visual</li>
-              <li class="etiqueta">2025</li>
-            </ul>
-          </div>
-        </a>
-      </article>
-
-      <!-- ---------------- 04 · AMIGOS TIPINES ----------------
-           YA TIENE FOTO Y YA TIENE PÁGINA. Al conectarla se le sacó
-           .ficha--sin-foto (que apagaba el cruce boceto → imagen) y el
-           <div> del cuerpo pasó a ser un <a>, igual que en la 03. -->
-      <article class="ficha ficha--tipines reveal"
-               data-tilt data-tilt-max="4" data-tilt-speed="400"
-               data-tilt-glare data-tilt-max-glare="0.1"
-               data-tilt-perspective="1600">
-        <span class="ficha__pestana">Ficha 04</span>
-        <a class="ficha__cuerpo" href="proyectos/amigos-tipines.html">
-          <div class="ficha__marco">
-            <div class="ficha__capa ficha__capa--boceto">
-              <!-- Dos letras-personaje apoyadas en su línea de base -->
-              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
-                   stroke-width="1.4" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <rect x="28" y="20" width="18" height="30" rx="9"/>
-                <path d="M56 50 L56 26 A8 8 0 0 1 72 26 L72 50"/>
-                <circle cx="34" cy="31" r="1.6" fill="var(--tinta)" stroke="none"/>
-                <circle cx="40" cy="31" r="1.6" fill="var(--tinta)" stroke="none"/>
-                <circle cx="61" cy="34" r="1.6" fill="var(--tinta)" stroke="none"/>
-                <circle cx="67" cy="34" r="1.6" fill="var(--tinta)" stroke="none"/>
-                <path d="M20 50 L80 50"/>
-              </svg>
-            </div>
-            <div class="ficha__capa ficha__capa--real">
-              <!-- Los tres personajes y no la tapa del libro: la ficha tiene
-                   que decir QUIÉNES son, que es lo único que se reconoce a
-                   este tamaño. Y esta imagen ya viene sobre crema, así que
-                   entra en la ficha sin traer un fondo ajeno. -->
-              <img src="assets/amigos%20tipines/web/hero-1.jpg" alt="" loading="lazy">
-            </div>
-          </div>
-          <div class="ficha__pie">
-            <h3 class="ficha__titulo" translate="no">Amigos Tipines</h3>
-            <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Transmedia</li>
-              <li class="etiqueta">IA generativa</li>
-              <li class="etiqueta">2024</li>
-            </ul>
-          </div>
-        </a>
-      </article>
-
-      <!-- ---------------- 05 · TESIS ----------------
-           FALTA LA FOTO, y falta el AÑO: el <p class="dato"> del pie quedó
-           vacío a propósito para no inventar una fecha. -->
-      <article class="ficha ficha--tesis ficha--sin-foto reveal"
-               data-tilt data-tilt-max="4" data-tilt-speed="400"
-               data-tilt-glare data-tilt-max-glare="0.1"
-               data-tilt-perspective="1600">
-        <span class="ficha__pestana">Ficha 05</span>
-        <div class="ficha__cuerpo">
-          <div class="ficha__marco">
-            <div class="ficha__capa ficha__capa--boceto">
-              <!-- Un cuerpo de páginas encuadernado -->
-              <svg viewBox="0 0 100 70" fill="none" stroke="var(--tinta)"
-                   stroke-width="1.4" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 8 L64 8 L64 50 L14 50 Z"/>
-                <path d="M22 16 L22 62 L72 62 L72 16"/>
-                <path d="M30 26 L64 26 M30 35 L64 35 M30 44 L52 44"/>
-              </svg>
-            </div>
-            <div class="ficha__capa ficha__capa--real"></div>
-          </div>
-          <div class="ficha__pie">
-            <h3 class="ficha__titulo">Tesis</h3>
-            <!-- FALTA: la pastilla del año de la tesis -->
-            <ul class="ficha__meta" role="list">
-              <li class="etiqueta">Proyecto final de carrera</li>
-            </ul>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </section>
-</main>
-
-<!-- El pie va en el MISMO crema que el resto. Antes había un divisor de papel
-     rasgado y una zona más tostada abajo; los dos salieron. Lo que separa una
-     sección de otra ahora es el aire, no un cambio de fondo ni una guarda. -->
-<footer class="zona zona--crema">
-  <div class="site-footer grilla">
-    <p class="etiqueta" translate="no">Archivo — Matías Cornara</p>
-    <p class="etiqueta">2026</p>
-  </div>
-</footer>
-
-<div class="transition-veil" aria-hidden="true"></div>
-
-<!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
-     Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
-<script src="js/smooth-scroll.js?v=6" defer></script>
-<script src="js/transiciones.js?v=8" defer></script>
-<script src="js/main.js?v=24" defer></script>
-<script src="js/traduccion.js?v=4" defer></script>
-<script src="js/archivo.js?v=13" defer></script>
-<script src="js/simbio-scroll.js?v=16" defer></script>
-<script src="js/muestras.js?v=14" defer></script>
-<!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
-     ejecutar al cambiar de página, así que los de +54 y Tipines tienen que
-     estar cargados desde acá. Salen sin hacer nada si no encuentran su HTML. -->
-<script src="js/mas-54.js?v=12" defer></script>
-<script src="js/tipines.js?v=6" defer></script>
-<script src="js/museo-scroll.js?v=7" defer></script>
-<script src="js/museo.js?v=1" defer></script>
-</body>
-</html>
+          <li><a href="#" target="_blank" rel="noopener noreferrer">Instagr

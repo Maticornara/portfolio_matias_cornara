@@ -892,6 +892,50 @@
    renglón se sostiene solo y ninguno es más importante que otro, así que no
    hay jerarquía que dibujar. Lo único que los separa es el interlineado. */
 
+/* --- LOS IDIOMAS -------------------------------------------------------
+   Cierran el bloque de aptitudes, separados por aire y con su propio rótulo
+   chico: son otra clase de dato, no un renglón más de la lista.
+
+   Cada par va en columna —idioma arriba, nivel abajo— y los pares en fila.
+   El nivel usa el tratamiento de rótulo del sitio (mayúscula + letras
+   separadas) en vez de un tamaño distinto: es un dato de ficha, igual que un
+   año o una categoría, y así se lee como tal sin inventar un estilo nuevo.
+   El flex-wrap es para pantallas angostas: si los dos pares no entran a lo
+   ancho, el segundo baja solo. */
+
+.idiomas { margin-top: var(--s-8); }
+
+.idiomas__rotulo { margin-bottom: var(--s-4); }
+
+.idiomas__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4) var(--s-8);
+}
+
+.idiomas__par {
+  display: grid;
+  gap: 2px;
+}
+
+.idiomas dt {
+  font-size: var(--t-1);
+  font-weight: var(--peso-medio);
+  color: var(--zona-texto);
+}
+
+/* El margen a cero es necesario: el navegador le pone al <dd> una sangría
+   izquierda propia de las listas de definiciones, que acá desalinearía el
+   nivel respecto del idioma que tiene arriba. */
+.idiomas dd {
+  margin: 0;
+  font-size: var(--t--1);
+  font-weight: 500;
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+  color: var(--zona-texto-2);
+}
+
 .aptitudes {
   list-style: none;
   font-size: clamp(1.05rem, 0.92rem + 0.6vw, 1.5rem);

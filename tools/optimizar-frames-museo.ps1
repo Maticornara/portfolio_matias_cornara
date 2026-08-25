@@ -44,11 +44,21 @@
 #   Recortar=$false en las tres y este script se vuelve trivial.
 # ---------------------------------------------------------------------------
 #
-# LOS DOS FRAMES QUE FALTAN
-#   La secuencia de Exposicion no tiene los archivos 00264 y 00265. Es un
-#   agujero conocido del render original. Al final se duplica el 0263 en su
-#   lugar para que la numeracion quede sin baches: si faltara un archivo, el
-#   precargador lo contaria como error de carga.
+# EL BACHE DE EXPOSICION: YA NO ESTA (23/08/2026, segunda entrega)
+#   La primera entrega de Exposicion no traia los archivos 00264 y 00265 y
+#   habia que taparlos duplicando el 0263. La segunda entrega llego completa,
+#   con los 338. El parche sigue en el codigo porque solo actua si el archivo
+#   falta de verdad, asi que hoy no hace nada. No lo saco por si alguna vez
+#   vuelve a faltar un cuadro.
+
+# QUIEN TIENE ALFA Y QUIEN NO (23/08/2026, segunda entrega)
+#   Se dio vuelta respecto de la primera vuelta. Mati re-renderizo las tres:
+#     DESCANSO      RGBA, fondo transparente   -> no hay nada que recortar
+#     COMUNICACION  RGBA, fondo transparente   -> no hay nada que recortar
+#     EXPOSICION    24bpp, fondo NEGRO PURO    -> hay que recortar y levantar
+#   Justo al reves que antes. Por eso conviene MEDIR el formato de cada
+#   secuencia antes de tocar esta tabla, y no confiar en la memoria:
+#     [System.Drawing.Image]::FromFile(ruta).PixelFormat
 #
 # NO TOCA LOS ORIGINALES. Se puede cortar y volver a correr: saltea lo hecho.
 # Para forzar la reconversion, borrar la carpeta de destino.
@@ -59,7 +69,9 @@
 
 $ErrorActionPreference = "Stop"
 
-$Calidad = 93          # Simbio usa 91. Aca un poco mas alto a pedido de Mati.
+# LA CALIDAD VA POR SECUENCIA, en la tabla de abajo. Comunicacion es una
+# escena a sangre y pesa el triple que las otras dos con la misma calidad,
+# asi que va mas comprimida. Simbio usa 91 y se ve bien.
 
 # EL FONDO: el crema del sitio (23/08/2026). Antes fue negro y despues
 # blanco puro; el crema es el que respeta la paleta y el que Mati eligio.
@@ -77,14 +89,95 @@ $FondoR = 243; $FondoG = 237; $FondoB = 225   # #F3EDE1 = --crema
 $UmbralFondo = 30
 $UmbralBorde = 64
 
+# Cuantos cuadros promedia el suavizado de los centros.
+#
+# 1 = SIN SUAVIZAR, seguimiento exacto. Es lo que corresponde, y llegar ahi
+# costo tres vueltas. El razonamiento, medido sobre Exposicion:
+#
+#   - El 59% de las transiciones son MESETA: el contenido no se mueve nada.
+#     La mediana del salto del centro entre cuadro y cuadro es 0.0 px.
+#   - Suavizar reparte los saltos sobre la ventana entera, asi que la ventana
+#     se mueve TAMBIEN durante las mesetas. Eso es un temblor lento que no
+#     corresponde a nada de lo que pasa en la imagen, y se siente raro.
+#   - Con seguimiento exacto, si el contenido esta quieto la ventana esta
+#     quieta: temblor cero. Y el desvio es cero por definicion.
+#   - Los unicos saltos grandes son 5 cuadros (55, 107, 262, 292, 299) y los
+#     cinco coinciden con un cambio de tamano del contenido de 300 a 515 px,
+#     o sea el momento en que entra o sale la silueta de la persona. Ahi la
+#     imagen cambia entera, asi que el salto de la ventana queda tapado.
+#
+# Subirlo solo tiene sentido si alguna secuencia futura tiene ruido real en
+# la medicion del recuadro, no movimiento real de la pieza.
+$VentanaSuavizado = 1
+
 $Raiz    = Split-Path -Parent $PSScriptRoot
 $Origen  = Join-Path $Raiz "assets\mobiliario museo"
 $Destino = Join-Path $Raiz "assets\mobiliario-museo"
 
 # --- LAS SECUENCIAS -----------------------------------------------------
+# RESOLUCION NATIVA, NO MENOS (23/08/2026). Primero se convirtieron a 1600 de
+# ancho y se vio pixelado: en una ventana de 1900 con devicePixelRatio 1.5 el
+# lienzo real mide ~2850x1335, asi que un frame de 1600x900 se AMPLIA 1.48
+# veces solo para llenar la pantalla. Ampliar un JPEG casi al doble se nota.
+# Los originales son 1920 de ancho: ese es el techo y hay que usarlo entero.
 # Ancho/Alto respetan la proporcion de cada render: Descanso y Comunicacion
 # son 1920x1080 (16:9), Exposicion es 1920x1282 (mas alto, casi 3:2).
 # Recortar: solo las dos que vienen SIN alfa, con el negro horneado.
+#
+# Gamma: LEVANTE DE SOMBRAS. 1 = no toca nada. Menos de 1 sube los tonos
+#   oscuros y deja los claros donde estan.
+#
+#   POR QUE HACE FALTA (23/08/2026). Estos renders se hicieron sobre un mundo
+#   negro y sin luz de relleno, asi que toda superficie que no mira a la luz
+#   principal cae a casi cero. Medido en el respaldo de Descanso: los pixeles
+#   oscuros son #391300, #3F1601, #2F1C0C. Eso ES madera, con su marron
+#   intacto; lo unico que le falta es NIVEL. Sobre fondo negro se leia como
+#   "esta en sombra"; sobre el crema de la pagina se lee como un agujero.
+#
+#   El levante les devuelve nivel sin cambiarles el tono. Exposicion va en 1:
+#   tiene alfa de verdad y nunca tuvo este problema.
+#
+# Centrar: CENTRA LA PIEZA CUADRO POR CUADRO.
+#   Un recorte fijo no alcanzaba. Medido sobre Exposicion: el centro del
+#   contenido se corre 264px en horizontal y 308px en vertical a lo largo de
+#   la secuencia, y casi siempre queda por debajo del centro del cuadro. Con
+#   una ventana fija, la pieza se ve descentrada en casi todos los tramos.
+#
+#   Con Centrar, el script hace DOS pasadas: primero mide el recuadro del
+#   contenido de cada cuadro, y despues dibuja cada uno corrido para que su
+#   centro caiga en el centro de la salida.
+#
+#   NO SE SUAVIZAN. Ver la nota larga de $VentanaSuavizado: suavizar mueve la
+#   ventana durante las mesetas, cuando la pieza esta quieta, y eso se siente
+#   como un temblor que no corresponde a nada.
+#
+#   El Ancho/Alto de la fila tiene que ser mas grande que el contenido mas
+#   grande de toda la secuencia, o se recorta la pieza. El script avisa si no
+#   entra.
+#
+# Caja: RECORTE DEL VACIO, en pixeles del original: @(x, y, ancho, alto).
+#   Recorta el CUADRO, no la pieza. Se midio el recuadro que ocupa el
+#   contenido a lo largo de TODA la secuencia (no de un cuadro: la pieza se
+#   mueve) y se le dejo 48px de margen de seguridad.
+#
+#   Exposicion, segunda entrega (la que tiene alfa): la pieza vive en
+#   x 91-1419, y 1-1281 de un cuadro de 1920x1282. Se midio con cuatro
+#   umbrales de alfa distintos (12, 40, 90, 160) y los cuatro dan lo mismo,
+#   asi que no es ruido: la pieza YA ocupa todo el alto. Lo unico que sobra
+#   son ~500px de aire a la derecha.
+#
+#   OJO: sobre la PRIMERA entrega de Exposicion, la que vino sobre negro,
+#   esta misma medicion daba y 302-1258. Era un espejismo: ahi el contenido
+#   se detectaba por luminancia > 30, y la sombra del piso quedaba por
+#   debajo de ese umbral. Con alfa aparece. Moraleja: medir el recuadro con
+#   el ALFA cuando lo hay, no por brillo.
+#
+#   Como en pantalla ancha el ajuste lo manda el ALTO, recortar el aire de
+#   la derecha no agranda la pieza: la centra y aprieta la composicion. Para
+#   agrandarla mas habria que recortar la pieza, y eso no se hace.
+#
+#   Ancho/Alto de la fila tienen que coincidir con el ancho/alto de la Caja,
+#   asi el pixel sale 1 a 1 y no se reescala al pedo.
 #
 # Refuerzo: cuanto se multiplica el ALFA antes de componer. 1 = tal cual.
 #   Solo tiene sentido en la secuencia que TIENE alfa (Exposicion). Sus
@@ -93,9 +186,9 @@ $Destino = Join-Path $Raiz "assets\mobiliario-museo"
 #   ser una silueta llena. El costo aceptado es que el vidrio de las
 #   vitrinas queda mas ahumado; se comparo y se eligio asi el 23/08.
 $Secuencias = @(
-  @{ Nombre="descanso";     Carpeta="DESCANSO\FRAMES_DESCANSO_WEB";         Prefijo="ASIENTO_";      Ancho=1600; Alto=900;  Recortar=$true;  Refuerzo=1.0 }
-  @{ Nombre="exposicion";   Carpeta="EXPOSICION\FRAMES_EXPO_WEB";           Prefijo="EXPO_";         Ancho=1600; Alto=1068; Recortar=$false; Refuerzo=1.9 }
-  @{ Nombre="comunicacion"; Carpeta="COMUNICACION\FRAMES_COMUNICACION_WEB"; Prefijo="COMUNICACION_"; Ancho=1600; Alto=900;  Recortar=$true;  Refuerzo=1.0 }
+  @{ Nombre="descanso";     Carpeta="DESCANSO\FRAMES_DESCANSO_WEB";         Prefijo="ASIENTO_";      Ancho=1920; Alto=1080; Calidad=91; Recortar=$false; Refuerzo=1.0; Gamma=1.0  }
+  @{ Nombre="exposicion";   Carpeta="EXPOSICION\FRAMES_EXPO_WEB";           Prefijo="EXPO_";         Ancho=870;  Alto=1290; Calidad=91; Recortar=$false; Refuerzo=1.0; Gamma=1.0;  Centrar=$true }
+  @{ Nombre="comunicacion"; Carpeta="COMUNICACION\FRAMES_COMUNICACION_WEB"; Prefijo="COMUNICACION_"; Ancho=1920; Alto=1080; Calidad=86; Recortar=$false; Refuerzo=1.0; Gamma=1.0  }
 )
 
 Add-Type -AssemblyName System.Drawing
@@ -110,6 +203,29 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 public static class RecorteMuseo {
+
+    // Recuadro que ocupa el contenido de un cuadro con alfa: x0,y0,x1,y1.
+    // Pide un minimo de pixeles por fila y por columna para que un pixel
+    // suelto de ruido no infle la caja.
+    public static int[] Caja(Bitmap bmp, int alfaMin, int minPx) {
+        int an = bmp.Width, al = bmp.Height;
+        BitmapData d = bmp.LockBits(new Rectangle(0,0,an,al), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+        byte[] px = new byte[d.Stride*al];
+        Marshal.Copy(d.Scan0, px, 0, px.Length);
+        bmp.UnlockBits(d);
+        int[] cols = new int[an];
+        int[] filas = new int[al];
+        for (int y = 0; y < al; y++) {
+            int f = y * d.Stride;
+            for (int x = 0; x < an; x++) {
+                if (px[f + x*4 + 3] >= alfaMin) { cols[x]++; filas[y]++; }
+            }
+        }
+        int x0=-1, x1=-1, y0=-1, y1=-1;
+        for (int x = 0; x < an; x++) if (cols[x] >= minPx) { if (x0 < 0) x0 = x; x1 = x; }
+        for (int y = 0; y < al; y++) if (filas[y] >= minPx) { if (y0 < 0) y0 = y; y1 = y; }
+        return new int[]{ x0, y0, x1, y1 };
+    }
 
     // OJO AL EDITAR ESTE BLOQUE: esta adentro de un here-string @"..."@ de
     // PowerShell, donde el BACKTICK es el caracter de escape. Un backtick
@@ -143,7 +259,7 @@ public static class RecorteMuseo {
     // Al final suaviza el contorno: los pixeles oscuros que TOCAN el fondo
     // se mezclan un poco, para que el antialias contra negro no deje un
     // reborde sucio. Es un borde de un pixel, no toca el interior.
-    public static void QuitarFondo(Bitmap bmp, int umbral, int umbralBorde, byte fr, byte fg, byte fb) {
+    public static void QuitarFondo(Bitmap bmp, int umbral, int umbralBorde, byte fr, byte fg, byte fb, double gamma) {
         int an = bmp.Width, al = bmp.Height;
         Rectangle r = new Rectangle(0, 0, an, al);
         BitmapData d = bmp.LockBits(r, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
@@ -165,6 +281,15 @@ public static class RecorteMuseo {
         bool[] fondo = new bool[an * al];
         for (int p = 0; p < an * al; p++) if (luz[p] <= umbral) fondo[p] = true;
 
+        // Tabla del levante de sombras, calculada una vez y no por pixel.
+        // gamma < 1 sube los tonos bajos y casi no toca los altos.
+        byte[] curva = new byte[256];
+        for (int v = 0; v < 256; v++) {
+            curva[v] = (gamma >= 0.999)
+                ? (byte)v
+                : (byte)Math.Round(255.0 * Math.Pow(v / 255.0, gamma));
+        }
+
         for (int y = 0; y < al; y++) {
             int fila = y * paso;
             for (int x = 0; x < an; x++) {
@@ -175,6 +300,14 @@ public static class RecorteMuseo {
                     px[i] = fb; px[i+1] = fg; px[i+2] = fr;
                     continue;
                 }
+
+                // LEVANTE DE SOMBRAS. Va SOLO sobre lo que no es fondo, para
+                // no correrle el color al crema. Se aplica igual a los tres
+                // canales, asi el tono no cambia: un marron casi negro se
+                // vuelve un marron visible, no un gris.
+                px[i]   = curva[px[i]];
+                px[i+1] = curva[px[i+1]];
+                px[i+2] = curva[px[i+2]];
 
                 // Suavizado del contorno: solo pixeles oscuros que TOCAN el
                 // fondo. Es un reborde de un pixel, no toca el interior.
@@ -210,13 +343,23 @@ public static class RecorteMuseo {
     // El corte en 0.02 deja en paz lo que es transparente del todo. Sin el,
     // el ruido de alfa que queda en el borde del recorte se convertiria en
     // un halo visible alrededor de la pieza.
-    public static Bitmap Componer(Bitmap origen, int an, int al, byte fr, byte fg, byte fb, double refuerzo) {
+    //
+    // OJO CON EL RECORTE (bug del 23/08). Esta funcion dibujaba SIEMPRE el
+    // cuadro entero escalado a an x al, ignorando la caja. Cuando Exposicion
+    // paso a tener alfa se fue por aca, y sus 1920px de ancho entraban a la
+    // fuerza en los 1425 de la caja: la pieza salia achatada un 26%. El
+    // recorte solo lo respetaba la otra rama. Ahora los dos parametros
+    // cajaX/cajaW dicen que pedazo del original hay que tomar.
+    public static Bitmap Componer(Bitmap origen, int an, int al, byte fr, byte fg, byte fb, double refuerzo,
+                                  int cajaX, int cajaY, int cajaW, int cajaH) {
         Bitmap chico = new Bitmap(an, al, PixelFormat.Format32bppArgb);
         using (Graphics g = Graphics.FromImage(chico)) {
             g.Clear(Color.Transparent);
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            g.DrawImage(origen, 0, 0, an, al);
+            Rectangle destino = new Rectangle(0, 0, an, al);
+            Rectangle recorte = new Rectangle(cajaX, cajaY, cajaW, cajaH);
+            g.DrawImage(origen, destino, recorte, GraphicsUnit.Pixel);
         }
 
         Bitmap salida = new Bitmap(an, al, PixelFormat.Format24bppRgb);
@@ -244,12 +387,29 @@ public static class RecorteMuseo {
 }
 "@ -ReferencedAssemblies System.Drawing
 
+# Dibuja el original sobre el lienzo. Si la secuencia tiene Caja, toma solo
+# ese recorte del original; si no, el cuadro entero.
+function Dibujar($g, $img, $sec) {
+  $destino = New-Object System.Drawing.Rectangle(0, 0, $sec.Ancho, $sec.Alto)
+  if ($sec.ContainsKey("Caja") -and $sec.Caja) {
+    $c = $sec.Caja
+    $origen = New-Object System.Drawing.Rectangle($c[0], $c[1], $c[2], $c[3])
+    $g.DrawImage($img, $destino, $origen, [System.Drawing.GraphicsUnit]::Pixel)
+  } else {
+    $g.DrawImage($img, $destino)
+  }
+}
+
 $fondo = [System.Drawing.Color]::FromArgb($FondoR, $FondoG, $FondoB)
 $codec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() |
          Where-Object { $_.MimeType -eq "image/jpeg" }
-$params = New-Object System.Drawing.Imaging.EncoderParameters(1)
-$params.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter(
-                     [System.Drawing.Imaging.Encoder]::Quality, [long]$Calidad)
+# El encoder se arma adentro del bucle, porque la calidad cambia por secuencia.
+function Nuevos-Params([int]$q) {
+  $p = New-Object System.Drawing.Imaging.EncoderParameters(1)
+  $p.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter(
+                  [System.Drawing.Imaging.Encoder]::Quality, [long]$q)
+  return $p
+}
 
 foreach ($sec in $Secuencias) {
   $carpetaOrigen  = Join-Path $Origen $sec.Carpeta
@@ -263,11 +423,65 @@ foreach ($sec in $Secuencias) {
     New-Item -ItemType Directory -Path $carpetaDestino -Force | Out-Null
   }
 
+  $params = Nuevos-Params $sec.Calidad
   $archivos = Get-ChildItem $carpetaOrigen -Filter *.png | Sort-Object Name
+
+  # ------------------------------------------------------------------------
+  # PRIMERA PASADA: donde esta la pieza en cada cuadro
+  # Solo para las secuencias con Centrar. Mide el recuadro del contenido,
+  # suaviza los centros y despues la segunda pasada dibuja cada cuadro
+  # corrido para que ese centro caiga en el medio de la salida.
+  # ------------------------------------------------------------------------
+  $centros = $null
+  if ($sec.ContainsKey("Centrar") -and $sec.Centrar) {
+    Write-Output ("[" + $sec.Nombre + "] midiendo donde esta la pieza en cada cuadro...")
+    $cx = New-Object 'System.Collections.Generic.List[double]'
+    $cy = New-Object 'System.Collections.Generic.List[double]'
+    $maxAn = 0; $maxAl = 0
+    foreach ($archivo in $archivos) {
+      $num = $archivo.BaseName -replace [regex]::Escape($sec.Prefijo), ""
+      if ($num -notmatch '^\d+$') { continue }
+      $im = [System.Drawing.Image]::FromFile($archivo.FullName)
+      $bm = New-Object System.Drawing.Bitmap($im)
+      $c = [RecorteMuseo]::Caja($bm, 40, 4)
+      if ($c[0] -ge 0) {
+        $cx.Add((($c[0] + $c[2]) / 2.0))
+        $cy.Add((($c[1] + $c[3]) / 2.0))
+        $an = $c[2] - $c[0] + 1; $al = $c[3] - $c[1] + 1
+        if ($an -gt $maxAn) { $maxAn = $an }
+        if ($al -gt $maxAl) { $maxAl = $al }
+      } else {
+        # Cuadro vacio: hereda el centro del anterior, o el del medio.
+        if ($cx.Count -gt 0) { $cx.Add($cx[$cx.Count-1]); $cy.Add($cy[$cy.Count-1]) }
+        else { $cx.Add(($bm.Width/2.0)); $cy.Add(($bm.Height/2.0)) }
+      }
+      $bm.Dispose(); $im.Dispose()
+    }
+
+    # Suavizado: promedio movil. Sin esto, el cuadro donde entra o sale la
+    # silueta de la persona cambia el recuadro de golpe y la pieza salta.
+    $mitad = [int](($VentanaSuavizado - 1) / 2)
+    $sx = New-Object 'System.Collections.Generic.List[double]'
+    $sy = New-Object 'System.Collections.Generic.List[double]'
+    for ($i = 0; $i -lt $cx.Count; $i++) {
+      $a = [math]::Max(0, $i - $mitad); $b = [math]::Min($cx.Count - 1, $i + $mitad)
+      $tx = 0.0; $ty = 0.0
+      for ($j = $a; $j -le $b; $j++) { $tx += $cx[$j]; $ty += $cy[$j] }
+      $n = $b - $a + 1
+      $sx.Add(($tx / $n)); $sy.Add(($ty / $n))
+    }
+    $centros = @{ x = $sx; y = $sy }
+
+    Write-Output ("           el contenido mas grande mide " + $maxAn + "x" + $maxAl + "  ·  la salida es " + $sec.Ancho + "x" + $sec.Alto)
+    if ($maxAn -gt $sec.Ancho -or $maxAl -gt $sec.Alto) {
+      Write-Output ("           OJO: la salida es MAS CHICA que el contenido, se va a recortar la pieza.")
+    }
+  }
   $modo = if ($sec.Recortar) { "recortando el negro" } else { "componiendo el alfa x" + $sec.Refuerzo }
-  Write-Output ("[" + $sec.Nombre + "] " + $archivos.Count + " frames -> " + $sec.Ancho + "x" + $sec.Alto + ", " + $modo)
+  Write-Output ("[" + $sec.Nombre + "] " + $archivos.Count + " frames -> " + $sec.Ancho + "x" + $sec.Alto + " q" + $sec.Calidad + ", " + $modo)
 
   $hechos = 0
+  $indiceCentro = 0
   foreach ($archivo in $archivos) {
     # ASIENTO_00042 -> 0042. Si el nombre no termina en numero, lo salteo.
     $num = $archivo.BaseName -replace [regex]::Escape($sec.Prefijo), ""
@@ -288,14 +502,33 @@ foreach ($sec in $Secuencias) {
       # reborde claro de un pixel alrededor de toda la imagen. Medido el
       # 23/08 persiguiendo un bug que parecia del recorte. No sacarla.
       $g.PixelOffsetMode = "HighQuality"
-      $g.DrawImage($img, 0, 0, $sec.Ancho, $sec.Alto)
+      Dibujar $g $img $sec
       $g.Dispose()
-      [RecorteMuseo]::QuitarFondo($bmp, $UmbralFondo, $UmbralBorde, $FondoR, $FondoG, $FondoB)
+      [RecorteMuseo]::QuitarFondo($bmp, $UmbralFondo, $UmbralBorde, $FondoR, $FondoG, $FondoB, $sec.Gamma)
     } else {
       # CON ALFA (Exposicion): se compone a mano para poder reforzar el alfa
       # de las siluetas semitransparentes. Aca NO se recorta nada: el umbral
       # le comeria los vidrios de las vitrinas.
-      $bmp = [RecorteMuseo]::Componer($img, $sec.Ancho, $sec.Alto, $FondoR, $FondoG, $FondoB, $sec.Refuerzo)
+      # De donde sale el pedazo del original que se dibuja.
+      if ($centros) {
+        # Centrado por cuadro: la ventana es del tamano de la salida y se
+        # planta sobre el centro suavizado de ESTE cuadro. Sin clamp a
+        # proposito: si la ventana se sale del original, lo que entra de
+        # afuera es transparente y se compone contra el crema, que es
+        # exactamente lo que queremos. Recortar la ventana para que entre
+        # volveria a descentrar la pieza.
+        $ccx = $centros.x[$indiceCentro]
+        $ccy = $centros.y[$indiceCentro]
+        $c = @([int]([math]::Round($ccx - $sec.Ancho / 2.0)),
+               [int]([math]::Round($ccy - $sec.Alto  / 2.0)),
+               $sec.Ancho, $sec.Alto)
+        $indiceCentro++
+      } elseif ($sec.ContainsKey("Caja") -and $sec.Caja) {
+        $c = $sec.Caja
+      } else {
+        $c = @(0, 0, $img.Width, $img.Height)
+      }
+      $bmp = [RecorteMuseo]::Componer($img, $sec.Ancho, $sec.Alto, $FondoR, $FondoG, $FondoB, $sec.Refuerzo, $c[0], $c[1], $c[2], $c[3])
     }
 
     $bmp.Save($salida, $codec, $params)

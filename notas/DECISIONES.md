@@ -3415,3 +3415,255 @@ chica en medio de la pantalla, que se lee como una estampa dentro de una caja.
 El numero la agranda y deja que se recorte contra los bordes. Vive en el CSS y
 lo lee museo-scroll.js al medir el canvas, NO en cada cuadro: getComputedStyle
 fuerza recalculo de estilos y a 60 por segundo se nota.
+
+### 33-sexies. Las zonas oscuras: no era el recorte, era que falta luz de relleno (23/08/2026)
+
+Cuatro vueltas persiguiendo esto por el lado equivocado. El diagnóstico bueno
+salió de mirar **de qué color son** esos píxeles, no cuántos son.
+
+Los píxeles oscuros del respaldo de Descanso son `#391300`, `#3F1601`,
+`#2F1C0C`. Eso no es fondo negro mal recortado: **es madera**, con su marrón
+intacto. Lo único que le falta es NIVEL.
+
+**La causa:** los renders se hicieron sobre un mundo negro y sin luz de
+relleno. Toda superficie que no mira a la luz principal cae a casi cero,
+porque no hay ambiente ni rebote que la levante. Sobre fondo negro eso se lee
+como "está en sombra" y funciona. Sobre el crema de la página se lee como un
+agujero.
+
+**El arreglo:** una curva de gamma 0.62 aplicada SOLO a lo que no es fondo.
+Les devuelve nivel sin cambiarles el tono, porque va igual a los tres canales.
+Medido: los píxeles por debajo de 70 de luminancia pasaron de 2,6-4,6% del
+cuadro a 0-0,1%.
+
+Exposición va en gamma 1, sin tocar: tiene alfa de verdad y nunca tuvo el
+problema. Es la prueba de que el asunto es el render y no la conversión.
+
+**Lo que aprendí y no quiero repetir:** medí tres veces *cuánto* negro había y
+ninguna *de qué color era*. El histograma decía "hay píxeles oscuros" y yo
+asumí "quedó fondo sin sacar". Con mirar el RGB de seis píxeles alcanzaba.
+
+### 33-septies. Dos bugs que encontró la revisión, y los dos anulaban arreglos
+
+1. **`medirCanvas()` corría antes de que bajara ninguna imagen.** Topea el
+   lienzo al tamaño del cuadro para no ampliar el JPEG, pero para eso necesita
+   conocer ese tamaño, y en el arranque todavía no hay ninguno. El techo nunca
+   se aplicaba: todo el arreglo de la nitidez no hacía nada. Ahora se vuelve a
+   medir cuando llega la primera tanda.
+
+2. **Con `salto` > 1 la animación no llegaba al último cuadro.** Si el
+   recorrido no es divisible por el salto, la última posición cae antes del
+   final: Comunicación terminaba en el 372 de 373. Parte de lo que se veía
+   como "queda incompleta". `TOTAL` ahora suma uno cuando hay resto, y
+   `numeroDeFrame` topea en `ultimo`.
+
+**Y la resolución:** los frames estaban saliendo a 1600 de ancho cuando los
+originales son 1920. En una ventana de 1900 con devicePixelRatio 1.5 el lienzo
+mide ~2850, así que el navegador los AMPLIABA 1.48 veces, y con el zoom que le
+había puesto encima llegaba a 1.81. Por eso se veía pixelado. Ahora salen a
+1920 y el dibujo siempre REDUCE (0.83), que es lo que se ve nítido.
+
+### 33-octies. Segunda entrega de renders, y el recorte del vacío (23/08/2026)
+
+Mati re-renderizó las tres con World gris claro + Film Transparent. Resultado:
+
+| | formato | fondo |
+|---|---|---|
+| Descanso | RGBA | transparente ✓ |
+| Comunicación | RGBA | transparente ✓ |
+| Exposición | 24bpp | **negro puro** |
+
+Exposición salió al revés: es la única que quedó sin alfa, justo la que antes
+era la única que lo tenía. Se le aplica el camino de recorte + levante que ya
+estaba probado, así que la página funciona igual; si algún día se re-renderiza
+con las dos casillas, es poner `Recortar=$false` y `Gamma=1.0`.
+
+**Moraleja para la tabla de secuencias:** quién tiene alfa y quién no CAMBIA
+entre entregas. Medirlo antes de tocar la tabla, no confiar en la memoria:
+`[System.Drawing.Image]::FromFile(ruta).PixelFormat`.
+
+**El recorte del vacío.** Mati preguntó cómo agrandar Exposición sin recortarla.
+La respuesta es recortar el CUADRO, no la pieza. Medido sobre toda la secuencia
+(no sobre un cuadro: la pieza se mueve), el contenido vive en x 92-1334,
+y 302-1258 de un cuadro de 1920x1282. Son 585px de aire a la derecha y 302px
+arriba. Con la caja `@(44, 254, 1339, 1028)` —el recuadro medido más 48px de
+margen— la pieza pasa de verse a 863px de ancho a 1156px en una ventana de
+1900: **34% más grande sin ampliar un solo píxel**, porque el dibujo sigue
+reduciendo (0.93).
+
+Verificado en los 338 cuadros y en los cuatro bordes: la pieza no toca ninguno,
+así que no se perdió nada del mueble.
+
+Si alguna vez se quiere lo mismo en Descanso o Comunicación, el mecanismo ya
+está: agregar `Caja=@(x, y, ancho, alto)` a su fila y hacer que `Ancho`/`Alto`
+coincidan con los de la caja.
+
+### 33-nonies. Exposición con alfa, y el espejismo de la caja de recorte (23/08/2026)
+
+Mati re-exportó Exposición, ahora sí con alfa. Con eso **las tres secuencias
+quedaron iguales**: RGBA sobre transparente, sin recorte ni levante. El script
+volvió a ser lo que siempre debió ser: `Recortar=$false` y `Gamma=1.0` en las
+tres. Todo el aparato de recorte por umbral y curva de gamma sigue en el
+código, apagado, por si alguna vez vuelve a entrar una secuencia sin alfa.
+
+**El espejismo.** Sobre la entrega anterior de Exposición (la que vino sobre
+negro) el recuadro del contenido medía `y 302-1258`, y de ahí salió una caja de
+recorte que parecía agrandar la pieza un 34%. Con la entrega con alfa, la misma
+medición da `y 1-1281`: la pieza ocupa **todo el alto**. Lo comprobé con cuatro
+umbrales de alfa distintos (12, 40, 90 y 160) y los cuatro coinciden.
+
+La diferencia es que sobre negro el contenido se detectaba por luminancia > 30,
+y la sombra del piso caía por debajo de ese umbral: se contaba como fondo.
+**Cuando hay alfa, el recuadro se mide con el alfa, no con el brillo.**
+
+Quedó una caja igual, `@(43, 0, 1425, 1282)`, pero solo saca los ~500px de aire
+de la derecha. Como en pantalla ancha el ajuste lo manda el alto, eso no agranda
+la pieza: la centra. Para agrandarla más habría que recortar el mueble, y eso
+no se hace.
+
+**Y el refuerzo de alfa se apagó.** Estaba en 1.9 para que las siluetas
+semitransparentes de Exposición no se lavaran sobre el crema. Con el render
+nuevo no hace falta, y encima apagarlo las deja del mismo gris que las de
+Descanso y Comunicación, así que las tres animaciones se leen igual.
+
+### 33-decies. La deformación de Exposición: la caja de recorte vivía en una sola rama (24/08/2026)
+
+Mati la marcó cuatro veces y tenía razón. El conversor tiene dos ramas, según
+la secuencia traiga alfa o no:
+
+- `Recortar=$true` → dibuja con `Dibujar`, que **sí** respeta la caja de recorte.
+- `Recortar=$false` → dibuja con `Componer`, que **dibujaba el cuadro entero**
+  escalado al tamaño de salida, ignorando la caja.
+
+Mientras Exposición vino sin alfa iba por la primera y andaba. Cuando llegó con
+alfa se fue por la segunda, y ahí sus 1920px de ancho entraron a la fuerza en
+los 1425 de la caja: **achatada un 26%**. `Componer` ahora recibe la caja.
+
+**La lección:** cuando una función tiene dos caminos, un parámetro nuevo hay que
+enchufarlo en LOS DOS. Acá el segundo camino estaba dormido cuando se agregó el
+recorte, y se despertó tres entregas después.
+
+### 33-undecies. Recortes y textos (24/08/2026)
+
+- **La portada de Exposición viene cortada de origen.** Medido: 402px de
+  contenido pegados al borde inferior del PNG y 87px al derecho. No es CSS.
+  Comunicación tiene 42px pegados a la izquierda; Descanso está limpia.
+- **El aire de un slide va en el contenedor, no en la imagen.** Estaba como
+  `padding-block-end` sobre un `<img>` que ya tenía `height:100%`.
+- **Los mockups y el hero van con `contain`, nunca `cover`.** Son fotomontajes
+  en sala y portadas de producto: recortarlos se come justo lo que hay que ver.
+- **El riel dejó de ser una lámina aparte** y pasó a ser el tercer círculo de
+  Comunicación. Suelto y a ancho completo, un detalle de encastre se veía más
+  grande que el mueble entero.
+- **POSTURAS, segunda entrega:** 5823x3417 de origen. Sale a 2200 en JPG
+  compuesto contra `--crema-2`, que es el fondo de su sección. En PNG pesaba
+  1,7 MB; así pesa 451 KB.
+- **No inventar texto.** Se habían colado un título ("Lo que vimos en sala") y
+  una etiqueta ("Lo que no funcionó") que no estaban en el pedido. Fuera. Si un
+  bloque necesita un rótulo que no vino, se pregunta.
+
+### 33-duodecies. El recorte del carrusel: un caso circular del grid (24/08/2026)
+
+Tres vueltas diciendo "ya está" sin que estuviera. Se resolvió recién cuando
+lo medí en un Chrome de verdad por CDP en vez de razonarlo sobre el CSS.
+
+**El síntoma:** las portadas de Descanso y Exposición aparecían cortadas abajo
+en el carrusel del hero. Las otras dos no.
+
+**Lo que descarté midiendo, en este orden:**
+1. El PNG de origen. Descanso está limpia en los cuatro bordes.
+2. `box-sizing`. Es `border-box` global, así que el padding no desbordaba.
+3. La cascada. `CSS.getMatchedStylesForNode` mostró que
+   `.museo-carrusel__slide img { height: 100% }` gana sobre el
+   `img { height: auto }` de base.css.
+
+**Lo que era.** El slide es `display: grid` con una fila implícita `auto`. Una
+fila `auto` se dimensiona por su contenido. Con la imagen ya cargada, ese
+contenido pedía 582px (640 de ancho por la proporción natural), más que los
+528 de la caja. La fila crecía a 582, no quedaba espacio libre para estirar, y
+entonces el `height: 100%` de la imagen resolvía **contra 582 en vez de contra
+528**. Circular: el alto del item depende de la fila y la fila depende del item.
+
+**La prueba que lo confirmó:** los slides con `loading="lazy"` que todavía no
+habían bajado daban 528. Sin contenido, la fila se estira normal. Esa
+diferencia entre slides cargados y no cargados fue la que delató el mecanismo.
+
+**El arreglo:** `grid-template-rows: minmax(0, 1fr)` en el slide. La fila pasa
+a medir lo que la caja y nunca lo que el contenido; el `0` de mínimo es lo que
+le saca el piso de max-content.
+
+Verificado por CDP: los cuatro slides quedaron en 640x528 dentro de un marco de
+540, sin desborde.
+
+**La lección, otra vez la misma:** si el reclamo es visual, abrir el navegador.
+Tenía CDP anotado en la memoria desde hace días y seguí razonando sobre el
+archivo. `getBoundingClientRect` de los cuatro slides lo mostró en un minuto.
+
+### 33-terdecies. Centrado por cuadro en Exposición, y la cola del final (24/08/2026)
+
+**El problema medido.** El centro del contenido de Exposición se corre 264px en
+horizontal y 308px en vertical a lo largo de la secuencia, y casi siempre cae
+por debajo del centro del cuadro (el cuadro está centrado en 641 y el contenido
+anda entre 594 y 902). Con una ventana de recorte FIJA no hay forma: la pieza se
+ve descentrada en casi todos los tramos.
+
+**La solución: `Centrar=$true`.** El conversor hace dos pasadas. La primera mide
+el recuadro del contenido de cada cuadro; la segunda dibuja cada uno corrido
+para que su centro caiga en el medio de la salida.
+
+**Los centros se suavizan (promedio móvil de 41 cuadros).** Sin suavizar, el
+cuadro donde entra o sale la silueta de la persona cambia el recuadro de golpe
+y el mueble pega un salto. Con el suavizado el desplazamiento es gradual.
+
+Resultado medido: el desvío bajó de 264/308px a **48/48px**, y ese resto es
+justamente el suavizado haciendo su trabajo.
+
+La salida pasó a 940x1300, apenas más grande que el contenido más grande de la
+secuencia (791x1187). Al venir ajustada y centrada, el zoom pudo subir de 0.8 a
+0.94: ya no hace falta aire de sobra para compensar el descentrado.
+
+**La cola.** `cola: 0.18` en la config de una secuencia hace que el 18% final
+del scroll se quede quieto en el último cuadro. No repite imágenes ni alarga el
+array: reescala el avance para que llegue a 1 antes de terminar el recorrido.
+En Exposición el cajón con las mariposas aparece recién al final y sin esto
+pasaba de largo. La sección subió a 560svh para que la cola no le robe recorrido
+al resto de la animación.
+
+### 33-quaterdecies. El temblor del centrado: el suavizado era el problema (24/08/2026)
+
+Mati dijo "va mucho mejor pero se mueve un poco raro". Tenía razón, y la causa
+era el promedio móvil que yo había puesto para evitar saltos.
+
+**Lo que mostró la medición de los 338 cuadros:**
+
+- El **59% de las transiciones son MESETA**: el contenido no se mueve nada. La
+  mediana del salto del centro entre cuadro y cuadro es **0,0 px**.
+- Solo **5 cuadros** tienen saltos grandes: 55, 107, 262, 292 y 299. Los cinco
+  coinciden con un cambio de tamaño del contenido de entre 300 y 515 px, o sea
+  el momento en que entra o sale la silueta de la persona.
+
+**Por qué el suavizado empeoraba las cosas.** Un promedio móvil reparte esos 5
+saltos sobre 41 cuadros cada uno. Resultado: la ventana se mueve TAMBIÉN durante
+las mesetas, cuando la pieza está quieta. Eso es un desplazamiento lento que no
+corresponde a nada de lo que pasa en la imagen, y por eso se siente raro.
+
+**Y los saltos que el suavizado quería evitar no hacía falta evitarlos**, porque
+caen justo donde la imagen cambia por completo: el salto de la ventana queda
+tapado por el cambio de contenido.
+
+**Seguimiento exacto, sin suavizar.** Si el contenido está quieto, la ventana
+está quieta.
+
+| | antes (media móvil 41) | ahora (exacto) |
+|---|---|---|
+| Temblor en meseta | 2,64 px/cuadro | **0,06** |
+| Desvío máximo | 249 x 106 px | **75 x 97** |
+
+Y al no haber retardo, la ventana pudo achicarse de 940x1300 a 870x1290, apenas
+más que el contenido más grande (791x1187), así que la pieza se ve más grande.
+
+**La lección de método:** probé tres estrategias de suavizado antes de darme
+cuenta de que la respuesta era no suavizar. Lo que lo destrabó fue medir la
+DISTRIBUCIÓN de los saltos, no su máximo: el máximo decía "hay saltos de 194px,
+hay que suavizar", y la mediana decía "el 59% del tiempo no pasa nada". El
+máximo solo describe 5 cuadros de 338.
