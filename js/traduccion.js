@@ -160,10 +160,11 @@
     })();
   }
 
-  /* --- 3-bis. LAS CUATRO PALABRAS DE LA NAV, A MANO ---
-     Todo el sitio lo traduce Google menos estos cuatro botones, que llevan su
-     inglés escrito en el HTML (data-es / data-en) y translate="no" para que
-     Google no los toque.
+  /* --- 3-bis. LO QUE SE TRADUCE A MANO ---
+     Todo el sitio lo traduce Google menos un puñado de cosas cortas, que
+     llevan su inglés escrito en el HTML (data-es / data-en) y translate="no"
+     para que Google no las toque: los botones de la nav, las pestañas de las
+     tarjetas de trabajo ("Proy. 1" / "Proj 1") y el botón del CV.
 
      POR QUÉ LA EXCEPCIÓN: la traducción automática es mala justo donde son
      palabras sueltas sin contexto alrededor, y la nav es exactamente eso — y
@@ -173,10 +174,27 @@
 
      Si mañana Google te traduce mal alguna otra cosa corta (un rótulo, un
      botón), el arreglo es el mismo: translate="no" + data-es + data-en. */
-  function palabrasDeLaNav(idioma) {
+  function textosAMano(idioma) {
+    const es = (idioma === IDIOMA_ORIGEN);
+
     document.querySelectorAll("[data-en][data-es]").forEach(function (el) {
-      const texto = (idioma === IDIOMA_ORIGEN) ? el.dataset.es : el.dataset.en;
+      const texto = es ? el.dataset.es : el.dataset.en;
       if (texto && el.textContent !== texto) el.textContent = texto;
+    });
+
+    /* Y LOS QUE ADEMÁS CAMBIAN DE ARCHIVO.
+       Hasta acá esto solo cambiaba TEXTO. El botón del CV necesita algo más:
+       hay un PDF en español y otro en inglés, así que además del rótulo tiene
+       que cambiar a dónde apunta. Se declara igual que el resto, con un par
+       de data-*, pero para el href.
+       Va en un querySelectorAll aparte y no dentro del de arriba porque son
+       dos cosas independientes: un elemento puede cambiar solo el texto (los
+       botones de la nav), y mañana otro podría cambiar solo el archivo. */
+    document.querySelectorAll("[data-href-es][data-href-en]").forEach(function (el) {
+      const destino = es ? el.dataset.hrefEs : el.dataset.hrefEn;
+      if (destino && el.getAttribute("href") !== destino) {
+        el.setAttribute("href", destino);
+      }
     });
   }
 
@@ -185,7 +203,7 @@
      se guarda la elección. aria-pressed es lo que le dice a un lector de
      pantalla cuál de los dos está puesto. */
   function pintarBotones(idioma) {
-    palabrasDeLaNav(idioma);
+    textosAMano(idioma);
     document.querySelectorAll("[data-idioma]").forEach(function (b) {
       const suyo = b.dataset.idioma === idioma;
       b.classList.toggle("is-activa", suyo);

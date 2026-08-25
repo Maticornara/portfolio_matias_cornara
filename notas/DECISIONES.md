@@ -3667,3 +3667,108 @@ cuenta de que la respuesta era no suavizar. Lo que lo destrabó fue medir la
 DISTRIBUCIÓN de los saltos, no su máximo: el máximo decía "hay saltos de 194px,
 hay que suavizar", y la mediana decía "el 59% del tiempo no pasa nada". El
 máximo solo describe 5 cuadros de 338.
+
+## 27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026)
+
+Dos cosas en una: rehacer el menú hamburguesa —a Mati no le gustaba cómo
+quedaba— y una pasada por las cinco páginas midiendo qué más estaba mal en
+pantalla chica.
+
+### EL MENÚ: EL PROBLEMA ERA LA PASTILLA ESTIRADA
+
+Las cuatro opciones eran las pastillas del desktop llevadas a todo el ancho.
+**Una pastilla es una etiqueta compacta**; estirada a 340px con el texto
+centrado deja de leerse como pastilla y pasa a leerse como botonera de
+formulario. Y el ritmo quedaba desparejo: tres anchas y "Contacto" corta al
+lado del ES/EN, porque los dos comparten el contenedor `.site-nav__fin`.
+
+Ahora las opciones son **tipografía, no botones**: grandes (`--nav-movil-fila`,
+clamp de 1.9 a 2.5rem), alineadas al mismo borde que todo el resto del sitio,
+separadas por filetes, y la página actual en verde sin fondo pintado. Es el
+mismo lenguaje de las páginas de proyecto. La pastilla se queda donde sí tiene
+sentido: en el par ES/EN, que es un control y no una sección.
+
+**Tres decisiones que costaron una vuelta cada una:**
+
+1. **El panel va centrado, no pegado arriba.** Pegado arriba quedaba un vacío
+   raro en el medio de la pantalla. Centrado, además, las opciones caen en la
+   zona donde llega el pulgar en un teléfono largo.
+2. **Peso 400 y no `--peso-medio` (600).** Un peso que a 13px se lee como
+   "rótulo", a 2.5rem se lee como grito. El tamaño ya hace toda la jerarquía.
+3. **La última opción cierra la lista con su propio filete abajo.** Sin eso el
+   bloque quedaba abierto por debajo y se leía cortado a la mitad.
+
+**`dvh` y no `vh`.** En el teléfono la barra del navegador aparece y desaparece;
+`100vh` es el alto CON la barra desplegada, así que el panel quedaría más largo
+que la pantalla y el ES/EN caería abajo del borde. Va `100vh` primero como
+reserva y `100dvh` encima.
+
+**Y ahora sí hay que trabar el scroll de atrás.** Antes el menú era una barra
+que crecía y lo de atrás casi no se veía. Con una hoja de pantalla completa, si
+el dedo se va del panel lo que se mueve es la página de abajo mientras el menú
+se queda quieto — se lee como que el menú se trabó. Son **dos frenos** porque
+hay dos motores: `lenis.stop()` para la rueda y el gesto, y `overflow: hidden`
+en el `<html>` para el scroll nativo (que es el que vale si Lenis no cargó).
+
+### EL REPASO: LOS PROBLEMAS ERAN SISTÉMICOS, NO DE UNA PÁGINA
+
+Se midieron las cinco páginas a 390 y a 360px, recorriéndolas enteras.
+**Ninguna tenía scroll horizontal** — lo que se sale del ancho son los
+carruseles y las líneas de la esquina, que es a propósito. Lo que estaba mal
+era el tamaño, y era **la misma clase repetida en las cinco**.
+
+**TEXTO DEMASIADO CHICO.** `.etiqueta` es el "letrero de archivo" que aparece en
+todos lados: pastillas de clasificación, contadores (03 / 03), pies de foto,
+rótulos de sección. Salía a **11px en todos los teléfonos**, y en algunos casos
+a **9px**. Para un texto en MAYÚSCULA y con tracking —que ya cuesta más leer que
+la caja baja— eso no se lee.
+
+El arreglo no fue tocar cada regla: fue **convertir los tamaños escritos a mano
+en perillas** y darles un piso en pantalla chica.
+
+| perilla | desktop | teléfono | qué sube |
+|---|---|---|---|
+| `--t--1` | 11–12px | **13px** | `.etiqueta` genérica |
+| `--t-micro` | 9px | **12px** | los rótulos más chicos (estaba escrito `0.5625rem` a mano en 8 lugares) |
+| `--t-rotulo` | 11px | **13px** | `.pag-X .etiqueta` de las cuatro páginas de proyecto (estaba escrito `0.6875rem` a mano en cada una) |
+
+**Dónde se escondía el 11px, que costó encontrarlo.** Subir `--t--1` no alcanzó:
+seguía midiendo 11. En vez de seguir adivinando se le preguntó al navegador con
+`CSS.getMatchedStylesForNode`, que devuelve las reglas que compiten:
+
+```
+.etiqueta                    font-size: var(--t--1)
+.proyecto__col .etiqueta     font-size: var(--t-micro)
+.pag-54 .etiqueta, .dato     font-size: 0.6875rem      ← esta ganaba
+```
+
+Cada página tenía su propia regla con el 11px escrito a mano. Ahora las cuatro
+usan `--t-rotulo`, y si una necesita otro tamaño se lo redefine bajo su `.pag-X`
+(simbio ya lo hace).
+
+**OBJETIVOS TÁCTILES.** 44px es el ancho de la yema de un dedo; por debajo se
+falla y se toca lo de al lado. Medido antes:
+
+- el link del pie ("Archivo — Matías Cornara"): **202x12** en las cuatro páginas
+  de proyecto. Doce pixeles de alto.
+- los puntitos del carrusel de museo: **8x8**. El peor de todo el sitio.
+- la flecha de volver: 40x40 · las flechas del carrusel: 40x40 · el par ES/EN:
+  43x29 · "Ver en grande" de tipines: 166x33 · el control de sonido de +54:
+  83x35 · el mail y el teléfono de contacto: 31 y 29 de alto.
+
+**El truco es siempre el mismo: no agrandar el dibujo, agrandar la zona que
+responde.** `padding` vertical y `min-height` no mueven una letra de lugar. Para
+los puntitos del carrusel se separó el dibujo de la zona: el botón crece a 44x44
+transparente y el punto se dibuja adentro con un `::after` del tamaño de
+siempre. Se ve igual, se toca cuatro veces mejor.
+
+Después del repaso: **cero objetivos por debajo de 44px y cero textos por debajo
+de 12px** en las cinco páginas. Y el desktop quedó igual que antes —`.etiqueta`
+sigue en 11px y la pastilla en 86x31—, porque todo va dentro de
+`@media (max-width: 620px)`.
+
+**Un error propio que vale anotar:** la regla del botón de CV se escribió como
+`.cv__descargar` y la clase real es `.cv__descarga`. No dio error, simplemente no
+hizo nada, y solo se vio porque la medición lo siguió reportando. Una regla CSS
+que no matchea es silenciosa: si escribís una y el número no cambia, lo primero
+que hay que chequear es el nombre.

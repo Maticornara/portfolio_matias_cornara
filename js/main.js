@@ -503,6 +503,17 @@ function initHamburguesa() {
     // Con el menú abierto la barra NO se esconde al scrollear: se iría con el
     // menú puesto y volvería abierta, que se ve como un error.
     if (si) nav.classList.remove("is-oculta");
+
+    /* TRABAR LA PÁGINA DE ATRÁS.
+       Hizo falta cuando el menú pasó a ser una hoja de pantalla completa:
+       antes era una barra que crecía y lo de atrás casi no se veía. Ahora, si
+       el dedo se va del panel, lo que se mueve es la página de abajo mientras
+       el menú se queda quieto — se lee como que el menú se trabó.
+       Son dos frenos porque hay dos motores: Lenis maneja la rueda y el
+       gesto; overflow: hidden en el <html> frena el scroll nativo (y es el
+       que vale si Lenis no cargó, o con movimiento reducido). */
+    if (window.lenis) si ? window.lenis.stop() : window.lenis.start();
+    document.documentElement.style.overflow = si ? "hidden" : "";
   }
 
   boton.addEventListener("click", () => {

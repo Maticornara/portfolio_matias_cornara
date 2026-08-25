@@ -80,6 +80,16 @@
 
   /* Escala fluida con clamp(mínimo, ideal, máximo) */
   --t--1: clamp(0.6875rem, 0.66rem + 0.12vw, 0.75rem);  /* etiquetas, datos */
+  /* El rótulo más chico del sistema: los datos al pie de una pieza, los
+     contadores, las etiquetas de la columna fija. Estaba escrito 0.5625rem a
+     mano en ocho lugares de simbio.css y mas-54.css; ahora es una perilla,
+     que es lo que permite darle un piso distinto en el teléfono (abajo). */
+  --t-micro: 0.5625rem;                                 /* 9px */
+  /* EL RÓTULO DE LAS PÁGINAS DE PROYECTO. Las cuatro tienen la misma regla
+     (.pag-X .etiqueta, .pag-X .dato) y las cuatro tenían el 11px escrito a
+     mano. Ahora es una sola perilla para todas; si una necesita otro tamaño,
+     se lo redefine bajo su .pag-X y listo (simbio ya lo hace). */
+  --t-rotulo: 0.6875rem;                                /* 11px */
   --t-0: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);  /* cuerpo chico */
   --t-1: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);       /* cuerpo */
   --t-2: clamp(1.15rem, 1.05rem + 0.5vw, 1.375rem);     /* títulos de ficha */
@@ -201,4 +211,29 @@
   --font-display: var(--font);
   --font-body: var(--font);
   --border-width: var(--borde);
+}
+
+/* ==========================================================================
+   REPASO DE TELÉFONO — EL TAMAÑO DE LOS RÓTULOS
+   --------------------------------------------------------------------------
+   --t--1 es el tamaño de .etiqueta, el "letrero de archivo" que aparece en
+   TODAS las páginas: las pastillas de clasificación del hero, los contadores
+   (03 / 03), los pies de foto, los rótulos de sección.
+
+   Su clamp se resuelve en 11px en cualquier teléfono (el término en vw no
+   llega a levantarlo), y medido en pantalla eso es demasiado chico para un
+   texto en MAYÚSCULA y con tracking, que ya de por sí cuesta más leer que la
+   caja baja. Acá se lo saca del clamp y se le da un piso propio.
+
+   Es UNA perilla que arregla los rótulos de las cinco páginas de una vez. Si
+   te parece grande, bajala acá y baja en todos lados junto.
+   ========================================================================== */
+@media (max-width: 620px) {
+  :root {
+    --t--1: 0.8125rem;    /* 13px — era 11 */
+    /* 9px en un teléfono no se lee, y punto. Es el tamaño más chico del
+       sitio y encima va en MAYÚSCULA: en pantalla chica sube a 12. */
+    --t-micro: 0.75rem;   /* 12px — era 9 */
+    --t-rotulo: 0.8125rem; /* 13px — era 11 */
+  }
 }

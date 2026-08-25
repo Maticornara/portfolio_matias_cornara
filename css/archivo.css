@@ -202,7 +202,17 @@
   --entrada-caja-dur: 0.45s;
   --entrada-papeles: 1s;        /* empiezan a entrar los papeles */
   --entrada-papel-dur: 0.26s;
-  --entrada-paso: 0.06s;        /* espera entre un papel y el siguiente */
+  --entrada-paso: 0.06s;
+
+  /* EL NOMBRE ENTRA AL FINAL, CUANDO EL CUARTO YA ESTA ARMADO.
+     1.75s no es un numero suelto: es justo cuando termina el ultimo papel.
+     La cuenta esta unas lineas mas arriba -- 1.00 + 8 x 0.06 + 0.26 = 1.74 --
+     asi que si tocas cualquiera de esos tres, este tiene que seguirlos.
+     Solo se desvanece, sin moverse: los papeles ya vienen de un movimiento, y
+     sumarle otro al texto convierte la entrada en una seguidilla de cosas
+     desplazandose. Aca lo que tiene que pasar es que el nombre aparezca. */
+  --entrada-texto: 1.75s;
+  --entrada-texto-dur: 0.55s;        /* espera entre un papel y el siguiente */
 
   /* CUANTO CAE LA CAJA Y CUANTO SUBEN LOS PAPELES.
      Van en unidades del LIENZO del SVG, no en pixeles de pantalla: adentro
@@ -304,7 +314,7 @@
 .pag-archivo .etiqueta,
 .pag-archivo .dato {
   font-family: var(--font);
-  font-size: 0.6875rem;              /* 11px */
+  font-size: var(--t-rotulo);        /* 11px, 13 en teléfono */
   font-weight: 500;
   letter-spacing: var(--track-rotulo);
   text-transform: uppercase;
@@ -892,6 +902,74 @@
    renglón se sostiene solo y ninguno es más importante que otro, así que no
    hay jerarquía que dibujar. Lo único que los separa es el interlineado. */
 
+/* --- EL BOTON DE DESCARGA DEL CV ---------------------------------------
+   Pastilla de contorno, no superficie llena. En esta seccion lo que manda es
+   el texto del CV; un boton verde macizo en medio de dos parrafos se lleva
+   toda la atencion y lo que hay que leer primero pasa a segundo plano. En
+   reposo es un contorno discreto y recien al pasar el mouse se llena de
+   verde, que es el mismo comportamiento que ya tienen las pastillas de la
+   nav: asi se reconoce como "algo que se toca" antes de leerlo.
+
+   inline-flex y no inline-block: hay una flecha al lado del texto y hace
+   falta que queden centradas entre si verticalmente, cosa que un
+   inline-block no resuelve solo. */
+
+.cv__descarga {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+  padding: 9px 22px;
+  border: var(--borde) solid var(--zona-linea);
+  border-radius: 999px;
+  font-size: var(--t--1);
+  font-weight: var(--peso-medio);
+  letter-spacing: var(--track-rotulo);
+  text-transform: uppercase;
+  color: var(--zona-texto);
+  transition: background var(--dur-1) var(--ease),
+              border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease);
+}
+
+/* La flecha se dimensiona en em y no en px: asi crece con el texto del boton
+   en vez de quedarse chica si algun dia sube el tamano de letra. */
+.cv__descarga svg {
+  width: 1.1em;
+  height: 1.1em;
+  flex: 0 0 auto;
+}
+
+.cv__descarga:hover {
+  background: var(--verde);
+  border-color: var(--verde-oscuro);
+  color: #fff;
+}
+
+/* --- EL TELEFONO -------------------------------------------------------
+   Debajo del mail y bastante mas chico: el mail es la via principal y el
+   telefono el dato de respaldo. Con los dos al mismo peso no habria por
+   donde empezar a leer. */
+
+.contacto__tel {
+  /* block Y NO inline-block, QUE ES LO QUE LO BAJABA DE RENGLON.
+     El mail de arriba tambien es inline-block, asi que los dos se acomodaban
+     uno al lado del otro cuando entraban a lo ancho: el telefono aparecia a
+     la derecha del mail en vez de debajo, y el margin-top no hacia nada.
+     Con block arranca renglon propio siempre.
+     Y el width: fit-content es lo que evita el efecto secundario de block:
+     sin eso, el <a> se estira a todo el ancho de la columna y queda una
+     franja clickeable enorme a la derecha del numero, donde no hay nada. */
+  display: block;
+  width: fit-content;
+  margin-top: var(--s-4);
+  font-size: var(--t-2);
+  font-weight: var(--peso-cuerpo);
+  color: var(--zona-texto-2);
+  transition: color var(--dur-1) var(--ease);
+}
+.contacto__tel:hover { color: var(--verde); }
+
 /* --- LOS IDIOMAS -------------------------------------------------------
    Cierran el bloque de aptitudes, separados por aire y con su propio rótulo
    chico: son otra clase de dato, no un renglón más de la lista.
@@ -1339,10 +1417,20 @@
   }
 }
 
+/* El nombre y su bajada. Solo opacidad. */
+@keyframes texto-aparece {
+  from { opacity: 0; }
+}
+
 /* --- Quien hace que, y cuando -------------------------------------------
    `backwards` es lo que sostiene el estado inicial DURANTE la espera. Sin
    eso, todo se veria en su lugar desde el cuadro cero y recien ahi saltaria
    hacia atras para animarse: se veria un parpadeo al reves. */
+
+.portada-hero.is-entrando .portada-hero__texto {
+  animation: texto-aparece var(--entrada-texto-dur) var(--ease)
+             var(--entrada-texto) backwards;
+}
 
 .portada-hero.is-entrando::before {
   animation: cuarto-aparece var(--entrada-lineas-dur) var(--ease)
@@ -1406,6 +1494,7 @@
    segundo cerrojo, por si la clase llegara por otro lado.)
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .portada-hero.is-entrando .portada-hero__texto,
   .portada-hero.is-entrando::before,
   .portada-hero.is-entrando .esquina__linea,
   .portada-hero.is-entrando .caja__cubo,
@@ -1414,4 +1503,53 @@
   .portada-hero.is-entrando .caja__foto > * {
     animation: none;
   }
+}
+
+/* ==========================================================================
+   REPASO DE TELÉFONO — LA PORTADA
+   --------------------------------------------------------------------------
+   Tres cosas medidas en un teléfono de 390px:
+
+   1. LA FRASE DEL HERO daba 10.5px. Es la bajada del nombre, lo segundo que
+      se lee al entrar al sitio, y estaba más chica que cualquier rótulo.
+      --frase-tam es su perilla (está arriba, en PERILLAS): acá se le pone un
+      piso para pantalla chica y no se toca el desktop.
+
+   2. EL MOUSE que indica el scroll daba 25x38. El dibujo está bien de ese
+      tamaño —es un ícono, no un botón—, pero la zona que responde tiene que
+      llegar a 44. Se estira con padding, que no mueve el dibujo, y se le
+      compensa con un margen negativo para que no empuje lo que tiene debajo.
+
+   3. EL MAIL Y EL TELÉFONO de contacto daban 31 y 29 de alto. Son la única
+      acción que sale del sitio: si hay un toque que no se puede errar en
+      todo el portfolio, es ese.
+   ========================================================================== */
+@media (max-width: 620px) {
+  /* Va bajo .pag-archivo y no bajo :root: la regla original está adentro del
+     bloque .pag-archivo (arriba, en PERILLAS), así que un :root pierde. */
+  .pag-archivo { --frase-tam: 0.95rem; }   /* 15.2px — antes quedaba en 10.5 */
+
+  .portada-hero__mouse {
+    padding: 4px 10px;
+    margin-inline: -10px;
+    min-height: 44px;
+  }
+
+  .cv__descarga {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .contacto__mail,
+  .contacto__tel {
+    padding-block: 8px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  /* El teléfono es block + fit-content para arrancar renglón propio (ver su
+     regla original). inline-flex lo rompería, así que se le devuelve el
+     comportamiento de bloque con el ancho justo. */
+  .contacto__tel { display: flex; width: fit-content; }
 }

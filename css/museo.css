@@ -935,4 +935,54 @@
   /* Los tres mockups y los tres insights se apilan: en un teléfono, tres en
      fila quedan ilegibles. */
   .museo-mockups__fila,
-  .museo-insights { grid-template-column
+  .museo-insights { grid-template-columns: 1fr; }
+
+  /* La llamada del riel, encima de la imagen, no cabe en pantalla chica:
+     baja a ser un pie de foto común. */
+  .museo-anotacion__llamada { position: static; margin-top: var(--s-2); }
+  .museo-anotacion__flecha { display: none; }
+}
+
+/* ==========================================================================
+   REPASO DE TELÉFONO — MOBILIARIO DE MUSEO
+   --------------------------------------------------------------------------
+   LOS PUNTITOS DEL CARRUSEL MEDÍAN 8x8. Es el peor objetivo táctil de todo
+   el sitio: ocho pixeles es menos de un quinto de la yema de un dedo.
+
+   El arreglo NO es agrandar el puntito —a 44px dejaría de ser un puntito y
+   pasaría a ser una bolita—, sino separar el DIBUJO de la ZONA QUE RESPONDE:
+   el botón crece a 44x44 y transparente, y el punto se dibuja adentro con un
+   ::after del mismo tamaño de siempre. Se ve igual, se toca cuatro veces
+   mejor.
+
+   El gap se va a 0 porque ahora el aire lo pone el propio botón; si no, los
+   puntos quedarían el doble de separados que en desktop.
+   ========================================================================== */
+@media (max-width: 620px) {
+  /* Las flechas del carrusel: 40x40 es justo lo que queda corto. */
+  .museo-carrusel__flecha { width: 44px; height: 44px; }
+
+  .museo-carrusel__puntos { gap: 0; }
+
+  .museo-carrusel__punto {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: none;
+    border-radius: 0;
+  }
+  .museo-carrusel__punto::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--zona-linea);
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .museo-carrusel__punto.is-activo { background: none; transform: none; }
+  .museo-carrusel__punto.is-activo::after {
+    background: var(--zona-acento);
+    transform: scale(1.4);
+  }
+}

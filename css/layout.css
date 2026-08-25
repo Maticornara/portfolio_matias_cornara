@@ -124,70 +124,104 @@
    se apilaban: la barra fija se comía 91px de alto medidos, en todas las
    páginas y todo el tiempo. Ahora queda una barra baja con un solo botón a la
    derecha, y los enlaces viven adentro.
-
-   NO ES UN CAJÓN QUE ENTRA DESDE UN COSTADO: es la misma barra que crece.
-   Se anima su alto y nada más. Por eso no hace falta ni un panel aparte en el
-   HTML, ni una capa oscura encima de la página, ni bloquear el scroll. El
-   fondo ya es el crema al 88% con desenfoque, así que lo de atrás no molesta.
-
-   PERILLAS
-   -------- */
+   ========================================================================== */
 :root {
-  /* Alto de la barra cerrada. Tiene que dar para el botón (44px, que es el
-     mínimo para tocar cómodo con el dedo) más el aire de arriba y abajo. */
-  --nav-movil-cerrada: 4.25rem;
-  /* Hasta dónde puede crecer abierta. Es un techo, no el alto real: el
-     contenido manda. Si algún día hay más botones, subilo. */
-  --nav-movil-abierta: 26rem;
-  /* Aire entre un botón y el siguiente cuando está abierta */
-  --nav-movil-gap: 0.5rem;
-  /* Cuánto tarda en abrirse y cerrarse */
-  --nav-movil-dur: 380ms;
+  /* PERILLAS DEL MENÚ DE TELÉFONO
+     ----------------------------
+     Alto de la barra cuando está cerrada. Tiene que dar para el botón (44px,
+     el mínimo para tocar cómodo con el dedo) más el aire de arriba y abajo. */
+  --nav-movil-alto: 4.5rem;
+  /* Cuánto tarda en abrirse y cerrarse. */
+  --nav-movil-dur: 420ms;
+  /* TAMAÑO DEL TEXTO DE CADA OPCIÓN con el panel abierto. Es lo que manda el
+     carácter del menú: si lo bajás se vuelve una lista, si lo subís se vuelve
+     un cartel. El vw del medio lo hace crecer con la pantalla. */
+  --nav-movil-fila: clamp(1.9rem, 10vw, 2.5rem);
+  /* Aire arriba y abajo de cada opción. Es lo que hace que la fila ENTERA sea
+     un objetivo grande para el dedo, no solo las letras. */
+  --nav-movil-aire: clamp(15px, 3.6vw, 24px);
   /* Diámetro del botón de hamburguesa y grosor de sus rayas */
   --hamburguesa-tam: 44px;
-  --hamburguesa-raya: 1.5px;
+  --hamburguesa-raya: 1.6px;
 }
 
 /* El botón solo existe en pantalla chica. En desktop va con display:none, y
    por eso NO le ocupa una columna a la grilla de la nav. */
 .site-nav__hamburguesa { display: none; }
 
-@media (max-width: 620px) {
-  .site-nav {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--nav-movil-gap);
-    padding-block: var(--s-3);
+/* ==========================================================================
+   EL MENÚ DE TELÉFONO
+   --------------------------------------------------------------------------
+   CERRADO es una barra. ABIERTO es una hoja que tapa la pantalla entera.
 
-    /* El alto es lo único que se anima. overflow: hidden es lo que recorta
-       los enlaces mientras está cerrada. */
-    max-height: var(--nav-movil-cerrada);
+   POR QUÉ SE REHIZO: antes las cuatro opciones eran las pastillas del desktop
+   estiradas a todo el ancho. Una pastilla es una etiqueta compacta; estirada a
+   340px con el texto centrado deja de leerse como pastilla y pasa a leerse
+   como botonera de formulario. Y el ritmo quedaba desparejo: tres anchas y
+   "Contacto" corta al lado del ES/EN.
+
+   Ahora las opciones son TIPOGRAFÍA, no botones: grandes, alineadas al mismo
+   borde que todo el resto del sitio, separadas por filetes. Es el mismo
+   lenguaje de las páginas de proyecto — Archivo, un solo acento verde, y el
+   aire como separador. La pastilla se queda donde tiene sentido: en el par
+   ES/EN, que sí es un control y no una sección.
+   ========================================================================== */
+
+@media (max-width: 620px) {
+
+  /* La barra deja de ser grilla y pasa a ser una columna. El alto es lo único
+     que se anima; overflow: hidden es lo que recorta las opciones mientras
+     está cerrada. */
+  .site-nav.grilla {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    height: var(--nav-movil-alto);
+    padding-block: 0;
     overflow: hidden;
-    transition: max-height var(--nav-movil-dur) var(--ease),
+    transition: height var(--nav-movil-dur) var(--ease),
+                background var(--nav-movil-dur) var(--ease),
                 transform 450ms var(--ease);
   }
-  /* CERRADA ES UNA BARRA, ABIERTA ES UN PANEL, y se tienen que leer distinto.
-     Con el 88% de la barra los botones de abajo quedaban flotando encima del
-     dibujo de la caja, sin un borde que dijera dónde termina el menú. Abierta
-     el crema se vuelve casi opaco y aparece la línea de abajo: ahí sí se lee
-     como una superficie apoyada sobre la página. */
-  .site-nav.is-abierta {
-    max-height: var(--nav-movil-abierta);
-    background: color-mix(in srgb, var(--crema) 98%, transparent);
-    border-bottom: var(--borde) solid var(--zona-linea);
+
+  /* ABIERTO: la hoja ocupa la pantalla entera.
+     dvh y no vh: en el teléfono la barra del navegador aparece y desaparece, y
+     100vh es el alto CON la barra desplegada — el panel quedaría más largo que
+     la pantalla y el ES/EN caería abajo del borde. dvh es el alto de verdad,
+     el que va cambiando. El 100vh de arriba queda de reserva para un navegador
+     que no entienda dvh. */
+  .site-nav.grilla.is-abierta {
+    height: 100vh;
+    height: 100dvh;
+    /* El alto de la barra queda libre arriba: si no, la primera opción se le
+       monta al botón, que está posicionado ahí. */
+    padding-top: var(--nav-movil-alto);
+    /* El bloque va centrado en la hoja, no pegado arriba. Dos motivos: pegado
+       arriba quedaba un vacío raro en el medio, y centrado las opciones caen
+       en la zona donde llega el pulgar en un teléfono largo. */
+    justify-content: center;
+    /* Opaco: es una hoja apoyada sobre la página, no un vidrio. Con el crema
+       traslúcido de la barra se veía el dibujo de la caja por detrás de los
+       textos y no se sabía dónde terminaba el menú. */
+    background: var(--crema);
+    backdrop-filter: none;
+    /* Por si el contenido no entra (teléfono chico y acostado). */
+    overflow-y: auto;
+    padding-bottom: var(--s-4);
   }
 
-  /* En desktop cada hijo arranca donde arranca su columna; acá ocupan el
-     ancho entero, que es lo que se espera de un menú de teléfono. */
-  .site-nav > * { justify-self: stretch; }
-  .site-nav .pastilla { text-align: center; padding-inline: 14px; }
-
-  /* El botón, arriba de todo y contra el borde derecho */
+  /* --- EL BOTÓN ---
+     Va posicionado y no en el flujo: así queda clavado arriba a la derecha en
+     los dos estados, sin ocupar una fila cuando el panel se abre. */
   .site-nav__hamburguesa {
     display: grid;
-    justify-self: end;
     align-content: center;
     gap: 5px;
+    position: absolute;
+    top: calc((var(--nav-movil-alto) - var(--hamburguesa-tam)) / 2);
+    right: var(--gutter);
+    z-index: 2;
     width: var(--hamburguesa-tam);
     height: var(--hamburguesa-tam);
     padding: 0 11px;
@@ -195,57 +229,138 @@
     border-radius: 999px;
     background: transparent;
     cursor: pointer;
+    transition: border-color var(--dur-1) var(--ease);
   }
   .site-nav__hamburguesa span {
     display: block;
     height: var(--hamburguesa-raya);
     background: var(--zona-texto);
     border-radius: 2px;
-    /* El movimiento de cada raya: primero se juntan, después giran. Al
-       revés al cerrar. Por eso el retardo va cambiado entre las dos. */
     transition: transform var(--nav-movil-dur) var(--ease),
                 opacity 120ms linear;
   }
 
-  /* Abierta, las tres rayas se vuelven una X: la de arriba y la de abajo se
-     cruzan en el medio y la del medio se apaga. Los 6.5px son la mitad del
-     alto que ocupan las tres juntas (2 gaps de 5 + 3 rayas de 1.5). */
+  /* Abierto, las tres rayas se vuelven una X: la de arriba y la de abajo se
+     cruzan en el medio y la del medio se apaga. Los 6.6px son la mitad del
+     alto que ocupan las tres juntas (2 huecos de 5 + 3 rayas de 1.6). */
+  .site-nav.is-abierta .site-nav__hamburguesa { border-color: var(--zona-texto); }
   .site-nav.is-abierta .site-nav__hamburguesa span:nth-child(1) {
-    transform: translateY(6.5px) rotate(45deg);
+    transform: translateY(6.6px) rotate(45deg);
   }
   .site-nav.is-abierta .site-nav__hamburguesa span:nth-child(2) { opacity: 0; }
   .site-nav.is-abierta .site-nav__hamburguesa span:nth-child(3) {
-    transform: translateY(-6.5px) rotate(-45deg);
+    transform: translateY(-6.6px) rotate(-45deg);
   }
 
-  /* Los enlaces, escondidos mientras está cerrada. visibility (y no solo
-     opacity) es lo que los saca del recorrido del tabulador: si no, se puede
-     tabular a botones que no se ven. El retardo de 0s al abrir y del largo
-     de la animación al cerrar es para que se apaguen recién al final. */
+  /* --- LAS OPCIONES ---
+     Escondidas mientras está cerrado. visibility (y no solo opacity) es lo que
+     las saca del recorrido del tabulador: si no, se puede tabular a opciones
+     que no se ven. */
   .site-nav > .pastilla,
   .site-nav__fin {
     opacity: 0;
     visibility: hidden;
+    transform: translateY(14px);
     transition: opacity var(--nav-movil-dur) var(--ease),
+                transform var(--nav-movil-dur) var(--ease),
                 visibility 0s linear var(--nav-movil-dur);
   }
   .site-nav.is-abierta > .pastilla,
   .site-nav.is-abierta .site-nav__fin {
     opacity: 1;
     visibility: visible;
-    transition: opacity var(--nav-movil-dur) var(--ease);
+    transform: none;
+    transition: opacity var(--nav-movil-dur) var(--ease),
+                transform var(--nav-movil-dur) var(--ease);
   }
 
-  /* Contacto y el par ES/EN comparten la última fila */
-  .site-nav__fin { width: 100%; gap: var(--s-2); }
+  /* Entran de a una, de arriba abajo. No es adorno: lleva el ojo por la lista
+     en el orden en que se lee. */
+  .site-nav.is-abierta > .pastilla:nth-of-type(1) { transition-delay:  70ms; }
+  .site-nav.is-abierta > .pastilla:nth-of-type(2) { transition-delay: 125ms; }
+  .site-nav.is-abierta > .pastilla:nth-of-type(3) { transition-delay: 180ms; }
+  .site-nav.is-abierta .site-nav__fin             { transition-delay: 235ms; }
+
+  /* DE PASTILLA A TIPOGRAFÍA.
+     El primer filete separa la lista de la barra; de ahí en más cada uno
+     separa una opción de la anterior. */
+  .site-nav.is-abierta > .pastilla,
+  .site-nav.is-abierta .site-nav__fin > .pastilla {
+    display: block;
+    border: 0;
+    border-top: var(--borde) solid var(--zona-linea);
+    border-radius: 0;
+    background: none;
+    padding: var(--nav-movil-aire) 0;
+    font-size: var(--nav-movil-fila);
+    /* 400 y no --peso-medio (600): un peso que a 13px se lee como "rótulo"
+       a 2.5rem se lee como grito. El tamaño ya hace toda la jerarquía. */
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    /* El tamaño ya hace toda la jerarquía: la MAYÚSCULA con tracking de "ficha
+       técnica" es para los rótulos chicos, no para esto. */
+    text-transform: none;
+    text-align: left;
+    color: var(--zona-texto);
+    line-height: 1.08;
+  }
+
+  /* La página en la que estás, en verde. Un solo acento, como en todo el
+     sitio: no se pinta el fondo ni se engorda la letra. */
+  .site-nav.is-abierta > .pastilla.is-activa,
+  .site-nav.is-abierta .site-nav__fin > .pastilla.is-activa {
+    background: none;
+    color: var(--verde);
+  }
+
+  /* --- LA ÚLTIMA FILA ---
+     Contacto es una opción más, y el par ES/EN se va hasta abajo de todo con
+     margin-top: auto. Para eso esta caja se queda con el alto que sobra. */
+  .site-nav.is-abierta .site-nav__fin {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 0 0 auto;
+    width: auto;
+    gap: 0;
+  }
+  /* La última opción cierra la lista con su propio filete abajo. Sin esto el
+     bloque quedaba abierto por debajo y se leía como cortado a la mitad. */
+  .site-nav.is-abierta .site-nav__fin > .pastilla:last-of-type {
+    border-bottom: var(--borde) solid var(--zona-linea);
+  }
+
+  .site-nav.is-abierta .nav-idioma {
+    padding-top: var(--s-5);
+    align-self: flex-start;
+  }
+  /* El ES/EN sí sigue siendo pastilla: es un control, no una sección. */
+  .site-nav.is-abierta .nav-idioma .pastilla {
+    border: var(--borde) solid var(--zona-linea);
+    padding: 10px 22px;
+    font-size: var(--t--1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+  .site-nav.is-abierta .nav-idioma .pastilla:first-child { border-radius: 999px 0 0 999px; }
+  .site-nav.is-abierta .nav-idioma .pastilla:last-child  { border-radius: 0 999px 999px 0; margin-left: -1px; }
+  .site-nav.is-abierta .nav-idioma .pastilla.is-activa {
+    background: var(--verde);
+    border-color: var(--verde-oscuro);
+    color: #fff;
+  }
 }
 
-/* Si el sistema pide menos movimiento, abre y cierra sin animar. */
+/* Si el sistema pide menos movimiento, abre y cierra sin animar y sin
+   desplazamiento. */
 @media (max-width: 620px) and (prefers-reduced-motion: reduce) {
-  .site-nav,
+  .site-nav.grilla,
   .site-nav__hamburguesa span,
   .site-nav > .pastilla,
   .site-nav__fin { transition: none; }
+  .site-nav > .pastilla,
+  .site-nav__fin { transform: none; }
 }
 
 /* ==========================================================================
@@ -584,3 +699,50 @@ font { font: inherit; color: inherit; }
   transition: opacity var(--dur-3) var(--ease);
 }
 .transition-veil.is-visible { opacity: 1; }
+
+/* ==========================================================================
+   REPASO DE TELÉFONO — OBJETIVOS TÁCTILES
+   --------------------------------------------------------------------------
+   44px es el mínimo cómodo para tocar con el dedo. No es un capricho: es el
+   ancho de la yema, y por debajo de eso se falla y se toca lo de al lado.
+
+   Medido antes de esto, en las cinco páginas: el link del pie ("Archivo —
+   Matías Cornara") daba 202x12 —doce pixeles de alto—, la flecha de volver
+   40x40, y el par ES/EN 43x29.
+
+   El truco de todos los casos es el mismo: NO agrandar el dibujo, agrandar
+   la zona que responde. El padding vertical y el min-height no mueven ni una
+   letra de lugar, solo estiran la caja que escucha el toque.
+   ========================================================================== */
+@media (max-width: 620px) {
+
+  /* Las pastillas del sistema. inline-flex + align-items para que el texto
+     siga centrado cuando la caja crece más que su línea. */
+  .pastilla {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    /* El ES/EN quedaba en 42 de ancho: son dos letras y el padding de la
+       pastilla no llegaba. Con esto ninguna pastilla baja de 44 en ninguno
+       de los dos lados. */
+    min-width: 44px;
+  }
+
+  /* El link del pie. Es un <a> suelto adentro de un <p class="etiqueta">, así
+     que su alto era exactamente el de la línea de texto: 12px. */
+  .site-footer a,
+  .site-footer .etiqueta a {
+    display: inline-block;
+    padding-block: 14px;
+  }
+
+  /* La flecha de volver de las páginas de proyecto. Va con el selector de
+     elemento adelante (a.volver--pastilla) a propósito: la regla original
+     vive en simbio.css, que se carga DESPUÉS que este archivo, así que con
+     la misma especificidad ganaría ella. */
+  a.volver--pastilla {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

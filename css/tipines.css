@@ -103,7 +103,7 @@
 .pag-tipines .etiqueta,
 .pag-tipines .dato {
   font-family: var(--font);
-  font-size: 0.6875rem;              /* 11px */
+  font-size: var(--t-rotulo);        /* 11px, 13 en teléfono */
   font-weight: 500;
   letter-spacing: var(--track-rotulo);
   text-transform: uppercase;
@@ -1489,4 +1489,22 @@
 
 @media (max-width: 960px) {
   .cierre__texto { grid-column: 1 / -1; }
+}
+
+/* ==========================================================================
+   REPASO DE TELÉFONO — AMIGOS TIPINES
+   Los dos controles del librito quedaban cortos para un dedo: "Ver en grande"
+   daba 166x33 y las flechas de pasar hoja 40x40. Son justamente los botones
+   que más se usan en esta página, y en un teléfono se tocan uno al lado del
+   otro: errarle a una flecha y pasar dos hojas es la falla típica.
+   ========================================================================== */
+@media (max-width: 620px) {
+  .libro__lupa {
+    min-height: 44px;
+    padding-block: 10px;
+  }
+  .libro__nav {
+    width: 44px;
+    height: 44px;
+  }
 }

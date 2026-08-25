@@ -40,14 +40,14 @@
        sirve una versión vieja de la otra.
 
        SI AGREGÁS UNA PÁGINA NUEVA: su CSS va acá y en las otras tres. -->
-  <link rel="stylesheet" href="css/variables.css?v=6">
+  <link rel="stylesheet" href="css/variables.css?v=9">
   <link rel="stylesheet" href="css/base.css?v=11">
-  <link rel="stylesheet" href="css/layout.css?v=12">
-  <link rel="stylesheet" href="css/archivo.css?v=31">
-  <link rel="stylesheet" href="css/simbio.css?v=119">
-  <link rel="stylesheet" href="css/mas-54.css?v=22">
-  <link rel="stylesheet" href="css/tipines.css?v=13">
-  <link rel="stylesheet" href="css/museo.css?v=14">
+  <link rel="stylesheet" href="css/layout.css?v=17">
+  <link rel="stylesheet" href="css/archivo.css?v=34">
+  <link rel="stylesheet" href="css/simbio.css?v=120">
+  <link rel="stylesheet" href="css/mas-54.css?v=25">
+  <link rel="stylesheet" href="css/tipines.css?v=15">
+  <link rel="stylesheet" href="css/museo.css?v=16">
 
   <!-- GSAP + ScrollTrigger + Lenis, por CDN: el stack sigue sin build tools.
        Van SIN defer y antes que nuestros scripts, porque smooth-scroll.js
@@ -653,35 +653,6 @@
         </p>
 
         <p class="cv__cierre">Estoy abierto a seguir ampliando mi rincón.</p>
-
-        <!-- ==============================================================
-             EL CV EN PDF
-             --------------------------------------------------------------
-             UN SOLO BOTÓN QUE CAMBIA DE ARCHIVO CON EL IDIOMA. Hay dos PDF,
-             uno en español y otro en inglés, y el que se baja es el del
-             idioma que esté puesto en ese momento.
-
-             El mecanismo es el mismo que ya usaba la nav para no dejar que
-             Google traduzca las palabras sueltas: translate="no" para que no
-             las toque, y data-es / data-en con el texto de cada idioma. Lo
-             nuevo es que ahora el par data-href-es / data-href-en hace lo
-             mismo con el ARCHIVO, no solo con el texto (ver textosAMano en
-             traduccion.js).
-
-             El href suelto de arriba es el de reserva: si el JS no corre, el
-             botón igual baja el CV en español en vez de no hacer nada.
-
-             `download` es lo que hace que se baje en vez de abrirse en una
-             pestaña; el nombre del archivo ya es el que corresponde, así que
-             no hace falta pasarle uno.
-             ============================================================== -->
-        <a class="cv__descarga" translate="no" download
-           href="assets/cv/CV-Matias-Cornara-ES.pdf"
-           data-href-es="assets/cv/CV-Matias-Cornara-ES.pdf"
-           data-href-en="assets/cv/CV-Matias-Cornara-EN.pdf"
-           data-es="Descargar CV" data-en="Download CV">Descargar CV<svg viewBox="0 0 16 16" aria-hidden="true" fill="none"
-               stroke="currentColor" stroke-width="1.6"
-               stroke-linecap="round" stroke-linejoin="round"><path d="M8 2 L8 11 M4 7.5 L8 11 L12 7.5 M3 14 L13 14"/></svg></a>
       </div>
     </div>
   </section>
@@ -798,6 +769,42 @@
           </div>
 
         </div>
+
+        <!-- ==============================================================
+             EL CV EN PDF
+             --------------------------------------------------------------
+             VA ACA, AL FINAL DE TODA LA INFORMACION Y ANTES DE CONTACTO.
+             El CV en papel es el resumen de lo que se acaba de leer -- quien
+             soy, que se hacer, con que --, asi que el lugar donde ofrecerlo
+             es despues de eso y no antes: primero se lee, y despues se ofrece
+             llevarselo. Puesto arriba seria una salida antes de la entrada.
+             No tiene seccion propia porque cada seccion de esta portada ocupa
+             una pantalla entera y una pantalla para un boton seria un hueco.
+
+             UN SOLO BOTON QUE CAMBIA DE ARCHIVO CON EL IDIOMA. Hay dos PDF,
+             uno en espanol y otro en ingles, y el que se baja es el del
+             idioma que este puesto en ese momento.
+
+             El mecanismo es el mismo que ya usaba la nav para que Google no
+             traduzca las palabras sueltas: translate="no" para que no las
+             toque, y data-es / data-en con el texto de cada idioma. Lo nuevo
+             es que el par data-href-es / data-href-en hace lo mismo con el
+             ARCHIVO, no solo con el texto (ver textosAMano en traduccion.js).
+
+             El href suelto de arriba es el de reserva: si el JS no corre, el
+             boton igual baja el CV en espanol en vez de no hacer nada.
+
+             `download` es lo que hace que se baje en vez de abrirse en una
+             pestana; el nombre del archivo ya es el que corresponde, asi que
+             no hace falta pasarle uno.
+             ============================================================== -->
+        <a class="cv__descarga" translate="no" download
+           href="assets/cv/CV-Matias-Cornara-ES.pdf"
+           data-href-es="assets/cv/CV-Matias-Cornara-ES.pdf"
+           data-href-en="assets/cv/CV-Matias-Cornara-EN.pdf"
+           data-es="Descargar CV" data-en="Download CV">Descargar CV<svg viewBox="0 0 16 16" aria-hidden="true" fill="none"
+               stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M8 2 L8 11 M4 7.5 L8 11 L12 7.5 M3 14 L13 14"/></svg></a>
       </div>
     </div>
   </section>
@@ -826,4 +833,43 @@
         <!--
         <ul class="redes" role="list">
           <li><a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a href="#" target="_blank" rel="noopener noreferrer">Instagr
+          <li><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="#" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        </ul>
+        -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- El pie va en el MISMO crema que el resto. Antes había un divisor de papel
+     rasgado y una zona más tostada abajo; los dos salieron. Lo que separa una
+     sección de otra ahora es el aire, no un cambio de fondo ni una guarda. -->
+<footer class="zona zona--crema">
+  <div class="site-footer grilla">
+    <p class="etiqueta" translate="no">Archivo — Matías Cornara</p>
+    <p class="etiqueta">2026</p>
+  </div>
+</footer>
+
+<div class="transition-veil" aria-hidden="true"></div>
+
+<!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
+     Lenis (scroll suave). Tiene que estar en TODAS las páginas. -->
+<script src="js/smooth-scroll.js?v=6" defer></script>
+<script src="js/transiciones.js?v=8" defer></script>
+<script src="js/main.js?v=25" defer></script>
+<script src="js/traduccion.js?v=5" defer></script>
+<script src="js/archivo.js?v=13" defer></script>
+<script src="js/simbio-scroll.js?v=16" defer></script>
+<script src="js/muestras.js?v=14" defer></script>
+<!-- Mismo motivo que el CSS de arriba: con Swup los scripts no se vuelven a
+     ejecutar al cambiar de página, así que los de +54 y Tipines tienen que
+     estar cargados desde acá. Salen sin hacer nada si no encuentran su HTML. -->
+<script src="js/mas-54.js?v=12" defer></script>
+<script src="js/tipines.js?v=6" defer></script>
+<script src="js/museo-scroll.js?v=17" defer></script>
+<script src="js/museo.js?v=4" defer></script>
+</body>
+</html>

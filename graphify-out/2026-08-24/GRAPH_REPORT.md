@@ -1,16 +1,16 @@
-# Graph Report - CODIGO_CLAUDE  (2026-08-24)
+# Graph Report - CODIGO_CLAUDE  (2026-08-23)
 
 ## Corpus Check
-- 35 files · ~79,948,528 words
+- 35 files · ~61,790,927 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 375 nodes · 447 edges · 58 communities (54 shown, 4 thin omitted)
+- 362 nodes · 438 edges · 57 communities (53 shown, 4 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a4f724be`
+- Built from commit: `7ee51eb3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -61,14 +61,14 @@
 - 23. Simbio en mobile (20/08/2026)
 - 32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)
 - 33. Mobiliario de Museo: de cero a página entera (22/08/2026)
-- 27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026)
+- museo.js
 
 ## God Nodes (most connected - your core abstractions)
-1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 43 edges
-2. `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` - 23 edges
-3. `init()` - 14 edges
-4. `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` - 13 edges
-5. `What You Must Do When Invoked` - 12 edges
+1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 42 edges
+2. `init()` - 14 edges
+3. `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` - 13 edges
+4. `What You Must Do When Invoked` - 12 edges
+5. `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` - 12 edges
 6. `/graphify` - 11 edges
 7. `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)` - 11 edges
 8. `Portfolio "Archivo" — mapa del proyecto` - 10 edges
@@ -86,7 +86,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (58 total, 4 thin omitted)
+## Communities (57 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.21
@@ -198,7 +198,7 @@ Nodes (6): 22. El control de sonido del sitio, y las historias sin tocar la pale
 
 ### Community 38 - "traduccion.js"
 Cohesion: 0.38
-Nodes (10): borrarCookieDeGoogle(), cambiarA(), cargarWidget(), estaTraducido(), guardar(), idiomaGuardado(), init(), pintarBotones() (+2 more)
+Nodes (10): borrarCookieDeGoogle(), cambiarA(), cargarWidget(), estaTraducido(), guardar(), idiomaGuardado(), init(), palabrasDeLaNav() (+2 more)
 
 ### Community 39 - "20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)"
 Cohesion: 0.40
@@ -253,32 +253,30 @@ Cohesion: 0.67
 Nodes (3): 32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026), EL BOTÓN DE JUGAR ERA UN PROBLEMA DE CONTRASTE, LA SEÑAL ARRANCA EN LA COLUMNA 2
 
 ### Community 52 - "33. Mobiliario de Museo: de cero a página entera (22/08/2026)"
-Cohesion: 0.09
-Nodes (23): 33-bis. La segunda vuelta: blanco, y por qué se cortaba en el teléfono (23/08/2026), 33-decies. La deformación de Exposición: la caja de recorte vivía en una sola rama (24/08/2026), 33-duodecies. El recorte del carrusel: un caso circular del grid (24/08/2026), 33. Mobiliario de Museo: de cero a página entera (22/08/2026), 33-nonies. Exposición con alfa, y el espejismo de la caja de recorte (23/08/2026), 33-octies. Segunda entrega de renders, y el recorte del vacío (23/08/2026), 33-quater. El recorte del negro: tres intentos, y el bueno era el simple (23/08/2026), 33-quaterdecies. El temblor del centrado: el suavizado era el problema (24/08/2026) (+15 more)
+Cohesion: 0.17
+Nodes (12): 33-bis. La segunda vuelta: blanco, y por qué se cortaba en el teléfono (23/08/2026), 33. Mobiliario de Museo: de cero a página entera (22/08/2026), 33-quater. El recorte del negro: tres intentos, y el bueno era el simple (23/08/2026), 33-quinquies. El fondo, cuarta y ultima vuelta: crema + alfa reforzado (23/08/2026), 33-ter. El rompe-cachés que faltaba: los frames no están en el HTML (23/08/2026), DOS COSAS QUE EL SPEC DECÍA MAL Y SE VERIFICARON CONTRA EL MATERIAL, EL JS TAMBIÉN TIENE LA REGLA DE "TODAS LAS PÁGINAS, LA MISMA LISTA", EL MAPEO POR TRAMOS: LO ÚNICO QUE NO EXISTÍA (+4 more)
 
-### Community 57 - "27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026)"
-Cohesion: 0.67
-Nodes (3): 27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026), EL MENÚ: EL PROBLEMA ERA LA PASTILLA ESTIRADA, EL REPASO: LOS PROBLEMAS ERAN SISTÉMICOS, NO DE UNA PÁGINA
+### Community 53 - "museo.js"
+Cohesion: 0.80
+Nodes (4): aMano(), arrancarSolo(), detener(), mostrar()
 
 ## Knowledge Gaps
-- **204 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+199 more)
+- **191 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+186 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `3. Tipografía`, `23. La caja como caja, el aire y un solo crema (21/08/2026)`, `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)`, `25. Amigos Tipines: la tercera página de proyecto (21/08/2026)`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `6. Las imágenes — el pipeline`, `22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `18. "ARCHIVO": remake de la portada (20/08/2026)`, `21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)`, `26. Los estilos fantasma, y el menú de teléfono (21/08/2026)`, `28. El par ES/EN: traducción automática de Google (22/08/2026)`, `5. Estado actual — qué está hecho`, `22. La caja de cartón, y por qué se trababa (20/08/2026)`, `23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)`, `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)`, `30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)`, `31. Tipines: tres cosas rotas y por qué (22/08/2026)`, `23. Simbio en mobile (20/08/2026)`, `32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)`, `33. Mobiliario de Museo: de cero a página entera (22/08/2026)`, `27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026)`?**
-  _High betweenness centrality (0.204) - this node is a cross-community bridge._
-- **Why does `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` connect `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
-  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `3. Tipografía`, `23. La caja como caja, el aire y un solo crema (21/08/2026)`, `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)`, `25. Amigos Tipines: la tercera página de proyecto (21/08/2026)`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `6. Las imágenes — el pipeline`, `22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `18. "ARCHIVO": remake de la portada (20/08/2026)`, `21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)`, `26. Los estilos fantasma, y el menú de teléfono (21/08/2026)`, `28. El par ES/EN: traducción automática de Google (22/08/2026)`, `5. Estado actual — qué está hecho`, `22. La caja de cartón, y por qué se trababa (20/08/2026)`, `23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)`, `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)`, `30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)`, `31. Tipines: tres cosas rotas y por qué (22/08/2026)`, `23. Simbio en mobile (20/08/2026)`, `32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)`, `33. Mobiliario de Museo: de cero a página entera (22/08/2026)`?**
+  _High betweenness centrality (0.187) - this node is a cross-community bridge._
 - **Why does `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` connect `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` connect `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **What connects `PROYECTOS`, `graphify`, `Usage` to the rest of the system?**
-  _204 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _191 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `ARCHIVO / MI CAJÓN — bitácora del proyecto` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
 - **Should `What You Must Do When Invoked` be split into smaller, more focused modules?**
   _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
-- **Should `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` be split into smaller, more focused modules?**
-  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._

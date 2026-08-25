@@ -1028,7 +1028,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
   top: var(--s-5);
   right: var(--s-5);
   text-align: right;
-  font-size: 0.5625rem;
+  font-size: var(--t-micro);
   font-weight: var(--peso-fuerte);
   letter-spacing: 0.12em;
   line-height: 1.5;
@@ -1055,7 +1055,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
   position: absolute;
   right: var(--s-5);
   bottom: calc(var(--s-5) + 2px);
-  font-size: 0.5625rem;
+  font-size: var(--t-micro);
   font-weight: var(--peso-fuerte);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1094,7 +1094,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
 }
 
 /* Las etiquetas de la columna fija, más chicas todavía */
-.proyecto__col .etiqueta { font-size: 0.5625rem; }
+.proyecto__col .etiqueta { font-size: var(--t-micro); }
 
 .proyecto__pie {
   margin-top: auto;        /* lo empuja al fondo de la columna */
@@ -1102,7 +1102,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
   display: grid;
   gap: var(--s-2);
 }
-.proyecto__pie .dato { font-size: 0.5625rem; }
+.proyecto__pie .dato { font-size: var(--t-micro); }
 .proyecto__pie .dato b { font-size: 0.8125rem; margin-top: 3px; }
 .proyecto__scroll { color: var(--verde); }
 
@@ -1272,7 +1272,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
   color: var(--tinta);
 }
 /* La etiqueta del capítulo queda chica: contrasta con el texto grande */
-.pantalla__texto .etiqueta { font-size: 0.5625rem; }
+.pantalla__texto .etiqueta { font-size: var(--t-micro); }
 .pantalla__texto--ancho { max-width: 38ch; }
 /* Los dos organismos, en el verde del sistema: son el concepto del
    proyecto, no un énfasis cualquiera. */
@@ -1568,7 +1568,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
   letter-spacing: -0.02em;
   color: var(--tinta);
 }
-.pantalla__enunciado .etiqueta { font-size: 0.5625rem; }
+.pantalla__enunciado .etiqueta { font-size: var(--t-micro); }
 .pantalla__enunciado b { font-weight: var(--peso-maximo); color: var(--verde); }
 
 /* --- LA LUPA -------------------------------------------------------------
@@ -1642,7 +1642,7 @@ body.zona--crema { --zona-fondo: var(--crema); }
   left: 50%;
   translate: -50% 0;
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: var(--t-micro);
   letter-spacing: 0.04em;
   color: var(--crema);
   opacity: .4;
@@ -1955,7 +1955,10 @@ body.zona--crema { --zona-fondo: var(--crema); }
   --medida-cuerpo: 34ch;     /* letras por renglón: el largo cómodo de lectura */
 
   /* --- 3. RÓTULO -------------------------------------------------------- */
-  --t-rotulo: 0.6875rem;     /* 11px, fijo: es un rótulo, no tiene que crecer */
+  /* 11px en desktop. En el teléfono sube a 13 (ver el bloque REPASO DE
+     TELÉFONO al final de este archivo): un rótulo no tiene que crecer con la
+     pantalla, pero sí tiene que ser legible en la chica. */
+  --t-rotulo: 0.6875rem;
   --peso-rotulo: 500;
   --track-rotulo: 0.14em;    /* positivo = letras separadas */
 }
@@ -2405,4 +2408,15 @@ body.zona--crema { --zona-fondo: var(--crema); }
         Es la misma trampa de las tapas de carpeta, que se resolvió con
         !important porque ahí lo inline era la propiedad y no la variable. */
   .grafica { transform: none; }
+}
+
+/* ==========================================================================
+   REPASO DE TELÉFONO — SIMBIO
+   El sistema tipográfico de esta página tiene su propio tamaño de rótulo
+   (--t-rotulo), así que el piso que se le puso a --t--1 en variables.css no
+   lo alcanzaba: medido, .proyecto__meta .etiqueta seguía saliendo a 11px.
+   Acá se le sube el piso a su propia perilla.
+   ========================================================================== */
+@media (max-width: 620px) {
+  .pag-simbio { --t-rotulo: 0.8125rem; }   /* 13px */
 }
