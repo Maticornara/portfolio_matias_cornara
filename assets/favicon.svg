@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 22 80 80">
+  <!-- ==========================================================================
+       FAVICON · LA CAJA DEL HOME, SIN LAS AGARRADERAS
+       ··························································
+       Es el mismo cubo del hero de index.html, recortado y sin lo que no se
+       lee a 16 px.
+
+       LAS COORDENADAS SON LAS MISMAS, NO UN DIBUJO PARECIDO. El lienzo del
+       hero mide 200x160 y el cubo ocupa de x 66 a 134 y de y 28 a 96. Acá el
+       viewBox es "60 22 80 80": encuadra justo esa zona dejando 6 de margen
+       por lado. Así los polígonos se copian tal cual del hero y las dos cajas
+       son idénticas; si mañana se redibuja una, la otra se actualiza pegando
+       los mismos números.
+
+       QUÉ SE SACÓ Y POR QUÉ
+         · las agarraderas: pedido.
+         · la sombra del piso y los papeles: están fuera del cubo, no entran
+           en el encuadre.
+         · las tres líneas del rincón: a este tamaño serían tres pelos sueltos
+           tocando los bordes; lo que tiene que reconocerse es la caja.
+
+       LOS ESTILOS VAN EN LÍNEA, no en clases. Un favicon lo carga el navegador
+       como archivo suelto: archivo.css no existe para él, así que todo lo que
+       no esté escrito acá adentro no se aplica.
+
+       OJO SI EDITÁS ESTOS COMENTARIOS: un SVG es XML, y en XML un comentario
+       no puede contener dos guiones seguidos. Una fila de rayas como separador
+       rompe el archivo entero y el navegador no muestra ningún ícono.
+       ========================================================================== -->
+
+  <defs>
+    <!-- Los mismos dos degradés del hero: cada cara va de un verde a otro
+         para que el cubo tenga volumen. Sin esto, a este tamaño se ve un
+         hexágono verde plano. -->
+    <linearGradient id="izq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#657C3B"/>
+      <stop offset="1" stop-color="#455629"/>
+    </linearGradient>
+    <linearGradient id="der" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#465729"/>
+      <stop offset="1" stop-color="#2C3818"/>
+    </linearGradient>
+  </defs>
+
+  <!-- SIN FONDO: el icono es la caja sola, recortada, sobre transparente.
+       Tenelo en cuenta si algun dia se ve poco en tema oscuro: lo que salva
+       la lectura ahi es la tapa, que es el verde mas claro del dibujo; las
+       dos caras verticales si se acercan bastante al negro de una barra de
+       pestanas oscura. Si alguna vez molesta, el arreglo es volver a poner un
+       <rect> del crema del sitio cubriendo todo el viewBox. -->
+
+  <!-- Las dos caras verticales -->
+  <polygon points="66,45 100,62 100,96 66,79" fill="url(#izq)"/>
+  <polygon points="134,45 100,62 100,96 134,79" fill="url(#der)"/>
+
+  <!-- Las dos solapas de la tapa, con su verde apenas distinto cada una -->
+  <polygon points="100,28 66,45 100,62" fill="#8FA95D"/>
+  <polygon points="100,28 134,45 100,62" fill="#839C53"/>
+
+  <!-- La costura donde se juntan las solapas -->
+  <path d="M100 28 L100 62" fill="none" stroke="rgba(30,40,14,.20)" stroke-width="1"/>
+
+  <!-- El canto del cartón: el espesor de la lámina en el borde de adelante -->
+  <polygon points="66,45 100,62 134,45 134,43.6 100,60.6 66,43.6" fill="#A9BA7E"/>
+
+  <!-- El contorno, apenas marcado -->
+  <polygon points="100,28 134,45 134,79 100,96 66,79 66,45"
+           fill="none" stroke="rgba(30,40,14,.30)" stroke-width=".8" stroke-linejoin="round"/>
+</svg>
