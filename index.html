@@ -796,13 +796,21 @@
              boton igual baja el CV en espanol en vez de no hacer nada.
 
              `download` es lo que hace que se baje en vez de abrirse en una
-             pestana; el nombre del archivo ya es el que corresponde, asi que
-             no hace falta pasarle uno.
+             pestana. Va SIN valor a proposito: asi el archivo conserva el
+             nombre que tiene en el servidor, que es justamente el que
+             queremos que le quede a quien lo baja.
+
+             Y por eso el ingles se llama "Resume" y no "CV": en ingles un CV
+             es otra cosa (el academico, largo), y el nombre del archivo es lo
+             que va a quedar en la carpeta de descargas de quien lo reciba.
+             Los nombres son EXACTAMENTE los de los dos PDF; si alguna vez los
+             regeneras con otro nombre, hay que cambiarlos en estas tres
+             lineas de arriba, no solo en una.
              ============================================================== -->
         <a class="cv__descarga" translate="no" download
-           href="assets/cv/CV-Matias-Cornara-ES.pdf"
-           data-href-es="assets/cv/CV-Matias-Cornara-ES.pdf"
-           data-href-en="assets/cv/CV-Matias-Cornara-EN.pdf"
+           href="assets/cv/CV_Matias_Cornara_ES.pdf"
+           data-href-es="assets/cv/CV_Matias_Cornara_ES.pdf"
+           data-href-en="assets/cv/Resume_Matias_Cornara_EN.pdf"
            data-es="Descargar CV" data-en="Download CV">Descargar CV<svg viewBox="0 0 16 16" aria-hidden="true" fill="none"
                stroke="currentColor" stroke-width="1.6"
                stroke-linecap="round" stroke-linejoin="round"><path d="M8 2 L8 11 M4 7.5 L8 11 L12 7.5 M3 14 L13 14"/></svg></a>
