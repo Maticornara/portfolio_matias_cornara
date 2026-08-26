@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>+54 — Archivo</title>
+  <title>+54 — Rincón</title>
 
   <!-- EL ICONO DE LA PESTAÑA: la caja del home, sin las agarraderas.
        Va en LAS NUEVE paginas y no solo en el index. Swup navega sin
@@ -55,11 +55,11 @@
 
        SI AGREGÁS UNA PÁGINA NUEVA: su CSS va acá y en las otras tres. -->
   <link rel="stylesheet" href="../css/variables.css?v=9">
-  <link rel="stylesheet" href="../css/base.css?v=11">
+  <link rel="stylesheet" href="../css/base.css?v=12">
   <link rel="stylesheet" href="../css/layout.css?v=17">
   <link rel="stylesheet" href="../css/archivo.css?v=35">
   <link rel="stylesheet" href="../css/simbio.css?v=120">
-  <link rel="stylesheet" href="../css/mas-54.css?v=25">
+  <link rel="stylesheet" href="../css/mas-54.css?v=26">
   <link rel="stylesheet" href="../css/tipines.css?v=15">
   <link rel="stylesheet" href="../css/museo.css?v=16">
 
@@ -125,6 +125,26 @@
      <body> en esta pagina. Los copia transiciones.js despues de cada
      navegacion de Swup, que reemplaza solo lo de adentro de #swup y deja el
      <body> de la pagina anterior tal cual estaba. -->
+<!-- ==========================================================================
+     LOS ASSETS TAMBIÉN LLEVAN ?v=N, NO SOLO EL CSS Y EL JS.
+     --------------------------------------------------------------------------
+     Todo lo que sale de assets/+54/web/ va con ?v=. Es la misma regla del
+     rompe-cachés de las hojas de estilo, y hace falta por lo mismo: el archivo
+     se reemplaza pero el NOMBRE no cambia, así que el navegador sigue sirviendo
+     el que ya tenía guardado.
+
+     Con los videos es peor que con el CSS, porque un mp4 se cachea con mucha
+     más insistencia y pesa demasiado para que un Ctrl+F5 lo revalide rápido.
+     Nos costó una ronda entera: se reexportó la animación de pictogramas sin
+     recorte, en disco medía 1280x718, y en pantalla se seguía viendo el recorte
+     viejo de 1280x456. Parecía que el arreglo no había funcionado, y lo que
+     pasaba era que el navegador ni miraba el archivo nuevo. La pista para
+     reconocerlo: la PROPORCIÓN de lo que se ve en pantalla no coincide con la
+     del archivo que está en disco.
+
+     SI REEXPORTÁS UN ASSET, SUBILE EL ?v= ACÁ. Si no, vos vas a ver el viejo y
+     no vas a entender por qué.
+     ========================================================================== -->
 <main id="swup" class="transicion-fade"
       data-body="pag-54" data-cursor-pag="anillo">
 
@@ -178,10 +198,10 @@
       <div class="hero54__posters" data-carrusel="4200"
            aria-label="Los cuatro posters de la campaña de +54">
         <div class="hero54__riel" data-carrusel-riel>
-          <img class="hero54__poster" src="../assets/+54/web/poster-1.jpg" alt="Poster de +54: el banco">
-          <img class="hero54__poster" src="../assets/+54/web/poster-2.jpg" alt="Poster de +54: la parada de taxi" loading="lazy">
-          <img class="hero54__poster" src="../assets/+54/web/poster-3.jpg" alt="Poster de +54: el empedrado" loading="lazy">
-          <img class="hero54__poster" src="../assets/+54/web/poster-4.jpg" alt="Poster de +54: la torre blanca" loading="lazy">
+          <img class="hero54__poster" src="../assets/+54/web/poster-1.jpg?v=2" alt="Poster de +54: el banco">
+          <img class="hero54__poster" src="../assets/+54/web/poster-2.jpg?v=2" alt="Poster de +54: la parada de taxi" loading="lazy">
+          <img class="hero54__poster" src="../assets/+54/web/poster-3.jpg?v=2" alt="Poster de +54: el empedrado" loading="lazy">
+          <img class="hero54__poster" src="../assets/+54/web/poster-4.jpg?v=2" alt="Poster de +54: la torre blanca" loading="lazy">
         </div>
       </div>
 
@@ -195,8 +215,8 @@
        arriba y abajo; ahora entra el alto COMPLETO del video (object-fit:
        contain) y lo que sobra es aire a los costados. -->
   <div class="banda54">
-    <video src="../assets/+54/web/ilustraciones.mp4"
-           poster="../assets/+54/web/ilustraciones.jpg"
+    <video src="../assets/+54/web/ilustraciones.mp4?v=2"
+           poster="../assets/+54/web/ilustraciones.jpg?v=2"
            autoplay loop muted playsinline preload="metadata"
            data-video-visible aria-hidden="true"></video>
   </div>
@@ -228,13 +248,13 @@
            pelo y corriéndolo — la perilla es --pieza-recorte en mas-54.css. -->
       <div class="contexto54__marco" data-alterna="6000">
         <video class="contexto54__pieza" data-alterna-item
-               src="../assets/+54/web/logo.mp4"
-               poster="../assets/+54/web/logo.jpg"
+               src="../assets/+54/web/logo.mp4?v=2"
+               poster="../assets/+54/web/logo.jpg?v=2"
                loop muted playsinline preload="metadata"
                aria-label="El logo de +54 animado sobre los tres colores del sistema"></video>
         <video class="contexto54__pieza" data-alterna-item
-               src="../assets/+54/web/paleta.mp4"
-               poster="../assets/+54/web/paleta.jpg"
+               src="../assets/+54/web/paleta.mp4?v=2"
+               poster="../assets/+54/web/paleta.jpg?v=2"
                loop muted playsinline preload="none"
                aria-label="La paleta de color del proyecto"></video>
       </div>
@@ -262,7 +282,7 @@
     <div class="tira54__escena">
 
       <div class="tira54__pista">
-        <img src="../assets/+54/web/tira.jpg"
+        <img src="../assets/+54/web/tira.jpg?v=2"
              width="8566" height="1080"
              alt="La tira completa de posters de +54, uno al lado del otro">
       </div>
@@ -345,24 +365,24 @@
       <div class="historias54__fila">
         <div class="historias54__marco">
           <video class="historias54__video" data-historia
-                 src="../assets/+54/web/historia-1.mp4"
-                 poster="../assets/+54/web/historia-1.jpg"
+                 src="../assets/+54/web/historia-1.mp4?v=2"
+                 poster="../assets/+54/web/historia-1.jpg?v=2"
                  muted playsinline preload="none"
                  aria-label="Historia 1 de la campaña de +54"></video>
           <div class="historias54__pista" aria-hidden="true"><i></i></div>
         </div>
         <div class="historias54__marco">
           <video class="historias54__video" data-historia
-                 src="../assets/+54/web/historia-2.mp4"
-                 poster="../assets/+54/web/historia-2.jpg"
+                 src="../assets/+54/web/historia-2.mp4?v=2"
+                 poster="../assets/+54/web/historia-2.jpg?v=2"
                  muted playsinline preload="none"
                  aria-label="Historia 2 de la campaña de +54"></video>
           <div class="historias54__pista" aria-hidden="true"><i></i></div>
         </div>
         <div class="historias54__marco">
           <video class="historias54__video" data-historia
-                 src="../assets/+54/web/historia-3.mp4"
-                 poster="../assets/+54/web/historia-3.jpg"
+                 src="../assets/+54/web/historia-3.mp4?v=2"
+                 poster="../assets/+54/web/historia-3.jpg?v=2"
                  muted playsinline preload="none"
                  aria-label="Historia 3 de la campaña de +54"></video>
           <div class="historias54__pista" aria-hidden="true"><i></i></div>
@@ -397,8 +417,8 @@
              sin tener que reproducir primero. Antes los agregaba el JS y hasta
              que no tocabas play no había con qué navegar el video. -->
         <video data-teaser-video controls
-               src="../assets/+54/web/teaser.mp4"
-               poster="../assets/+54/web/teaser.jpg"
+               src="../assets/+54/web/teaser.mp4?v=2"
+               poster="../assets/+54/web/teaser.jpg?v=2"
                playsinline preload="metadata"></video>
 
         <button class="teaser54__play" data-teaser-play aria-label="Reproducir el teaser de +54">
@@ -443,10 +463,10 @@
            HTML, que es el de lectura. Por eso los números van salteados: leído
            de izquierda a derecha y de arriba a abajo, es 1, 4, 3, 2. -->
       <div class="casa54__fotos" data-fotos-casa>
-        <img class="casa54__foto" style="--orden:1" src="../assets/+54/web/instalacion-1.png" alt="Una de las habitaciones de la casa modular" loading="lazy">
-        <img class="casa54__foto" style="--orden:4" src="../assets/+54/web/instalacion-4.png" alt="Otra habitación de la casa modular" loading="lazy">
-        <img class="casa54__foto" style="--orden:3" src="../assets/+54/web/instalacion-3.png" alt="Otra habitación de la casa modular" loading="lazy">
-        <img class="casa54__foto" style="--orden:2" src="../assets/+54/web/instalacion-2.png" alt="Otra habitación de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:1" src="../assets/+54/web/instalacion-1.png?v=2" alt="Una de las habitaciones de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:4" src="../assets/+54/web/instalacion-4.png?v=2" alt="Otra habitación de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:3" src="../assets/+54/web/instalacion-3.png?v=2" alt="Otra habitación de la casa modular" loading="lazy">
+        <img class="casa54__foto" style="--orden:2" src="../assets/+54/web/instalacion-2.png?v=2" alt="Otra habitación de la casa modular" loading="lazy">
       </div>
 
     </div>
@@ -461,8 +481,8 @@
        ====================================================================== -->
   <section class="casa54__pantalla zona zona--negro"
            aria-label="Recorrido completo por la casa modular">
-    <video src="../assets/+54/web/exposicion.mp4"
-           poster="../assets/+54/web/exposicion.jpg"
+    <video src="../assets/+54/web/exposicion.mp4?v=2"
+           poster="../assets/+54/web/exposicion.jpg?v=2"
            loop muted playsinline preload="none"
            data-video-visible
            aria-label="Las vistas de la casa modular, habitación por habitación"></video>
@@ -482,7 +502,7 @@
 
     <a class="web54__marco" href="https://maticornara.github.io/pop/"
        target="_blank" rel="noopener noreferrer">
-      <img src="../assets/+54/web/mckp-web.jpg"
+      <img src="../assets/+54/web/mckp-web.jpg?v=2"
            alt="El sitio de +54 visto en pantalla" loading="lazy">
     </a>
   </section>
@@ -584,23 +604,23 @@
       <div class="mockups54">
 
         <figure class="mockup54 reveal">
-          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-1.jpg"
+          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-1.jpg?v=2"
                   aria-label="Ver la lámina del manual de marca en grande">
-            <img src="../assets/+54/web/mockup-1.jpg" alt="Lámina del manual de marca de +54" loading="lazy">
+            <img src="../assets/+54/web/mockup-1.jpg?v=2" alt="Lámina del manual de marca de +54" loading="lazy">
           </button>
         </figure>
 
         <figure class="mockup54 reveal">
-          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-2.jpg"
+          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-2.jpg?v=2"
                   aria-label="Ver el afiche en la calle en grande">
-            <img src="../assets/+54/web/mockup-2.jpg" alt="El afiche de +54 pegado en la calle" loading="lazy">
+            <img src="../assets/+54/web/mockup-2.jpg?v=2" alt="El afiche de +54 pegado en la calle" loading="lazy">
           </button>
         </figure>
 
         <figure class="mockup54 reveal">
-          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-3.jpg"
+          <button class="mockup54__ver" data-lupa="../assets/+54/web/mockup-3.jpg?v=2"
                   aria-label="Ver el folleto en grande">
-            <img src="../assets/+54/web/mockup-3.jpg" alt="El folleto desplegado de +54" loading="lazy">
+            <img src="../assets/+54/web/mockup-3.jpg?v=2" alt="El folleto desplegado de +54" loading="lazy">
           </button>
         </figure>
 
@@ -612,7 +632,7 @@
 
 <footer class="zona zona--crema-2">
   <div class="site-footer grilla">
-    <p class="etiqueta" translate="no"><a href="../index.html">Archivo — Matías Cornara</a></p>
+    <p class="etiqueta" translate="no"><a href="../index.html">Rincón — Matías Cornara</a></p>
     <p class="etiqueta">
       +54 · con el Museo de Arte Moderno de Buenos Aires<br>
       Matías Cornara · 2026
@@ -625,8 +645,8 @@
 <!-- smooth-scroll.js VA PRIMERO: registra ScrollTrigger y arma el puente con
      Lenis. Tiene que estar en TODAS las páginas. -->
 <script src="../js/smooth-scroll.js?v=6" defer></script>
-<script src="../js/transiciones.js?v=8" defer></script>
-<script src="../js/main.js?v=26" defer></script>
+<script src="../js/transiciones.js?v=9" defer></script>
+<script src="../js/main.js?v=27" defer></script>
 <script src="../js/traduccion.js?v=5" defer></script>
 <script src="../js/mas-54.js?v=12" defer></script>
 </body>

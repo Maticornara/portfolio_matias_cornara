@@ -366,41 +366,50 @@
    --------------------------------------------------------------------------
    El separador entre el hero y "Qué es".
 
-   NO ES UNA BANDA DE PUNTA A PUNTA, y eso es lo que se aprendió acá después de
-   tres intentos. Dejo la explicación porque el impulso de volver a hacerla
-   full-bleed va a estar siempre.
+   NO SE RECORTA Y NO SE FUERZA A NINGUNA CAJA. Las dos cosas se intentaron
+   varias veces y las dos se veían mal; queda anotado porque el impulso de
+   volver a intentarlo va a estar siempre.
 
-   `ilustraciones.mp4` es un cuadro de 1460x820 con pictogramas grandes que van
-   pasando — no una tira infinita. Recortado al dibujo queda 2,8:1. Meter ESO en
-   una franja de ancho completo y poca altura (que es 7:1 o más) tiene
-   exactamente dos resultados posibles, y los dos se probaron y se vieron mal:
+   1) NO ES UNA BANDA DE PUNTA A PUNTA.
+      Meter el cuadro en una franja de ancho completo y poca altura tiene
+      exactamente dos resultados posibles: con `cover` escala por el ancho y
+      recorta el alto (parte los pictogramas al medio, se veía como una lonja
+      de magenta con un pedazo de dibujo cruzando), y con `contain` no corta
+      nada pero el video entra al 44% del ancho y quedan dos bandas de relleno
+      a los costados. Pintarlas del mismo magenta no alcanza: el vacío se sigue
+      leyendo. No hay tercera opción — el archivo no tiene más ancho que dar.
 
-     · `cover`  → escala por el ancho y recorta el alto: parte los pictogramas
-                  al medio. Se veía como una lonja de magenta con un pedazo de
-                  dibujo cruzando.
-     · `contain`→ no corta nada, pero el video entra al 44% del ancho y quedan
-                  dos bandas de relleno a los costados. Pintarlas del mismo
-                  magenta no alcanza: el vacío se sigue leyendo.
+   2) TAMPOCO SE LE RECORTA EL MAGENTA DE ARRIBA Y DE ABAJO.
+      Parecía aire sobrante, y no lo es:
 
-   No hay tercera opción: el archivo no tiene más ancho para dar.
+          LA ANIMACIÓN NO ES SOLO UN DESFILE HORIZONTAL:
+          TAMBIÉN SE MUEVE EN VERTICAL.
 
-   ASÍ QUE NO SE FUERZA. El video se muestra como lo que es —un rectángulo de
-   2,8:1— apoyado sobre el crema de la página, centrado y con aire arriba y
-   abajo. Sin recorte, sin relleno y sin bandas, porque no hay ninguna caja que
-   llenar. Y es más consistente con el resto de la página, donde todo el
-   material (posters, postales, láminas) también se apoya como una pieza sobre
-   el fondo.
+      Los pictogramas entran y salen por arriba y por abajo, y usan el alto
+      COMPLETO del cuadro. Medido a 4 cuadros por segundo sobre los 43 s: el
+      contenido va de la fila 0 a la 646 de 820 — hay cuadros donde toca el
+      borde de arriba del propio archivo.
+
+      Con el recorte que estuvo publicado (crop=iw:520:0:132), 49 de 172
+      cuadros —el 28%— quedaban con el dibujo cortado abajo, y 3 arriba. En la
+      página se veía como pictogramas serruchados. El error de medición había
+      sido muestrear 1 cuadro por segundo: justo los más altos caían en el
+      medio.
+
+   ASÍ QUE VA EL CUADRO ENTERO, tal como está exportado, apoyado sobre el
+   crema como una pieza más — igual que los posters, las postales y las
+   láminas. Sin recorte, sin relleno, sin bandas y sin caja que llenar.
 
    PERILLAS — LA TIRA
    ========================================================================== */
 
 .banda54 {
-  /* --tira-ancho    cuán grande es la pieza. El alto sale solo de su
-                     proporción: a 900px de ancho da unos 320 de alto.
-     --tira-aire     el silencio de arriba y de abajo. Es lo que la hace leerse
-                     como un respiro entre dos secciones y no como otra
-                     sección más. */
-  --tira-ancho: 900px;
+  /* --tira-ancho  cuán grande es la pieza. El alto sale SOLO de su proporción
+                   (16:9), así que subir esto la agranda en los dos ejes: a
+                   680px de ancho da unos 380 de alto.
+     --tira-aire   el silencio de arriba y de abajo. Es lo que la hace leerse
+                   como un respiro entre dos secciones y no como otra sección. */
+  --tira-ancho: 680px;
   --tira-aire: var(--s-8);
 
   width: min(var(--tira-ancho), 100% - var(--gutter) * 2);
@@ -413,13 +422,14 @@
   width: 100%;
   height: auto;
 
-  /* La proporción escrita, aunque el archivo ya la traiga: hasta que el video
-     no carga sus metadatos el navegador le asigna 300x150 —o sea 2:1— y
-     reservaría un hueco de la altura equivocada, con el salto de página
-     correspondiente cuando finalmente llega.
-     ES LA DEL VIDEO RECORTADO (1280x456). Si cambia el `crop` de
-     tools\optimizar-54.ps1, hay que cambiar este número o vuelve el salto. */
-  aspect-ratio: 1280 / 456;
+  /* La proporción del archivo SIN recortar (1460x820, que sale a 1280x718 al
+     escalarlo). Va escrita aunque el video ya la traiga: hasta que no cargan
+     sus metadatos el navegador le asigna 300x150 —o sea 2:1— y reservaría un
+     hueco de la altura equivocada, con el salto de página correspondiente
+     cuando por fin llega.
+     SI SE REEXPORTA LA ANIMACIÓN CON OTRA MEDIDA, hay que cambiar este número
+     o vuelve el salto. */
+  aspect-ratio: 1460 / 820;
 }
 
 

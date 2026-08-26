@@ -27,6 +27,23 @@
 
   const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* --- Y EL PIE TAMBIÉN ---
+     Mismo bug que la nav, encontrado despues: el <footer> tambien vive FUERA
+     de #swup, asi que Swup nunca lo tocaba y quedaba colgado el de la pagina
+     por la que entraste al sitio.
+
+     Se veia raro de verdad: cada pagina de proyecto tiene su propio pie con
+     los CREDITOS de ese trabajo. Entrando por +54 y volviendo al home, el
+     home mostraba "+54 · con el Museo de Arte Moderno de Buenos Aires" al
+     pie, como si la portada fuera parte de esa muestra.
+
+     El selector es "footer" a secas y no una clase porque las nueve paginas
+     no comparten clase de pie: las modernas usan .zona y las viejas
+     .site-footer. Swup exige que el contenedor exista en la pagina que se
+     deja Y en la que se entra, asi que tiene que ser algo que este en todas,
+     y la etiqueta lo esta. Si alguna vez se agrega una pagina sin <footer>,
+     la navegacion hacia ella se rompe: el pie no es opcional.
+
   /* --- LA NAV TAMBIÉN SE REEMPLAZA ---
      La nav vive FUERA de #swup, así que Swup no la tocaba: al navegar quedaba
      colgada la de la página anterior. Y como sus links son relativos, desde la
@@ -38,7 +55,7 @@
      links y su marca de activa. No se le pega el fade porque el selector de
      animación es [class*="transicion-"] y la nav no lleva esa clase. */
   const swup = new window.Swup({
-    containers: ["#swup", ".site-nav"],
+    containers: ["#swup", ".site-nav", "footer"],
     // El selector de lo que se anima. Tiene que coincidir con la clase del
     // contenedor en el HTML y con el CSS de base.css.
     animationSelector: '[class*="transicion-"]',

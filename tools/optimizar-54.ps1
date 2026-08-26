@@ -178,28 +178,27 @@ Write-Host "VIDEOS" -ForegroundColor Cyan
 
 $paraWeb = Join-Path $origen "PARA WEB"
 
-# LA TIRA DE PICTOGRAMAS.
-# Se le RECORTA el magenta vacio de arriba y de abajo antes de escalarla.
+# LA TIRA DE PICTOGRAMAS — SIN RECORTAR. NO LE PONGAS UN crop.
 #
-# MEDIDO SOBRE LOS 43 SEGUNDOS DEL VIDEO, no sobre cuatro cuadros sueltos: se
-# saco un cuadro por segundo y se busco, en cada uno, la primera y la ultima
-# fila con dibujo. La union de todos da un contenido que va de la fila 144 a la
-# 644 de 820. O sea que 144 px arriba y 176 abajo son fondo liso: casi el 40%
-# del alto del archivo no muestra nada.
+# Se intento recortarle el magenta "vacio" de arriba y de abajo tres veces, y
+# las tres cortaron pictogramas. El motivo, medido cuadro por cuadro:
 #
-# El recorte toma desde la fila 132 y 520 px de alto, con una decena de pixeles
-# de aire a cada lado para no rozar el borde de ningun pictograma. Queda
-# 1460x520, o sea 2.8:1, y escalado 1280x456.
+#   LA ANIMACION NO ES SOLO UN DESFILE HORIZONTAL: TAMBIEN SE MUEVE EN VERTICAL.
 #
-# POR QUE IMPORTA: en la pagina esto va en una BANDA de ancho completo. El alto
-# de esa banda NO es libre: sale de esta proporcion. Cuanto mas se recorte, mas
-# baja puede ser la banda sin cortar nada. Ver "LA BANDA DE PICTOGRAMAS" en
-# css/mas-54.css, que explica la cuenta entera.
+# Los pictogramas entran y salen por arriba y por abajo, y usan el alto COMPLETO
+# del cuadro. Medido a 4 cuadros por segundo sobre los 43 s del original: el
+# contenido va de la fila 0 a la 646 de 820. O sea que hay cuadros donde toca el
+# borde de arriba del propio archivo.
 #
-# OJO: el crop se aplica al ORIGINAL de 1460x820, NO a la version web de
-# 1280x718. Las filas de arriba estan en la escala del original. La primera vez
-# se copiaron filas medidas sobre la version web y el recorte quedo corrido.
-ConvertirVideoRecortado (Join-Path $paraWeb "animacion_ilustraciones.mp4") (Join-Path $destino "ilustraciones.mp4") "crop=iw:520:0:132" 1280 30
+# Con el recorte crop=iw:520:0:132 que estuvo publicado: 49 de 172 cuadros
+# (el 28%) quedaban con el dibujo cortado abajo, y 3 arriba. En la pagina se veia
+# como pictogramas serruchados. El error de medicion fue muestrear 1 cuadro por
+# segundo: justo los cuadros mas altos caian en el medio.
+#
+# NO HAY UN RECORTE QUE SIRVA. Cualquier franja que se saque corta algo. Se manda
+# el cuadro entero (1460x820) y se muestra como lo que es: un rectangulo, apoyado
+# sobre el crema de la pagina. Ver "LA TIRA DE PICTOGRAMAS" en css/mas-54.css.
+ConvertirVideo (Join-Path $paraWeb "animacion_ilustraciones.mp4") (Join-Path $destino "ilustraciones.mp4") 1280 30 $false
 
 ConvertirVideo (Join-Path $paraWeb "animacion_paleta.mp4")        (Join-Path $destino "paleta.mp4")        1000 30 $false
 ConvertirVideo (Join-Path $paraWeb "animacion_exposicion.mp4")    (Join-Path $destino "exposicion.mp4")    1280 30 $false

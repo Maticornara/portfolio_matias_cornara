@@ -388,19 +388,87 @@ a { color: inherit; text-decoration: none; }
   background: color-mix(in srgb, var(--verde) 10%, transparent);
 }
 
-/* Pulso de click */
-.click-pulse {
+/* --------------------------------------------------------------------------
+   MARCO DE CLICK — cuatro esquinas que se cierran sobre el punto tocado
+   ----------------------------------------------------------------------------
+   Reemplaza al anillo verde que se expandia (26/08). El gesto ahora es
+   "encuadrar": cuatro corchetes aparecen abiertos alrededor del click, se
+   cierran hacia el punto y se van. Rima con la esquina del hero y con las
+   fichas del indice, en vez del pulso generico de cualquier sitio.
+
+   Como esta hecho: el que se anima es el CONTENEDOR, que se achica de
+   --marco-abre a --marco-cierra. Los cuatro corchetes van clavados a sus
+   esquinas con top/left/right/bottom, asi que se cierran solos. El
+   translate(-50%,-50%) es en porcentaje del propio tamano, o sea que
+   mientras encoge sigue centrado en el punto del click.
+
+   PERILLAS ------------------------------------------------------------------
+   --marco-abre    tamano del marco al aparecer (mas grande = mas amplio)
+   --marco-cierra  tamano al terminar de cerrarse (mas chico = cierra mas)
+   --marco-brazo   largo de cada brazo del corchete
+   --marco-linea   grosor de la linea
+   --marco-dur     cuanto dura todo el gesto
+   -------------------------------------------------------------------------- */
+
+.click-marco {
+  --marco-abre: 42px;
+  --marco-cierra: 14px;
+  --marco-brazo: 8px;
+  --marco-linea: 1.5px;
+  --marco-dur: 280ms;
+
   position: fixed;
   z-index: var(--z-pulso);
-  width: 8px; height: 8px;
-  margin: -4px 0 0 -4px;
-  border: 1.5px solid var(--verde);
-  border-radius: 50%;
+  width: var(--marco-abre);
+  height: var(--marco-abre);
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  animation: pulso var(--dur-3) ease-out forwards;
+  animation: marco-cierra var(--marco-dur) var(--ease) forwards;
 }
-@keyframes pulso {
-  to { transform: scale(6); opacity: 0; }
+
+/* Cada <i> es una esquina: un cuadradito al que solo se le pintan DOS lados.
+   Por eso el border arranca en 0 y despues cada una enciende los suyos. */
+.click-marco i {
+  position: absolute;
+  width: var(--marco-brazo);
+  height: var(--marco-brazo);
+  border: 0 solid var(--verde);
+}
+.click-marco i:nth-child(1) {   /* superior izquierda */
+  top: 0; left: 0;
+  border-top-width: var(--marco-linea);
+  border-left-width: var(--marco-linea);
+}
+.click-marco i:nth-child(2) {   /* superior derecha */
+  top: 0; right: 0;
+  border-top-width: var(--marco-linea);
+  border-right-width: var(--marco-linea);
+}
+.click-marco i:nth-child(3) {   /* inferior izquierda */
+  bottom: 0; left: 0;
+  border-bottom-width: var(--marco-linea);
+  border-left-width: var(--marco-linea);
+}
+.click-marco i:nth-child(4) {   /* inferior derecha */
+  bottom: 0; right: 0;
+  border-bottom-width: var(--marco-linea);
+  border-right-width: var(--marco-linea);
+}
+
+/* Entra rapido, cierra, y recien sobre el final se va. La opacidad del 30%
+   evita que el primer cuadro aparezca de golpe a pantalla completa. */
+@keyframes marco-cierra {
+  from {
+    width: var(--marco-abre);
+    height: var(--marco-abre);
+    opacity: 0;
+  }
+  30% { opacity: 1; }
+  to {
+    width: var(--marco-cierra);
+    height: var(--marco-cierra);
+    opacity: 0;
+  }
 }
 
 /* --------------------------------------------------------------------------

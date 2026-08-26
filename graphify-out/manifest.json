@@ -5,8 +5,8 @@
     "semantic_hash": "ad0ef25d29161e7a51a6b44c86105c7f"
   },
   "js/main.js": {
-    "mtime": 1787682371.731311,
-    "ast_hash": "c2ddae94f72d92cfafab16db00ed95d1",
+    "mtime": 1787779526.9559085,
+    "ast_hash": "6baa902ae61ab2a81b41d44054251503",
     "semantic_hash": ""
   },
   "js/muestras.js": {
@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "js/transiciones.js": {
-    "mtime": 1787437514.4102051,
-    "ast_hash": "53894f12bd82a4de2ee845872e25aa1f",
+    "mtime": 1787780038.83931,
+    "ast_hash": "f9240d2461beaf0ca174c1955177a105",
     "semantic_hash": ""
   },
   "sandbox/sandbox.js": {
@@ -170,53 +170,53 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787682382.2046678,
-    "ast_hash": "2c0675319f4bf6ad2ff4328f555d1074",
+    "mtime": 1787780039.124351,
+    "ast_hash": "b4873e9022b3ca496999f099dc1cf0b5",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787682329.2949584,
-    "ast_hash": "1a87591d1262505c4318e62210954078",
+    "mtime": 1787780110.7308652,
+    "ast_hash": "515e6d7d97c59b556e37ea5c62936ad2",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
-    "mtime": 1787682382.2497976,
-    "ast_hash": "51fd53765b63bc0e790c56955fbdba2a",
+    "mtime": 1787780039.1253526,
+    "ast_hash": "e4fbeb65bbf0044eb8c7a7b65435c0dc",
     "semantic_hash": ""
   },
   "proyectos/cero-al-infinito.html": {
-    "mtime": 1787679595.6378028,
-    "ast_hash": "20ea933de5434e7f3c88aac056f988bf",
+    "mtime": 1787779596.6098752,
+    "ast_hash": "a68395396d51a0e47f2d30d13c17f8c9",
     "semantic_hash": ""
   },
   "proyectos/fanzine-zoe-gotusso.html": {
-    "mtime": 1787679595.639807,
-    "ast_hash": "775094758d07d001edba24afe2d124dd",
+    "mtime": 1787779596.6098752,
+    "ast_hash": "1b21648563aad409bf17233da8db00c6",
     "semantic_hash": ""
   },
   "proyectos/lamparas.html": {
-    "mtime": 1787679595.639807,
-    "ast_hash": "a6d6532b71fb600427c30dbd0c02ef37",
+    "mtime": 1787779596.6114018,
+    "ast_hash": "9cbcb48a661430113118140ef84c6c2d",
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787682382.2812142,
-    "ast_hash": "12851c669c786fde5ac0d36d99f66876",
+    "mtime": 1787780039.1253526,
+    "ast_hash": "64f73079ebd453f02218ff94aa053765",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
-    "mtime": 1787682382.3142483,
-    "ast_hash": "3d8474a5bc223aabe565337eeab785fb",
+    "mtime": 1787780039.1273148,
+    "ast_hash": "3957bd4950f1a970102d3c3ad0cda246",
     "semantic_hash": ""
   },
   "proyectos/saprobio.html": {
-    "mtime": 1787679595.645347,
-    "ast_hash": "212be0b4d5ef0d86daee0bf9461fea93",
+    "mtime": 1787779596.6156833,
+    "ast_hash": "9f0da1506efe7aca598ae69cb3948832",
     "semantic_hash": ""
   },
   "proyectos/simbio.html": {
-    "mtime": 1787682382.3438735,
-    "ast_hash": "45e1e88b1272fb39f94d5d1d469c8e67",
+    "mtime": 1787780039.1283293,
+    "ast_hash": "15d6328463ace1768cf7ac14efdcf07e",
     "semantic_hash": ""
   },
   "sandbox/index.html": {
@@ -7310,8 +7310,8 @@
     "semantic_hash": ""
   },
   "tools/optimizar-54.ps1": {
-    "mtime": 1787344765.4400914,
-    "ast_hash": "603a57f8fefaa9266a7b85a3c084f1e5",
+    "mtime": 1787779305.048525,
+    "ast_hash": "03fe4f039175e3e00768c0ccee71d163",
     "semantic_hash": ""
   },
   "assets/+54/MOCKUPS/MANUAL DE MARCA 2.jpeg": {
@@ -7440,8 +7440,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/exposicion.jpg": {
-    "mtime": 1787205248.008183,
-    "ast_hash": "493b4bfde01a19e4f5e4598c325cf2fd",
+    "mtime": 1787779955.741783,
+    "ast_hash": "b3a5f99436f115d81a4c2c15adf1c941",
     "semantic_hash": ""
   },
   "assets/+54/web/historia-1.jpg": {
@@ -7460,8 +7460,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/ilustraciones.jpg": {
-    "mtime": 1787292565.7690115,
-    "ast_hash": "7b74829dbdf8d59a77dfcddf05ca245d",
+    "mtime": 1787779310.6652393,
+    "ast_hash": "cd09e17718d01b26ece3d85f37c8e51a",
     "semantic_hash": ""
   },
   "assets/+54/web/logo.jpg": {
@@ -7545,8 +7545,8 @@
     "semantic_hash": ""
   },
   "assets/+54/PARA WEB/animacion_exposicion.mp4": {
-    "mtime": 1787184713.5651534,
-    "ast_hash": "a20f72e17efbc53a0ad74098c785b14b",
+    "mtime": 1787779941.715318,
+    "ast_hash": "4b4a4c27d109ced3e6aace40601bf622",
     "semantic_hash": ""
   },
   "assets/+54/PARA WEB/animacion_ilustraciones.mp4": {
@@ -7565,8 +7565,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/exposicion.mp4": {
-    "mtime": 1787205229.3344145,
-    "ast_hash": "e1ec9e43747bcf5d51ea01f52593ac83",
+    "mtime": 1787779955.4612596,
+    "ast_hash": "fe529850bea6cf7fc3c2ef64eb7cbad2",
     "semantic_hash": ""
   },
   "assets/+54/web/historia-1.mp4": {
@@ -7585,8 +7585,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/ilustraciones.mp4": {
-    "mtime": 1787292565.596581,
-    "ast_hash": "a44126320f0b897c1af776368dcec0ac",
+    "mtime": 1787779310.360773,
+    "ast_hash": "475d8a30e326e04a7cca1a74376aceb0",
     "semantic_hash": ""
   },
   "assets/+54/web/logo.mp4": {
@@ -18307,6 +18307,11 @@
   "assets/simbio/foto/home-simbio.png": {
     "mtime": 1787682006.431219,
     "ast_hash": "2cc13d2760ba5ea462df2ed7b6ed4d8e",
+    "semantic_hash": ""
+  },
+  "assets/+54/PARA WEB/animacion_exposicion.ANTERIOR.mp4": {
+    "mtime": 1787184713.5651534,
+    "ast_hash": "a20f72e17efbc53a0ad74098c785b14b",
     "semantic_hash": ""
   }
 }

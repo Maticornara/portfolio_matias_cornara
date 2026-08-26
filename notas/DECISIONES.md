@@ -3845,3 +3845,151 @@ solo el home) y son tres líneas:
 
 **Los `<svg>` de los bocetos siguen escritos en `index.html`.** No se tiró nada:
 volver atrás es borrar un bloque de CSS, no rehacer cuatro dibujos.
+
+---
+
+## 31. La tira de pictogramas: por qué ningún recorte servía (22/08/2026)
+
+Mati la vio "rarísima" tres veces seguidas. Cada arreglo tapaba un síntoma y
+dejaba el de al lado. La causa era una sola, y no se veía mirando cuatro cuadros
+sueltos:
+
+**LA ANIMACIÓN NO ES SOLO UN DESFILE HORIZONTAL: TAMBIÉN SE MUEVE EN VERTICAL.**
+
+Los pictogramas entran y salen por arriba y por abajo, y usan el alto COMPLETO
+del cuadro de 1460x820. Lo que parecía "magenta vacío de sobra" es el espacio
+por el que la animación se mueve.
+
+### LA MEDICIÓN QUE LO MOSTRÓ
+
+Antes: 1 cuadro por segundo, a 205 filas de resolución vertical. Daba contenido
+entre las filas 144 y 644, y sobre eso salió `crop=iw:520:0:132`.
+
+Después, bien: **4 cuadros por segundo, a las 820 filas completas.** El contenido
+va de la **fila 0 a la 646**. La diferencia no es de detalle: hay cuadros donde
+el dibujo toca el borde de arriba del propio archivo.
+
+Verificado sobre el mp4 que estaba publicado: **49 de 172 cuadros (el 28%) con el
+dibujo cortado abajo, y 3 arriba.** En la página se veían pictogramas
+serruchados. Después de sacar el recorte: **0 cortados abajo, 1 arriba** — y ese
+uno ya venía así del original.
+
+### LA LECCIÓN, QUE SIRVE PARA CUALQUIER VIDEO
+
+**Para decidir un recorte no alcanza con mirar unos cuadros: hay que medir el
+video entero, y a resolución completa.** Muestrear poco no da un resultado
+"aproximado", da uno **falso** — justo los cuadros extremos son los que caen
+entre muestras, y son los únicos que importan para un recorte.
+
+Un cuadro por segundo sonaba suficiente para un video de 43 s. No lo era.
+
+### CÓMO QUEDÓ
+
+Va el cuadro entero, sin `crop`, apoyado sobre el crema como una pieza más
+—igual que los posters, las postales y las láminas—, a 680 px de ancho y con
+aire arriba y abajo. Sin recorte, sin relleno, sin bandas y sin ninguna caja que
+llenar. Las perillas son `--tira-ancho` y `--tira-aire`.
+
+Y quedó anotado en `tools\optimizar-54.ps1`, en el lugar exacto donde uno
+volvería a ponerle un `crop`: **no le pongas un crop.**
+
+
+---
+
+## 35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026)
+
+A Mati no le gustaba la animación de click. Lo que había era **un anillo verde
+que nacía de 8 px y se expandía a 6× mientras se desvanecía** (`.click-pulse`,
+`@keyframes pulso`, 500 ms). El problema no era técnico: es el efecto de click
+por defecto de cualquier sitio, y no dice nada del proyecto.
+
+### QUÉ QUEDÓ
+
+**Cuatro esquinas que se cierran sobre el punto tocado.** Aparecen abiertas
+alrededor del click, se cierran hacia adentro y se van. El gesto es *encuadrar
+una pieza* — el mismo vocabulario que la esquina del hero y que las fichas del
+índice, en vez del pulso genérico.
+
+### CÓMO ESTÁ HECHO, Y POR QUÉ ASÍ
+
+La tentación era animar las cuatro esquinas por separado: cada una con su
+`translate` y su propio `@keyframes`, porque cada una se mueve en una diagonal
+distinta. Eso son **cuatro bloques de keyframes casi iguales**, y cambiar la
+apertura obliga a tocar los cuatro.
+
+Lo que se hizo en cambio: **el que se anima es el contenedor**, que encoge de
+`--marco-abre` a `--marco-cierra`. Las cuatro esquinas van clavadas con
+`top/left/right/bottom: 0` adentro, así que **se cierran solas** al encoger la
+caja. Un solo `@keyframes` para las cuatro.
+
+La pieza sigue centrada en el punto del click mientras encoge porque el
+`translate(-50%, -50%)` es **porcentaje del propio tamaño**: si la caja se
+achica, el corrimiento se achica con ella. Si en vez de eso se hubiera usado un
+`margin` negativo en px, el marco se iría para abajo y a la derecha al cerrarse.
+
+Cada esquina es un `<i>` cuadrado con `border: 0 solid var(--verde)`, y después
+cada una **enciende solo los dos lados que le tocan** (la de arriba a la
+izquierda, `border-top` y `border-left`, etc.). Sin SVG y sin pseudo-elementos:
+con `::before`/`::after` solo se llega a dos esquinas, y hacen falta cuatro.
+
+### DÓNDE
+
+- `css/base.css` → buscar **`MARCO DE CLICK`**. Ahí están las perillas:
+  `--marco-abre` (42px), `--marco-cierra` (14px), `--marco-brazo` (8px),
+  `--marco-linea` (1.5px), `--marco-dur` (280ms).
+- `js/main.js`, al final de `initCursor()` → solo arma la pieza y la suelta en
+  el `<body>`; **todo el movimiento está en el CSS**.
+- Se subieron los rompe-cachés a `base.css?v=12` y `main.js?v=27` en las cinco
+  páginas modernas.
+
+**El sandbox tiene su propia copia** de `.click-pulse` en `sandbox/sandbox.css`
+y `sandbox/sandbox.js` — no se tocó, porque es un banco de pruebas aparte con
+su propio CSS y su propio JS (igual que `initCursor` está duplicado allá).
+
+---
+
+## 32. El bug que hizo parecer que nada se arreglaba: los assets no tenían ?v= (22/08/2026)
+
+Se sacó el recorte de la tira de pictogramas, se verificó en disco que el
+archivo nuevo medía **1280x718**, y Mati siguió viendo exactamente lo mismo:
+*"no veo mucho cambio la verdad, lo sigo viendo cortado"*.
+
+**LA PISTA ESTABA EN LA PROPORCIÓN.** El rectángulo que se veía en su pantalla
+medía 2,83:1. El archivo nuevo es 1,78:1. El viejo, recortado, era 2,81:1. O
+sea: el navegador **ni miraba** el archivo nuevo — servía el que ya tenía
+guardado.
+
+**Los `<video>` y las imágenes no llevaban `?v=`.** La regla del rompe-cachés
+estaba aplicada al CSS y al JS desde el principio, pero no a los assets, y con
+los assets es PEOR: un mp4 se cachea con mucha más insistencia que una hoja de
+estilos y pesa demasiado para que un Ctrl+F5 lo revalide rápido.
+
+Es un bug traicionero porque **no se distingue de "el arreglo no funcionó"**.
+Habíamos cambiado el pipeline entero, medido el resultado en disco, y el
+síntoma era idéntico al de antes.
+
+### CÓMO RECONOCERLO LA PRÓXIMA
+
+**Comparar la proporción de lo que se ve en pantalla contra la del archivo en
+disco.** Si no coinciden, no es un problema de CSS ni de recorte: es que el
+navegador está sirviendo otro archivo. La verificación quedó automatizada — mide
+`getBoundingClientRect()` contra `videoWidth/videoHeight` y dice COINCIDE o no.
+
+Ahora todo lo que sale de `assets/+54/web/` lleva `?v=N`, y hay una nota en el
+HTML justo arriba del `<main>` explicándolo. **Si se reexporta un asset, hay que
+subirle el `?v=`.**
+
+### DE PASO: EL VIDEO NUEVO DE LA EXPOSICIÓN
+
+Mati lo dejó directamente en `assets/+54/web/exposicion.mp4` — o sea en la
+carpeta de SALIDA, sin pasar por el pipeline, con sus 15 MB sin optimizar. Y ahí
+corría un riesgo: correr el script con `-Forzar` lo habría pisado con el
+original viejo.
+
+Se movió a donde va (`PARA WEB/animacion_exposicion.mp4`, con el anterior
+guardado como `.ANTERIOR.mp4`) y se generó la versión web desde ahí:
+**14,4 MB → 338 KB**, misma proporción 16:9, así que el CSS no cambió.
+
+**Los archivos nuevos van SIEMPRE en la carpeta de origen, nunca en web/.**
+web/ es salida: lo que hay ahí lo regenera el script.
+

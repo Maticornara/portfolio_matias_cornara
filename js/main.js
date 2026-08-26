@@ -270,21 +270,29 @@ function initCursor() {
     if (anillo) anillo.classList.remove("is-active");
   });
 
-  /* Pulso de click */
+  /* --- MARCO DE CLICK ---
+     Cuatro esquinas que aparecen abiertas alrededor del punto tocado, se
+     cierran sobre el y se van. Reemplazo del anillo que se expandia (26/08).
+
+     Aca solo se arma la pieza y se la suelta en el <body>: TODO el
+     movimiento (el tamano de apertura, cuanto cierra, la duracion) esta en
+     css/base.css, buscando "MARCO DE CLICK". Los cuatro <i> son las cuatro
+     esquinas; el CSS le pinta a cada una los dos lados que le tocan. */
   if (sinMovimiento) return;
 
   document.addEventListener("click", (e) => {
-    const pulso = document.createElement("div");
-    pulso.className = "click-pulse";
-    pulso.style.left = e.clientX + "px";
-    pulso.style.top = e.clientY + "px";
-    document.body.appendChild(pulso);
+    const marco = document.createElement("div");
+    marco.className = "click-marco";
+    marco.style.left = e.clientX + "px";
+    marco.style.top = e.clientY + "px";
+    for (let i = 0; i < 4; i++) marco.appendChild(document.createElement("i"));
+    document.body.appendChild(marco);
 
     // SOUND HOOK: click-tick
     // Muy corto (<60ms) y muy bajo. Si molesta, es el primero que sale.
 
     // Se limpia solo: no queda basura en el DOM
-    pulso.addEventListener("animationend", () => pulso.remove());
+    marco.addEventListener("animationend", () => marco.remove());
   });
 }
 
