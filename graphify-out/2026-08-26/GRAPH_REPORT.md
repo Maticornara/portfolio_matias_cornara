@@ -1,11 +1,11 @@
 # Graph Report - CODIGO_CLAUDE  (2026-08-26)
 
 ## Corpus Check
-- 36 files · ~79,980,010 words
+- 36 files · ~79,981,190 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 389 nodes · 460 edges · 62 communities (58 shown, 4 thin omitted)
+- 392 nodes · 463 edges · 63 communities (59 shown, 4 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
@@ -65,9 +65,10 @@
 - 34. Las pastillas, la portada de Simbio y el fin de la preportada (25/08/2026)
 - 31. La tira de pictogramas: por qué ningún recorte servía (22/08/2026)
 - 35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026)
+- 32. El bug que hizo parecer que nada se arreglaba: los assets no tenían ?v= (22/08/2026)
 
 ## God Nodes (most connected - your core abstractions)
-1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 46 edges
+1. `ARCHIVO / MI CAJÓN — bitácora del proyecto` - 47 edges
 2. `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` - 23 edges
 3. `init()` - 14 edges
 4. `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` - 13 edges
@@ -89,7 +90,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (62 total, 4 thin omitted)
+## Communities (63 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.21
@@ -275,22 +276,26 @@ Nodes (4): 31. La tira de pictogramas: por qué ningún recorte servía (22/08/2
 Cohesion: 0.50
 Nodes (4): 35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026), CÓMO ESTÁ HECHO, Y POR QUÉ ASÍ, DÓNDE, QUÉ QUEDÓ
 
+### Community 62 - "32. El bug que hizo parecer que nada se arreglaba: los assets no tenían ?v= (22/08/2026)"
+Cohesion: 0.67
+Nodes (3): 32. El bug que hizo parecer que nada se arreglaba: los assets no tenían ?v= (22/08/2026), CÓMO RECONOCERLO LA PRÓXIMA, DE PASO: EL VIDEO NUEVO DE LA EXPOSICIÓN
+
 ## Knowledge Gaps
-- **214 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+209 more)
+- **216 isolated node(s):** `PROYECTOS`, `graphify`, `Usage`, `What graphify is for`, `Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)` (+211 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `3. Tipografía`, `23. La caja como caja, el aire y un solo crema (21/08/2026)`, `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)`, `25. Amigos Tipines: la tercera página de proyecto (21/08/2026)`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `6. Las imágenes — el pipeline`, `22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `18. "ARCHIVO": remake de la portada (20/08/2026)`, `21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)`, `26. Los estilos fantasma, y el menú de teléfono (21/08/2026)`, `28. El par ES/EN: traducción automática de Google (22/08/2026)`, `5. Estado actual — qué está hecho`, `22. La caja de cartón, y por qué se trababa (20/08/2026)`, `23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)`, `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)`, `30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)`, `31. Tipines: tres cosas rotas y por qué (22/08/2026)`, `23. Simbio en mobile (20/08/2026)`, `32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)`, `33. Mobiliario de Museo: de cero a página entera (22/08/2026)`, `27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026)`, `34. Las pastillas, la portada de Simbio y el fin de la preportada (25/08/2026)`, `31. La tira de pictogramas: por qué ningún recorte servía (22/08/2026)`, `35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026)`?**
-  _High betweenness centrality (0.221) - this node is a cross-community bridge._
+- **Why does `ARCHIVO / MI CAJÓN — bitácora del proyecto` connect `ARCHIVO / MI CAJÓN — bitácora del proyecto` to `19. La portada, segunda pasada: sacar y dar aire (20/08/2026)`, `3. Tipografía`, `23. La caja como caja, el aire y un solo crema (21/08/2026)`, `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)`, `20. La portada, tercera pasada: una pantalla por sección (20/08/2026)`, `21. La esquina, bien hecha: por qué la caja flotaba (20/08/2026)`, `25. Amigos Tipines: la tercera página de proyecto (21/08/2026)`, `19. +54: la primera página de proyecto después de Simbio (20/08/2026)`, `6. Las imágenes — el pipeline`, `22. El control de sonido del sitio, y las historias sin tocar la paleta (22/08/2026)`, `20. +54, segunda vuelta: revisión completa parte por parte (20/08/2026)`, `18. "ARCHIVO": remake de la portada (20/08/2026)`, `21. +54: las historias de a una, y el video de la casa más chico (20/08/2026)`, `26. Los estilos fantasma, y el menú de teléfono (21/08/2026)`, `28. El par ES/EN: traducción automática de Google (22/08/2026)`, `5. Estado actual — qué está hecho`, `22. La caja de cartón, y por qué se trababa (20/08/2026)`, `23. El bug del sonido que seguía sonando: `isIntersecting` no es el threshold (22/08/2026)`, `29. Tipines, tercera vuelta: por qué se trababa el video y otros cinco bugs (22/08/2026)`, `30. El ruido fantasma: eran DOS bugs, y el segundo era el bueno (22/08/2026)`, `31. Tipines: tres cosas rotas y por qué (22/08/2026)`, `23. Simbio en mobile (20/08/2026)`, `32. Tipines: la composición de la miniserie y el botón que no se veía (22/08/2026)`, `33. Mobiliario de Museo: de cero a página entera (22/08/2026)`, `27. Repaso de teléfono: el menú y los tamaños de todo (22/08/2026)`, `34. Las pastillas, la portada de Simbio y el fin de la preportada (25/08/2026)`, `31. La tira de pictogramas: por qué ningún recorte servía (22/08/2026)`, `35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026)`, `32. El bug que hizo parecer que nada se arreglaba: los assets no tenían ?v= (22/08/2026)`?**
+  _High betweenness centrality (0.225) - this node is a cross-community bridge._
 - **Why does `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` connect `33. Mobiliario de Museo: de cero a página entera (22/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
   _High betweenness centrality (0.051) - this node is a cross-community bridge._
 - **Why does `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` connect `27. Tipines, segunda vuelta: la ronda de correcciones de Mati (21/08/2026)` to `ARCHIVO / MI CAJÓN — bitácora del proyecto`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **What connects `PROYECTOS`, `graphify`, `Usage` to the rest of the system?**
-  _214 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _216 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `ARCHIVO / MI CAJÓN — bitácora del proyecto` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
 - **Should `What You Must Do When Invoked` be split into smaller, more focused modules?**

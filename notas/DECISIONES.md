@@ -3896,100 +3896,81 @@ volvería a ponerle un `crop`: **no le pongas un crop.**
 
 ---
 
-## 35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026)
+## 35. El click: tres intentos hasta la salpicadura (26/08/2026)
 
 A Mati no le gustaba la animación de click. Lo que había era **un anillo verde
 que nacía de 8 px y se expandía a 6× mientras se desvanecía** (`.click-pulse`,
 `@keyframes pulso`, 500 ms). El problema no era técnico: es el efecto de click
 por defecto de cualquier sitio, y no dice nada del proyecto.
 
+### LOS DOS DESCARTADOS, Y LA LECCIÓN
+
+Primero se probó **un marco de cuatro esquinas** que se cerraba sobre el punto
+tocado — el gesto de "encuadrar una pieza", que rimaba con la esquina del hero
+y con las fichas del índice. Sobre el papel cerraba perfecto. **No gustó.**
+
+Después se le ofreció elegir entre cuatro alternativas más (el punto que se
+hunde, sacarla del todo, el marco calibrado más chico, una cruz de registro).
+Ninguna era lo que quería, y lo dijo con sus palabras: *"algo más tipo
+circulitos medio como pintura que explotan, capaz mientras el cursor se mueve
+también hay una pequeña animación"*.
+
+**La lección: ofrecer opciones bien argumentadas no reemplaza preguntar qué
+tiene en la cabeza.** Las cinco propuestas eran todas del mismo palo —
+geométricas, secas, "de archivo"— porque salían de leer las reglas del proyecto.
+Lo que él quería era algo orgánico, y no estaba en ninguna de las cinco. Dos
+rondas perdidas por proponer en vez de preguntar.
+
 ### QUÉ QUEDÓ
 
-**Cuatro esquinas que se cierran sobre el punto tocado.** Aparecen abiertas
-alrededor del click, se cierran hacia adentro y se van. El gesto es *encuadrar
-una pieza* — el mismo vocabulario que la esquina del hero y que las fichas del
-índice, en vez del pulso genérico.
+**Una salpicadura de pintura.** Una gota gorda en el centro y siete satélites
+que salen disparados, se frenan y **recién ahí se apagan**. Más un **rastro** de
+gotitas que el cursor va dejando mientras se mueve.
 
-### CÓMO ESTÁ HECHO, Y POR QUÉ ASÍ
+Ese "llega y después se apaga" es lo que la hace leer como pintura y no como
+partículas: cada gota vuela en el primer 45% del tiempo y el 55% que queda se
+apaga **quieta, ya posada**. La pintura llega y se queda; las partículas se
+disuelven en el aire.
 
-La tentación era animar las cuatro esquinas por separado: cada una con su
-`translate` y su propio `@keyframes`, porque cada una se mueve en una diagonal
-distinta. Eso son **cuatro bloques de keyframes casi iguales**, y cambiar la
-apertura obliga a tocar los cuatro.
+### POR QUÉ NO HAY UN SOLO `Math.random()`
 
-Lo que se hizo en cambio: **el que se anima es el contenedor**, que encoge de
-`--marco-abre` a `--marco-cierra`. Las cuatro esquinas van clavadas con
-`top/left/right/bottom: 0` adentro, así que **se cierran solas** al encoger la
-caja. Un solo `@keyframes` para las cuatro.
+La tentación obvia era sortear ángulo, tamaño y distancia de cada gota. No se
+hizo, por dos razones:
 
-La pieza sigue centrada en el punto del click mientras encoge porque el
-`translate(-50%, -50%)` es **porcentaje del propio tamaño**: si la caja se
-achica, el corrimiento se achica con ella. Si en vez de eso se hubiera usado un
-`margin` negativo en px, el marco se iría para abajo y a la derecha al cerrarse.
+1. **La regla del proyecto** (nada al azar: las micro-rotaciones son valores
+   fijos).
+2. **Lo sorteado no se puede corregir.** Si a Mati no le gusta una salpicadura,
+   con `random()` no hay nada que tocar — la próxima va a ser otra. Con una
+   receta escrita a mano, hay ocho líneas que se pueden mover.
 
-Cada esquina es un `<i>` cuadrado con `border: 0 solid var(--verde)`, y después
-cada una **enciende solo los dos lados que le tocan** (la de arriba a la
-izquierda, `border-top` y `border-left`, etc.). Sin SVG y sin pseudo-elementos:
-con `::before`/`::after` solo se llega a dos esquinas, y hacen falta cuatro.
+En su lugar hay una **receta a mano** en `js/main.js`: ángulo, distancia, tamaño
+y opacidad de cada gota. Los ángulos son **disparejos a propósito** — repartidos
+en partes iguales darían una margarita perfecta, que es justo lo que no parece
+una salpicadura. Y para que dos clicks seguidos no salgan calcados, el conjunto
+entero **se gira turnándose entre seis valores fijos**: da variedad y sigue
+siendo previsible.
+
+### EL RASTRO: POR QUÉ SE MIDE LA DISTANCIA Y NO LOS EVENTOS
+
+Cae una gotita **cada 38 px recorridos**, no una por `mousemove`.
+
+**Un `mousemove` no es una unidad de distancia.** El navegador dispara muchos
+más eventos moviendo el mouse despacio que moviéndolo rápido. Atar el rastro al
+evento dejaría un reguero **denso al mover despacio y ralo al mover rápido** —
+exactamente al revés de lo que hace un pincel, y además dependiente de la
+máquina. Midiendo el recorrido, la separación entre gotas es siempre la misma.
 
 ### DÓNDE
 
-- `css/base.css` → buscar **`MARCO DE CLICK`**. Ahí están las perillas:
-  `--marco-abre` (42px), `--marco-cierra` (14px), `--marco-brazo` (8px),
-  `--marco-linea` (1.5px), `--marco-dur` (280ms).
-- `js/main.js`, al final de `initCursor()` → solo arma la pieza y la suelta en
-  el `<body>`; **todo el movimiento está en el CSS**.
-- Se subieron los rompe-cachés a `base.css?v=12` y `main.js?v=27` en las cinco
-  páginas modernas.
+- `css/base.css` → **`SALPICADURA DE CLICK`** y **`RASTRO`**. Perillas:
+  `--salp-alcance` (34px), `--salp-dur` (620ms), `--salp-escala` (1),
+  `--rastro-opacidad` (0.32), `--rastro-dur` (560ms).
+  **Para apagar el rastro: `--rastro-opacidad: 0`.**
+- `js/main.js`, al final de `initCursor()` → la receta de las gotas y el paso
+  del rastro. Todo el movimiento está en el CSS.
+- Rompe-cachés en `base.css?v=13` y `main.js?v=28`, en las cinco páginas
+  modernas.
 
 **El sandbox tiene su propia copia** de `.click-pulse` en `sandbox/sandbox.css`
 y `sandbox/sandbox.js` — no se tocó, porque es un banco de pruebas aparte con
 su propio CSS y su propio JS (igual que `initCursor` está duplicado allá).
-
----
-
-## 32. El bug que hizo parecer que nada se arreglaba: los assets no tenían ?v= (22/08/2026)
-
-Se sacó el recorte de la tira de pictogramas, se verificó en disco que el
-archivo nuevo medía **1280x718**, y Mati siguió viendo exactamente lo mismo:
-*"no veo mucho cambio la verdad, lo sigo viendo cortado"*.
-
-**LA PISTA ESTABA EN LA PROPORCIÓN.** El rectángulo que se veía en su pantalla
-medía 2,83:1. El archivo nuevo es 1,78:1. El viejo, recortado, era 2,81:1. O
-sea: el navegador **ni miraba** el archivo nuevo — servía el que ya tenía
-guardado.
-
-**Los `<video>` y las imágenes no llevaban `?v=`.** La regla del rompe-cachés
-estaba aplicada al CSS y al JS desde el principio, pero no a los assets, y con
-los assets es PEOR: un mp4 se cachea con mucha más insistencia que una hoja de
-estilos y pesa demasiado para que un Ctrl+F5 lo revalide rápido.
-
-Es un bug traicionero porque **no se distingue de "el arreglo no funcionó"**.
-Habíamos cambiado el pipeline entero, medido el resultado en disco, y el
-síntoma era idéntico al de antes.
-
-### CÓMO RECONOCERLO LA PRÓXIMA
-
-**Comparar la proporción de lo que se ve en pantalla contra la del archivo en
-disco.** Si no coinciden, no es un problema de CSS ni de recorte: es que el
-navegador está sirviendo otro archivo. La verificación quedó automatizada — mide
-`getBoundingClientRect()` contra `videoWidth/videoHeight` y dice COINCIDE o no.
-
-Ahora todo lo que sale de `assets/+54/web/` lleva `?v=N`, y hay una nota en el
-HTML justo arriba del `<main>` explicándolo. **Si se reexporta un asset, hay que
-subirle el `?v=`.**
-
-### DE PASO: EL VIDEO NUEVO DE LA EXPOSICIÓN
-
-Mati lo dejó directamente en `assets/+54/web/exposicion.mp4` — o sea en la
-carpeta de SALIDA, sin pasar por el pipeline, con sus 15 MB sin optimizar. Y ahí
-corría un riesgo: correr el script con `-Forzar` lo habría pisado con el
-original viejo.
-
-Se movió a donde va (`PARA WEB/animacion_exposicion.mp4`, con el anterior
-guardado como `.ANTERIOR.mp4`) y se generó la versión web desde ahí:
-**14,4 MB → 338 KB**, misma proporción 16:9, así que el CSS no cambió.
-
-**Los archivos nuevos van SIEMPRE en la carpeta de origen, nunca en web/.**
-web/ es salida: lo que hay ahí lo regenera el script.
-

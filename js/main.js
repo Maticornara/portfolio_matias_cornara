@@ -270,30 +270,102 @@ function initCursor() {
     if (anillo) anillo.classList.remove("is-active");
   });
 
-  /* --- MARCO DE CLICK ---
-     Cuatro esquinas que aparecen abiertas alrededor del punto tocado, se
-     cierran sobre el y se van. Reemplazo del anillo que se expandia (26/08).
+  /* --- SALPICADURA DE CLICK ---
+     Una gota gorda en el centro y siete satelites que salen disparados, se
+     frenan y recien ahi se apagan. El movimiento esta TODO en css/base.css
+     (buscar "SALPICADURA DE CLICK"); aca solo esta la receta de la forma.
 
-     Aca solo se arma la pieza y se la suelta en el <body>: TODO el
-     movimiento (el tamano de apertura, cuanto cierra, la duracion) esta en
-     css/base.css, buscando "MARCO DE CLICK". Los cuatro <i> son las cuatro
-     esquinas; el CSS le pinta a cada una los dos lados que le tocan. */
+     LA RECETA, Y POR QUE ESTA ESCRITA A MANO
+     Cada gota tiene angulo (grados), distancia (multiplo de --salp-alcance),
+     tamano (px) y opacidad. Los angulos son DISPAREJOS a proposito: repartidos
+     en partes iguales darian una margarita perfecta, que es justo lo que no
+     parece pintura. Los tamanos tambien: una gota grande y satelites chicos,
+     como cae la pintura de verdad.
+
+     Nada de Math.random(): sortear cada click da un resultado distinto cada
+     vez que uno mira, y no se puede corregir. Esto se puede corregir. */
+  const GOTAS = [
+    { ang:   0, dist: 0.00, r: 7.0, o: 0.95 },   // el centro, la gota gorda
+    { ang: -12, dist: 1.00, r: 5.0, o: 0.90 },
+    { ang:  38, dist: 0.72, r: 3.0, o: 0.72 },
+    { ang:  86, dist: 1.14, r: 4.0, o: 0.85 },
+    { ang: 141, dist: 0.60, r: 2.5, o: 0.65 },
+    { ang: 176, dist: 0.96, r: 5.5, o: 0.90 },
+    { ang: 223, dist: 1.22, r: 3.0, o: 0.78 },
+    { ang: 268, dist: 0.68, r: 4.5, o: 0.82 },
+  ];
+
+  /* Para que dos clicks seguidos no salgan calcados, la salpicadura entera se
+     gira. Pero no al azar: se va TURNANDO entre estos seis valores. Da
+     variedad y sigue siendo previsible (siempre se puede volver a ver la
+     misma). Son seis y ninguno multiplo de otro, asi que el ciclo no se nota. */
+  const GIROS = [0, 47, 94, 151, 208, 265];
+  let giroActual = 0;
+
   if (sinMovimiento) return;
 
   document.addEventListener("click", (e) => {
-    const marco = document.createElement("div");
-    marco.className = "click-marco";
-    marco.style.left = e.clientX + "px";
-    marco.style.top = e.clientY + "px";
-    for (let i = 0; i < 4; i++) marco.appendChild(document.createElement("i"));
-    document.body.appendChild(marco);
+    const salp = document.createElement("div");
+    salp.className = "click-salpicadura";
+    salp.style.left = e.clientX + "px";
+    salp.style.top = e.clientY + "px";
+
+    const giro = GIROS[giroActual % GIROS.length];
+    giroActual++;
+
+    for (const g of GOTAS) {
+      const gota = document.createElement("i");
+      // Grados a radianes, porque Math.cos/sin trabajan en radianes.
+      const rad = (g.ang + giro) * Math.PI / 180;
+      // --dx/--dy son NUMEROS sin unidad: el CSS los multiplica por
+      // --salp-alcance. Asi la perilla del alcance sirve para todas.
+      gota.style.setProperty("--dx", (Math.cos(rad) * g.dist).toFixed(3));
+      gota.style.setProperty("--dy", (Math.sin(rad) * g.dist).toFixed(3));
+      gota.style.setProperty("--r", g.r + "px");
+      gota.style.setProperty("--o", g.o);
+      salp.appendChild(gota);
+    }
+
+    document.body.appendChild(salp);
 
     // SOUND HOOK: click-tick
     // Muy corto (<60ms) y muy bajo. Si molesta, es el primero que sale.
 
-    // Se limpia solo: no queda basura en el DOM
-    marco.addEventListener("animationend", () => marco.remove());
+    // Se limpia solo: todas las gotas duran lo mismo, asi que cuando termina
+    // la ultima terminaron todas.
+    salp.lastChild.addEventListener("animationend", () => salp.remove());
   });
+
+  /* --- RASTRO MIENTRAS SE MUEVE ---
+     Gotitas que van quedando atras del cursor y se apagan solas.
+
+     LA PARTE QUE IMPORTA: cae una cada RASTRO_PASO pixeles RECORRIDOS, no una
+     por evento de mousemove. Un mousemove no es una unidad de distancia — el
+     navegador dispara muchos mas moviendo despacio que rapido — asi que atarlo
+     al evento dejaria un reguero denso al mover despacio y ralo al mover
+     rapido, que es exactamente al reves de lo que hace un pincel.
+
+     Midiendo el recorrido, la separacion entre gotas es siempre la misma. */
+  const RASTRO_PASO = 38;                    // px entre gota y gota
+  const RASTRO_TAMANOS = [4, 3, 5, 3.5, 4.5]; // se van turnando, no se sortean
+  let rastroX = destinoX, rastroY = destinoY, rastroI = 0;
+
+  window.addEventListener("mousemove", (e) => {
+    const dx = e.clientX - rastroX;
+    const dy = e.clientY - rastroY;
+    if (Math.hypot(dx, dy) < RASTRO_PASO) return;
+    rastroX = e.clientX;
+    rastroY = e.clientY;
+
+    const gota = document.createElement("div");
+    gota.className = "rastro-gota";
+    gota.style.left = e.clientX + "px";
+    gota.style.top = e.clientY + "px";
+    gota.style.setProperty("--r", RASTRO_TAMANOS[rastroI % RASTRO_TAMANOS.length] + "px");
+    rastroI++;
+    document.body.appendChild(gota);
+    gota.addEventListener("animationend", () => gota.remove());
+  }, { passive: true });
 }
 
 

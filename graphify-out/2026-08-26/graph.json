@@ -991,7 +991,7 @@
       "label": "irA()",
       "file_type": "code",
       "source_file": "js/transiciones.js",
-      "source_location": "L112",
+      "source_location": "L129",
       "_callable": true,
       "_origin": "ast",
       "id": "js_transiciones_ira",
@@ -4359,6 +4359,39 @@
       "community": 61,
       "community_name": "35. El click deja de ser un pulso y pasa a ser un encuadre (26/08/2026)",
       "norm_label": "donde"
+    },
+    {
+      "label": "32. El bug que hizo parecer que nada se arreglaba: los assets no ten\u00edan ?v= (22/08/2026)",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3951",
+      "_origin": "ast",
+      "id": "notas_decisiones_32_el_bug_que_hizo_parecer_que_nada_se_arreglaba_los_assets_no_ten\u00edan_v_22_08_2026",
+      "community": 62,
+      "community_name": "32. El bug que hizo parecer que nada se arreglaba: los assets no ten\u00edan ?v= (22/08/2026)",
+      "norm_label": "32. el bug que hizo parecer que nada se arreglaba: los assets no tenian ?v= (22/08/2026)"
+    },
+    {
+      "label": "C\u00d3MO RECONOCERLO LA PR\u00d3XIMA",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3971",
+      "_origin": "ast",
+      "id": "notas_decisiones_c\u00f3mo_reconocerlo_la_pr\u00f3xima",
+      "community": 62,
+      "community_name": "32. El bug que hizo parecer que nada se arreglaba: los assets no ten\u00edan ?v= (22/08/2026)",
+      "norm_label": "como reconocerlo la proxima"
+    },
+    {
+      "label": "DE PASO: EL VIDEO NUEVO DE LA EXPOSICI\u00d3N",
+      "file_type": "document",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3982",
+      "_origin": "ast",
+      "id": "notas_decisiones_de_paso_el_video_nuevo_de_la_exposici\u00f3n",
+      "community": 62,
+      "community_name": "32. El bug que hizo parecer que nada se arreglaba: los assets no ten\u00edan ?v= (22/08/2026)",
+      "norm_label": "de paso: el video nuevo de la exposicion"
     }
   ],
   "links": [
@@ -6059,7 +6092,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "js/transiciones.js",
-      "source_location": "L112",
+      "source_location": "L129",
       "weight": 1.0,
       "_origin": "ast",
       "source": "js_transiciones",
@@ -7847,6 +7880,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "notas/DECISIONES.md",
+      "source_location": "L3951",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_archivo_mi_caj\u00f3n_bit\u00e1cora_del_proyecto",
+      "target": "notas_decisiones_32_el_bug_que_hizo_parecer_que_nada_se_arreglaba_los_assets_no_ten\u00edan_v_22_08_2026",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
       "source_location": "L3020",
       "weight": 1.0,
       "_origin": "ast",
@@ -9502,6 +9546,28 @@
       "_origin": "ast",
       "source": "notas_decisiones_35_el_click_deja_de_ser_un_pulso_y_pasa_a_ser_un_encuadre_26_08_2026",
       "target": "notas_decisiones_qu\u00e9_qued\u00f3",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3971",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_32_el_bug_que_hizo_parecer_que_nada_se_arreglaba_los_assets_no_ten\u00edan_v_22_08_2026",
+      "target": "notas_decisiones_c\u00f3mo_reconocerlo_la_pr\u00f3xima",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "notas/DECISIONES.md",
+      "source_location": "L3982",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "notas_decisiones_32_el_bug_que_hizo_parecer_que_nada_se_arreglaba_los_assets_no_ten\u00edan_v_22_08_2026",
+      "target": "notas_decisiones_de_paso_el_video_nuevo_de_la_exposici\u00f3n",
       "confidence_score": 1.0
     }
   ],

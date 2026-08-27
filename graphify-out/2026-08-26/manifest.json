@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "js/transiciones.js": {
-    "mtime": 1787437514.4102051,
-    "ast_hash": "53894f12bd82a4de2ee845872e25aa1f",
+    "mtime": 1787780038.83931,
+    "ast_hash": "f9240d2461beaf0ca174c1955177a105",
     "semantic_hash": ""
   },
   "sandbox/sandbox.js": {
@@ -170,18 +170,18 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787779596.607894,
-    "ast_hash": "0a18131e6841cb91c52d867158ec7597",
+    "mtime": 1787780039.124351,
+    "ast_hash": "b4873e9022b3ca496999f099dc1cf0b5",
     "semantic_hash": ""
   },
   "notas/DECISIONES.md": {
-    "mtime": 1787779583.5454297,
-    "ast_hash": "6dea6d7001caf3ab018630aa6a4a3172",
+    "mtime": 1787780110.7308652,
+    "ast_hash": "515e6d7d97c59b556e37ea5c62936ad2",
     "semantic_hash": ""
   },
   "proyectos/amigos-tipines.html": {
-    "mtime": 1787779596.6088777,
-    "ast_hash": "2f87b399fddb2f323ca3aacbe58cbedd",
+    "mtime": 1787780039.1253526,
+    "ast_hash": "e4fbeb65bbf0044eb8c7a7b65435c0dc",
     "semantic_hash": ""
   },
   "proyectos/cero-al-infinito.html": {
@@ -200,13 +200,13 @@
     "semantic_hash": ""
   },
   "proyectos/mas-54.html": {
-    "mtime": 1787779596.6135783,
-    "ast_hash": "d9cf9ec66ca19a70b84022e23dd41c6a",
+    "mtime": 1787780039.1253526,
+    "ast_hash": "64f73079ebd453f02218ff94aa053765",
     "semantic_hash": ""
   },
   "proyectos/mobiliario-museo.html": {
-    "mtime": 1787779596.6146784,
-    "ast_hash": "2e8d8ee3af3a9e54f56162ac91854001",
+    "mtime": 1787780039.1273148,
+    "ast_hash": "3957bd4950f1a970102d3c3ad0cda246",
     "semantic_hash": ""
   },
   "proyectos/saprobio.html": {
@@ -215,8 +215,8 @@
     "semantic_hash": ""
   },
   "proyectos/simbio.html": {
-    "mtime": 1787779596.6166842,
-    "ast_hash": "150045973c0c973705a2a3ea2fb6370f",
+    "mtime": 1787780039.1283293,
+    "ast_hash": "15d6328463ace1768cf7ac14efdcf07e",
     "semantic_hash": ""
   },
   "sandbox/index.html": {
@@ -7440,8 +7440,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/exposicion.jpg": {
-    "mtime": 1787205248.008183,
-    "ast_hash": "493b4bfde01a19e4f5e4598c325cf2fd",
+    "mtime": 1787779955.741783,
+    "ast_hash": "b3a5f99436f115d81a4c2c15adf1c941",
     "semantic_hash": ""
   },
   "assets/+54/web/historia-1.jpg": {
@@ -7545,8 +7545,8 @@
     "semantic_hash": ""
   },
   "assets/+54/PARA WEB/animacion_exposicion.mp4": {
-    "mtime": 1787184713.5651534,
-    "ast_hash": "a20f72e17efbc53a0ad74098c785b14b",
+    "mtime": 1787779941.715318,
+    "ast_hash": "4b4a4c27d109ced3e6aace40601bf622",
     "semantic_hash": ""
   },
   "assets/+54/PARA WEB/animacion_ilustraciones.mp4": {
@@ -7565,8 +7565,8 @@
     "semantic_hash": ""
   },
   "assets/+54/web/exposicion.mp4": {
-    "mtime": 1787205229.3344145,
-    "ast_hash": "e1ec9e43747bcf5d51ea01f52593ac83",
+    "mtime": 1787779955.4612596,
+    "ast_hash": "fe529850bea6cf7fc3c2ef64eb7cbad2",
     "semantic_hash": ""
   },
   "assets/+54/web/historia-1.mp4": {
@@ -18307,6 +18307,11 @@
   "assets/simbio/foto/home-simbio.png": {
     "mtime": 1787682006.431219,
     "ast_hash": "2cc13d2760ba5ea462df2ed7b6ed4d8e",
+    "semantic_hash": ""
+  },
+  "assets/+54/PARA WEB/animacion_exposicion.ANTERIOR.mp4": {
+    "mtime": 1787184713.5651534,
+    "ast_hash": "a20f72e17efbc53a0ad74098c785b14b",
     "semantic_hash": ""
   }
 }

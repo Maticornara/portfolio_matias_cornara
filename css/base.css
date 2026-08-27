@@ -389,86 +389,115 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* --------------------------------------------------------------------------
-   MARCO DE CLICK — cuatro esquinas que se cierran sobre el punto tocado
+/* --------------------------------------------------------------------------
+   SALPICADURA DE CLICK — gotas de pintura que estallan desde el punto tocado
    ----------------------------------------------------------------------------
-   Reemplaza al anillo verde que se expandia (26/08). El gesto ahora es
-   "encuadrar": cuatro corchetes aparecen abiertos alrededor del click, se
-   cierran hacia el punto y se van. Rima con la esquina del hero y con las
-   fichas del indice, en vez del pulso generico de cualquier sitio.
+   Tercer intento del click (26/08). Primero fue un anillo que se expandia
+   (generico), despues cuatro esquinas que encuadraban (no gustó). Ahora:
+   una gota gorda en el centro y siete satelites que salen disparados, se
+   frenan y recien ahi se apagan. Como una gota de pintura que cae sobre el
+   papel.
 
-   Como esta hecho: el que se anima es el CONTENEDOR, que se achica de
-   --marco-abre a --marco-cierra. Los cuatro corchetes van clavados a sus
-   esquinas con top/left/right/bottom, asi que se cierran solos. El
-   translate(-50%,-50%) es en porcentaje del propio tamano, o sea que
-   mientras encoge sigue centrado en el punto del click.
+   POR QUE NO ES AL AZAR ------------------------------------------------------
+   Las gotas NO se sortean con Math.random(). Hay una receta escrita a mano en
+   js/main.js (angulo, distancia, tamano y opacidad de cada una), y el conjunto
+   entero se gira un poco en cada click TURNANDOSE entre seis valores fijos.
+   Asi ninguna salpicadura sale igual a la anterior, pero todas estan
+   dibujadas, no sorteadas: los angulos son disparejos a proposito, porque
+   repartidos en partes iguales quedaria una margarita, no una salpicadura.
+
+   COMO SE MUEVEN ------------------------------------------------------------
+   Cada gota vuela hasta su lugar en el primer 45% del tiempo, y el 55% que
+   queda se apaga QUIETA, ya posada. Ese "llega y despues se apaga" es lo que
+   la hace leer como pintura y no como particulas: la pintura llega y se queda.
+   El transform de cada una sale de --dx/--dy (que le pone el JS) por
+   --salp-alcance, que es la perilla de cuan lejos llegan todas.
 
    PERILLAS ------------------------------------------------------------------
-   --marco-abre    tamano del marco al aparecer (mas grande = mas amplio)
-   --marco-cierra  tamano al terminar de cerrarse (mas chico = cierra mas)
-   --marco-brazo   largo de cada brazo del corchete
-   --marco-linea   grosor de la linea
-   --marco-dur     cuanto dura todo el gesto
+   --salp-alcance  cuan lejos llegan las gotas (mas grande = estalla mas)
+   --salp-dur      cuanto dura todo
+   --salp-escala   multiplica el tamano de TODAS las gotas a la vez
    -------------------------------------------------------------------------- */
 
-.click-marco {
-  --marco-abre: 42px;
-  --marco-cierra: 14px;
-  --marco-brazo: 8px;
-  --marco-linea: 1.5px;
-  --marco-dur: 280ms;
+.click-salpicadura {
+  --salp-alcance: 34px;
+  --salp-dur: 620ms;
+  --salp-escala: 1;
 
   position: fixed;
   z-index: var(--z-pulso);
-  width: var(--marco-abre);
-  height: var(--marco-abre);
-  transform: translate(-50%, -50%);
   pointer-events: none;
-  animation: marco-cierra var(--marco-dur) var(--ease) forwards;
 }
 
-/* Cada <i> es una esquina: un cuadradito al que solo se le pintan DOS lados.
-   Por eso el border arranca en 0 y despues cada una enciende los suyos. */
-.click-marco i {
+/* Cada <i> es una gota. El JS le pasa --dx/--dy (direccion), --r (tamano) y
+   --o (opacidad); el margin negativo la centra sobre el punto del click. */
+.click-salpicadura i {
   position: absolute;
-  width: var(--marco-brazo);
-  height: var(--marco-brazo);
-  border: 0 solid var(--verde);
-}
-.click-marco i:nth-child(1) {   /* superior izquierda */
-  top: 0; left: 0;
-  border-top-width: var(--marco-linea);
-  border-left-width: var(--marco-linea);
-}
-.click-marco i:nth-child(2) {   /* superior derecha */
-  top: 0; right: 0;
-  border-top-width: var(--marco-linea);
-  border-right-width: var(--marco-linea);
-}
-.click-marco i:nth-child(3) {   /* inferior izquierda */
-  bottom: 0; left: 0;
-  border-bottom-width: var(--marco-linea);
-  border-left-width: var(--marco-linea);
-}
-.click-marco i:nth-child(4) {   /* inferior derecha */
-  bottom: 0; right: 0;
-  border-bottom-width: var(--marco-linea);
-  border-right-width: var(--marco-linea);
+  top: 0;
+  left: 0;
+  width: calc(var(--r) * var(--salp-escala));
+  height: calc(var(--r) * var(--salp-escala));
+  margin: calc(var(--r) * var(--salp-escala) / -2) 0 0
+          calc(var(--r) * var(--salp-escala) / -2);
+  border-radius: 50%;
+  background: var(--verde);
+  animation: salpicar var(--salp-dur) cubic-bezier(0.1, 0.75, 0.2, 1) forwards;
 }
 
-/* Entra rapido, cierra, y recien sobre el final se va. La opacidad del 30%
-   evita que el primer cuadro aparezca de golpe a pantalla completa. */
-@keyframes marco-cierra {
+@keyframes salpicar {
   from {
-    width: var(--marco-abre);
-    height: var(--marco-abre);
-    opacity: 0;
+    transform: translate(0, 0) scale(0.35);
+    opacity: var(--o);
   }
-  30% { opacity: 1; }
+  45% {
+    transform: translate(calc(var(--dx) * var(--salp-alcance)),
+                         calc(var(--dy) * var(--salp-alcance))) scale(1);
+    opacity: var(--o);
+  }
   to {
-    width: var(--marco-cierra);
-    height: var(--marco-cierra);
+    transform: translate(calc(var(--dx) * var(--salp-alcance)),
+                         calc(var(--dy) * var(--salp-alcance))) scale(1);
     opacity: 0;
   }
+}
+
+
+/* --------------------------------------------------------------------------
+   RASTRO — gotitas que el cursor va dejando mientras se mueve
+   ----------------------------------------------------------------------------
+   No cae una por cuadro ni una por evento: cae una **cada tantos pixeles
+   recorridos** (--rastro-paso, en js/main.js). Por eso la densidad es la misma
+   moviendo rapido o despacio, y no depende de la velocidad de la maquina.
+
+   Es a proposito muy tenue: tiene que reconocerse de reojo, como el reguero de
+   un pincel, no competir con el contenido.
+
+   PARA APAGARLO: --rastro-opacidad: 0.  (Se sigue creando el elemento, pero
+   no se ve; es una linea y no rompe nada.)
+
+   PERILLAS ------------------------------------------------------------------
+   --rastro-opacidad  cuanto se ve cada gotita (0 = apagado)
+   --rastro-dur       cuanto tarda en desaparecer
+   -------------------------------------------------------------------------- */
+
+.rastro-gota {
+  --rastro-opacidad: 0.32;
+  --rastro-dur: 560ms;
+
+  position: fixed;
+  z-index: calc(var(--z-pulso) - 1);
+  width: var(--r);
+  height: var(--r);
+  margin: calc(var(--r) / -2) 0 0 calc(var(--r) / -2);
+  border-radius: 50%;
+  background: var(--verde);
+  pointer-events: none;
+  animation: rastro var(--rastro-dur) ease-out forwards;
+}
+
+@keyframes rastro {
+  from { opacity: var(--rastro-opacidad); transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.3); }
 }
 
 /* --------------------------------------------------------------------------
